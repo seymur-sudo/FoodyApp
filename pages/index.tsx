@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import { GetServerSideProps } from 'next';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { GetServerSideProps } from "next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import MainHeader from "@/components/Client/MainHeader";
 import { useTranslation } from "next-i18next";
 const Home: NextPage = () => {
@@ -14,9 +14,8 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="">
-          <MainHeader/>
-        <div className="bg-[#F3F4F6]  dark:bg-gray-900 sm:mx-[30px] rounded-4">
-        </div>
+        <MainHeader />
+        <div className="bg-[#F3F4F6]  dark:bg-gray-900 sm:mx-[30px] rounded-4"></div>
       </div>
     </>
   );
@@ -25,6 +24,6 @@ const Home: NextPage = () => {
 export default Home;
 export const getServerSideProps: GetServerSideProps = async ({ locale }) => ({
   props: {
-    ...(await serverSideTranslations(locale as string, ['common'])),
+    ...(await serverSideTranslations(locale as string, ["common"])),
   },
 });

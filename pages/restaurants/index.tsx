@@ -4,10 +4,10 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import ResCard from "@/components/Client/RestaurantCard/ResCard";
 import Image from "next/image";
 import soup from "../../public/svgs/soup.svg";
-import close from "../../public/svgs/close.svg";
 import filter from "../../public/svgs/filter.svg";
 import { useSpring, animated } from "@react-spring/web";
 import MainHeader from "@/components/Client/MainHeader";
+import { IoIosCloseCircleOutline } from "react-icons/io";
 
 
 const Restaurants = () => {
@@ -234,7 +234,7 @@ const Restaurants = () => {
               style={{
                 ...modalSpring,
                 position: "fixed",
-                top: "25vh",
+                top: "30vh",
                 left: 0,
                 right: 0,
                 zIndex: 50,
@@ -242,13 +242,8 @@ const Restaurants = () => {
               className="bg-white dark:bg-gray-800 rounded-t-[20px] flex flex-col w-full max-h-[45vh] overflow-y-auto items-center justify-start md:hidden asideScroll"
             >
               <div className="mt-4" onClick={closeModal}>
-                <Image
-                  src={close}
-                  alt="name"
-                  width={100}
-                  height={100}
-                  className="hover:scale-105 transition-all duration-500  w-[35px]  h-[35px] rounded-full object-cover cursor-pointer"
-                />
+              <IoIosCloseCircleOutline size={40} className="text-[#BDBDBD] dark:text-sky-400  "/>
+              
               </div>
               <ul className="w-10/12 mt-[5%]">
                 <li className="font-medium text-black text-[18px] border-b-2 border-gray-300 dark:text-gray-100  capitalize py-2 px-6">
