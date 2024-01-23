@@ -1,6 +1,9 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import PizzaH from "../public/svgs/hoveredPizza.svg"
+import card1 from "../public/svgs/card1.svg"
+import card2 from "../public/svgs/soupHome.svg"
+import kfcbox from "../public/svgs/kfcbox.svg"
 import FriH from "../public/svgs/friHome.svg"
 import BurgerH from "../public/svgs/burgerHome.svg"
 import { GetServerSideProps } from "next";
@@ -64,8 +67,44 @@ const Home: NextPage = () => {
           <p className="text-[40px] dark:text-white font-black">Features</p>
           <p className="text-[22px] text-[#828282] font-normal">Lorem ipsum is placeholder text commonly used in the graphic, print, and <br className="hidden sm:block" /> publishing industries for previewing layouts and visual mockups.</p>
         </div>
-        <div className="flex flex-row">
-
+        <div className="flex flex-row mt-10 flex-wrap gap-16 justify-center">
+          <div className="text-center dark:bg-gray-900 rounded-4 flex items-center flex-col shadow-2xl">
+            <Image className="" alt="" src={card1}/>
+            <p className="text-[30px] px-6 dark:text-white text-[#4F4F4F] font-bold">Discount Boucher</p>
+            <p className="text-[18px] mb-15 text-[#4F4F4F] font-normal">Lorem ipsum is placeholder <br className="hidden sm:block" /> commonly used in the graphic </p>
+          </div>
+          <div className="text-center dark:bg-gray-900 flex rounded-4 items-center flex-col  shadow-2xl">
+            <Image className="" alt="" src={card2}/>
+            <p className="text-[30px] px-6 dark:text-white text-[#4F4F4F] font-bold">Fresh healthy Food</p>
+            <p className="text-[18px] mb-15 text-[#4F4F4F] font-normal">Lorem ipsum is placeholder <br className="hidden sm:block" /> commonly used in the graphic </p>
+          </div>
+          <div className="text-center dark:bg-gray-900 rounded-4 flex items-center flex-col shadow-2xl">
+            <Image className="" alt="" src={card1}/>
+            <p className="text-[30px] px-6 dark:text-white text-[#4F4F4F] font-bold">Fast Home Delivery</p>
+            <p className="text-[18px] mb-15 text-[#4F4F4F] font-normal">Lorem ipsum is placeholder <br className="hidden sm:block" /> commonly used in the graphic </p>
+          </div>
+        </div>
+        <div className={`justify-between mt-64 sm:ml-[100px] flex flex-row`}>
+          <div className="">
+            <p className="text-[50px] dark:text-white font-black">Menu That Always Make You Fall In Love</p>
+            <p className="text-[22px] text-[#828282] font-normal">Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.</p>
+          </div>
+          <div className="relative mr-28 ml-24">
+            <div className={`bg-[#D63626] dark:bg-green-900 rounded-[50px]  z-0 duration-500 rotate-[22deg] w-[420px] h-[550px]`}>
+            </div>
+            <Image alt="" src={kfcbox} className="w-[600px] top-[100px] hover:scale-110 duration-500 absolute z-10 h-[400px]"/>
+          </div>
+        </div>
+        <div className={`justify-between mt-64 flex flex-row-reverse`}>
+          <div className="">
+            <p className="text-[50px] dark:text-white font-black">Do You Like French Fries? Mmm...</p>
+            <p className="text-[22px] text-[#828282] font-normal">Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.</p>
+          </div>
+          <div className="relative mr-28 ml-24">
+            <div className={`bg-[#D63626] rounded-[50px] dark:bg-green-900  z-0 duration-500 rotate-[-22deg] w-[420px] h-[550px]`}>
+            </div>
+            <Image alt="" src={FriH} className="w-[600px] top-[100px] hover:scale-110 duration-500 absolute z-10 h-[400px]"/>
+          </div>
         </div>
       </div>
     </>
