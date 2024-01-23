@@ -58,7 +58,7 @@ const Orders: React.FC = () => {
                 </td>
 
                 <td className="px-1 font-semibold text-gray-900 dark:text-white">
-                  20 eve street 545 avenue road , ny 99999
+                  20 eve street 545..
                 </td>
 
                 <td className="p-4 pl-8 font-semibold text-gray-900 dark:text-white">

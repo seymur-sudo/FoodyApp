@@ -9,17 +9,22 @@ import { animated } from "@react-spring/web";
 import { useSidebarContext } from "@/contexts/SidebarContext";
 import { SidebarContextProps } from "@/interfaces";
 import UserRouter from "@/components/Client/UserRouter";
+import DeleteModal from "@/components/Admin/Modals/DeleteModal";
 
 const BasketUser = () => {
-  const { showUserModal, closeUserModal, modalSpring } =
-    useSidebarContext() as SidebarContextProps;
+  const {
+    showUserModal,
+    closeUserModal,
+    modalSpring,
+
+  } = useSidebarContext() as SidebarContextProps;
 
   return (
     <>
       <MainHeader />
       <div className="flex flex-col items-center  md:flex-row md:items-start  md:justify-evenly py-8">
         <UserAside />
-
+      
         <UserRouter />
         {showUserModal && (
           <>
@@ -60,9 +65,9 @@ const BasketUser = () => {
           </>
         )}
 
-        <div className="w-10/12 md:w-8/12 bg-[#F3F4F6] dark:bg-gray-900 asideScroll max-h-[75vh] overflow-y-auto">
+        <div className="w-10/12 md:w-8/12 bg-[#F3F4F6] dark:bg-gray-900  max-h-[75vh] overflow-y-auto my-scrollable-component ">
           <div>
-            <div className="border-b-2 border-gray-300 dark:border-sky-300 capitalize p-5">
+            <div className="border-b-2 border-gray-300 dark:border-sky-300 capitalize p-6">
               <span className="text-[30px] text-[#0f0808] dark:text-blue-400 font-semibold">
                 your basket
               </span>
@@ -91,7 +96,10 @@ const BasketUser = () => {
             </div>
           </div>
         </div>
+
       </div>
+
+      <DeleteModal/>
     </>
   );
 };

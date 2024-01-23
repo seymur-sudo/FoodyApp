@@ -12,7 +12,6 @@ import { FiSun, FiMoon } from "react-icons/fi";
 import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem} from "@nextui-org/react";
 
 
-
 const MainHeader: React.FC = () => {
   const { toggleTheme } = useThemeContext() as ThemeContextProps;
   const { t } = useTranslation("common");

@@ -6,6 +6,8 @@ import DeleteHistory from "../Deletes/DeleteHistory";
 import DeleteOffer from "../Deletes/DeleteOffer";
 import DeleteOrder from "../Deletes/DeleteOrder";
 import DeleteRestuarant from "../Deletes/DeleteRestuarant";
+import DeleteUserOrder from "@/components/Client/Deletes/DeleteUserOrders";
+import DeleteUserBasket from "@/components/Client/Deletes/DeleteUserProduct";
 
 const DeleteModal: React.FC = () => {
   const router = useRouter();
@@ -23,6 +25,11 @@ const DeleteModal: React.FC = () => {
       return <DeleteHistory />;
     } else if (router.pathname === "/admin/orders") {
       return <DeleteOrder />;
+    } else if (router.pathname === "/user/orders") {
+      return <DeleteUserOrder />;
+    }
+    else if (router.pathname === "/user/basket") {
+      return <DeleteUserBasket />;
     }
     return null;
   };
