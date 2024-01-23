@@ -1,5 +1,5 @@
 import React, { ReactNode } from "react";
-
+import { SpringValue } from "@react-spring/web";
 export interface ChildrenNode {
   children: ReactNode;
 }
@@ -30,6 +30,14 @@ export interface SidebarContextProps {
   addProductImg: string | null;
   setSelectedFile: React.Dispatch<React.SetStateAction<File | null>>;
   setAddProductImg: React.Dispatch<React.SetStateAction<string | null>>;
+  openUserModal: () => void;
+  closeUserModal: () => void;
+  showUserModal: boolean;
+  setShowUserModal: React.Dispatch<React.SetStateAction<boolean>>;
+  modalSpring: {
+    opacity: SpringValue<number>;
+    transform: SpringValue<string>;
+  };
 }
 
 export interface ChartData {

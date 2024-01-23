@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import MainHeader from "@/components/Client/MainHeader";
 import Image from "next/image";
 import papa from "../../../public/svgs/papa.svg";
@@ -6,42 +6,15 @@ import pizza from "../../../public/svgs/pizza.svg";
 import basket from "../../../public/svgs/basketRes.svg";
 import { LuTrash } from "react-icons/lu";
 import { IoIosCloseCircleOutline } from "react-icons/io";
-import { useSpring, animated } from "@react-spring/web";
+import { animated } from "@react-spring/web";
 import BasketCard from "@/components/Client/BaskerCards/BasketCard";
 import BasketResCard from "@/components/Client/BaskerCards/BasketResCard";
+import { useSidebarContext } from "@/contexts/SidebarContext";
+import { SidebarContextProps } from "@/interfaces";
 
 const ResDetail = () => {
-  const [showModal, setShowModal] = useState(false);
-
-  const openModal = () => {
-    setShowModal(true);
-  };
-
-  const closeModal = () => {
-    setShowModal(false);
-  };
-
-  const modalSpring = useSpring({
-    opacity: showModal ? 1 : 0,
-    transform: `translateY(${showModal ? 0 : -100}%)`,
-  });
-
-  useEffect(() => {
-    const handleOutsideClick = (event: MouseEvent) => {
-      const target = event.target as HTMLElement;
-      if (showModal && target.classList.contains("bg-black")) {
-        closeModal();
-      }
-    };
-
-    if (showModal) {
-      window.addEventListener("click", handleOutsideClick);
-    }
-
-    return () => {
-      window.removeEventListener("click", handleOutsideClick);
-    };
-  }, [showModal]);
+  const { showUserModal, openUserModal, closeUserModal, modalSpring } =
+    useSidebarContext() as SidebarContextProps;
 
   return (
     <div className="bg-white dark:bg-black ">
@@ -103,7 +76,7 @@ const ResDetail = () => {
 
             <div
               className="flex justify-center w-full mt-[4%] md:hidden "
-              onClick={openModal}
+              onClick={openUserModal}
             >
               <div className="h-12 w-10/12 cursor-pointer hover:opacity-90 transition-all duration-500  flex items-center justify-between rounded-[100px] bg-[#D63626] dark:bg-blue-500 text-white">
                 <button className="capitalize ml-[3%] font-medium flex items-center">
@@ -127,7 +100,7 @@ const ResDetail = () => {
         </div>
 
         {/* BASKET_MODAL */}
-        {showModal && (
+        {showUserModal && (
           <>
             <div className="fixed inset-0 bg-black dark:bg-gray-200 opacity-60 z-40 md:opacity-0"></div>
 
@@ -142,7 +115,7 @@ const ResDetail = () => {
               }}
               className="bg-white dark:bg-gray-800 rounded-t-[20px] flex flex-col w-full max-h-[45vh] overflow-y-auto items-center justify-start md:hidden asideScroll"
             >
-              <div className="mt-4" onClick={closeModal}>
+              <div className="mt-4" onClick={closeUserModal}>
                 <IoIosCloseCircleOutline
                   size={40}
                   className="text-[#BDBDBD] dark:text-sky-400  "
@@ -165,7 +138,7 @@ const ResDetail = () => {
                 zIndex: 40,
                 opacity: 0,
               }}
-              onClick={closeModal}
+              onClick={closeUserModal}
             />
           </>
         )}

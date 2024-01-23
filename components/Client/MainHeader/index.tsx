@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import profileImg from '../../../public/svgs/profile.svg'
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -9,9 +9,10 @@ import { LangSelect } from "../../Admin/Langs";
 import { useThemeContext } from "../../../contexts/ThemeContext";
 import { ThemeContextProps } from "../../../interfaces/index";
 import { FiSun, FiMoon } from "react-icons/fi";
-import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Avatar, User} from "@nextui-org/react";
+import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem} from "@nextui-org/react";
 
-import {} from "@nextui-org/react";
+
+
 const MainHeader: React.FC = () => {
   const { toggleTheme } = useThemeContext() as ThemeContextProps;
   const { t } = useTranslation("common");
@@ -89,7 +90,7 @@ const MainHeader: React.FC = () => {
           >
             <FiSun
               size={50}
-              className="text-[#EAAB00] dark:text-gray-900 block dark:hidden"
+              className="text-[#ea9000] dark:text-gray-900 block dark:hidden"
             />
             <FiMoon
               size={50}
