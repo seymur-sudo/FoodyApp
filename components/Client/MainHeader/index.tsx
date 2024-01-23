@@ -18,7 +18,7 @@ const MainHeader: React.FC = () => {
   const { t } = useTranslation("common");
   const router = useRouter();
   return (
-    <div className="h-[120px] sm:mt-[30px] sm:mx-[30px] flex items-center rounded-5 justify-between flex-row bg-[#F3F4F6]  dark:bg-gray-900">
+    <div className="h-[120px] sm:mt-[30px] sm:mx-[30px] flex items-center rounded-t-5 justify-between flex-row bg-[#F3F4F6]  dark:bg-gray-900">
       <p className=" flex py-auto sm:ml-14 flex-row items-center text-center font-mukta text-[36px] font-extrabold text-[#000000] dark:text-gray-100">
         Foody<span className="text-[#EAAB00] dark:text-sky-400 ">.</span>
       </p>
@@ -110,11 +110,11 @@ const MainHeader: React.FC = () => {
               <Image alt="" src={profileImg} className=" ml-5 w-10 h-10 cursor-pointer mr-6 scale-100 hover:scale-11 text-[20px] font-medium text-white"/>
             </DropdownTrigger>
             <DropdownMenu  className="bg-white dark:bg-black" aria-label="User Actions" variant="flat">
-              <DropdownItem className="h-10 flex" key="profile" ><p className="text-nowrap font-normal text-base">Profile</p></DropdownItem>
-              <DropdownItem className="h-10 flex" key="your_basket"><p className="text-nowrap font-normal text-base">Your Basket</p></DropdownItem>
-              <DropdownItem className="h-10 flex" key="your_order"><p className="text-nowrap font-normal text-base">Your Orders</p></DropdownItem>
-              <DropdownItem className="h-10 flex" key="checkout"><p className="text-nowrap font-normal text-base">Checkout</p></DropdownItem>
-              <DropdownItem className="h-10 flex" key="logout" color="danger"><p className="text-nowrap font-normal text-base">Log Out</p></DropdownItem>
+              <DropdownItem className="h-10  dark:hover:bg-[rgb(17,24,39)] flex" key="profile" ><p className="text-nowrap dark:text-white font-normal text-base">Profile</p></DropdownItem>
+              <DropdownItem className="h-10  dark:hover:bg-[rgb(17,24,39)] flex" key="your_basket"><p className="text-nowrap dark:text-white font-normal text-base">Your Basket</p></DropdownItem>
+              <DropdownItem className="h-10  dark:hover:bg-[rgb(17,24,39)] flex" key="your_order"><p className="text-nowrap dark:text-white font-normal text-base">Your Orders</p></DropdownItem>
+              <DropdownItem className="h-10  dark:hover:bg-[rgb(17,24,39)] flex" key="checkout"><p className="text-nowrap dark:text-white font-normal text-base">Checkout</p></DropdownItem>
+              <DropdownItem className="h-10  dark:hover:bg-[rgb(17,24,39)] flex" key="logout" color="danger"><p className="text-nowrap dark:text-white font-normal text-base">Log Out</p></DropdownItem>
             </DropdownMenu>
           </Dropdown>
         </div>
