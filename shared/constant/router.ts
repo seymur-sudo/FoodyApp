@@ -8,4 +8,9 @@ export const ROUTER = {
     ADMIN_ORDERS: "/admin/orders",
     ADMIN_OFFERS: "/admin/offers",
     ADMIN_PRODUCTS: "/admin/products",
+    USER_BASKET: "/user/basket",
+    USER_ORDERS: "/user/orders",
+    USER_CHECKOUT: "/user/checkout",
+    USER_PROFILE: "/user/profile",
+    // USER_LOGOUT: "/admin/products",
   } as const;

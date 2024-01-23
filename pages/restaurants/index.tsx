@@ -1,55 +1,27 @@
 import React, { useState, useEffect } from "react";
-import { GetServerSideProps } from 'next';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { GetServerSideProps } from "next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import ResCard from "@/components/Client/RestaurantCard/ResCard";
 import Image from "next/image";
 import soup from "../../public/svgs/soup.svg";
 import filter from "../../public/svgs/filter.svg";
-import { useSpring, animated } from "@react-spring/web";
+import { animated } from "@react-spring/web";
 import MainHeader from "@/components/Client/MainHeader";
 import { IoIosCloseCircleOutline } from "react-icons/io";
-
+import { useSidebarContext } from "@/contexts/SidebarContext";
+import { SidebarContextProps } from "@/interfaces";
 
 const Restaurants = () => {
-  const [showModal, setShowModal] = useState(false);
-
-  const openModal = () => {
-    setShowModal(true);
-  };
-
-  const closeModal = () => {
-    setShowModal(false);
-  };
-
-  const modalSpring = useSpring({
-    opacity: showModal ? 1 : 0,
-    transform: `translateY(${showModal ? 0 : -100}%)`,
-  });
-
-  useEffect(() => {
-    const handleOutsideClick = (event: MouseEvent) => {
-      const target = event.target as HTMLElement;
-      if (showModal && target.classList.contains("bg-black")) {
-        closeModal();
-      }
-    };
-
-    if (showModal) {
-      window.addEventListener("click", handleOutsideClick);
-    }
-
-    return () => {
-      window.removeEventListener("click", handleOutsideClick);
-    };
-  }, [showModal]);
+  const { showUserModal, openUserModal, closeUserModal, modalSpring } =
+    useSidebarContext() as SidebarContextProps;
 
   return (
     <>
-      <MainHeader/>
+      <MainHeader />
       <div className="p-6 px-10 flex flex-col justify-between md:flex-row font-mutka bg-white dark:bg-black">
         <div
           className="sm:hidden bg-white dark:bg-gray-900 cursor-pointer text-white p-6 rounded shadow-shadow4 flex justify-center mb-[12%]"
-          onClick={openModal}
+          onClick={openUserModal}
         >
           <Image
             src={filter}
@@ -58,7 +30,9 @@ const Restaurants = () => {
             height={100}
             className="hover:scale-105 transition-all duration-500  w-[30px]  h-[30px]   object-cover"
           />
-          <p className="text-[#4F4F4F] dark:text-gray-300 font-medium ml-2 text-xl">Filters</p>
+          <p className="text-[#4F4F4F] dark:text-gray-300 font-medium ml-2 text-xl">
+            Filters
+          </p>
         </div>
 
         <aside className="bg-[#F3F4F6] dark:bg-gray-800 w-2/12 font-mukta asideScroll max-h-[100vh] overflow-y-auto hidden md:block">
@@ -71,7 +45,9 @@ const Restaurants = () => {
                 height={100}
                 className="hover:scale-105 transition-all duration-500  w-[30px]  h-[30px] rounded-full object-cover"
               />
-              <p className="font-semibold text-xl text-[#333] dark:text-[#fff] ml-4">chines</p>
+              <p className="font-semibold text-xl text-[#333] dark:text-[#fff] ml-4">
+                chines
+              </p>
             </li>
             <li className="flex items-center justify-center capitalize mb-[10%]">
               <Image
@@ -81,7 +57,9 @@ const Restaurants = () => {
                 height={100}
                 className="hover:scale-105 transition-all duration-500  w-[30px]  h-[30px] rounded-full object-cover"
               />
-              <p className="font-semibold text-xl text-[#333] dark:text-[#fff] ml-4">chines</p>
+              <p className="font-semibold text-xl text-[#333] dark:text-[#fff] ml-4">
+                chines
+              </p>
             </li>{" "}
             <li className="flex items-center justify-center capitalize mb-[10%]">
               <Image
@@ -91,7 +69,9 @@ const Restaurants = () => {
                 height={100}
                 className="hover:scale-105 transition-all duration-500  w-[30px]  h-[30px] rounded-full object-cover"
               />
-              <p className="font-semibold text-xl text-[#333] dark:text-[#fff] ml-4">chines</p>
+              <p className="font-semibold text-xl text-[#333] dark:text-[#fff] ml-4">
+                chines
+              </p>
             </li>{" "}
             <li className="flex items-center justify-center capitalize mb-[10%]">
               <Image
@@ -101,7 +81,9 @@ const Restaurants = () => {
                 height={100}
                 className="hover:scale-105 transition-all duration-500  w-[30px]  h-[30px] rounded-full object-cover"
               />
-              <p className="font-semibold text-xl text-[#333] dark:text-[#fff] ml-4">chines</p>
+              <p className="font-semibold text-xl text-[#333] dark:text-[#fff] ml-4">
+                chines
+              </p>
             </li>{" "}
             <li className="flex items-center justify-center capitalize mb-[10%]">
               <Image
@@ -111,7 +93,9 @@ const Restaurants = () => {
                 height={100}
                 className="hover:scale-105 transition-all duration-500  w-[30px]  h-[30px] rounded-full object-cover"
               />
-              <p className="font-semibold text-xl text-[#333] dark:text-[#fff] ml-4">chines</p>
+              <p className="font-semibold text-xl text-[#333] dark:text-[#fff] ml-4">
+                chines
+              </p>
             </li>{" "}
             <li className="flex items-center justify-center capitalize mb-[10%]">
               <Image
@@ -121,7 +105,9 @@ const Restaurants = () => {
                 height={100}
                 className="hover:scale-105 transition-all duration-500  w-[30px]  h-[30px] rounded-full object-cover"
               />
-              <p className="font-semibold text-xl text-[#333] dark:text-[#fff] ml-4">chines</p>
+              <p className="font-semibold text-xl text-[#333] dark:text-[#fff] ml-4">
+                chines
+              </p>
             </li>{" "}
             <li className="flex items-center justify-center capitalize mb-[10%]">
               <Image
@@ -131,7 +117,9 @@ const Restaurants = () => {
                 height={100}
                 className="hover:scale-105 transition-all duration-500  w-[30px]  h-[30px] rounded-full object-cover"
               />
-              <p className="font-semibold text-xl text-[#333] dark:text-[#fff] ml-4">chines</p>
+              <p className="font-semibold text-xl text-[#333] dark:text-[#fff] ml-4">
+                chines
+              </p>
             </li>{" "}
             <li className="flex items-center justify-center capitalize mb-[10%]">
               <Image
@@ -141,7 +129,9 @@ const Restaurants = () => {
                 height={100}
                 className="hover:scale-105 transition-all duration-500  w-[30px]  h-[30px] rounded-full object-cover"
               />
-              <p className="font-semibold text-xl text-[#333] dark:text-[#fff] ml-4">chines</p>
+              <p className="font-semibold text-xl text-[#333] dark:text-[#fff] ml-4">
+                chines
+              </p>
             </li>{" "}
             <li className="flex items-center justify-center capitalize mb-[10%]">
               <Image
@@ -151,7 +141,9 @@ const Restaurants = () => {
                 height={100}
                 className="hover:scale-105 transition-all duration-500  w-[30px]  h-[30px] rounded-full object-cover"
               />
-              <p className="font-semibold text-xl text-[#333] dark:text-[#fff] ml-4">chines</p>
+              <p className="font-semibold text-xl text-[#333] dark:text-[#fff] ml-4">
+                chines
+              </p>
             </li>{" "}
             <li className="flex items-center justify-center capitalize mb-[10%]">
               <Image
@@ -161,7 +153,9 @@ const Restaurants = () => {
                 height={100}
                 className="hover:scale-105 transition-all duration-500  w-[30px]  h-[30px] rounded-full object-cover"
               />
-              <p className="font-semibold text-xl text-[#333] dark:text-[#fff] ml-4">chines</p>
+              <p className="font-semibold text-xl text-[#333] dark:text-[#fff] ml-4">
+                chines
+              </p>
             </li>
             <li className="flex items-center justify-center capitalize mb-[10%]">
               <Image
@@ -171,7 +165,9 @@ const Restaurants = () => {
                 height={100}
                 className="hover:scale-105 transition-all duration-500  w-[30px]  h-[30px] rounded-full object-cover"
               />
-              <p className="font-semibold text-xl text-[#333] dark:text-[#fff] ml-4">chines</p>
+              <p className="font-semibold text-xl text-[#333] dark:text-[#fff] ml-4">
+                chines
+              </p>
             </li>
             <li className="flex items-center justify-center capitalize mb-[10%]">
               <Image
@@ -181,7 +177,9 @@ const Restaurants = () => {
                 height={100}
                 className="hover:scale-105 transition-all duration-500  w-[30px]  h-[30px] rounded-full object-cover"
               />
-              <p className="font-semibold text-xl text-[#333] dark:text-[#fff] ml-4">chines</p>
+              <p className="font-semibold text-xl text-[#333] dark:text-[#fff] ml-4">
+                chines
+              </p>
             </li>{" "}
             <li className="flex items-center justify-center capitalize dark:text-[#fff] mb-[10%]">
               <Image
@@ -191,7 +189,9 @@ const Restaurants = () => {
                 height={100}
                 className="hover:scale-105 transition-all duration-500  w-[30px]  h-[30px] rounded-full object-cover"
               />
-              <p className="font-semibold text-xl text-[#333] dark:text-[#fff] ml-4">chines</p>
+              <p className="font-semibold text-xl text-[#333] dark:text-[#fff] ml-4">
+                chines
+              </p>
             </li>{" "}
             <li className="flex items-center justify-center capitalize mb-[10%]">
               <Image
@@ -201,7 +201,9 @@ const Restaurants = () => {
                 height={100}
                 className="hover:scale-105 transition-all duration-500  w-[30px]  h-[30px] rounded-full object-cover"
               />
-              <p className="font-semibold text-xl text-[#333] dark:text-[#fff] ml-4">chines</p>
+              <p className="font-semibold text-xl text-[#333] dark:text-[#fff] ml-4">
+                chines
+              </p>
             </li>{" "}
             <li className="flex items-center justify-center capitalize mb-[10%]">
               <Image
@@ -211,7 +213,9 @@ const Restaurants = () => {
                 height={100}
                 className="hover:scale-105 transition-all duration-500  w-[30px]  h-[30px] rounded-full object-cover"
               />
-              <p className="font-semibold text-xl text-[#333] dark:text-[#fff] ml-4">chines</p>
+              <p className="font-semibold text-xl text-[#333] dark:text-[#fff] ml-4">
+                chines
+              </p>
             </li>{" "}
             <li className="flex items-center justify-center capitalize mb-[10%]">
               <Image
@@ -221,12 +225,14 @@ const Restaurants = () => {
                 height={100}
                 className="hover:scale-105 transition-all duration-500  w-[30px]  h-[30px] rounded-full object-cover"
               />
-              <p className="font-semibold text-xl text-[#141414] dark:text-[#fff] ml-4">chines</p>
+              <p className="font-semibold text-xl text-[#141414] dark:text-[#fff] ml-4">
+                chines
+              </p>
             </li>{" "}
           </ul>
         </aside>
 
-        {showModal && (
+        {showUserModal && (
           <>
             <div className="fixed inset-0 bg-black dark:bg-gray-200 opacity-60 z-40 md:opacity-0"></div>
 
@@ -241,9 +247,11 @@ const Restaurants = () => {
               }}
               className="bg-white dark:bg-gray-800 rounded-t-[20px] flex flex-col w-full max-h-[45vh] overflow-y-auto items-center justify-start md:hidden asideScroll"
             >
-              <div className="mt-4" onClick={closeModal}>
-              <IoIosCloseCircleOutline size={40} className="text-[#BDBDBD] dark:text-sky-400  "/>
-              
+              <div className="my-4" onClick={closeUserModal}>
+                <IoIosCloseCircleOutline
+                  size={40}
+                  className="text-[#BDBDBD] dark:text-sky-400  "
+                />
               </div>
               <ul className="w-10/12 mt-[5%]">
                 <li className="font-medium text-black text-[18px] border-b-2 border-gray-300 dark:text-gray-100  capitalize py-2 px-6">
@@ -251,20 +259,25 @@ const Restaurants = () => {
                 </li>
                 <li className="font-medium text-black text-[18px] border-b-2 border-gray-300 dark:text-gray-100  capitalize py-2 px-6">
                   chines
-                </li>    <li className="font-medium text-black text-[18px] border-b-2 border-gray-300 dark:text-gray-100  capitalize py-2 px-6">
+                </li>{" "}
+                <li className="font-medium text-black text-[18px] border-b-2 border-gray-300 dark:text-gray-100  capitalize py-2 px-6">
                   chines
-                </li>    <li className="font-medium text-black text-[18px] border-b-2 border-gray-300 dark:text-gray-100  capitalize py-2 px-6">
+                </li>{" "}
+                <li className="font-medium text-black text-[18px] border-b-2 border-gray-300 dark:text-gray-100  capitalize py-2 px-6">
                   chines
-                </li>    <li className="font-medium text-black text-[18px] border-b-2 border-gray-300 dark:text-gray-100  capitalize py-2 px-6">
+                </li>{" "}
+                <li className="font-medium text-black text-[18px] border-b-2 border-gray-300 dark:text-gray-100  capitalize py-2 px-6">
                   chines
-                </li>    <li className="font-medium text-black text-[18px] border-b-2 border-gray-300 dark:text-gray-100  capitalize py-2 px-6">
+                </li>{" "}
+                <li className="font-medium text-black text-[18px] border-b-2 border-gray-300 dark:text-gray-100  capitalize py-2 px-6">
                   chines
-                </li>    <li className="font-medium text-black text-[18px] border-b-2 border-gray-300 dark:text-gray-100  capitalize py-2 px-6">
+                </li>{" "}
+                <li className="font-medium text-black text-[18px] border-b-2 border-gray-300 dark:text-gray-100  capitalize py-2 px-6">
                   chines
-                </li>    <li className="font-medium text-black text-[18px] border-b-2 border-gray-300 dark:text-gray-100  capitalize py-2 px-6">
+                </li>{" "}
+                <li className="font-medium text-black text-[18px] border-b-2 border-gray-300 dark:text-gray-100  capitalize py-2 px-6">
                   chines
                 </li>
-        
               </ul>
             </animated.div>
             <animated.div
@@ -278,7 +291,7 @@ const Restaurants = () => {
                 zIndex: 40,
                 opacity: 0,
               }}
-              onClick={closeModal}
+              onClick={closeUserModal}
             />
           </>
         )}
@@ -303,6 +316,6 @@ const Restaurants = () => {
 export default Restaurants;
 export const getServerSideProps: GetServerSideProps = async ({ locale }) => ({
   props: {
-    ...(await serverSideTranslations(locale as string, ['common'])),
+    ...(await serverSideTranslations(locale as string, ["common"])),
   },
 });

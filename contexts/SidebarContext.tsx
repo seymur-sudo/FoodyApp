@@ -1,9 +1,10 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 import {
   SidebarContextProps,
   ChildrenNode,
   PostDataType,
 } from "../interfaces/index";
+import { useSpring, animated } from "@react-spring/web";
 
 const SidebarContext = createContext<SidebarContextProps | undefined>(
   undefined
@@ -59,6 +60,36 @@ export const SidebarContextProvider: React.FC<ChildrenNode> = ({
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [addProductImg, setAddProductImg] = useState<string | null>(null);
 
+  const [showUserModal, setShowUserModal] = useState<boolean>(false);
+
+  const openUserModal = () => {
+    setShowUserModal(true);
+  };
+
+  const closeUserModal = () => {
+    setShowUserModal(false);
+  };
+
+  const modalSpring = useSpring({
+    opacity: showUserModal ? 1 : 0,
+    transform: `translateY(${showUserModal ? 0 : -100}%)`,
+  });
+
+  useEffect(() => {
+    const handleOutsideClick = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      if (showUserModal && target.classList.contains("bg-black")) {
+        closeUserModal();
+      }
+    };
+    if (showUserModal) {
+      window.addEventListener("click", handleOutsideClick);
+    }
+    return () => {
+      window.removeEventListener("click", handleOutsideClick);
+    };
+  }, [showUserModal]);
+
   const contextValue = {
     isNavbarOpen,
     setNavbarOpen,
@@ -85,6 +116,11 @@ export const SidebarContextProvider: React.FC<ChildrenNode> = ({
     setSelectedFile,
     addProductImg,
     setAddProductImg,
+    showUserModal,
+    setShowUserModal,
+    openUserModal,
+    closeUserModal,
+    modalSpring,
   };
 
   const Component = SidebarContext.Provider;
