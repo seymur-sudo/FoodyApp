@@ -1,9 +1,8 @@
-import React, { useEffect } from "react";
+import React from "react";
 import MainHeader from "@/components/Client/MainHeader";
 import Image from "next/image";
 import papa from "../../../public/svgs/papa.svg";
 import pizza from "../../../public/svgs/pizza.svg";
-import basket from "../../../public/svgs/basketRes.svg";
 import { LuTrash } from "react-icons/lu";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import { animated } from "@react-spring/web";
@@ -11,6 +10,7 @@ import BasketCard from "@/components/Client/BaskerCards/BasketCard";
 import BasketResCard from "@/components/Client/BaskerCards/BasketResCard";
 import { useSidebarContext } from "@/contexts/SidebarContext";
 import { SidebarContextProps } from "@/interfaces";
+import { IoBasketSharp } from "react-icons/io5";
 
 const ResDetail = () => {
   const { showUserModal, openUserModal, closeUserModal, modalSpring } =
@@ -80,16 +80,9 @@ const ResDetail = () => {
             >
               <div className="h-12 w-10/12 cursor-pointer hover:opacity-90 transition-all duration-500  flex items-center justify-between rounded-[100px] bg-[#D63626] dark:bg-blue-500 text-white">
                 <button className="capitalize ml-[3%] font-medium flex items-center">
-                  <Image
-                    src={basket}
-                    alt="basket"
-                    width={100}
-                    height={100}
-                    className=" w-[25px] h-[25px] mx-2 object-cover"
-                  />
-                  <p className="text-white ml-1 dark:text-cyan-100 mt-1">
-                    3 items
-                  </p>
+                  <IoBasketSharp className=" text-3xl text-[#D63626] dark:text-cyan-50 hover:scale-110 transition-all duration-500 " />
+
+                  <p className="text-white ml-1 dark:text-cyan-100 ">3 items</p>
                 </button>
                 <p className="text-[#D63626] flex  items-center px-8 text-lg font-medium h-full rounded-[80px] border-2 border-[#D63626] dark:border-blue-500 bg-white dark:bg-gray-900 dark:text-sky-200">
                   $37.99
@@ -146,14 +139,9 @@ const ResDetail = () => {
         <div className="hidden  w-4/12 bg-[#F3F4F6] dark:bg-gray-900 md:flex flex-col items-center asideScroll max-h-[60vh] overflow-y-auto">
           <div className="flex justify-start items-center py-2 w-full">
             <h1 className="capitalize py-2 text-[#4F4F4F)] dark:text-cyan-400 font-bold text-[25px]"></h1>
-            <Image
-              src={basket}
-              alt="basket"
-              width={100}
-              height={100}
-              className=" w-[25px] h-[25px] mx-2  object-cover"
-            />
-            <p className="capitalize  text-[#D63626)] mt-1 dark:text-cyan-400 font-bold text-[16px]">
+            <IoBasketSharp className=" text-3xl text-[#D63626] dark:text-cyan-300 hover:scale-110 transition-all duration-500 mx-2" />
+
+            <p className="capitalize  text-[#D63626)]  dark:text-cyan-400 font-bold text-[16px]">
               3 items
             </p>
           </div>
@@ -174,6 +162,7 @@ const ResDetail = () => {
                   $7.99
                 </span>
               </div>
+
               <LuTrash className="text-red-500 dark:text-sky-300 text-2xl ml-1 hover:scale-110 transition-all duration-500 cursor-pointer" />
               <div className="bg-white dark:bg-gray-800 text-black dark:text-cyan-300 font-medium flex flex-col items-center px-2 py-1 rounded-3xl">
                 <span>+</span>

@@ -57,6 +57,8 @@ export const SidebarContextProvider: React.FC<ChildrenNode> = ({
     setDeletedItem(null);
   };
 
+
+
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [addProductImg, setAddProductImg] = useState<string | null>(null);
 
