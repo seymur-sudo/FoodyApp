@@ -2,8 +2,13 @@ import React from "react";
 import pizza from "../../../public/svgs/pizza.svg";
 import Image from "next/image";
 import { LuTrash } from "react-icons/lu";
+import { useSidebarContext } from "@/contexts/SidebarContext";
+import { SidebarContextProps } from "@/interfaces";
+// import DeleteModal from "@/components/Admin/Modals/DeleteModal";
 
 const BasketResCard = () => {
+  const { showDelete, setshowDelete } =
+    useSidebarContext() as SidebarContextProps;
   return (
     <>
       <div className="flex items-center justify-around py-3 border-b-2 border-gray-300 dark:border-sky-300">
@@ -22,13 +27,18 @@ const BasketResCard = () => {
             $7.99
           </span>
         </div>
-        <LuTrash className="text-red-500 dark:text-sky-300 text-xl md:text-3xl mx-5 hover:scale-110 transition-all duration-500 cursor-pointer" />
+        <LuTrash
+          className="text-red-500 dark:text-sky-300 text-xl md:text-3xl mx-5 hover:scale-110 transition-all duration-500 cursor-pointer"
+          onClick={() => setshowDelete(!showDelete)}
+        />
         <div className="md:text-xl  bg-gray-100 dark:bg-gray-700 text-black dark:text-cyan-300 font-medium flex flex-col items-center px-2 py-1 rounded-3xl">
           <span>+</span>
           <span className="font-semibold">5</span>
           <span>-</span>
         </div>
       </div>
+      {/* <DeleteModal/> */}
+      
     </>
   );
 };
