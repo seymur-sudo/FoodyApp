@@ -1,4 +1,5 @@
 import type { NextPage } from "next";
+import { useEffect } from "react";
 import Head from "next/head";
 import PizzaH from "../public/svgs/hoveredPizza.svg"
 import card1 from "../public/svgs/card1.svg"
@@ -12,8 +13,17 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import MainHeader from "@/components/Client/MainHeader";
 import Image from "next/image";
 import { useTranslation } from "next-i18next";
+import AOS from 'aos';
+import 'aos/dist/aos.css';
+import MainFooter from "@/components/Client/MainFooter";
 const Home: NextPage = () => {
   const { t } = useTranslation("common");
+  useEffect(() => {
+    AOS.init({
+      duration: 500,
+    });
+    AOS.refresh();
+  }, []);
   return (
     <>
       <Head>
@@ -39,21 +49,21 @@ const Home: NextPage = () => {
           <div className=" pt-5 mr-18">
             <div className="w-[500px] relative mb-48 ml-5 z-0 h-[475px] rounded-[80px] bg-black">
             <Image className="absolute scale-125 mt-5 z-0" src={HomeImg} alt="hamburgers"/>
-            <div className=" float-animation -right-[30px] -top-[15px] flex items-center absolute rounded-[15px] h-[92px] dark:bg-green-900 bg-white w-fit z-20 flex-row">
+            <div data-aos="fade-left" className=" float-animation -right-[30px] -top-[15px] flex items-center absolute rounded-[15px] h-[92px] dark:bg-green-900 bg-white w-fit z-20 flex-row">
               <Image className="ml-5 mr-6" alt="pizza" src={PizzaH}/>
               <div className="flex flex-col mr-15">
                 <p className="text-[16px] dark:text-white text-[#4F4F4F] font-medium">Pizza Hut</p>
                 <p className="text-[16px] dark:text-white text-[#4F4F4F] font-medium">Yummy...</p>
               </div>
             </div>
-            <div className=" float-animation bottom-20 -left-[100px] flex items-center absolute rounded-[15px] h-[92px] dark:bg-green-900 bg-white w-fit z-20 flex-row">
+            <div data-aos="fade-right" className=" float-animation bottom-20 -left-[100px] flex items-center absolute rounded-[15px] h-[92px] dark:bg-green-900 bg-white w-fit z-20 flex-row">
               <Image className="ml-5 mr-6" alt="pizza" src={FriH}/>
               <div className="flex flex-col mr-15">
                 <p className="text-[16px] dark:text-white text-[#4F4F4F] font-medium">French Fries</p>
                 <p className="text-[16px] dark:text-white text-[#4F4F4F] font-medium">Yummy...</p>
               </div>
             </div>
-            <div className=" float-animation -bottom-12 -right-6 flex items-center absolute rounded-[15px] h-[92px] dark:bg-green-900 bg-white w-fit z-20 flex-row">
+            <div data-aos="fade-left" className=" float-animation -bottom-12 -right-6 flex items-center absolute rounded-[15px] h-[92px] dark:bg-green-900 bg-white w-fit z-20 flex-row">
               <Image className="ml-5 mr-6" alt="pizza" src={BurgerH}/>
               <div className="flex flex-col mr-15">
                 <p className="text-[16px] dark:text-white text-[#4F4F4F] font-medium">Cheesburger</p>
@@ -63,29 +73,29 @@ const Home: NextPage = () => {
             </div>
           </div>
         </div>
-        <div className="text-center mt-20">
+        <div data-aos="zoom-in" className="text-center mt-20">
           <p className="text-[40px] dark:text-white font-black">Features</p>
           <p className="text-[22px] text-[#828282] font-normal">Lorem ipsum is placeholder text commonly used in the graphic, print, and <br className="hidden sm:block" /> publishing industries for previewing layouts and visual mockups.</p>
         </div>
-        <div className="flex flex-row mt-10 flex-wrap gap-16 justify-center">
-          <div className="text-center dark:bg-gray-900 rounded-4 flex items-center flex-col shadow-2xl">
+        <div  data-aos="zoom-in"  className="flex flex-row mt-10 flex-wrap gap-16 justify-center">
+          <div data-aos="zoom-in" data-aos-delay={300} className="text-center dark:bg-gray-900 rounded-4 flex items-center flex-col shadow-2xl">
             <Image className="" alt="" src={card1}/>
             <p className="text-[30px] px-6 dark:text-white text-[#4F4F4F] font-bold">Discount Boucher</p>
             <p className="text-[18px] mb-15 text-[#4F4F4F] font-normal">Lorem ipsum is placeholder <br className="hidden sm:block" /> commonly used in the graphic </p>
           </div>
-          <div className="text-center dark:bg-gray-900 flex rounded-4 items-center flex-col  shadow-2xl">
+          <div data-aos="zoom-in" data-aos-delay={600} className="text-center dark:bg-gray-900 flex rounded-4 items-center flex-col  shadow-2xl">
             <Image className="" alt="" src={card2}/>
             <p className="text-[30px] px-6 dark:text-white text-[#4F4F4F] font-bold">Fresh healthy Food</p>
             <p className="text-[18px] mb-15 text-[#4F4F4F] font-normal">Lorem ipsum is placeholder <br className="hidden sm:block" /> commonly used in the graphic </p>
           </div>
-          <div className="text-center dark:bg-gray-900 rounded-4 flex items-center flex-col shadow-2xl">
+          <div data-aos="zoom-in" data-aos-delay={900} className="text-center dark:bg-gray-900 rounded-4 flex items-center flex-col shadow-2xl">
             <Image className="" alt="" src={card1}/>
             <p className="text-[30px] px-6 dark:text-white text-[#4F4F4F] font-bold">Fast Home Delivery</p>
             <p className="text-[18px] mb-15 text-[#4F4F4F] font-normal">Lorem ipsum is placeholder <br className="hidden sm:block" /> commonly used in the graphic </p>
           </div>
         </div>
         <div className={`justify-between mt-64 sm:ml-[100px] flex flex-row`}>
-          <div className="">
+          <div data-aos="fade-up" data-aos-offset="500" data-aos-duration="500" className="">
             <p className="text-[50px] dark:text-white font-black">Menu That Always Make You Fall In Love</p>
             <p className="text-[22px] text-[#828282] font-normal">Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.</p>
           </div>
@@ -96,16 +106,47 @@ const Home: NextPage = () => {
           </div>
         </div>
         <div className={`justify-between mt-64 flex flex-row-reverse`}>
-          <div className="">
+          <div data-aos="fade-up" data-aos-offset="500" data-aos-duration="500" className="">
             <p className="text-[50px] dark:text-white font-black">Do You Like French Fries? Mmm...</p>
             <p className="text-[22px] text-[#828282] font-normal">Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.</p>
           </div>
           <div className="relative mr-28 ml-24">
-            <div className={`bg-[#D63626] rounded-[50px] dark:bg-green-900  z-0 duration-500 rotate-[-22deg] w-[420px] h-[550px]`}>
+            <div  className={`bg-[#D63626] rounded-[50px] dark:bg-green-900  z-0 duration-500 rotate-[-22deg] w-[420px] h-[550px]`}>
             </div>
             <Image alt="" src={FriH} className="w-[600px] top-[100px] hover:scale-110 duration-500 absolute z-10 h-[400px]"/>
           </div>
         </div>
+        <p data-aos="zoom-in" className="text-center mt-32 dark:text-white text-[40px] font-black font-[Roboto]">Our Popular Update <br className="hidden sm:block" /> New Foods</p>
+        <p data-aos="zoom-in" className="text-[#828282] text-center text-[22px] font-normal font-[Roboto]">Lorem ipsum is placeholder text commonly used in the graphic, print, and <br className="hidden sm:block" /> publishing industries for previewing layouts and visual mockups.</p>
+        <div className="flex flex-row mt-10 flex-wrap gap-16 justify-center">
+          <div data-aos="zoom-in" data-aos-delay={300} className="text-center dark:bg-gray-900 rounded-4 flex items-center flex-col shadow-2xl">
+            <Image className="w-[220px] px-6 h-[220px]" alt="" src={BurgerH}/>
+            <p className="text-[30px] px-6 dark:text-white text-[#4F4F4F] font-bold">Double Chees</p>
+            <p className="text-[18px] px-6 mb-7 text-[#4F4F4F] font-normal">Lorem ipsum is placeholder <br className="hidden sm:block" /> commonly used in the graphic </p>
+          </div>
+          <div data-aos="zoom-in" data-aos-delay={600} className="text-center dark:bg-gray-900 flex rounded-4 items-center flex-col  shadow-2xl">
+            <Image className="w-[220px] h-[220px]" alt="" src={PizzaH}/>
+            <p className="text-[30px] px-6 dark:text-white text-[#4F4F4F] font-bold">Margarita</p>
+            <p className="text-[18px] mb-7 px-6 text-[#4F4F4F] font-normal">Lorem ipsum is placeholder <br className="hidden sm:block" /> commonly used in the graphic </p>
+          </div>
+          <div data-aos="zoom-in" data-aos-delay={900} className="text-center dark:bg-gray-900 rounded-4 flex items-center flex-col shadow-2xl">
+            <Image className="w-[220px] h-[220px]" alt="" src={kfcbox}/>
+            <p className="text-[30px] px-6 dark:text-white text-[#4F4F4F] font-bold">Twister Menu</p>
+            <p className="text-[18px] mb-7 px-6 text-[#4F4F4F] font-normal">Lorem ipsum is placeholder <br className="hidden sm:block" /> commonly used in the graphic </p>
+          </div>
+        </div>
+        <div className="relative mt-[600px]">
+        <div data-aos="fade-up" data-aos-duration={1000} className="flex flex-row z-20 absolute bottom-[-100px] rounded-[50px]  mx-[12%] bg-[#272727] items-center pt-20 justify-between px-10">
+            <Image className="w-[200px] h-[200px]" alt="" src={PizzaH}/>
+            <div className="text-center">
+              <p className="text-white font-medium text-[50px]">Discover Restaurants <br className="hidden sm:block" /> Near From you</p>
+              <button className="bg-[#FB9300] mb-18 mt-11 px-11 py-2 rounded-[30px] text-white  text-[22px]">Explore now</button>
+            </div>
+            <Image className="w-[200px] h-[200px]" alt="" src={HomeImg}/>
+          </div>
+        </div>
+        
+        <MainFooter/>
       </div>
     </>
   );
