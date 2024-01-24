@@ -16,9 +16,9 @@ const MainFooter: React.FC = () => {
                 </p>
                 <p className="text-[#828282] text-center sm:mx-0 mx-7 sm:text-start text-[22px] font-normal">Lorem ipsum is placeholder text <br className="hidden sm:block" /> commonly used in the graphic, </p>
                 <div className="mt-4 flex flex-row">
-                    <FaFacebook className="mr-4 dark:text-white text-[#FB9300]" size={"50px"}/>
-                    <FaInstagram className="mr-4 dark:text-white text-[#FB9300]" size={"50px"}/>
-                    <FaTwitter className="mr-4 dark:text-white text-[#FB9300]" size={"50px"} />
+                    <FaFacebook className="mr-4 hover:scale-125 dark:hover:text-[#4064AC] hover:text-[#4064AC] duration-500 dark:text-white text-[#FB9300]" size={"50px"}/>
+                    <FaInstagram className="mr-4 hover:scale-125 dark:hover:text-[#EA4669] hover:text-[#EA4669] duration-500 dark:text-white text-[#FB9300]" size={"50px"}/>
+                    <FaTwitter className="mr-4 hover:scale-125 dark:hover:text-[#1C9CEA] hover:text-[#1C9CEA] duration-500 dark:text-white text-[#FB9300]" size={"50px"} />
                 </div>
             </div>
             <div className="sm:block hidden">
