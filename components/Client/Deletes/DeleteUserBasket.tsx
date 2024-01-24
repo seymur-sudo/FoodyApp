@@ -3,7 +3,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import { SidebarContextProps } from "../../../interfaces/index";
 import { useSidebarContext } from "@/contexts/SidebarContext";
 
-const DeleteUserProduct = () => {
+const DeleteUserBasket = () => {
   const { showDelete, closeDeleteModal } =
     useSidebarContext() as SidebarContextProps;
 
@@ -12,7 +12,7 @@ const DeleteUserProduct = () => {
       <Transition appear show={showDelete} as={Fragment}>
         <Dialog
           as="div"
-          className="fixed inset-0 z-50 overflow-y-auto"
+          className="fixed inset-0 z-10 overflow-y-auto"
           onClose={closeDeleteModal}
         >
           <div className="min-h-screen px-4 text-center">
@@ -47,12 +47,12 @@ const DeleteUserProduct = () => {
               <div className="inline-block w-full max-w-md py-8 px-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-md">
                 <h1 className="text-lg font-medium leading-6 text-gray-900">
                   <p className="text-xl text-black font-bold text-center">
-                    Are you sure USER_Product  deleted?
+                    Are you sure USER_BASKETdeleted?
                   </p>
                 </h1>
                 <div className="mt-2 py-2  text-gray-600 text-center">
                   <p>
-                    Attention if you delete this <br /> USER_Product it will not
+                    Attention if you delete this <br /> USER_BASKET it will not
                     come back
                   </p>
                 </div>
@@ -83,4 +83,4 @@ const DeleteUserProduct = () => {
   );
 };
 
-export default DeleteUserProduct;
+export default DeleteUserBasket;
