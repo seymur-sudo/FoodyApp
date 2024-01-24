@@ -22,7 +22,7 @@ const BasketResCard = () => {
 
   return (
     <>
-      <div className="flex items-center justify-around py-3 border-b-2 border-gray-300 dark:border-sky-300"  
+      <div className="flex z-10 items-center justify-around py-3 border-b-2 border-gray-300 dark:border-sky-300"  
           data-aos="fade-up"
           data-aos-delay={150}>
         <Image

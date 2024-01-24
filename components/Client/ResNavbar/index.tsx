@@ -1,59 +1,43 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import backBtn from "../../../public/svgs/backBtnRes.svg"
-import DashboardIcon from '../../../public/svgs/AdminDashboardIcon.svg'
-import ProductIcon from '../../../public/svgs/AdminProductIcon.svg'
-import RestaurantIcon from '../../../public/svgs/AdminRestaurantIcon.svg'
-import CategoryIcon from '../../../public/svgs/AdminCategoryIcon.svg'
-import OrderIcon from '../../../public/svgs/AdminOrderIcon.svg'
-import OfferIcon from '../../../public/svgs/AdminOfferIcon.svg'
-import LogoutIcon from '../../../public/svgs/AdminLogoutIcon.svg'
+import { useRouter } from "next/router";
 import { useSidebarContext } from "../../../contexts/SidebarContext";
 import { SidebarContextProps } from "../../../interfaces/index";
 import { useTranslation } from 'next-i18next'
+import profileImg from '../../../public/svgs/profile.svg'
+import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem} from "@nextui-org/react";
 import {ROUTER} from '../../../shared/constant/router'
 import { MdClose } from "react-icons/md";
 
 const ClientNavbar: React.FC = () => {
   const {t} = useTranslation('common')
   const { isNavbarOpen, closeNavbar } = useSidebarContext() as SidebarContextProps;
-
+  const router = useRouter();
   return (
-    <div onClick={closeNavbar} className={`${isNavbarOpen ? 'right-0 sm:hidden' : 'right-full'} fixed duration-300 top-0 w-full h-full bg-[#00000066]`}>
-      <div className="h-full z-50 duration-500 w-fit bg-[#C74FEB] ">
+    <div onClick={closeNavbar} className={`${isNavbarOpen ? 'right-0 sm:hidden' : 'right-full'} fixed duration-300 top-0 z-50 w-full h-full bg-[#00000066]`}>
+      <div className="h-full z-50 duration-500 w-fit dark:bg-[#272727] bg-white ">
         <div className="flex pt-4 mb-8 flex-row">
-          <MdClose onClick={closeNavbar} className=" cursor-pointer ml-4 mt-4"/>
+          <MdClose size={'30px'} onClick={closeNavbar} className=" text-black dark:text-white cursor-pointer ml-4 mt-4"/>
         </div>
-        <div className="w-fit pb-10 pl-6 pr-4">
-        <Link className='flex h-10 cursor-pointer mb-2 pl-4 hover:bg-[#CD61ED] rounded-xl items-center flex-row' href={ROUTER.ADMIN}>
-          <Image className='mr-4' alt='icon' src={DashboardIcon}/>
-          <p className='text-[#FCDDEC] text-nowrap mr-20 font-medium font-body text-[14px]'>{t('Dashboard')}</p>
-        </Link>
-        <Link className='flex h-10 cursor-pointer mb-2 pl-4 hover:bg-[#CD61ED] rounded-xl items-center flex-row' href={ROUTER.ADMIN_PRODUCTS}>
-          <Image className='mr-4' alt='icon' src={ProductIcon}/>
-          <p className='text-[#FCDDEC] text-nowrap mr-20 font-medium font-body text-[14px]'>{t('Products')}</p>
-        </Link>
-        <Link className='flex h-10 cursor-pointer mb-2 pl-4 hover:bg-[#CD61ED] rounded-xl items-center flex-row' href={ROUTER.ADMIN_RESTAURANTS}>
-          <Image className='mr-4' alt='icon' src={RestaurantIcon}/>
-          <p className='text-[#FCDDEC] text-nowrap mr-20 font-medium font-body text-[14px]'>{t('Restaurants')}</p>
-        </Link>
-        <Link className='flex h-10 cursor-pointer mb-2 pl-4 hover:bg-[#CD61ED] rounded-xl items-center flex-row' href={ROUTER.ADMIN_CATEGORY}>
-          <Image className='mr-4' alt='icon' src={CategoryIcon}/>
-          <p className='text-[#FCDDEC] text-nowrap mr-20 font-medium font-body text-[14px]'>{t('Category')}</p>
-        </Link>
-        <Link className='flex h-10 cursor-pointer mb-2 pl-4 hover:bg-[#CD61ED] rounded-xl items-center flex-row' href={ROUTER.ADMIN_ORDERS}>
-          <Image className='mr-4' alt='icon' src={OrderIcon}/>
-          <p className='text-[#FCDDEC] text-nowrap mr-20 font-medium font-body text-[14px]'>{t('Orders')}</p>
-        </Link>
-        <Link className='flex h-10 cursor-pointer mb-2 pl-4 hover:bg-[#CD61ED] rounded-xl items-center flex-row' href={ROUTER.ADMIN_OFFERS}>
-          <Image className='mr-4' alt='icon' src={OfferIcon}/>
-          <p className='text-[#FCDDEC] text-nowrap mr-20 font-medium font-body text-[14px]'>{t('Offers')}</p>
-        </Link>
-        <Link className='flex h-10 cursor-pointer mb-2 pl-4 hover:bg-[#CD61ED] rounded-xl items-center flex-row' href={ROUTER.ADMIN_LOGIN}>
-          <Image className='mr-4' alt='icon' src={LogoutIcon}/>
-          <p className='text-[#FCDDEC] text-nowrap mr-20 font-medium font-body text-[14px]'>{t('Logout')}</p>
-        </Link>
+        {/* <div className="sm:hidden flex justify-center">
+            <button className="text-18px font-medium text-white bg-[#D63626] rounded-[30px] px-[21px] py-2">Sign up</button>
+        </div> */}
+        <div className="sm:hidden items-center flex justify-start">
+            <Image alt="" src={profileImg} className=" ml-6 mr-2 w-10 h-10 cursor-pointer scale-100 hover:scale-11 text-[20px] font-medium text-white"/>
+            <p className="text-16px text-black mr-12 font-medium dark:text-sky-400">Sarkhan Rahimli</p>
+        </div>
+        <div className="w-fit z-50 gap-4 pb-10 mt-14 pl-6 pr-4">
+        <Link className={`flex mb-2 font-medium text-[18px] ${router.pathname === "/"? "text-[#D63626] dark:text-cyan-400" : "text-[#828282] dark:text-gray-100"} cursor-pointer`} href={ROUTER.HOME}>Home</Link>
+        <Link className={`flex mb-2 font-medium text-[18px] ${router.pathname === "/restaurants"? "text-[#D63626] dark:text-cyan-400" : "text-[#828282] dark:text-gray-100"} cursor-pointer`} href={ROUTER.ADMIN}>Restaurants</Link>
+        <Link className={`flex mb-2 font-medium text-[18px] ${router.pathname === "/user/profile"? "text-[#D63626] dark:text-cyan-400" : "text-[#828282] dark:text-gray-100"} cursor-pointer`} href={ROUTER.USER_PROFILE}>Profile</Link>
+        <Link className={`flex mb-2 font-medium text-[18px] ${router.pathname === "/user/basket"? "text-[#D63626] dark:text-cyan-400" : "text-[#828282] dark:text-gray-100"} cursor-pointer`} href={ROUTER.USER_BASKET}>Your Basket</Link>
+        <Link className={`flex mb-2 font-medium text-[18px] ${router.pathname === "/user/orders"? "text-[#D63626] dark:text-cyan-400" : "text-[#828282] dark:text-gray-100"} cursor-pointer`} href={ROUTER.USER_ORDERS}>Your Orders</Link>
+        <Link className={`flex mb-2 font-medium text-[18px] ${router.pathname === "/user/checkout"? "text-[#D63626] dark:text-cyan-400" : "text-[#828282] dark:text-gray-100"} cursor-pointer`} href={ROUTER.USER_CHECKOUT}>Checkout</Link>
+        <Link className={`flex mb-2 font-medium text-[18px] ${router.pathname === "/about-us"? "text-[#D63626] dark:text-cyan-400" : "text-[#828282] dark:text-gray-100"} cursor-pointer`} href={ROUTER.ABOUT_US}>About us</Link>
+        <Link className={`flex mb-2 font-medium text-[18px] ${router.pathname === "/how-it-works"? "text-[#D63626] dark:text-cyan-400" : "text-[#828282] dark:text-gray-100"} cursor-pointer`} href={ROUTER.HOW_IT_WORKS}>How it works?</Link>
+        <Link className={`flex mb-2 font-medium text-[18px] ${router.pathname === "/faqs"? "text-[#D63626] dark:text-cyan-400" : "text-[#828282] dark:text-gray-100"} cursor-pointer`} href={ROUTER.FAQS}>FAQs</Link>
+        <Link className={`flex mb-2 font-medium text-[18px] ${router.pathname === "/login"? "text-[#D63626] dark:text-cyan-400" : "text-[#828282] dark:text-gray-100"} cursor-pointer`} href={ROUTER.LOGIN}>Logout</Link>
         </div>
       </div>
     </div>

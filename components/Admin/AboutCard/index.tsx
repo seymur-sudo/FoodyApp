@@ -7,7 +7,7 @@ import Image from "next/image";
 const AboutCard = () => {
   return (
     <>
-      <div className="relative  shadow-shadow5 dark:shadow5Dark rounded-[20px] w-[275px]  bg-white dark:bg-gray-800 font-mutka">
+      <div className="relative float-animation shadow-shadow5 dark:shadow5Dark rounded-[20px] w-[275px]  bg-white dark:bg-gray-800 font-mutka">
         <Image
           src={soup}
           alt="soup"

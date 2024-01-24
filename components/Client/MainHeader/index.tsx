@@ -91,7 +91,7 @@ const MainHeader: React.FC = () => {
       <div className="flex flex-row items-center">
         <div className="flex items-center ">
           <button
-            className="px-3  transition-all duration-700 "
+            className="sm:px-3 px-0 transition-all duration-700 "
             onClick={toggleTheme}
           >
             <FiSun
