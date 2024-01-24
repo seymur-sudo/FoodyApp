@@ -21,7 +21,7 @@ const Restaurant: React.FC = () => {
   }
   return (
     <Layout>
-      <div className="px-12 md:px-6">
+      <div className="px-12 md:px-6 h-screen">
         <SearchBar />
         <div className="flex  gap-4 sm:gap-10 justify-around sm:justify-start mx-auto flex-wrap ">
           {data &&

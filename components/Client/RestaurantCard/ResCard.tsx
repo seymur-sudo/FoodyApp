@@ -1,11 +1,23 @@
-import React from "react";
+import React, { useEffect } from "react";
 import soup from "../../../public/svgs/soup.svg";
 import Image from "next/image";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const ResCard = () => {
+  useEffect(() => {
+    AOS.init({
+      duration: 1000,
+    });
+    AOS.refresh();
+  }, []);
   return (
     <>
-      <div className="bg-white dark:bg-gray-900 shadow-shadow4   font-roboto font-medium rounded-md hover:scale-110 transition-all duration-700">
+      <div
+        className="bg-white dark:bg-gray-900 shadow-shadow4   font-roboto font-medium rounded-md hover:scale-110 transition-all duration-700"
+        data-aos="fade-up"
+        data-aos-delay={200}
+      >
         <div className="capitalize flex flex-col items-center md:items-start  w-full ">
           <Image
             src={soup}

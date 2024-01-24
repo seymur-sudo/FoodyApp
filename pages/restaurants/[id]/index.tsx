@@ -12,9 +12,11 @@ import { useSidebarContext } from "@/contexts/SidebarContext";
 import { SidebarContextProps } from "@/interfaces";
 import { IoBasketSharp } from "react-icons/io5";
 
+
 const ResDetail = () => {
   const { showUserModal, openUserModal, closeUserModal, modalSpring } =
     useSidebarContext() as SidebarContextProps;
+  
 
   return (
     <div className="bg-white dark:bg-black ">

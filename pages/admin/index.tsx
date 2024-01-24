@@ -16,9 +16,11 @@ import {
 import ChartMonths from "../../components/Admin/Charts/ChartMonths";
 import { ChartWeek } from "../../components/Admin/Charts/ChartDays";
 import { useTransition } from "react";
+
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const AdminDashboard: NextPage = () => {
+
   const { t } = useTranslation('common')
   return (
     <div>
