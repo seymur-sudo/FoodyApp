@@ -6,22 +6,29 @@ import { useTranslation } from "next-i18next";
 import Link from "next/link";
 import basketIcon from "../../../public/svgs/basketIcon.svg";
 import { LangSelect } from "../../Admin/Langs";
+import { LuMenu } from "react-icons/lu"
 import { useThemeContext } from "../../../contexts/ThemeContext";
 import { ThemeContextProps } from "../../../interfaces/index";
 import { FiSun, FiMoon } from "react-icons/fi";
+import { useSidebarContext } from "../../../contexts/SidebarContext";
+import { SidebarContextProps } from "../../../interfaces/index";
 import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem} from "@nextui-org/react";
-
+import ClientNavbar from "../ResNavbar";
 
 const MainHeader: React.FC = () => {
+  const {setNavbarOpen,isNavbarOpen} =useSidebarContext() as SidebarContextProps
   const { toggleTheme } = useThemeContext() as ThemeContextProps;
   const { t } = useTranslation("common");
   const router = useRouter();
   return (
-    <div className="h-[120px] sm:mt-[30px] sm:mx-[30px] flex items-center rounded-t-5 justify-between flex-row bg-[#F3F4F6]  dark:bg-gray-900">
-      <p className=" flex py-auto sm:ml-14 flex-row items-center text-center font-mukta text-[36px] font-extrabold text-[#000000] dark:text-gray-100">
+    <div className="sm:h-[120px] h-[52px] sm:mt-[30px] sm:mx-[30px] flex items-center rounded-t-5 justify-between flex-row bg-[#F3F4F6]  dark:bg-gray-900">
+      <div className="flex items-center">
+      <LuMenu size={'30px'} onClick={()=>setNavbarOpen(!isNavbarOpen)} className="text-black sm:hidden block ml-4 mr-3 dark:text-white"/>
+      <p className=" flex py-auto sm:ml-14 flex-row items-center text-center font-mukta sm:text-[36px] text-[25px] font-extrabold text-[#000000] dark:text-gray-100">
         Foody<span className="text-[#EAAB00] dark:text-sky-400 ">.</span>
       </p>
-      <div className="hidden md:flex">
+      </div>
+      <div className="hidden sm:flex">
         <Link
           className={`text-[18px] sm:mr-8  text-[Roboto] font-medium ${
             router.pathname === "/"
@@ -74,7 +81,7 @@ const MainHeader: React.FC = () => {
         </Link>
       </div>
 
-      <div className="hidden md:block">
+      <div className="hidden sm:block">
         <input
           className="h-11 sm:pl-5 w-max rounded-[10px]"
           placeholder="Search Restaurant..."
@@ -89,16 +96,16 @@ const MainHeader: React.FC = () => {
           >
             <FiSun
               size={50}
-              className="text-[#ea9000] dark:text-gray-900 block dark:hidden"
+              className="text-[#ea9000] scale-[75%] hover:scale-[85%] sm:scale-100 sm:hover:scale-110 dark:text-gray-900 block dark:hidden"
             />
             <FiMoon
               size={50}
-              className="text-[#F3F4F6] dark:text-sky-400  hidden dark:block"
+              className="text-[#F3F4F6] scale-[75%] hover:scale-[85%] sm:scale-100 sm:hover:scale-110 dark:text-sky-400  hidden dark:block"
             />
           </button>
         </div>
         <LangSelect />
-        <div className="flex">
+        <div className="sm:flex hidden">
           <Image
             className="ml-3 cursor-pointer scale-100 hover:scale-110"
             src={basketIcon}
@@ -118,6 +125,7 @@ const MainHeader: React.FC = () => {
           </Dropdown>
         </div>
       </div>
+      <ClientNavbar/>
     </div>
   );
 };
