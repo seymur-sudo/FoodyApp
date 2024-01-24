@@ -35,7 +35,7 @@ const BasketUser = () => {
                 top: "30vh",
                 left: 0,
                 right: 0,
-                zIndex: 50,
+                zIndex: 20,
               }}
               className="bg-white dark:bg-gray-800 rounded-t-[20px] flex flex-col w-full max-h-[45vh] overflow-y-auto items-center justify-start md:hidden asideScroll"
             >
