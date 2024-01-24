@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Layout from "@/components/Admin/Layout";
 import pizzaImg from "../../../public/svgs/pizza.svg";
 import editIcon from "../../../public/svgs/edit.svg";
@@ -13,14 +13,23 @@ import { getProduct } from "../../../services/index";
 import { PostDataType } from "../../../interfaces/index";
 import { useQuery } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const Products: React.FC = () => {
-  const { showDelete, setshowDelete, openModal,openDeleteModal } =
+  const { openModal, openDeleteModal } =
     useSidebarContext() as SidebarContextProps;
 
   const { data, isLoading, isError } = useQuery("products", getProduct, {
     refetchOnWindowFocus: false,
   });
+
+  useEffect(() => {
+    AOS.init({
+      duration: 1000,
+    });
+    AOS.refresh();
+  }, [data]);
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -30,8 +39,6 @@ const Products: React.FC = () => {
     return <div>Error loading products</div>;
   }
 
-  
-
   return (
     <Layout>
       <>
@@ -40,10 +47,12 @@ const Products: React.FC = () => {
 
           <div className="grid gap-10 grid-cols-1 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
             {data &&
-              data.data.result.data.map((product: PostDataType) => (
+              data.data.result.data.map((product: PostDataType, index) => (
                 <div
                   key={product.id}
-                  className="bg-indigo-100 shadow-shadow2   font-roboto font-medium rounded-md hover:scale-110 transition-all duration-700"
+                  className="bg-indigo-100 shadow-shadow2  font-roboto font-medium rounded-md hover:scale-110 transition-all duration-700"
+                  data-aos="fade-up" 
+                  data-aos-delay={(index + 1) * 150} 
                 >
                   <div className="capitalize flex flex-col items-center md:items-start w-full ">
                     <Image

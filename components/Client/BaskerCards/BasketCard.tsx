@@ -1,12 +1,24 @@
-import React from "react";
+import React, { useEffect } from "react";
 import pizza from "../../../public/svgs/pizza.svg";
 import plus from "../../../public/svgs/plus.svg";
 import Image from "next/image";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const BasketCard = () => {
+  useEffect(() => {
+    AOS.init({
+      duration: 1000,
+    });
+    AOS.refresh();
+  }, []);
   return (
     <>
-      <div className="flex items-center justify-evenly py-6 px-2 md:px-0 border-b-2 dark:border-sky-300">
+      <div
+        className="flex items-center justify-evenly py-6 px-2 md:px-0 border-b-2 dark:border-sky-300"
+        data-aos="fade-up"
+        data-aos-delay={150}
+      >
         <Image
           src={pizza}
           alt="pizza"

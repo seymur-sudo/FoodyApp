@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Image from "next/image";
-import BurgerKing from "../../../public/svgs/BurgerKing.svg";
 import del from "../../../public/svgs/delete.svg";
 import edt from "../../../public/svgs/edit.svg";
 import { RestaurantPostDataType } from "../../../interfaces/index";
 import { useSidebarContext } from "@/contexts/SidebarContext";
 import { SidebarContextProps } from "@/interfaces";
+import AOS from "aos";
+import "aos/dist/aos.css";
+
 interface RestaurantCardProps {
   key: string;
   restaurant: RestaurantPostDataType;
@@ -13,9 +15,20 @@ interface RestaurantCardProps {
 const RestaurantCard: React.FC<RestaurantCardProps> = ({ key, restaurant }) => {
   const { setShow, show, showDelete, setshowDelete } =
     useSidebarContext() as SidebarContextProps;
+
+  useEffect(() => {
+    AOS.init({
+      duration: 1000,
+    });
+    AOS.refresh();
+  }, []);
+
+  
   return (
     <div
       key={key}
+      data-aos="fade-up"
+      data-aos-delay={150}
       className="bg-white  rounded-[5px] flex flex-row items-center justify-between"
     >
       <Image
