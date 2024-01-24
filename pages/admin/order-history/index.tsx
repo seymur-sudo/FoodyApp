@@ -6,10 +6,15 @@ import SearchBar from "@/components/Admin/SearchBar";
 import DeleteModal from "@/components/Admin/Modals/DeleteModal";
 import { SidebarContextProps } from "../../../interfaces/index";
 import { useSidebarContext } from "@/contexts/SidebarContext";
+import { GetServerSideProps } from 'next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { useTranslation } from "next-i18next";
 
 const OrderHistory: React.FC = () => {
   const { showDelete, setshowDelete } =
   useSidebarContext() as SidebarContextProps;
+  const { t } = useTranslation('common')
+
   return (
     <Layout>
       <div className="bg-bgc h-screen px-12 md:px-6">
@@ -17,30 +22,30 @@ const OrderHistory: React.FC = () => {
         <div className=" overflow-x-auto shadow-md sm:rounded-lg">
           <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <thead className="text-xs text-gray-700 capitalize bg-gray-50 dark:bg-gray-900 dark:text-gray-400">
-              <tr>
+            <tr>
                 <th scope="col" className="px-16 py-3">
                   Id
                 </th>
                 <th scope="col" className="px-6 py-3">
-                  Customer Id
+                  {t("Customer Id")}
                 </th>
                 <th scope="col" className="px-6 py-3">
-                  Time
+                  {t("Time")}
                 </th>
                 <th scope="col" className="px-6 py-3">
-                  Delivery Address
+                  {t("Delivery Address")}
                 </th>
                 <th scope="col" className="px-6 py-3">
-                  Amount
+                  {t("Amount")}
                 </th>
                 <th scope="col" className="px-6 py-3">
-                  Paymnet Method
+                  {t("Paymnet Method")}
                 </th>
                 <th scope="col" className="px-6 py-3">
-                  Contact
+                  {t("Contact")}
                 </th>
                 <th scope="col" className="px-6 py-3">
-                  Actions
+                  {t("Actions")}
                 </th>
               </tr>
             </thead>
@@ -94,3 +99,8 @@ const OrderHistory: React.FC = () => {
 };
 
 export default OrderHistory;
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => ({
+  props: {
+    ...(await serverSideTranslations(locale as string, ['common'])),
+  },
+});
