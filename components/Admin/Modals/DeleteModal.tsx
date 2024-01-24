@@ -8,6 +8,8 @@ import DeleteOrder from "../Deletes/DeleteOrder";
 import DeleteRestuarant from "../Deletes/DeleteRestuarant";
 import DeleteUserOrder from "@/components/Client/Deletes/DeleteUserOrders";
 import DeleteUserBasket from "@/components/Client/Deletes/DeleteUserProduct";
+import DeleteUserProduct from "@/components/Client/Deletes/DeleteUserProduct";
+
 
 const DeleteModal: React.FC = () => {
   const router = useRouter();
@@ -29,6 +31,9 @@ const DeleteModal: React.FC = () => {
       return <DeleteUserOrder />;
     }
     else if (router.pathname === "/user/basket") {
+      return <DeleteUserProduct />;
+    }
+    else if (router.pathname === "/restaurants/[id]") {
       return <DeleteUserBasket />;
     }
     return null;

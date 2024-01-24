@@ -8,7 +8,6 @@ import { IoIosCloseCircleOutline } from "react-icons/io";
 import { animated } from "@react-spring/web";
 import { useSidebarContext } from "@/contexts/SidebarContext";
 import { SidebarContextProps } from "@/interfaces";
-import UserRouter from "@/components/Client/UserRouter";
 import DeleteModal from "@/components/Admin/Modals/DeleteModal";
 import {
   Dropdown,
@@ -27,7 +26,6 @@ const UserOrders = () => {
       <div className="flex flex-col items-center  md:flex-row md:items-start  md:justify-evenly py-8">
         <UserAside />
 
-        <UserRouter />
         {showUserModal && (
           <>
             <div className="fixed inset-0 bg-black  dark:bg-gray-200 opacity-60 z-40 md:opacity-0"></div>

@@ -9,9 +9,14 @@ import { SidebarContextProps } from "../../../interfaces/index";
 import { useSidebarContext } from "@/contexts/SidebarContext";
 import EditModal from "@/components/Admin/Modals/EditModal";
 import DeleteModal from "@/components/Admin/Modals/DeleteModal";
+import { GetServerSideProps } from 'next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { useTranslation } from "next-i18next";
+
 
 const Category: React.FC = () => {
   const { setShow, show , showDelete, setshowDelete } = useSidebarContext() as SidebarContextProps;
+  const { t } = useTranslation('common')
   return (
     <Layout>
       <div className="bg-bgc h-screen px-12 md:px-6">
@@ -24,16 +29,16 @@ const Category: React.FC = () => {
                   Id
                 </th>
                 <th scope="col" className="px-6 py-3">
-                  Image
+                  {t('Image')}
                 </th>
                 <th scope="col" className="px-6 py-3">
-                  Name
+                  {t('Name')}
                 </th>
                 <th scope="col" className="px-6 py-3">
-                  Slug
+                  {t('Slug')}
                 </th>
                 <th scope="col" className="px-6 py-3">
-                  Actions
+                  {t('Actions')}
                 </th>
               </tr>
             </thead>
@@ -90,3 +95,10 @@ const Category: React.FC = () => {
 };
 
 export default Category;
+
+
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => ({
+  props: {
+    ...(await serverSideTranslations(locale as string, ['common'])),
+  },
+});

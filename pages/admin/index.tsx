@@ -15,7 +15,6 @@ import {
 } from "../../components/Admin/Charts/ChartFunctions";
 import ChartMonths from "../../components/Admin/Charts/ChartMonths";
 import { ChartWeek } from "../../components/Admin/Charts/ChartDays";
-import { useTransition } from "react";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
