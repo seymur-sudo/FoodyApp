@@ -1,5 +1,8 @@
 {
     "Dashboard": "Dashboard",
+    "Image":"Image",
+    "Slug":"Slug",
+    "Actions":"Actions",
     "Products": "Products",
     "Restaurants": "Restaurants",
     "Restaurant": "Restaurant",

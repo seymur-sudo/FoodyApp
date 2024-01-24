@@ -2,8 +2,12 @@ import React from "react";
 import Image from "next/image";
 import enImg from "../../../public/svgs/en.svg";
 import loginImg from "../../../public/svgs/LoginImg.svg";
+import { GetServerSideProps } from 'next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { useTranslation } from "next-i18next";
 
 const Login: React.FC = () => {
+  const { t } = useTranslation('common')
   return (
     <>
   
@@ -62,3 +66,8 @@ const Login: React.FC = () => {
 };
 
 export default Login;
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => ({
+  props: {
+    ...(await serverSideTranslations(locale as string, ['common'])),
+  },
+});

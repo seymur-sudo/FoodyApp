@@ -1,7 +1,6 @@
 import React from "react";
 import UserAside from "../../../components/Client/UserAside/index";
 import MainHeader from "../../../components/Client/MainHeader/index";
-import UserRouter from "@/components/Client/UserRouter";
 import { BsDot } from "react-icons/bs";
 
 const UserCheckout = () => {
@@ -11,7 +10,6 @@ const UserCheckout = () => {
       <div className="flex flex-col items-center  md:flex-row md:items-start  md:justify-evenly py-8">
         <UserAside />
 
-        <UserRouter />
 
         <div className="w-10/12 md:w-5/12 py-3 bg-[#F3F4F6] dark:bg-gray-900 ">
           <h1 className="capitalize text-[#4F4F4F] dark:text-green-300 text-[30px] font-semibold ml-10 my-6">

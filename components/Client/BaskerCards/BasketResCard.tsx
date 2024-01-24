@@ -4,7 +4,7 @@ import Image from "next/image";
 import { LuTrash } from "react-icons/lu";
 import { useSidebarContext } from "@/contexts/SidebarContext";
 import { SidebarContextProps } from "@/interfaces";
-// import DeleteModal from "@/components/Admin/Modals/DeleteModal";
+import DeleteModal from "@/components/Admin/Modals/DeleteModal";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
@@ -18,6 +18,8 @@ const BasketResCard = () => {
       });
       AOS.refresh();
     }, []);
+
+
   return (
     <>
       <div className="flex items-center justify-around py-3 border-b-2 border-gray-300 dark:border-sky-300"  
@@ -48,7 +50,7 @@ const BasketResCard = () => {
           <span>-</span>
         </div>
       </div>
-      {/* <DeleteModal/> */}
+      <DeleteModal/>
       
     </>
   );
