@@ -72,7 +72,7 @@ export const LangSelect: React.FC = () => {
       {isDropdownOpen && (
         <animated.div
           style={dropdownAnimation}
-          className="flex absolute top-[50px] -left-[5px] z-30 flex-col bg-gray-200 dark:bg-inputMain w-14 h-[15vh] rounded-md pl-[7px] py-3"
+          className="flex absolute top-[50px] -left-[5px] z-30 flex-col bg-gray-200 dark:bg-inputMain w-14 h-[12.5vh] md:h-[15vh] rounded-md pl-[7px] pt-3 "
         >
           {currentLang === "en" ? (
             <div>
