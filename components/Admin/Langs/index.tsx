@@ -26,34 +26,34 @@ const changeLang=(language:Languages)=>{
 
   return (
     <div className=" relative  flex flex-col">
-    <Image onClick={()=>{setIsDropdownOpen(!isDropdownOpen)}} alt="lang" className=" scale-100 hover:scale-110" src={currentLang==='en'?en:currentLang==='fr'?fr:currentLang==='az'?az:''}/>
+    <Image onClick={()=>{setIsDropdownOpen(!isDropdownOpen)}} alt="lang" className=" scale-[75%] hover:scale-[85%] sm:scale-100 sm:hover:scale-110" src={currentLang==='en'?en:currentLang==='fr'?fr:currentLang==='az'?az:''}/>
     {isDropdownOpen &&
-    <div className="flex absolute top-[50px] z-30 flex-col">
+    <div className="flex absolute top-[40px] sm:top-[50px] z-30 flex-col">
         {currentLang==='en'?
         <div>
             <Link href='' locale='az' onClick={() => changeLang('az')}>
-                <Image className=" pb-2 scale-100 hover:scale-110" src={az} alt='az' />
+                <Image className=" sm:pb-2 pb-[2px] scale-[75%] hover:scale-[85%] sm:scale-100 sm:hover:scale-110" src={az} alt='az' />
             </Link>
             <Link href='' locale='fr' onClick={() => changeLang('fr')}>
-                <Image className="scale-100 hover:scale-110" src={fr} alt='fr' />
+                <Image className="scale-[75%] hover:scale-[85%] sm:scale-100 sm:hover:scale-110" src={fr} alt='fr' />
             </Link>
         </div>:
         currentLang==='az'?
         <div>
             <Link href='' locale='en' onClick={() => changeLang('en')}>
-                <Image className="pb-2 scale-100 hover:scale-110" src={en} alt='en' />
+                <Image className="sm:pb-2 pb-[2px] scale-[75%] hover:scale-[85%] sm:scale-100 sm:hover:scale-110" src={en} alt='en' />
             </Link>
             <Link href='' locale='fr' onClick={() => changeLang('fr')}>
-                <Image className=" scale-100 hover:scale-110" src={fr} alt='fr' />
+                <Image className=" scale-[75%] hover:scale-[85%] sm:scale-100 sm:hover:scale-110" src={fr} alt='fr' />
             </Link>
         </div>:
         currentLang==='fr'?
         <div>
              <Link href='' locale='az' onClick={() => changeLang('az')}>
-                <Image className="pb-2 scale-100 hover:scale-110" src={az} alt='az' />
+                <Image className="sm:pb-2 pb-[2px] scale-[75%] hover:scale-[85%] sm:scale-100 sm:hover:scale-110" src={az} alt='az' />
             </Link>
             <Link href='' locale='en' onClick={() => changeLang('en')}>
-                <Image className=" scale-100 hover:scale-110" src={en} alt='en' />
+                <Image className=" scale-[75%] hover:scale-[85%] sm:scale-100 sm:hover:scale-110" src={en} alt='en' />
             </Link>
         </div>:''
         }

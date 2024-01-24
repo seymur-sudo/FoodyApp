@@ -33,7 +33,7 @@ const Home: NextPage = () => {
       </Head>
       <div className="rounded-4">
         <MainHeader />
-        <div className="bg-[#F3F4F6] flex flex-row justify-between dark:bg-gray-900 sm:mx-[30px]">
+        {/* <div className="bg-[#F3F4F6] flex flex-row justify-between dark:bg-gray-900 sm:mx-[30px]">
           <div className="sm:ml-14 w-fit">
             <p className=" text-6xl pt-[120px] font-[Roboto] font-black dark:text-white text-black">
             Our Food site makes it easy to find local food
@@ -144,9 +144,9 @@ const Home: NextPage = () => {
             </div>
             <Image className="w-[200px] h-[200px]" alt="" src={HomeImg}/>
           </div>
-        </div>
+        </div> */}
         
-        <MainFooter/>
+        {/* <MainFooter/> */}
       </div>
     </>
   );
