@@ -11,6 +11,7 @@
   "dependencies": {
     "@headlessui/react": "^1.7.18",
     "@nextui-org/react": "^2.2.9",
+    "@talkjs/react": "^0.1.5",
     "@types/aos": "^3.0.7",
     "@types/react-query": "^1.2.9",
     "aos": "^2.3.4",
@@ -39,7 +40,8 @@
     "react-toastify": "^10.0.3",
     "recharts": "^2.10.4",
     "swagger-jsdoc": "^6.2.8",
-    "swagger-ui-react": "^5.11.0"
+    "swagger-ui-react": "^5.11.0",
+    "talkjs": "^0.18.0"
   },
   "devDependencies": {
     "@types/node": "^20",
