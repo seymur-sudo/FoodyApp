@@ -1,4 +1,5 @@
 import Head from "next/head";
+import React, { useState, ChangeEvent } from 'react';
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { toast, ToastContainer } from "react-toastify";
@@ -6,12 +7,63 @@ import "react-toastify/dist/ReactToastify.css";
 import { useTranslation } from "next-i18next";
 import ClientHeader from "@/components/Client/ClientHeader";
 import { GetServerSideProps } from "next";
+import axios from "axios";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-
+import { useMutation } from "react-query";
 const RegisterPage: React.FC = () => {
   const { t } = useTranslation("common");
   const router = useRouter();
 
+  const [userPassword, setUserPassword] = useState("");
+  const [userName, setUserName] = useState("");
+  const [userEmail, setUserEmail] = useState("");
+  const [fullName, setFullName] = useState("");
+  const { mutate: signupUser } = useMutation({
+    mutationFn: async () =>
+      await axios.post("/api/auth/signup", {
+        email: userEmail,
+        password: userPassword,
+        fullname: fullName,
+        userName: userName,
+      }),
+    onSuccess: (data) => {
+      if (data) {
+        setTimeout(() => {
+          toast.success("Registered With Successfully");
+        });
+        setTimeout(() => {
+          router.push("/login");
+        }, 5000);
+      } else {
+        setTimeout(() => {
+          toast.error("Please, Enter Correct Email and Password!");
+        });
+      }
+    },
+    onError: () => {
+      toast.error("Please, Enter Right Personal Information!");
+    },
+  });
+
+  const handleName = (e:ChangeEvent<HTMLInputElement>) => {
+    setFullName(e.target.value);
+  };
+
+  const handleUsername = (e:ChangeEvent<HTMLInputElement>) => {
+    setUserName(e.target.value);
+  };
+
+  const handleEmail = (e:ChangeEvent<HTMLInputElement>) => {
+    setUserEmail(e.target.value);
+  };
+
+  const handlePass = (e:ChangeEvent<HTMLInputElement>) => {
+    setUserPassword(e.target.value);
+  };
+
+  const signupClient = () => {
+    signupUser();
+  };
   return (
     <>
       <Head>
@@ -52,6 +104,7 @@ const RegisterPage: React.FC = () => {
                   {t("Full Name")}
                 </p>
                 <input
+                  onChange={(e)=>handleName(e)}
                   placeholder={t("Full Name")}
                   className="pl-3 sm:h-68px rounded-5 bg-clientInput w-full h-14 text-lg font-medium"
                 />
@@ -61,6 +114,7 @@ const RegisterPage: React.FC = () => {
                   {t("User Name")}
                 </p>
                 <input
+                  onChange={(e)=>handleUsername(e)}
                   placeholder={t("User Name")}
                   className="pl-3 rounded-5 sm:h-68px bg-clientInput w-full h-14 text-lg font-medium"
                 />
@@ -71,6 +125,7 @@ const RegisterPage: React.FC = () => {
                 </p>
                 <input
                   type="email"
+                  onChange={(e)=>handleEmail(e)}
                   placeholder={t("E-mail")}
                   className=" pl-3 rounded-5 sm:h-68px bg-clientInput w-full h-14 text-lg font-medium"
                 />
@@ -81,13 +136,14 @@ const RegisterPage: React.FC = () => {
                 </p>
                 <input
                   type="password"
+                  onChange={(e)=>handlePass(e)}
                   placeholder={t("Password")}
                   className="pl-3 sm:mb-72px rounded-5 sm:h-68px bg-clientInput w-full h-14 text-lg font-medium"
                 />
               </div>
             </div>
 
-            <button className="w-full text-22 rounded-5 text-white sm:h-68px dark:bg-green-900 bg-clientRed font-medium h-14">
+            <button onClick={()=>{signupClient()}} className="w-full text-22 rounded-5 text-white sm:h-68px dark:bg-green-900 bg-clientRed font-medium h-14">
               {t("Register")}
             </button>
           </div>

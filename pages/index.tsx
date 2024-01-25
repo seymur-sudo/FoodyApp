@@ -16,6 +16,7 @@ import { useTranslation } from "next-i18next";
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import MainFooter from "@/components/Client/MainFooter";
+import Chat from "@/components/Client/Chat";
 const Home: NextPage = () => {
   const { t } = useTranslation("common");
   useEffect(() => {
@@ -33,6 +34,7 @@ const Home: NextPage = () => {
       </Head>
       <div className="rounded-4">
         <MainHeader />
+        
         <div className="bg-[#F3F4F6] flex sm:flex-row flex-col-reverse justify-between dark:bg-gray-900 sm:mx-[30px]">
           <div className="sm:ml-14 w-fit">
             <p className=" sm:text-6xl text-[20px] sm:pt-[120px] pt-[300px] sm:px-0 px-10 text-center sm:text-start font-[Roboto] font-black dark:text-white text-black">
@@ -145,7 +147,6 @@ const Home: NextPage = () => {
             <Image className="w-[200px] sm:flex hidden h-[200px]" alt="" src={HomeImg}/>
           </div>
         </div>
-        
         <MainFooter/>
       </div>
     </>
