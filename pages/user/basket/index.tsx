@@ -9,6 +9,9 @@ import { animated } from "@react-spring/web";
 import { useSidebarContext } from "@/contexts/SidebarContext";
 import { SidebarContextProps } from "@/interfaces";
 import DeleteModal from "@/components/Admin/Modals/DeleteModal";
+import { useTranslation } from "next-i18next";
+import { GetServerSideProps } from "next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 const BasketUser = () => {
   const {
@@ -17,6 +20,9 @@ const BasketUser = () => {
     modalSpring,
 
   } = useSidebarContext() as SidebarContextProps;
+
+  const { t } = useTranslation("common");
+
 
   return (
     <>
@@ -67,7 +73,7 @@ const BasketUser = () => {
           <div>
             <div className="border-b-2 border-gray-300 dark:border-sky-300 capitalize p-6">
               <span className="text-[30px] text-[#0f0808] dark:text-blue-400 font-semibold">
-                your basket
+                {t("Your Basket")}
               </span>
               <div className="flex items-center mt-2">
                 <IoBasketSharp className=" text-2xl text-[#D63626] dark:text-cyan-300 hover:scale-110 transition-all duration-500 " />
@@ -85,7 +91,8 @@ const BasketUser = () => {
             <div className="w-full flex justify-center py-4">
               <div className="h-12 w-11/12 cursor-pointer hover:opacity-90 transition-all duration-500  flex items-center justify-between rounded-[100px] bg-[#D63626] dark:bg-blue-500 text-white">
                 <button className="capitalize mx-[3%] font-medium flex items-center">
-                  checkout
+                {t("Checkout")}
+
                 </button>
                 <p className="text-[#D63626] flex  items-center px-8 text-lg font-medium h-full rounded-[80px] border-2 border-[#D63626] dark:border-blue-500 bg-white dark:bg-gray-900 dark:text-sky-200">
                   $37.99
@@ -103,3 +110,10 @@ const BasketUser = () => {
 };
 
 export default BasketUser;
+
+
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => ({
+  props: {
+    ...(await serverSideTranslations(locale as string, ["common"])),
+  },
+});

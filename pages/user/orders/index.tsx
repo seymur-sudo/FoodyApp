@@ -15,12 +15,23 @@ import {
   DropdownMenu,
   DropdownItem,
 } from "@nextui-org/react";
+import { useTranslation } from "next-i18next";
+import { GetServerSideProps } from "next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 const UserOrders = () => {
-  const { showUserModal, closeUserModal, modalSpring, openUserModal ,showDelete, setshowDelete} =
-    useSidebarContext() as SidebarContextProps;
+  const {
+    showUserModal,
+    closeUserModal,
+    modalSpring,
+    openUserModal,
+    showDelete,
+    setshowDelete,
+  } = useSidebarContext() as SidebarContextProps;
+
+  const { t } = useTranslation("common");
+
   return (
-   
     <>
       <MainHeader />
       <div className="flex flex-col items-center  md:flex-row md:items-start  md:justify-evenly py-8">
@@ -51,19 +62,19 @@ const UserOrders = () => {
                 <thead className="text-xs text-gray-700 capitalize bg-white dark:bg-gray-700 dark:text-gray-400">
                   <tr>
                     <th scope="col" className="pl-14 py-3">
-                      Image
+                      {t("Image")}
                     </th>
                     <th scope="col" className="px-6 py-3">
-                      Name
+                      {t("Name")}
                     </th>
                     <th scope="col" className="px-6 py-3">
-                      Price
+                      {t("Price")}
                     </th>
                     <th scope="col" className="px-6 py-3">
-                      Count
+                      {t("Count")}
                     </th>
                     <th scope="col" className="px-6 py-3">
-                      Amount
+                      {t("Amount")}
                     </th>
                   </tr>
                 </thead>
@@ -112,7 +123,7 @@ const UserOrders = () => {
 
         <div className="w-10/12 md:w-8/12 bg-[#F3F4F6] dark:bg-gray-900 asideScroll max-h-[75vh] overflow-y-auto">
           <h1 className="capitalize text-[#4F4F4F] dark:text-sky-300 text-[30px] font-semibold ml-7 mt-6">
-            orders
+            {t("Your Orders")}
           </h1>
 
           <div className=" overflow-x-auto shadow-md sm:rounded-lg p-6">
@@ -191,7 +202,7 @@ const UserOrders = () => {
                             className="  capitalize font-semibold text-[#6FCF97] "
                             onClick={openUserModal}
                           >
-                            show
+                            {t("Show")}
                           </p>
                         </DropdownItem>
                         <DropdownItem
@@ -202,7 +213,7 @@ const UserOrders = () => {
                             className=" font-semibold text-[#EB5757] "
                             onClick={() => setshowDelete(!showDelete)}
                           >
-                            delete
+                            {t("Delete")}
                           </p>
                         </DropdownItem>
                       </DropdownMenu>
@@ -220,3 +231,9 @@ const UserOrders = () => {
 };
 
 export default UserOrders;
+
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => ({
+  props: {
+    ...(await serverSideTranslations(locale as string, ["common"])),
+  },
+});

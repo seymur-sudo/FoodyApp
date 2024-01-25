@@ -4,7 +4,6 @@ export const ROUTER = {
     ADMIN_ORDER_HISTORY: "/admin/order-history",
     ADMIN_RESTAURANTS: "/admin/restaurants",
     ADMIN_LOGIN: "/admin/login",
-    LOGIN:"/login",
     ADMIN_CATEGORY: "/admin/category",
     ADMIN_ORDERS: "/admin/orders",
     ADMIN_OFFERS: "/admin/offers",
@@ -17,4 +16,6 @@ export const ROUTER = {
     USER_ORDERS: "/user/orders",
     USER_CHECKOUT: "/user/checkout",
     USER_PROFILE: "/user/profile",
+    LOGIN:"/login",
+    REGISTER: "/register",
   } as const;

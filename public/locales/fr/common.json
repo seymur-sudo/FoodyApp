@@ -5,6 +5,12 @@
   "Actions":"Actions",
   "Customer Id":"Client Id",
   "Time": "Temps",
+  "Your Basket":"Votre Panier",
+  "Payment Method":"Mode de Paiement",
+  "Send":"Envoyer",
+  "Your Order":"Votre Commande",
+  "Show":"Montrer",
+
   "Delivery Address":"Adresse de livraison",
   "Amount":"Montante",
   "Paymnet Method":"Mode de paiement",
@@ -14,6 +20,8 @@
   "Restaurant": "Restaurant",
   "Category": "Catégorie",
   "Orders": "Commandes",
+  "Your Orders": "Votre Commande",
+
   "History": "Histoire",
   "Offers": "Offres",
   "Logout": "Déconnexion",
@@ -52,8 +60,11 @@
   "Product Name": "Nom du produit",
   "Description": "Description",
   "Price": "Prix",
+  "Your Profile":"Votre Profil",
+  "Filters":"Filtres",
+
   "Cancel": "Annuler",
-  "delete": "Supprimer",
+  "Delete": "Supprimer",
   "Update Product": "Mettre à jour le produit",
   "Upload Image": "Télécharger l'image",
   "Upload image": "Télécharger l'image",
@@ -67,6 +78,8 @@
   "Projects by": "Projets par",
   "account": "Compte",
   "Total Salary": "Salaire total",
+  "Total ": "Total",
+
   "Years": "Années",
   "February": "Février",
   "March": "Mars",

@@ -1,65 +1,57 @@
 import Head from "next/head";
-import React, { useState, ChangeEvent } from 'react';
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 import { useTranslation } from "next-i18next";
 import ClientHeader from "@/components/Client/ClientHeader";
 import { GetServerSideProps } from "next";
 import axios from "axios";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useMutation } from "react-query";
+
 const RegisterPage: React.FC = () => {
   const { t } = useTranslation("common");
   const router = useRouter();
 
-  const [userPassword, setUserPassword] = useState("");
-  const [userName, setUserName] = useState("");
-  const [userEmail, setUserEmail] = useState("");
-  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [fullName, setFullName] = useState<string>("");
+  const [userName, setUserName] = useState<string>("");
+
   const { mutate: signupUser } = useMutation({
     mutationFn: async () =>
       await axios.post("/api/auth/signup", {
-        email: userEmail,
-        password: userPassword,
-        fullname: fullName,
-        userName: userName,
+        email,
+        password,
+        fullName,
+        userName,
       }),
     onSuccess: (data) => {
       if (data) {
         setTimeout(() => {
-          toast.success("Registered With Successfully");
+          toast.success("Registered With Successfully", {
+            autoClose: 1000,
+          });
         });
         setTimeout(() => {
           router.push("/login");
-        }, 5000);
+        }, 2000);
       } else {
         setTimeout(() => {
-          toast.error("Please, Enter Correct Email and Password!");
+          toast.error("Please, Enter Correct Email and Password!", {
+            autoClose: 1000,
+          });
         });
       }
     },
-    onError: () => {
-      toast.error("Please, Enter Right Personal Information!");
+    onError: (error: Error) => {
+      console.error("Error:", error);
+      toast.error("Please, Enter Right Personal Information!", {
+        autoClose: 1000,
+      });
     },
   });
-
-  const handleName = (e:ChangeEvent<HTMLInputElement>) => {
-    setFullName(e.target.value);
-  };
-
-  const handleUsername = (e:ChangeEvent<HTMLInputElement>) => {
-    setUserName(e.target.value);
-  };
-
-  const handleEmail = (e:ChangeEvent<HTMLInputElement>) => {
-    setUserEmail(e.target.value);
-  };
-
-  const handlePass = (e:ChangeEvent<HTMLInputElement>) => {
-    setUserPassword(e.target.value);
-  };
 
   const signupClient = () => {
     signupUser();
@@ -94,7 +86,7 @@ const RegisterPage: React.FC = () => {
               >
                 {t("Login")}
               </p>
-              <p className="text-clientRed dark:text-green-800 sm:text-3xl text-xl font-medium sm:mr-44">
+              <p className="text-clientRed dark:text-green-400 sm:text-3xl text-xl font-medium sm:mr-44">
                 {t("Register")}
               </p>
             </div>
@@ -104,7 +96,7 @@ const RegisterPage: React.FC = () => {
                   {t("Full Name")}
                 </p>
                 <input
-                  onChange={(e)=>handleName(e)}
+                  onChange={(e) => setUserName(e.target.value)}
                   placeholder={t("Full Name")}
                   className="pl-3 sm:h-68px rounded-5 bg-clientInput w-full h-14 text-lg font-medium"
                 />
@@ -114,7 +106,7 @@ const RegisterPage: React.FC = () => {
                   {t("User Name")}
                 </p>
                 <input
-                  onChange={(e)=>handleUsername(e)}
+                  onChange={(e) => setFullName(e.target.value)}
                   placeholder={t("User Name")}
                   className="pl-3 rounded-5 sm:h-68px bg-clientInput w-full h-14 text-lg font-medium"
                 />
@@ -125,7 +117,7 @@ const RegisterPage: React.FC = () => {
                 </p>
                 <input
                   type="email"
-                  onChange={(e)=>handleEmail(e)}
+                  onChange={(e) => setEmail(e.target.value)}
                   placeholder={t("E-mail")}
                   className=" pl-3 rounded-5 sm:h-68px bg-clientInput w-full h-14 text-lg font-medium"
                 />
@@ -136,31 +128,24 @@ const RegisterPage: React.FC = () => {
                 </p>
                 <input
                   type="password"
-                  onChange={(e)=>handlePass(e)}
+                  onChange={(e) => setPassword(e.target.value)}
                   placeholder={t("Password")}
                   className="pl-3 sm:mb-72px rounded-5 sm:h-68px bg-clientInput w-full h-14 text-lg font-medium"
                 />
               </div>
             </div>
 
-            <button onClick={()=>{signupClient()}} className="w-full text-22 rounded-5 text-white sm:h-68px dark:bg-green-900 bg-clientRed font-medium h-14">
+            <button
+              onClick={() => {
+                signupClient();
+              }}
+              className="w-full text-22 rounded-5 text-white sm:h-68px dark:bg-green-900 bg-clientRed font-medium h-14"
+            >
               {t("Register")}
             </button>
           </div>
         </div>
       </main>
-      <ToastContainer
-        position="top-right"
-        autoClose={1000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-      />
     </>
   );
 };
