@@ -22,6 +22,7 @@ const firebaseConfig = {
   apiKey: "AIzaSyDKRjKegAnr4N_6YjNYg6shB-CakqZWRYk",
   authDomain: "foodyapp-bfe77.firebaseapp.com",
   projectId: "foodyapp-bfe77",
+  databaseURL:"https://foodyapp-bfe77-default-rtdb.firebaseio.com",
   storageBucket: "foodyapp-bfe77.appspot.com",
   messagingSenderId: "37887093176",
   appId: "1:37887093176:web:a85fdcdab64c4610a3c74d",

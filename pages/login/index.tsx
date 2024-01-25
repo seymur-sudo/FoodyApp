@@ -10,11 +10,12 @@ import { GetServerSideProps } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useMutation } from "react-query";
 import axios, { AxiosResponse } from "axios"; 
-
+import {FadeLoader} from "react-spinners"
 const LoginPage: React.FC = () => {
   const { t } = useTranslation("common");
   const router = useRouter();
   const [email, setEmail] = useState<string>("");
+  const [isLoad, setIsLoad] = useState<boolean>(false)
   const [password, setPassword] = useState<string>("");
 
   const { mutate: signinUser } = useMutation({
@@ -25,9 +26,11 @@ const LoginPage: React.FC = () => {
       }),
     onSuccess: (data: AxiosResponse) => {
       if (data  && data.data && data.data.user) {
+        setIsLoad(true)
         setTimeout(() => {
           toast.success("Signin successfully!", { autoClose: 1000 });
         });
+        // console.log(data?.data.user);
         localStorage.setItem("refresh_token", data?.data.user.refresh_token);
         localStorage.setItem("access_token", data?.data.user.access_token);
         setTimeout(() => {
@@ -115,7 +118,12 @@ const LoginPage: React.FC = () => {
               onClick={() => signClient()}
               className="w-full rounded-5 dark:bg-green-900 text-22 text-white sm:h-68px bg-clientRed font-medium h-14"
             >
-              {t("Login")}
+              {isLoad ? <div className='flex justify-center items-center mx-0 my-auto'>
+                <FadeLoader
+                  color="#fff"
+                  // size={15}
+                />
+              </div> : t('Login')}
             </button>
           </div>
         </div>
