@@ -9,11 +9,12 @@ import { GetServerSideProps } from "next";
 import axios from "axios";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useMutation } from "react-query";
+import { FadeLoader } from "react-spinners";
 
 const RegisterPage: React.FC = () => {
   const { t } = useTranslation("common");
   const router = useRouter();
-
+  const [isLoad,setIsLoad]=useState<boolean>(false)
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [fullName, setFullName] = useState<string>("");
@@ -29,6 +30,7 @@ const RegisterPage: React.FC = () => {
       }),
     onSuccess: (data) => {
       if (data) {
+        setIsLoad(true)
         setTimeout(() => {
           toast.success("Registered With Successfully", {
             autoClose: 1000,
@@ -141,7 +143,13 @@ const RegisterPage: React.FC = () => {
               }}
               className="w-full text-22 rounded-5 text-white sm:h-68px dark:bg-green-900 bg-clientRed font-medium h-14"
             >
-              {t("Register")}
+              {isLoad ? <div className='flex justify-center items-center mx-0 my-auto'>
+                <FadeLoader
+                  color="#fff"
+                  // size={15}
+                />
+              </div> : t("Register")}
+              
             </button>
           </div>
         </div>
