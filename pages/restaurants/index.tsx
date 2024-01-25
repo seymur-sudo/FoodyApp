@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { GetServerSideProps } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import ResCard from "@/components/Client/RestaurantCard/ResCard";
@@ -10,10 +10,12 @@ import MainHeader from "@/components/Client/MainHeader";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import { useSidebarContext } from "@/contexts/SidebarContext";
 import { SidebarContextProps } from "@/interfaces";
+import { useTranslation } from "next-i18next";
 
 const Restaurants = () => {
   const { showUserModal, openUserModal, closeUserModal, modalSpring } =
     useSidebarContext() as SidebarContextProps;
+  const { t } = useTranslation("common");
 
   return (
     <>
@@ -31,7 +33,7 @@ const Restaurants = () => {
             className="hover:scale-105 transition-all duration-500  w-[30px]  h-[30px]   object-cover"
           />
           <p className="text-[#4F4F4F] dark:text-gray-300 font-medium ml-2 text-xl">
-            Filters
+            {t("Filters")}
           </p>
         </div>
 
@@ -250,7 +252,7 @@ const Restaurants = () => {
               <div className="my-4" onClick={closeUserModal}>
                 <IoIosCloseCircleOutline
                   size={40}
-                  className="text-[#BDBDBD] dark:text-sky-400  "
+                  className="text-[#BDBDBD] dark:text-sky-400  cursor-pointer"
                 />
               </div>
               <ul className="w-10/12 mt-[5%]">

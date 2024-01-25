@@ -2,18 +2,22 @@ import React from "react";
 import UserAside from "../../../components/Client/UserAside/index";
 import MainHeader from "../../../components/Client/MainHeader/index";
 import { BsDot } from "react-icons/bs";
+import { useTranslation } from "next-i18next";
+import { GetServerSideProps } from "next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 const UserCheckout = () => {
+  const { t } = useTranslation("common");
+
   return (
     <>
       <MainHeader />
       <div className="flex flex-col items-center  md:flex-row md:items-start  md:justify-evenly py-8">
         <UserAside />
 
-
         <div className="w-10/12 md:w-5/12 py-3 bg-[#F3F4F6] dark:bg-gray-900 ">
           <h1 className="capitalize text-[#4F4F4F] dark:text-green-300 text-[30px] font-semibold ml-10 my-6">
-            checkout
+            {t("Checkout")}
           </h1>
 
           <div className="flex flex-wrap justify-evenly w-full pt-2 pb-5">
@@ -36,11 +40,10 @@ const UserCheckout = () => {
               />
             </div>
 
-            
             <div className="flex flex-col my-3 mr-5 w-10/12">
-            <label className="capitalize text-xl text-[#4F4F4F] dark:text-green-300 font-bold m-4 ">
-              payment method
-            </label>
+              <label className="capitalize text-xl text-[#4F4F4F] dark:text-green-300 font-bold m-4 ">
+                {t("Payment Method")}
+              </label>
               <div className="flex flex-col md:flex-row gap-8 md:gap-12">
                 <div className="inline-flex items-center">
                   <label
@@ -88,7 +91,7 @@ const UserCheckout = () => {
 
             <div className="flex flex-col mt-8 w-10/12">
               <button className="capitalize py-[5px] px-4 bg-[#6FCF97] font-bold text-lg text-white dark:text-gray-900 rounded-[4px] hover:bg-[#54ff9b]  transition-all duration-500 cursor-pointer  ">
-                send
+                {t("Send")}
               </button>
             </div>
           </div>
@@ -97,7 +100,7 @@ const UserCheckout = () => {
         <div className="w-10/12 md:w-3/12 mt-[5%] md:mt-[0%] capitalize text-[#828282)] px-6 py-3 dark:text-green-300 bg:[#F3F4F6] dark:bg-gray-900  asideScroll max-h-[45vh] overflow-y-auto">
           <div>
             <h1 className=" font-body font-normal text-lg text-center py-3">
-              your order
+              {t("Your Order")}
             </h1>
             <ul className="py-3">
               <li className="text-[14px] my-3">
@@ -132,7 +135,7 @@ const UserCheckout = () => {
               </li>
             </ul>
             <div className="border-t-2 border-t-gray-400 dark:border-t-green-400 py-5 px-2 flex justify-between">
-              <p className="font-medium text-[18px]">total</p>
+              <p className="font-medium text-[18px]"> {t("Total")} </p>
               <p className="font-normal text-[14px]">$17.80</p>
             </div>
           </div>
@@ -143,3 +146,9 @@ const UserCheckout = () => {
 };
 
 export default UserCheckout;
+
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => ({
+  props: {
+    ...(await serverSideTranslations(locale as string, ["common"])),
+  },
+});

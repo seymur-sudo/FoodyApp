@@ -11,8 +11,10 @@ import BasketResCard from "@/components/Client/BaskerCards/BasketResCard";
 import { useSidebarContext } from "@/contexts/SidebarContext";
 import { SidebarContextProps } from "@/interfaces";
 import { IoBasketSharp } from "react-icons/io5";
-import { useRouter } from "next/router";
 import DeleteModal from "@/components/Admin/Modals/DeleteModal";
+import { useTranslation } from "next-i18next";
+import { GetServerSideProps } from "next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 const ResDetail = () => {
   const {
@@ -23,8 +25,7 @@ const ResDetail = () => {
     showDelete,
     setshowDelete,
   } = useSidebarContext() as SidebarContextProps;
-  const { pathname } = useRouter();
-  console.log("pathname", pathname);
+  const { t } = useTranslation("common");
 
   return (
     <>
@@ -61,10 +62,10 @@ const ResDetail = () => {
               <div className="flex items-center w-full">
                 <button className="  bg-white text-[#D63626] hover:opacity-75 transition-all duration-500 flex flex-col items-start justify-center  h-12  px-2 text-sm font-medium rounded-[4px] border-2 border-[#D63626]">
                   <span>$5</span>
-                  <span>Delivery</span>
+                  <span>{t("Delivery")}</span>
                 </button>
                 <button className="  ml-[5%] bg-[#D63626] text-[#fff] hover:opacity-75 transition-all duration-500 flex  items-center capitalize h-12 px-2 text-sm font-medium rounded-[4px] border-2 border-[#D63626]">
-                  <span>go back</span>
+                  <span>{t("Go Back")}</span>
                 </button>
               </div>
             </div>
@@ -74,7 +75,7 @@ const ResDetail = () => {
         <div className="py-[3%] px-[6%] flex justify-between">
           <div className="w-full md:w-7/12 bg-[#F3F4F6] dark:bg-gray-900 flex flex-col items-center my-scrollable-component max-h-[100vh] overflow-y-auto">
             <h1 className="capitalize py-5 text-[#4F4F4F)] dark:text-cyan-400 font-bold text-[25px]">
-              products
+              {t("Products")}
             </h1>
             <div className="w-full border-t-2 py-3 dark:border-sky-300">
               <BasketCard />
@@ -90,7 +91,7 @@ const ResDetail = () => {
                     <IoBasketSharp className=" text-3xl text-[#D63626] dark:text-cyan-50 hover:scale-110 transition-all duration-500 " />
 
                     <p className="text-white ml-1 dark:text-cyan-100 ">
-                      3 items
+                      3{t("items")}
                     </p>
                   </button>
                   <p className="text-[#D63626] flex  items-center px-8 text-lg font-medium h-full rounded-[80px] border-2 border-[#D63626] dark:border-blue-500 bg-white dark:bg-gray-900 dark:text-sky-200">
@@ -151,7 +152,7 @@ const ResDetail = () => {
               <IoBasketSharp className=" text-3xl text-[#D63626] dark:text-cyan-300 hover:scale-110 transition-all duration-500 mx-2" />
 
               <p className="capitalize  text-[#D63626)]  dark:text-cyan-400 font-bold text-[16px]">
-                3 items
+                3{t("items")}
               </p>
             </div>
             <div className="w-full border-t-2 py-3 dark:border-sky-300">
@@ -185,7 +186,7 @@ const ResDetail = () => {
               <div className="w-full flex justify-center mt-4">
                 <div className="h-12 w-10/12 cursor-pointer hover:opacity-90 transition-all duration-500  flex items-center justify-between rounded-[100px] bg-[#D63626] dark:bg-blue-500 text-white">
                   <button className="capitalize mx-[3%] font-medium flex items-center">
-                    checkout
+                    {t("Checkout")}
                   </button>
                   <p className="text-[#D63626] flex  items-center px-8 text-lg font-medium h-full rounded-[80px] border-2 border-[#D63626] dark:border-blue-500 bg-white dark:bg-gray-900 dark:text-sky-200">
                     $37.99
@@ -203,3 +204,9 @@ const ResDetail = () => {
 };
 
 export default ResDetail;
+
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => ({
+  props: {
+    ...(await serverSideTranslations(locale as string, ["common"])),
+  },
+});

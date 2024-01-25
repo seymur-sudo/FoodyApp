@@ -91,20 +91,18 @@ const MainHeader: React.FC = () => {
       <div className="flex flex-row items-center">
         <div className="flex items-center ">
           <button
-            className="sm:px-3 px-0 transition-all duration-700 "
+            className="sm:px-3 px-0 pt-1 md:pt-0 transition-all duration-700 "
             onClick={toggleTheme}
           >
             <FiSun
-              size={50}
-              className="text-[#ea9000] scale-[75%] hover:scale-[85%] sm:scale-100 sm:hover:scale-110 dark:text-gray-900 block dark:hidden"
+              className="text-[#ea9000] text-6xl md:text-5xl  scale-[75%] hover:scale-[85%] sm:scale-100 sm:hover:scale-110 dark:text-gray-900 block dark:hidden transition-all duration-500"
             />
             <FiMoon
-              size={50}
-              className="text-[#F3F4F6] scale-[75%] hover:scale-[85%] sm:scale-100 sm:hover:scale-110 dark:text-sky-400  hidden dark:block"
+              className="text-[#F3F4F6] text-6xl md:text-5xl scale-[75%] hover:scale-[85%] sm:scale-100 sm:hover:scale-110 dark:text-sky-400  hidden dark:block transition-all duration-500"
             />
           </button>
         </div>
-        <LangSelect />
+        <div className="p-3  md:p-1 "> <LangSelect /></div>
         <div className="sm:flex hidden">
           <Image
             className="ml-3 cursor-pointer scale-100 hover:scale-110"
