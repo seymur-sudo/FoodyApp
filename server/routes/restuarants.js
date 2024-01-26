@@ -68,14 +68,14 @@ export async function handlerRestuarantPOST(req, res, col) {
       !cuisine ||
       !img_url ||
       !address ||
-      // (!delivery_price && isNaN(+delivery_price)) ||
+      !delivery_price||
       !delivery_min ||
       !category_id
     ) {
       res
         .status(404)
         .json(
-          "Please check your fieldnames and also price must be only number!"
+          "Please check your fieldnames and also delivery price must be only number!"
         );
       return;
     }

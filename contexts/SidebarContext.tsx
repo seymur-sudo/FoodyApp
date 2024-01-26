@@ -61,7 +61,8 @@ export const SidebarContextProvider: React.FC<ChildrenNode> = ({
 
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [addProductImg, setAddProductImg] = useState<string | null>(null);
-
+  const [lastImg,setLastImg]=useState<string | null>(null)
+  const [newImg,setNewImg]=useState<string | null>(null)
   const [showUserModal, setShowUserModal] = useState<boolean>(false);
 
   const openUserModal = () => {
@@ -100,6 +101,10 @@ export const SidebarContextProvider: React.FC<ChildrenNode> = ({
     setSidebarOpen,
     closeSidebar,
     show,
+    lastImg,
+    setLastImg,
+    newImg,
+    setNewImg,
     setShow,
     closeModal,
     showAdds,

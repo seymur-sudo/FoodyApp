@@ -19,9 +19,6 @@ export default async function handler(req, res) {
     case METHOD.GET:
       await handlerOrderGET(req, res, ROUTER.ORDER);
       return;
-    case METHOD.POST:
-      await handlerAddOrderPOST(req, res, ROUTER.ORDER);
-      return;
     case METHOD.DELETE:
       await handlerDeleteOrder(req, res, ROUTER.ORDER);
     default:

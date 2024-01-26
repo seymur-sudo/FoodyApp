@@ -7,7 +7,7 @@ import { useSidebarContext } from "@/contexts/SidebarContext";
 import { SidebarContextProps } from "@/interfaces";
 import AOS from "aos";
 import "aos/dist/aos.css";
-
+import defaultRes from "../../../public/svgs/default.png"
 interface RestaurantCardProps {
   key: string;
   restaurant: RestaurantPostDataType;
@@ -33,7 +33,7 @@ const RestaurantCard: React.FC<RestaurantCardProps> = ({ key, restaurant }) => {
     >
       <Image
         className="w-[50px] ml-4 my-4 mr-6 h-[55px]"
-        src={restaurant.img_url}
+        src={restaurant.img_url||defaultRes}
         alt="resimg"
         width={100}
         height={100}

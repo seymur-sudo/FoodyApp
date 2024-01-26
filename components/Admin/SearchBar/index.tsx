@@ -62,15 +62,17 @@ const SearchBar: React.FC = () => {
           </div>
 
           {!hideButton && (
+          <>
             <button
               className="bg-loginBtn text-[#FFF] font-roboto font-bold  w-[225px] sm:[325px] md:w-[150px] py-3 mb-4 md:my-0 shadow-shadow3 rounded-[14px] text-[12px] hover:opacity-75 transition-all duration-500"
               onClick={() => setShowAdds(!showAdds)}
             >
               {getButtonText()}
             </button>
+            <SideForElements />
+          </>
           )}
         </div>
-        <SideForElements />
       </div>
     </>
   );
