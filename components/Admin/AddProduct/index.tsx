@@ -38,6 +38,7 @@ const AddProduct: React.FC = () => {
       setTimeout(() => {
         closeSidebar();
       }, 1000);
+      setSelectedFile(null)
       toast.success("Product added successfully!", {
         autoClose: 1000,
       });

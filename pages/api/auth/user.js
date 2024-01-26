@@ -76,6 +76,6 @@ export default async function handler(req, res) {
 }
 
 // {
-//     "email":"r10@gmail.com",
+//     "email":"r10@a",
 //     "password":"serxan1111"
 //   }

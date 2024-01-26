@@ -12,6 +12,10 @@ export interface SidebarContextProps {
   closeNavbar: () => void;
   closeSidebar: () => void;
   show: boolean;
+  lastImg:string | null,
+  setLastImg:React.Dispatch<React.SetStateAction<string | null>>,
+  newImg:string | null,
+  setNewImg:React.Dispatch<React.SetStateAction<string | null>>,
   showAdds: boolean;
   setShow: React.Dispatch<React.SetStateAction<boolean>>;
   setShowAdds: React.Dispatch<React.SetStateAction<boolean>>;
@@ -102,7 +106,7 @@ export interface RestaurantPostDataType {
   id: number | string;
   name: string;
   category_id: number | string;
-  img_url: string;
+  img_url: string | null;
   cuisine: string;
   address: string;
   delivery_min: number;
