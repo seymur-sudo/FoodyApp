@@ -1,32 +1,42 @@
 import React from "react";
-import profileImg from '../../../public/svgs/profile.svg'
+import profileImg from "../../../public/svgs/profile.svg";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import Link from "next/link";
 import basketIcon from "../../../public/svgs/basketIcon.svg";
 import { LangSelect } from "../../Admin/Langs";
-import { LuMenu } from "react-icons/lu"
+import { LuMenu } from "react-icons/lu";
 import { useThemeContext } from "../../../contexts/ThemeContext";
 import { ThemeContextProps } from "../../../interfaces/index";
 import { FiSun, FiMoon } from "react-icons/fi";
 import { useSidebarContext } from "../../../contexts/SidebarContext";
 import { SidebarContextProps } from "../../../interfaces/index";
-import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem} from "@nextui-org/react";
+import {
+  Dropdown,
+  DropdownTrigger,
+  DropdownMenu,
+  DropdownItem,
+} from "@nextui-org/react";
 import ClientNavbar from "../ResNavbar";
 
 const MainHeader: React.FC = () => {
-  const {setNavbarOpen,isNavbarOpen} =useSidebarContext() as SidebarContextProps
+  const { setNavbarOpen, isNavbarOpen } =
+    useSidebarContext() as SidebarContextProps;
   const { toggleTheme } = useThemeContext() as ThemeContextProps;
   const { t } = useTranslation("common");
   const router = useRouter();
   return (
     <div className="sm:h-[120px] h-[52px] sm:mt-[30px] sm:mx-[30px] flex items-center rounded-t-5 justify-between flex-row bg-[#F3F4F6]  dark:bg-gray-900">
       <div className="flex items-center">
-      <LuMenu size={'30px'} onClick={()=>setNavbarOpen(!isNavbarOpen)} className="text-black sm:hidden block ml-4 mr-3 dark:text-white"/>
-      <p className=" flex py-auto sm:ml-14 flex-row items-center text-center font-mukta sm:text-[36px] text-[25px] font-extrabold text-[#000000] dark:text-gray-100">
-        Foody<span className="text-[#EAAB00] dark:text-sky-400 ">.</span>
-      </p>
+        <LuMenu
+          size={"30px"}
+          onClick={() => setNavbarOpen(!isNavbarOpen)}
+          className="text-black sm:hidden block ml-4 mr-3 dark:text-white"
+        />
+        <p className=" flex py-auto sm:ml-14 flex-row items-center text-center font-mukta sm:text-[36px] text-[25px] font-extrabold text-[#000000] dark:text-gray-100">
+          Foody<span className="text-[#EAAB00] dark:text-sky-400 ">.</span>
+        </p>
       </div>
       <div className="hidden sm:flex">
         <Link
@@ -94,15 +104,11 @@ const MainHeader: React.FC = () => {
             className="sm:px-3 px-0 pt-1 md:pt-0 transition-all duration-700 "
             onClick={toggleTheme}
           >
-            <FiSun
-              className="text-[#ea9000] text-6xl md:text-5xl  scale-[75%] hover:scale-[85%] sm:scale-100 sm:hover:scale-110 dark:text-gray-900 block dark:hidden transition-all duration-500"
-            />
-            <FiMoon
-              className="text-[#F3F4F6] text-6xl md:text-5xl scale-[75%] hover:scale-[85%] sm:scale-100 sm:hover:scale-110 dark:text-sky-400  hidden dark:block transition-all duration-500"
-            />
+            <FiSun className="text-[#ea9000] text-6xl md:text-5xl  scale-[75%] hover:scale-[85%] sm:scale-100 sm:hover:scale-110 dark:text-gray-900 block dark:hidden transition-all duration-500" />
+            <FiMoon className="text-[#F3F4F6] text-6xl md:text-5xl scale-[75%] hover:scale-[85%] sm:scale-100 sm:hover:scale-110 dark:text-sky-400  hidden dark:block transition-all duration-500" />
           </button>
         </div>
-        <div className="p-3  md:p-1 "> <LangSelect /></div>
+          <LangSelect />
         <div className="sm:flex hidden">
           <Image
             className="ml-3 cursor-pointer scale-100 hover:scale-110"
@@ -111,19 +117,63 @@ const MainHeader: React.FC = () => {
           />
           <Dropdown className="">
             <DropdownTrigger>
-              <Image alt="" src={profileImg} className=" ml-5 w-10 h-10 cursor-pointer mr-6 scale-100 hover:scale-11 text-[20px] font-medium text-white"/>
+              <Image
+                alt=""
+                src={profileImg}
+                className=" ml-5 w-10 h-10 cursor-pointer mr-6 scale-100 hover:scale-11 text-[20px] font-medium text-white"
+              />
             </DropdownTrigger>
-            <DropdownMenu  className="bg-white dark:bg-black" aria-label="User Actions" variant="flat">
-              <DropdownItem className="h-10  dark:hover:bg-[rgb(17,24,39)] flex" key="profile" ><p className="text-nowrap dark:text-white font-normal text-base">Profile</p></DropdownItem>
-              <DropdownItem className="h-10  dark:hover:bg-[rgb(17,24,39)] flex" key="your_basket"><p className="text-nowrap dark:text-white font-normal text-base">Your Basket</p></DropdownItem>
-              <DropdownItem className="h-10  dark:hover:bg-[rgb(17,24,39)] flex" key="your_order"><p className="text-nowrap dark:text-white font-normal text-base">Your Orders</p></DropdownItem>
-              <DropdownItem className="h-10  dark:hover:bg-[rgb(17,24,39)] flex" key="checkout"><p className="text-nowrap dark:text-white font-normal text-base">Checkout</p></DropdownItem>
-              <DropdownItem className="h-10  dark:hover:bg-[rgb(17,24,39)] flex" key="logout" color="danger"><p className="text-nowrap dark:text-white font-normal text-base">Log Out</p></DropdownItem>
+            <DropdownMenu
+              className="bg-white dark:bg-black"
+              aria-label="User Actions"
+              variant="flat"
+            >
+              <DropdownItem
+                className="h-10  dark:hover:bg-[rgb(17,24,39)] flex"
+                key="profile"
+              >
+                <p className="text-nowrap dark:text-white font-normal text-base">
+                  Profile
+                </p>
+              </DropdownItem>
+              <DropdownItem
+                className="h-10  dark:hover:bg-[rgb(17,24,39)] flex"
+                key="your_basket"
+              >
+                <p className="text-nowrap dark:text-white font-normal text-base">
+                  Your Basket
+                </p>
+              </DropdownItem>
+              <DropdownItem
+                className="h-10  dark:hover:bg-[rgb(17,24,39)] flex"
+                key="your_order"
+              >
+                <p className="text-nowrap dark:text-white font-normal text-base">
+                  Your Orders
+                </p>
+              </DropdownItem>
+              <DropdownItem
+                className="h-10  dark:hover:bg-[rgb(17,24,39)] flex"
+                key="checkout"
+              >
+                <p className="text-nowrap dark:text-white font-normal text-base">
+                  Checkout
+                </p>
+              </DropdownItem>
+              <DropdownItem
+                className="h-10  dark:hover:bg-[rgb(17,24,39)] flex"
+                key="logout"
+                color="danger"
+              >
+                <p className="text-nowrap dark:text-white font-normal text-base">
+                  Log Out
+                </p>
+              </DropdownItem>
             </DropdownMenu>
           </Dropdown>
         </div>
       </div>
-      <ClientNavbar/>
+      <ClientNavbar />
     </div>
   );
 };

@@ -14,7 +14,7 @@ const ResCard = () => {
   return (
     <>
       <div
-        className="bg-white dark:bg-gray-900 shadow-shadow4   font-roboto font-medium rounded-md hover:scale-110 transition-all duration-700"
+        className="bg-white dark:bg-black shadow-shadow4 dark:shadow-shadow4Dark  font-roboto font-medium rounded-md hover:scale-110 transition-all duration-700"
         data-aos="fade-up"
         data-aos-delay={200}
       >

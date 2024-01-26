@@ -31,6 +31,7 @@ const config: Config = {
         'shadow2':'0px 4px 4px 0px rgba(57, 57, 57, 0.25);',
         'shadow3':'0px 4px 4px 0px rgba(39, 174, 96, 0.20)',
         'shadow4':'0px 4px 4px 0px rgba(0, 0, 0, 0.25)',
+        'shadow4Dark':'0px 4px 4px 0px rgba(181, 244, 243, 0.25)',
         'shadow5':'0px 3px 8px -2px rgba(0, 0, 0, 0.20)',
         'shadow5Dark':'0px 3px 8px -2px rgba(22, 201, 251, 0.2)'
       },
