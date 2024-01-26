@@ -1,5 +1,4 @@
 import React from "react";
-import Image from "next/image";
 import { LangSelect } from "@/components/Admin/Langs";
 import { useThemeContext } from "../../../contexts/ThemeContext";
 import { ThemeContextProps } from "../../../interfaces/index";
