@@ -1,12 +1,44 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { SidebarContextProps } from "../../../../interfaces/index";
 import { useSidebarContext } from "@/contexts/SidebarContext";
+import Image from "next/image";
+import { toast } from "react-toastify";
+import {deleteRestaurant } from "@/services/index";
+import { QUERIES } from "@/constant/Queries";
+import { useMutation, useQueryClient } from "react-query";
 
 const DeleteRestuarant = () => {
-  const { showDelete, closeDeleteModal } =
-    useSidebarContext() as SidebarContextProps;
-
+  const { showDelete,setLastData,lastData, closeDeleteModal } =useSidebarContext() as SidebarContextProps;
+  const [id,setId]=useState<undefined|number|string>("")
+  const queryClient=useQueryClient()
+  const mutation = useMutation(() =>deleteRestaurant(id), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(QUERIES.Restaurants);
+      // setEdtRestaurant(firstState);
+      setTimeout(() => {
+        setLastData(null)
+      }, 1000);
+      toast.success("Restaurant deleted successfully!", {
+        autoClose: 1000,
+      });
+    },
+    onError: (error) => {
+      console.error("Error deleted Restaurant:", error);
+      toast.error("Error deleted Restaurant", {
+        autoClose: 1000,
+      });
+    },
+  });
+  const handleDelete=()=>{
+    setId(lastData?.id)
+    console.log(id);
+    
+    setTimeout(() => {
+      mutation.mutate()
+    }, 400);
+    closeDeleteModal()
+  }
   return (
     <>
       <Transition appear show={showDelete} as={Fragment}>
@@ -47,7 +79,7 @@ const DeleteRestuarant = () => {
               <div className="inline-block w-full max-w-md py-8 px-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-md">
                 <h1 className="text-lg font-medium leading-6 text-gray-900">
                   <p className="text-xl text-black font-bold text-center">
-                    Are you sure RESTUARANT deleted?
+                    Are you sure {lastData?.name} deleted?
                   </p>
                 </h1>
                 <div className="mt-2 py-2  text-gray-600 text-center">
@@ -61,7 +93,7 @@ const DeleteRestuarant = () => {
                   <button
                     className="inline-flex justify-center px-4 py-2 mt-5  text-sm font-medium text-white bg-red-500 border border-transparent rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-all duration-500"
                     onClick={() => {
-                      closeDeleteModal();
+                      handleDelete();
                     }}
                   >
                     Delete

@@ -12,7 +12,6 @@ const Restaurant: React.FC = () => {
   const { data, isLoading, isError } = useQuery("restuarants", getRestaurant, {
     refetchOnWindowFocus: false,
   });
-console.log(data);
 
   if (isLoading) {
     return (
@@ -43,6 +42,7 @@ console.log(data);
             data.data.result.data.map((restaurant: RestaurantPostDataType) => (
               <RestaurantCard
                 key={(restaurant.id?? '').toString()}
+                id={(restaurant.id?? '').toString()}
                 restaurant={restaurant}
               />
             ))}

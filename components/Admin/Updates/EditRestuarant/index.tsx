@@ -81,7 +81,10 @@ const EditRestuarant: React.FC = () => {
   const handleChange=( e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>)=>{
     
   }
-
+  const handleClose=()=>{
+    closeModal()
+    setLastData(null)
+  }
   const queryClient=useQueryClient()
   const mutation = useMutation(() =>updateRestaurant(edtRestaurant,lastData?.id), {
     onSuccess: () => {
@@ -89,17 +92,16 @@ const EditRestuarant: React.FC = () => {
       // setEdtRestaurant(firstState);
       setTimeout(() => {
         closeModal();
-        
+        setLastData(null)
         setNewImg(null)
       }, 1000);
-      toast.success("Restaurant added successfully!", {
+      toast.success("Restaurant edited successfully!", {
         autoClose: 1000,
       });
     },
     onError: (error) => {
       console.error("Error added Restaurant:", error);
-      console.log(edtRestaurant);
-      toast.error("Error added Restaurant", {
+      toast.error("Error edited Restaurant", {
         autoClose: 1000,
       });
     },
@@ -139,7 +141,7 @@ const EditRestuarant: React.FC = () => {
                 className={`flex  mb-8  justify-center z-50 items-center bg-[#EC5CF8] w-10 h-10 rounded-full transition-all duration-500 ${
                   show ? "" : "opacity-0 pointer-events-none "
                 }`}
-                onClick={closeModal}
+                onClick={handleClose}
               >
                 <span className="text-[#F2F2F2] text-3xl cursor-pointer z-50 mb-[6px]">
                   x
