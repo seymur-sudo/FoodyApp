@@ -1,19 +1,24 @@
 import React from "react";
 import Layout from "@/components/Admin/Layout";
+import { useQuery } from "react-query";
 import Image from "next/image";
 import hamburger from "../../../public/svgs/hamburger.svg";
 import editIcon from "../../../public/svgs/edit.svg";
 import deleteIcon from "../../../public/svgs/delete2.svg";
 import SearchBar from "@/components/Admin/SearchBar";
-import { SidebarContextProps } from "../../../interfaces/index";
+import { OfferPostDataType, SidebarContextProps } from "../../../interfaces/index";
 import { useSidebarContext } from "@/contexts/SidebarContext";
 import EditModal from "@/components/Admin/Modals/EditModal";
 import DeleteModal from "@/components/Admin/Modals/DeleteModal";
 import { GetServerSideProps } from "next";
+import { getOffer } from "@/services/index";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "next-i18next";
 
 const Offers: React.FC = () => {
+  const { data, isLoading, isError } = useQuery("offers", getOffer, {
+    refetchOnWindowFocus: false,
+  });
   const { setShow, show, showDelete, setshowDelete } =
     useSidebarContext() as SidebarContextProps;
   const { t } = useTranslation("common");
@@ -45,25 +50,28 @@ const Offers: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-              <tr className="bg-white border-b dark:bg-[#27283C] dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-700">
+            {data && data.data.result.data.map((offer: OfferPostDataType,index) => (
+              <tr key={index} className="bg-white border-b dark:bg-[#27283C] dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-700">
                 <td className="pl-14 py-4 font-semibold text-gray-900 dark:text-white">
-                  1234
+                  {index+1}
                 </td>
 
                 <td className="p-4 ">
                   <Image
-                    src={hamburger}
+                    src={offer.img_url??""}
+                    width={75}
+                    height={75}
                     alt="title"
-                    className="hover:scale-105 transition-all duration-500 w-6/7 h-[43px] rounded-md"
+                    className="hover:scale-105 transition-all duration-500 w-[50px] h-[50px] rounded-md"
                   />
                 </td>
 
                 <td className="px-6 py-4 font-semibold text-gray-900 dark:text-white capitalize">
-                  Lorem, ipsum dolor sit amet consectetur...
+                  {offer.name}
                 </td>
 
                 <td className="p-4 px-7 font-semibold text-gray-900 dark:text-white">
-                  Lorem, ipsum dolor sit amet consectetur...
+                  {offer.description}
                 </td>
 
                 <td className="px-6 py-4">
@@ -83,6 +91,7 @@ const Offers: React.FC = () => {
                   </div>
                 </td>
               </tr>
+            ))}
             </tbody>
           </table>
         </div>

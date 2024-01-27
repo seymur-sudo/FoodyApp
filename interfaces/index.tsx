@@ -119,6 +119,18 @@ export interface RestaurantApiResponse {
   status: number;
   message: string;
 }
+export interface OfferPostDataType{
+    name: string|null|undefined,
+    description: string | null|undefined;
+    img_url: string|null
+}
+export interface OfferApiResponse{
+  result: {
+    data: OfferPostDataType[];
+  };
+  status: number;
+  message: string;
+}
 export interface InitialStateType extends Omit<PostDataType, "id"> {}
 export interface FirstStateType extends Omit<RestaurantPostDataType, "id"> {}
 
