@@ -73,7 +73,7 @@ const AddRestuarant: React.FC = () => {
       });
     }
   }
-  const handleChange=( e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>)=>{
+  const handleChange=( e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>)=>{
     const { name, value } = e.target;
     const parsedValue =
       name === ("delivery_price" || "delivery_min")
@@ -185,7 +185,7 @@ const AddRestuarant: React.FC = () => {
               <div className="my-5 flex flex-col">
                 <label className="mb-1">Cuisine:</label>
 
-                <input
+                <textarea
                   className="w-full h-[100px]  rounded-[14px] bg-inputBg leading-10 resize-y"
                   name="cuisine"
                   // ref={cuisineRef}

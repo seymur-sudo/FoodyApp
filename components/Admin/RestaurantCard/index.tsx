@@ -15,7 +15,7 @@ interface RestaurantCardProps {
   restaurant: RestaurantPostDataType;
 }
 const RestaurantCard: React.FC<RestaurantCardProps> = ({ key, restaurant }) => {
-  const { setShow, show,setLastData,lastData, showDelete, setshowDelete } =
+  const { setShow,setNewImg, show,setLastData,lastData, showDelete, setshowDelete } =
     useSidebarContext() as SidebarContextProps;
 
 
@@ -27,8 +27,15 @@ const RestaurantCard: React.FC<RestaurantCardProps> = ({ key, restaurant }) => {
   }, []);
   const handleEdit=(item:RestaurantPostDataType)=>{
     setLastData(item)
-    setShow(!show)
-    console.log(lastData);
+    setNewImg(item.img_url)
+    setTimeout(() => {
+      setShow(!show)
+      console.log(lastData);
+    }, 100);
+  }
+  const handleDelete=(delItem:RestaurantPostDataType)=>{
+    setLastData(delItem)
+    setshowDelete(!showDelete)
   }
   
   return (
@@ -56,7 +63,7 @@ const RestaurantCard: React.FC<RestaurantCardProps> = ({ key, restaurant }) => {
       </div>
       <div className="flex h-full ml-6 mr-1 flex-col justify-between">
         <Image
-          onClick={() => setshowDelete(!showDelete)}
+          onClick={() => handleDelete(restaurant)}
           className="mt-2 cursor-pointer hover:scale-[120%] duration-500"
           src={del}
           alt="del"

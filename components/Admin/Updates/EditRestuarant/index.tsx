@@ -1,12 +1,109 @@
-import React from "react";
+import React, { useEffect,useRef, useState } from "react";
 import Image from "next/image";
-import uploadImg from '../../../../public/svgs/upload.svg'
+import { toast } from "react-toastify";
+import {updateRestaurant } from "@/services/index";
+import uploadImg from '@/public/svgs/upload.svg'
+import { fileStorage } from "@/server/configs/firebase";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { useSidebarContext } from "@/contexts/SidebarContext";
-import { SidebarContextProps } from "../../../../interfaces/index";
+import { QUERIES } from "@/constant/Queries";
+import { useMutation, useQueryClient } from "react-query";
+import { FirstStateType } from "@/interfaces/index";
+import {RestaurantPostDataType} from "@/interfaces/index"
+import { SidebarContextProps } from "@/interfaces/index";
 
 const EditRestuarant: React.FC = () => {
-  const {setLastData,lastData, show, closeModal } = useSidebarContext() as SidebarContextProps;
+  const {setLastData,newImg,setNewImg, selectedFile,setSelectedFile,lastData, show, closeModal } = useSidebarContext() as SidebarContextProps;
+  // const [isChanged,setIsChanged]=useState<boolean>(false)
+  const nameRef=useRef<HTMLInputElement>(null);
+  const cuisineRef=useRef<HTMLTextAreaElement>(null);
+  const deliveryPriceRef=useRef<HTMLInputElement>(null);
+  const deliveryMinuteRef=useRef<HTMLInputElement>(null);
+  const addressRef=useRef<HTMLInputElement>(null);
+  const categoryRef=useRef<HTMLSelectElement>(null);
 
+
+  const editState: RestaurantPostDataType = {
+    name: lastData?.name,
+    category_id: lastData?.category_id,
+    img_url: newImg,
+    cuisine: lastData?.cuisine,
+    address: lastData?.address,
+    delivery_min: lastData?.delivery_min,
+    delivery_price: lastData?.delivery_price,
+  };
+
+  const [edtRestaurant,setEdtRestaurant]=useState<RestaurantPostDataType>(editState)
+  const handleNewImg = (e:React.ChangeEvent<HTMLInputElement>) =>{
+    const file = e.target.files?.[0];
+    if(file){
+      setSelectedFile(file);
+      setNewImg(URL.createObjectURL(file));
+      const restaurantId = `${new Date().getTime()}_${Math.floor(
+        Math.random() * 1000
+      )}`
+      const imageRef = ref(fileStorage, `images/${file.name + restaurantId}`);
+      uploadBytes(imageRef, file)
+        .then((snapshot) => {
+          getDownloadURL(snapshot.ref)
+            .then((downloadURL) => {
+              setEdtRestaurant((prevRest) => ({
+                ...prevRest,
+                img_url: downloadURL,
+              }));
+              console.log("Dosyanın Firebase Storage URL'si: ", downloadURL);
+            })
+            .catch((error) => {
+              console.error("Download URL alınırken bir hata oluştu: ", error);
+            });
+        })
+        .catch((error) => {
+          console.error("Dosya yüklenirken bir hata oluştu: ", error);
+        });
+    } else {
+      console.error("No file selected");
+    }
+  };
+  const handleEditRestaurant=()=>{
+    setEdtRestaurant({
+      name: nameRef.current?.value,
+      category_id: categoryRef.current?.value,
+      img_url: newImg,
+      cuisine: cuisineRef.current?.value,
+      address: addressRef.current?.value,
+      delivery_min: Number(deliveryMinuteRef.current?.value),
+      delivery_price: Number(deliveryPriceRef.current?.value),
+    })
+    setTimeout(() => {
+      mutation.mutate()
+    }, 100);
+  }
+  const handleChange=( e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>)=>{
+    
+  }
+
+  const queryClient=useQueryClient()
+  const mutation = useMutation(() =>updateRestaurant(edtRestaurant,lastData?.id), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(QUERIES.Restaurants);
+      // setEdtRestaurant(firstState);
+      setTimeout(() => {
+        closeModal();
+        
+        setNewImg(null)
+      }, 1000);
+      toast.success("Restaurant added successfully!", {
+        autoClose: 1000,
+      });
+    },
+    onError: (error) => {
+      console.error("Error added Restaurant:", error);
+      console.log(edtRestaurant);
+      toast.error("Error added Restaurant", {
+        autoClose: 1000,
+      });
+    },
+  });
   return (
     <>
       {show && (
@@ -16,7 +113,15 @@ const EditRestuarant: React.FC = () => {
             <div className="flex flex-col justify-center ">
               <h1 className="capitalize text-2xl mb-2"> edit restuarant</h1>
               <p className="capitalize text-lg">upload your restaurant image</p>
-              <div className="h-[15vh] w-3/4 bg-emerald-800 my-4">image</div>
+              <div className="h-[50vh] w-3/4 my-4">
+                  <Image
+                  width={300}
+                  height={300}
+                  src={newImg||uploadImg}
+                  alt="uploaded"
+                  className="object-cover w-full h-full rounded-[14px]"
+                />
+              </div>
               <p className=" text-lg">
                 Edit your restuarant description and necesarry information
               </p>
@@ -44,13 +149,19 @@ const EditRestuarant: React.FC = () => {
 
             <div className="flex items-center justify-center mb-4 md:mb-8 h-[20%]  w-full rounded-[14px] bg-[#43445A]">
               <label
-                htmlFor="dropzone-file"
+                htmlFor="edit-rest-file"
                 className="flex flex-col items-center justify-center w-full rounded-[14px]  bg-[#43445A]  cursor-pointer  "
               >
                 <div className="flex flex-col items-center justify-center pt-5 pb-6 ">
                   <Image width={75} height={75} src={uploadImg} alt="upload" />
                 </div>
-                <input id="dropzone-file" type="file" className="hidden" />
+                <input
+                  name="img_url"
+                  id="edit-rest-file"
+                  type="file"
+                  className="hidden"
+                  onChange={(e) => handleNewImg(e)}
+                />
               </label>
             </div>
 
@@ -62,6 +173,11 @@ const EditRestuarant: React.FC = () => {
               <div className="flex flex-col">
                 <label className="mb-1">Name</label>
                 <input
+                  defaultValue={lastData?.name}
+                  ref={nameRef}
+                  // name="name"
+                  // value={edtRestaurant.name}
+                  onChange={handleChange}
                   type="text"
                   className="w-full p-2 rounded-[14px] bg-inputBg"
                 />
@@ -70,6 +186,11 @@ const EditRestuarant: React.FC = () => {
                 <label className="mb-1">Cuisine:</label>
 
                 <textarea
+                  defaultValue={lastData?.cuisine}
+                  ref={cuisineRef}
+                  // name="cuisine"
+                  // value={edtRestaurant.cuisine}
+                  onChange={handleChange}
                   className="w-full h-[100px]  rounded-[14px] bg-inputBg leading-10 resize-y"
                   rows={4}
                   cols={50}
@@ -80,6 +201,11 @@ const EditRestuarant: React.FC = () => {
               <div className="mb-5 flex flex-col">
                 <label className="mb-1">Delivery Price</label>
                 <input
+                  defaultValue={lastData?.delivery_price}
+                  ref={deliveryPriceRef}
+                  // name="delivery_price"
+                  // value={edtRestaurant.cuisine}
+                  onChange={handleChange}
                   type="number"
                   className="w-full p-2 rounded-[14px] bg-inputBg"
                 />
@@ -88,6 +214,11 @@ const EditRestuarant: React.FC = () => {
                 <label className="mb-1">Delivery Min</label>
                 <input
                   type="number"
+                  ref={deliveryMinuteRef}
+                  // name="delivery_min"
+                  // value={edtRestaurant.delivery_min}
+                  onChange={handleChange}
+                  defaultValue={lastData?.delivery_min}
                   className="w-full p-2 rounded-[14px] bg-inputBg"
                 />
               </div>
@@ -95,6 +226,11 @@ const EditRestuarant: React.FC = () => {
                 <label className="mb-1">Address</label>
                 <input
                   type="text"
+                  ref={addressRef}
+                  // name="address"
+                  // value={edtRestaurant.address}
+                  onChange={handleChange}
+                  defaultValue={lastData?.address}
                   className="w-full p-2 rounded-[14px] bg-inputBg"
                 />
               </div>
@@ -104,6 +240,11 @@ const EditRestuarant: React.FC = () => {
                 </label>
                 <select
                   id="category"
+                  ref={categoryRef}
+                  // name="categoryry_id"
+                  // value={edtRestaurant.category_id}
+                  onChange={handleChange}
+                  defaultValue={lastData?.category_id}
                   className="w-full p-3 rounded-[14px] bg-inputBg"
                 >
                   <option value="">Select...</option>
@@ -122,7 +263,7 @@ const EditRestuarant: React.FC = () => {
           >
             cancel
           </button>
-          <button className="capitalize rounded-[14px] 	border-color:[#970e79] border-solid  border-0 bg-[#C035A2] shadow-shadow2 hover:opacity-75 transition-all duration-500 w-5/12 py-3 md:py-4 text-[#fff] text-lg font-bold leading-5 tracking-[0.25px]">
+          <button onClick={handleEditRestaurant} className="capitalize rounded-[14px] 	border-color:[#970e79] border-solid  border-0 bg-[#C035A2] shadow-shadow2 hover:opacity-75 transition-all duration-500 w-5/12 py-3 md:py-4 text-[#fff] text-lg font-bold leading-5 tracking-[0.25px]">
             update restaurant
           </button>
         </div>
