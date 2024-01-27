@@ -3,8 +3,9 @@ import {
   SidebarContextProps,
   ChildrenNode,
   PostDataType,
+  RestaurantPostDataType,
 } from "../interfaces/index";
-import { useSpring, animated } from "@react-spring/web";
+import { useSpring } from "@react-spring/web";
 
 const SidebarContext = createContext<SidebarContextProps | undefined>(
   undefined
@@ -60,9 +61,8 @@ export const SidebarContextProvider: React.FC<ChildrenNode> = ({
 
 
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [addProductImg, setAddProductImg] = useState<string | null>(null);
+  const [lastData,setLastData]=useState<RestaurantPostDataType| null>(null)
   const [newImg,setNewImg]=useState<string | null>(null)
-
 
 
   const [showUserModal, setShowUserModal] = useState<boolean>(false);
@@ -103,6 +103,8 @@ export const SidebarContextProvider: React.FC<ChildrenNode> = ({
     setSidebarOpen,
     closeSidebar,
     show,
+    lastData,
+    setLastData,
     newImg,
     setNewImg,
     setShow,
@@ -121,8 +123,6 @@ export const SidebarContextProvider: React.FC<ChildrenNode> = ({
     openDeleteModal,
     selectedFile,
     setSelectedFile,
-    addProductImg,
-    setAddProductImg,
     showUserModal,
     setShowUserModal,
     openUserModal,

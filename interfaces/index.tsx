@@ -12,6 +12,8 @@ export interface SidebarContextProps {
   closeNavbar: () => void;
   closeSidebar: () => void;
   show: boolean;
+  lastData:RestaurantPostDataType | null,
+  setLastData:React.Dispatch<React.SetStateAction<RestaurantPostDataType | null>>,
   newImg:string | null,
   setNewImg:React.Dispatch<React.SetStateAction<string | null>>,
   showAdds: boolean;
@@ -29,9 +31,7 @@ export interface SidebarContextProps {
   setDeletedItem: React.Dispatch<React.SetStateAction<PostDataType | null>>;
   openDeleteModal: (product: PostDataType | null) => void;
   selectedFile: File | null;
-  addProductImg: string | null;
   setSelectedFile: React.Dispatch<React.SetStateAction<File | null>>;
-  setAddProductImg: React.Dispatch<React.SetStateAction<string | null>>;
   openUserModal: () => void;
   closeUserModal: () => void;
   showUserModal: boolean;

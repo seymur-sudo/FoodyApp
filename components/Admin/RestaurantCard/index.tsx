@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import del from "../../../public/svgs/delete.svg";
 import edt from "../../../public/svgs/edit.svg";
@@ -7,14 +7,17 @@ import { useSidebarContext } from "@/contexts/SidebarContext";
 import { SidebarContextProps } from "@/interfaces";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import DeleteModal from "@/components/Admin/Modals/DeleteModal";
+import EditModal from "@/components/Admin/Modals/EditModal";
 import defaultRes from "../../../public/svgs/default.png"
 interface RestaurantCardProps {
   key: string;
   restaurant: RestaurantPostDataType;
 }
 const RestaurantCard: React.FC<RestaurantCardProps> = ({ key, restaurant }) => {
-  const { setShow, show, showDelete, setshowDelete } =
+  const { setShow, show,setLastData,lastData, showDelete, setshowDelete } =
     useSidebarContext() as SidebarContextProps;
+
 
   useEffect(() => {
     AOS.init({
@@ -22,9 +25,14 @@ const RestaurantCard: React.FC<RestaurantCardProps> = ({ key, restaurant }) => {
     });
     AOS.refresh();
   }, []);
-
+  const handleEdit=(item:RestaurantPostDataType)=>{
+    setLastData(item)
+    setShow(!show)
+    console.log(lastData);
+  }
   
   return (
+    <>
     <div
       key={key}
       data-aos="fade-up"
@@ -54,13 +62,16 @@ const RestaurantCard: React.FC<RestaurantCardProps> = ({ key, restaurant }) => {
           alt="del"
         />
         <Image
-          onClick={() => setShow(!show)}
+          onClick={() =>handleEdit(restaurant)}
           className="mb-2 cursor-pointer hover:scale-[120%] duration-500"
           src={edt}
           alt="edt"
         />
       </div>
     </div>
+    <EditModal/>
+    <DeleteModal/>
+    </>
   );
 };
 

@@ -2,15 +2,17 @@ import React from "react";
 import Layout from "@/components/Admin/Layout";
 import RestaurantCard from "@/components/Admin/RestaurantCard";
 import SearchBar from "@/components/Admin/SearchBar";
-import EditModal from "@/components/Admin/Modals/EditModal";
+import { useSidebarContext } from "@/contexts/SidebarContext";
+import { SidebarContextProps } from "@/interfaces/index";
 import { RestaurantPostDataType } from "../../../interfaces/index";
-import DeleteModal from "@/components/Admin/Modals/DeleteModal";
 import { useQuery } from "react-query";
-import { getRestaurant } from "../../../services/index";
+import { getRestaurant } from "@/services/index";
 const Restaurant: React.FC = () => {
+
   const { data, isLoading, isError } = useQuery("restaurants", getRestaurant, {
     refetchOnWindowFocus: false,
   });
+console.log(data);
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -32,8 +34,6 @@ const Restaurant: React.FC = () => {
               />
             ))}
         </div>
-        <EditModal />
-        <DeleteModal />
       </div>
     </Layout>
   );
