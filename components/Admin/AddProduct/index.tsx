@@ -104,7 +104,7 @@ const AddProduct: React.FC = () => {
     }
   };
 
-  console.log("newProduct", newProduct);
+  // console.log("newProduct", newProduct);
 
 
   return (

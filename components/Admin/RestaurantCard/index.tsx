@@ -11,10 +11,10 @@ import DeleteModal from "@/components/Admin/Modals/DeleteModal";
 import EditModal from "@/components/Admin/Modals/EditModal";
 import defaultRes from "../../../public/svgs/default.png"
 interface RestaurantCardProps {
-  key: string;
+  id: string|number;
   restaurant: RestaurantPostDataType;
 }
-const RestaurantCard: React.FC<RestaurantCardProps> = ({ key, restaurant }) => {
+const RestaurantCard: React.FC<RestaurantCardProps> = ({ id, restaurant }) => {
   const { setShow,setNewImg, show,setLastData,lastData, showDelete, setshowDelete } =
     useSidebarContext() as SidebarContextProps;
 
@@ -41,7 +41,7 @@ const RestaurantCard: React.FC<RestaurantCardProps> = ({ key, restaurant }) => {
   return (
     <>
     <div
-      key={key}
+      key={id}
       data-aos="fade-up"
       data-aos-delay={150}
       className="bg-white  rounded-[5px] flex flex-row items-center justify-between"

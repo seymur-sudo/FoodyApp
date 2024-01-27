@@ -99,7 +99,7 @@ export const updateRestaurant = (
 
 //DELETE_RESTAURANT
 export const deleteRestaurant = (
-  restaurantID: string | number
+  restaurantID: string | number|undefined
 ): AxiosPromise<RestaurantApiResponse> =>
   instanceAxios({
     method: "DELETE",
