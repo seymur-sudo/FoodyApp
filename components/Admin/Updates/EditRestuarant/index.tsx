@@ -5,7 +5,7 @@ import { useSidebarContext } from "@/contexts/SidebarContext";
 import { SidebarContextProps } from "../../../../interfaces/index";
 
 const EditRestuarant: React.FC = () => {
-  const { show, closeModal } = useSidebarContext() as SidebarContextProps;
+  const {setLastData,lastData, show, closeModal } = useSidebarContext() as SidebarContextProps;
 
   return (
     <>
