@@ -9,17 +9,30 @@ import { useQuery } from "react-query";
 import { getRestaurant } from "@/services/index";
 const Restaurant: React.FC = () => {
 
-  const { data, isLoading, isError } = useQuery("restaurants", getRestaurant, {
+  const { data, isLoading, isError } = useQuery("restuarants", getRestaurant, {
     refetchOnWindowFocus: false,
   });
 console.log(data);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+    <Layout>
+      <div className="px-12 md:px-6 h-screen">
+        <SearchBar />
+        
+      </div>
+    </Layout>)
   }
 
   if (isError) {
-    return <div>Error loading products</div>;
+    return(
+      <Layout>
+        <div className="px-12 md:px-6 h-screen">
+          <SearchBar />
+          
+        </div>
+      </Layout>
+    )
   }
   return (
     <Layout>
@@ -29,7 +42,7 @@ console.log(data);
           {data &&
             data.data.result.data.map((restaurant: RestaurantPostDataType) => (
               <RestaurantCard
-                key={restaurant.id.toString()}
+                key={(restaurant.id?? '').toString()}
                 restaurant={restaurant}
               />
             ))}

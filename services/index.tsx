@@ -88,7 +88,7 @@ export const getRestaurantById = (
 //UPDATE_RESTAURANT
 export const updateRestaurant = (
   newRestaurant: RestaurantPostDataType,
-  restaurantID: string | number
+  restaurantID: string | number |undefined
 ) => {
   return instanceAxios({
     method: "PUT",
