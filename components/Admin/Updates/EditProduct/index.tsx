@@ -37,9 +37,7 @@ const EditProduct: React.FC = () => {
       setTimeout(() => {
         closeModal();
       }, 1100);
-      // setTimeout(() => {
-      //   setNewImg(null)
-      // }, 1200);
+
 
     },
     onError: (error) => {

@@ -6,8 +6,10 @@ import {
   RestaurantApiResponse,
   RestaurantPostDataType,
   PostDataType,
+  CategoryPostDataType,
   FirstStateType,
   InitialStateType,
+  InitialCategoryState,
 } from "../interfaces/index";
 
 // GET
@@ -42,14 +44,16 @@ export const addRestaurant: (
   });
 };
 
-// // ADD_RESTAURANT
-// export const addRestaurant = (newRestaurant: FirstStateType) => {
-//   return instanceAxios({
-//     method: "POST",
-//     url: ENDPOINTS.RESTAURANT,
-//     data: newRestaurant,
-//   });
-// };
+// ADD_CATEGORY
+export const addCategory: (
+  newCategory: InitialCategoryState
+) => AxiosPromise<CategoryPostDataType> = (newCategory) => {
+  return instanceAxios({
+    method: "POST",
+    url: ENDPOINTS.CATEGORY,
+    data: newCategory,
+  });
+};
 
 // EDIT_PRODUCT
 export const editProduct = (

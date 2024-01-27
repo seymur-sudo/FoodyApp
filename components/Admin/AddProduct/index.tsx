@@ -32,9 +32,6 @@ const AddProduct: React.FC = () => {
       setTimeout(() => {
         closeSidebar();
       }, 1100);
-      // setTimeout(() => {
-      //   setNewImg(null);
-      // }, 1200);
       setSelectedFile(null);
       toast.success("Product added successfully!", {
         autoClose: 1000,
@@ -74,27 +71,7 @@ const AddProduct: React.FC = () => {
     }));
   };
 
-  //   event: React.ChangeEvent<HTMLInputElement>
-  // ) => {
-  //   const file = event.target.files?.[0];
-  //   if (file) {
-  //     setSelectedFile(file);
-  //     setAddProductImg(URL.createObjectURL(file));
-
-  //     handleFileChange(
-  //       file,
-  //       (downloadURL) => {
-  //         setNewProduct((prevProduct) => ({
-  //           ...prevProduct,
-  //           img_url: downloadURL,
-  //         }));
-  //       },
-  //       (error) => {
-  //         console.error("Error handling file change:", error);
-  //       }
-  //     );
-  //   }
-  // };
+ 
 
   const handleNewImg = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -109,7 +86,6 @@ const AddProduct: React.FC = () => {
         .then((snapshot) => {
           getDownloadURL(snapshot.ref)
             .then((downloadURL) => {
-              // setLastImg(downloadURL);
               setNewProduct((prevProduct) => ({
                 ...prevProduct,
                 img_url: downloadURL,
@@ -127,6 +103,9 @@ const AddProduct: React.FC = () => {
       console.error("No file selected");
     }
   };
+
+  console.log("newProduct", newProduct);
+
 
   return (
     <>
@@ -224,21 +203,7 @@ const AddProduct: React.FC = () => {
                 />
               </div>
 
-              <div className="flex flex-col">
-                <label htmlFor="category" className="mb-1">
-                  Restaurant:
-                </label>
-                <select
-                  className="w-full p-3 rounded-[14px] bg-inputBg"
-                  name="rest_id"
-                  value={newProduct.rest_id}
-                  onChange={handleInputChange}
-                >
-                  <option value="">Select...</option>
-                  <option value="electronics">Electronics</option>
-                  <option value="clothing">Clothing</option>
-                </select>
-              </div>
+      
             </div>
           </div>
         </div>
