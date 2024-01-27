@@ -1,10 +1,9 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import uploadImg from "../../../public/svgs/upload.svg";
 import { useSidebarContext } from "../../../contexts/SidebarContext";
 import { SidebarContextProps } from "../../../interfaces/index";
 import { FirstStateType } from "../../../interfaces/index";
-import axios from "axios";
 import { fileStorage } from "../../../server/configs/firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { addRestaurant } from "../../../services/index";
@@ -25,8 +24,6 @@ const AddRestuarant: React.FC = () => {
   const {
     showAdds,
     closeAddsModal,
-    lastImg,
-    setLastImg,
     newImg,
     setNewImg,
   } = useSidebarContext() as SidebarContextProps;
@@ -50,7 +47,6 @@ const AddRestuarant: React.FC = () => {
         .then((snapshot) => {
           getDownloadURL(snapshot.ref)
             .then((downloadURL) => {
-              setLastImg(downloadURL);
               setNewRestaurant((prevProduct) => ({
                 ...prevProduct,
                 img_url: downloadURL,
@@ -95,7 +91,6 @@ const AddRestuarant: React.FC = () => {
       setNewRestaurant(firstState);
       setTimeout(() => {
         closeAddsModal();
-        setLastImg(null)
         setNewImg(null)
       }, 1000);
       toast.success("Restaurant added successfully!", {

@@ -12,8 +12,6 @@ export interface SidebarContextProps {
   closeNavbar: () => void;
   closeSidebar: () => void;
   show: boolean;
-  lastImg:string | null,
-  setLastImg:React.Dispatch<React.SetStateAction<string | null>>,
   newImg:string | null,
   setNewImg:React.Dispatch<React.SetStateAction<string | null>>,
   showAdds: boolean;
