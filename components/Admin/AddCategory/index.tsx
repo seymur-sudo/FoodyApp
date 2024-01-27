@@ -18,10 +18,12 @@ const initialState: InitialCategoryState = {
 };
 
 const AddCategory: React.FC = () => {
-  const { showAdds, closeAddsModal, setSelectedFile, newImg, setNewImg } =
+  const { showAdds, closeAddsModal, newImg, setNewImg } =
     useSidebarContext() as SidebarContextProps;
   const [newCategory, setNewCategory] =
     useState<InitialCategoryState>(initialState);
+    const [selectedFile, setSelectedFile] = useState<File | null>(null);
+    
 
   const queryClient = useQueryClient();
   const mutation = useMutation(() => addCategory(newCategory), {
@@ -81,38 +83,39 @@ const AddCategory: React.FC = () => {
       [name]: value,
     }));
   };
-
   const handleNewImg = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       setSelectedFile(file);
       setNewImg(URL.createObjectURL(file));
-      const randomId = `${new Date().getTime()}_${Math.floor(
-        Math.random() * 1000
+      const  categorytId = `${new Date().getTime()}_${Math.floor(
+        Math.random() * 10000
       )}`;
-      const imageRef = ref(fileStorage, `images/${file.name + randomId}`);
-      console.log("File Name:", file.name); 
+      const storagePath = `images/${file.name + categorytId}`;
+      const imageRef = ref(fileStorage, storagePath);
+      
       uploadBytes(imageRef, file)
         .then((snapshot) => {
-          getDownloadURL(snapshot.ref)
-            .then((downloadURL) => {
-              setNewCategory((prevCategory) => ({
-                ...prevCategory,
-                img_url: downloadURL,
-              }));
-              console.log("Dosyanın Firebase Storage URL'si: ", downloadURL);
-            })
-            .catch((error) => {
-              console.error("Download URL alınırken bir hata oluştu: ", error);
-            });
+          console.log("File uploaded successfully:", snapshot);
+          return getDownloadURL(snapshot.ref);
+        })
+        .then((downloadURL) => {
+          console.log("Download URL:", downloadURL);
+          setNewCategory((prevProduct) => ({
+            ...prevProduct,
+            img_url: downloadURL,
+          }));
+          console.log("Dosyanın Firebase Storage URL'si: ", downloadURL);
         })
         .catch((error) => {
+          console.error("Error during file upload:", error);
           console.error("Dosya yüklenirken bir hata oluştu: ", error);
         });
     } else {
       console.error("No file selected");
     }
   };
+  
 
   console.log("newCategory", newCategory);
 
@@ -160,17 +163,18 @@ const AddCategory: React.FC = () => {
 
             <div className="flex items-center justify-center mb-4 md:mb-8 h-[20%]  w-full rounded-[14px] bg-[#43445A]">
               <label
-                htmlFor="dropzone-file"
+                htmlFor="add-rest-file"
                 className="flex flex-col items-center justify-center w-full rounded-[14px]  bg-[#43445A]  cursor-pointer  "
               >
                 <div className="flex flex-col items-center justify-center pt-5 pb-6 ">
                   <Image width={75} height={75} src={uploadImg} alt="upload" />
                 </div>
                 <input
-                  id="dropzone-file"
+                  name="img_url"
+                  id="add-rest-file"
                   type="file"
                   className="hidden"
-                  onChange={handleNewImg}
+                  onChange={(e) => handleNewImg(e)}
                 />
               </label>
             </div>
@@ -202,12 +206,12 @@ const AddCategory: React.FC = () => {
             cancel
           </button>
           <button
-            // className={`capitalize rounded-[14px] border-solid border-0 shadow-shadow1 transition-all duration-500 w-5/12 py-3 md:py-4 text-lg font-bold leading-5 tracking-[0.25px] ${
-            //   !isFormValid()
-            //     ? "bg-[#5a6874] cursor-not-allowed"
-            //     : "bg-[#C035A2] hover:opacity-75"
-            // }`}
-            // disabled={!isFormValid()}
+            className={`capitalize rounded-[14px] border-solid border-0 shadow-shadow1 transition-all duration-500 w-5/12 py-3 md:py-4 text-lg font-bold leading-5 tracking-[0.25px] ${
+              !isFormValid()
+                ? "bg-[#5a6874] cursor-not-allowed"
+                : "bg-[#C035A2] hover:opacity-75"
+            }`}
+            disabled={!isFormValid()}
             onClick={handleAddCategory}
           >
             {mutation.isLoading ? "category is creating" : " create category"}
