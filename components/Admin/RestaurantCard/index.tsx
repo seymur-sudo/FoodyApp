@@ -27,7 +27,7 @@ const RestaurantCard: React.FC<RestaurantCardProps> = ({ key, restaurant }) => {
   }, []);
   const handleEdit=(item:RestaurantPostDataType)=>{
     setLastData(item)
-    setNewImg(item.img_url)
+    setNewImg(item.img_url??null)
     setTimeout(() => {
       setShow(!show)
       console.log(lastData);
