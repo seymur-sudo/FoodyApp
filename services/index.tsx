@@ -10,6 +10,8 @@ import {
   FirstStateType,
   InitialStateType,
   InitialCategoryState,
+  OfferApiResponse,
+  OfferPostDataType,
 } from "../interfaces/index";
 
 // GET
@@ -105,3 +107,18 @@ export const deleteRestaurant = (
     method: "DELETE",
     url: `${ENDPOINTS.RESTAURANT}/${restaurantID}`,
   });
+
+//  GET_OFFER
+export const getOffer = (): AxiosPromise<OfferApiResponse> =>
+  instanceAxios({ method: "GET", url: ENDPOINTS.OFFER });
+
+  // ADD_OFFER
+export const addOffer: (
+  newOffer: OfferPostDataType
+) => AxiosPromise<OfferApiResponse> = (newOffer) => {
+  return instanceAxios({
+    method: "POST",
+    url: ENDPOINTS.OFFER,
+    data: newOffer,
+  })
+}

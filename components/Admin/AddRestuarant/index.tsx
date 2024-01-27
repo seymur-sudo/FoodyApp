@@ -264,7 +264,7 @@ const AddRestuarant: React.FC = () => {
             }`}
             disabled={!isValid()}
             onClick={handleAddRestaurant}
-          >{mutation.isLoading ? <div className='flex justify-center items-center mx-0 my-auto'><FadeLoader color={"#fff"}/></div> : 'Login'}
+          >{mutation.isLoading ? <div className='flex justify-center items-center mx-0 my-auto'><FadeLoader className="w-[15px] h-[15px]" color={"#fff"}/></div> : 'Add Restaurant'}
           </button>
         </div>
       </div>
@@ -273,109 +273,3 @@ const AddRestuarant: React.FC = () => {
 };
 
 export default AddRestuarant;
-
-
-  // // const [currentFile, setCurrentFile] = useState<File | null>(null);
-  // // const [addRestaurantImg, setAddRestaurantImg] = useState<string | null>(null);
-  
-  // const mutation = useMutation(() => addRestaurant(newRestaurant), {
-  //   onSuccess: () => {
-  //     queryClient.invalidateQueries(QUERIES.Restaurants);
-  //     setNewRestaurant(firstState);
-  //     setTimeout(() => {
-  //       closeAddsModal();
-  //     }, 1000);
-  //     toast.success("Restaurant added successfully!", {
-  //       autoClose: 1000,
-  //     });
-  //   },
-  //   onError: (error) => {
-  //     console.error("Error added Restaurant:", error);
-  //     toast.error("Error added Restaurant", {
-  //       autoClose: 1000,
-  //     });
-  //   },
-  // });
-  // const isValid = (): boolean => {
-  //   return Object.values(newRestaurant).every((value) => value !== "");
-  // };
-  // const handleAddRestaurant = async () => {
-    // if (isValid()) {
-    // mutation.mutate();
-    // } else {
-    //   toast.error("Please fill in all fields before creating the product", {
-    //     autoClose: 1000,
-    //   });
-    // }
-  // };
-  // const handleInputChange = (
-  //   event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  // ) => {
-  //   const { name, value } = event.target;
-  //   const parsedValue =
-  //     name === ("delivery_price" || name === "delivery_min")
-  //       ? parseFloat(value)
-  //       : value;
-
-  //   setNewRestaurant((prevRestaurant) => ({
-  //     ...prevRestaurant,
-  //     [name]: parsedValue,
-  //   }));
-  // };
-
-  // const handleFileChange = async (
-  //   event: React.ChangeEvent<HTMLInputElement>
-  // ) => {
-  //   const file = event.target.files?.[0];
-
-  //   if (file) {
-  //     setSelectedFile(file);
-
-  //     setAddProductImg(URL.createObjectURL(file));
-  //     console.log("File yuklendi" + addProductImg);
-
-      // const restaurantId = `${new Date().getTime()}_${Math.floor(
-      //   Math.random() * 1000
-      // )}`;
-  //     const storageRef = ref(
-  //       fileStorage,
-  //       `products/${restaurantId}/${file.name}`
-  //     );
-  //     const uploadTask = uploadBytesResumable(storageRef, file);
-
-  //     uploadTask.on(
-  //       "state_changed",
-  //       (snapshot) => {},
-  //       (error) => {
-  //         console.error("Error uploading file:", error);
-  //         toast.error("Error uploading file", {
-  //           autoClose: 1000,
-  //         });
-  //       },
-  //       () => {
-  //         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-            // setNewRestaurant((prevProduct) => ({
-            //   ...prevProduct,
-            //   img_url: downloadURL,
-            // }));
-  //         });
-  //       }
-  //     );
-  //   }
-  // };
-
-  // console.log("currentFileRes", setSelectedFile);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
