@@ -1,7 +1,6 @@
 import React from "react";
 import Layout from "@/components/Admin/Layout";
 import Image from "next/image";
-import eye from "../../../public/svgs/eye.svg";
 import deleteIcon from "../../../public/svgs/delete2.svg";
 import SearchBar from "@/components/Admin/SearchBar";
 import DeleteModal from "@/components/Admin/Modals/DeleteModal";
@@ -77,13 +76,8 @@ const Orders: React.FC = () => {
                   055 350 92 92
                 </td>
 
-                <td className="px-6 py-4">
+                <td className="pl-9 py-4">
                   <div className="flex items-center">
-                    <Image
-                      src={eye}
-                      alt="title"
-                      className="hover:scale-110 transition-all duration-500  mr-2  cursor-pointer"
-                    />
                     <Image
                       src={deleteIcon}
                       alt="title"

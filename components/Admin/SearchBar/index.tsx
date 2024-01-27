@@ -6,37 +6,42 @@ import { useSidebarContext } from "@/contexts/SidebarContext";
 
 const SearchBar: React.FC = () => {
   const { showAdds, setShowAdds } = useSidebarContext() as SidebarContextProps;
-  const router = useRouter();
+  const { pathname } = useRouter();
 
   const hideButton =
-    router.pathname === "/admin/products" ||
-    router.pathname === "/admin/orders" ||
-    router.pathname === "/admin/order-history";
+    pathname === "/admin/products" ||
+    pathname === "/admin/orders" ||
+    pathname === "/admin/order-history";
+
+  const hideSelect =
+    pathname === "/admin/category" ||
+    pathname === "/admin/orders" ||
+    pathname === "/admin/offers" ||
+    pathname === "/admin/order-history";
 
   const getButtonText = () => {
-    if (router.pathname === "/admin/category") {
+    if (pathname === "/admin/category") {
       return "ADD CATEGORY";
-    } else if (router.pathname === "/admin/offers") {
+    } else if (pathname === "/admin/offers") {
       return "ADD OFFER";
-    } else if (router.pathname === "/admin/restaurants") {
+    } else if (pathname === "/admin/restaurants") {
       return "ADD RESTUARANT";
     }
     return "ADD";
   };
 
   const getPageName = () => {
-    const path = router.pathname;
-    if (path === "/admin/category") {
+    if (pathname === "/admin/category") {
       return "Categories";
-    } else if (path === "/admin/offers") {
+    } else if (pathname === "/admin/offers") {
       return "Offers";
-    } else if (path === "/admin/restaurants") {
+    } else if (pathname === "/admin/restaurants") {
       return "Restaurants";
-    } else if (path === "/admin/products") {
+    } else if (pathname === "/admin/products") {
       return "Products";
-    } else if (path === "/admin/orders") {
+    } else if (pathname === "/admin/orders") {
       return "Orders";
-    } else if (path === "/admin/order-history") {
+    } else if (pathname === "/admin/order-history") {
       return "Order History";
     }
 
@@ -50,27 +55,29 @@ const SearchBar: React.FC = () => {
           {getPageName()}
         </h1>
         <div className="flex flex-col items-center md:flex-row  ">
-          <div className="flex mr-0 md:mr-10">
-            <select
-              id="category"
-              className=" w-[225px] sm:[325px] md:w-[150px] my-3 px-3 py-2 rounded-[14px] bg-inputBg text-[#dddcdc]  font-medium font-roboto"
-            >
-              <option value="">Category Type</option>
-              <option value="electronics">Electronics</option>
-              <option value="clothing">Clothing</option>
-            </select>
-          </div>
+          {!hideSelect && (
+            <div className="flex mr-0 md:mr-10">
+              <select
+                id="category"
+                className=" w-[225px] sm:[325px] md:w-[150px] my-3 px-3 py-2 rounded-[14px] bg-inputBg text-[#dddcdc]  font-medium font-roboto"
+              >
+                <option value="">Category Type</option>
+                <option value="electronics">Electronics</option>
+                <option value="clothing">Clothing</option>
+              </select>
+            </div>
+          )}
 
           {!hideButton && (
-          <>
-            <button
-              className="bg-loginBtn text-[#FFF] font-roboto font-bold  w-[225px] sm:[325px] md:w-[150px] py-3 mb-4 md:my-0 shadow-shadow3 rounded-[14px] text-[12px] hover:opacity-75 transition-all duration-500"
-              onClick={() => setShowAdds(!showAdds)}
-            >
-              {getButtonText()}
-            </button>
-            <SideForElements />
-          </>
+            <>
+              <button
+                className="bg-loginBtn text-[#FFF] font-roboto font-bold  w-[225px] sm:[325px] md:w-[150px] py-3 mb-4 md:my-0 shadow-shadow3 rounded-[14px] text-[12px] hover:opacity-75 transition-all duration-500"
+                onClick={() => setShowAdds(!showAdds)}
+              >
+                {getButtonText()}
+              </button>
+              <SideForElements />
+            </>
           )}
         </div>
       </div>

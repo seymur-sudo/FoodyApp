@@ -12,10 +12,12 @@ export interface SidebarContextProps {
   closeNavbar: () => void;
   closeSidebar: () => void;
   show: boolean;
-  lastData:RestaurantPostDataType | null,
-  setLastData:React.Dispatch<React.SetStateAction<RestaurantPostDataType | null>>,
-  newImg:string | null,
-  setNewImg:React.Dispatch<React.SetStateAction<string | null>>,
+  lastData: RestaurantPostDataType | null;
+  setLastData: React.Dispatch<
+    React.SetStateAction<RestaurantPostDataType | null>
+  >;
+  newImg: string | null;
+  setNewImg: React.Dispatch<React.SetStateAction<string | null>>;
   showAdds: boolean;
   setShow: React.Dispatch<React.SetStateAction<boolean>>;
   setShowAdds: React.Dispatch<React.SetStateAction<boolean>>;
@@ -120,13 +122,12 @@ export interface RestaurantApiResponse {
 export interface InitialStateType extends Omit<PostDataType, "id"> {}
 export interface FirstStateType extends Omit<RestaurantPostDataType, "id"> {}
 
-// export interface RestaurantCardProps {
-//   data: {
-//     id: number;
-//     title: string;
-//     type: string;
-//     image: string;
-//   };
-//   onDelete: (id: number) => void;
-//   onEdit: (id: number) => void;
-// }
+export interface CategoryPostDataType {
+  id: number;
+  name: string;
+  img_url: string | null;
+}
+export interface InitialCategoryState
+  extends Omit<CategoryPostDataType, "id"> {}
+
+
