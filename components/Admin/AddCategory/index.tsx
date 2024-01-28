@@ -10,7 +10,6 @@ import { InitialCategoryState } from "../../../interfaces/index";
 import { QUERIES } from "../../../constant/Queries";
 import { fileStorage } from "../../../server/configs/firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import { ReactQueryDevtools } from "react-query/devtools";
 
 const initialState: InitialCategoryState = {
   name: "",
@@ -18,12 +17,10 @@ const initialState: InitialCategoryState = {
 };
 
 const AddCategory: React.FC = () => {
-  const { showAdds, closeAddsModal, newImg, setNewImg } =
+  const { showAdds, closeAddsModal, newImg, setNewImg, setSelectedFile } =
     useSidebarContext() as SidebarContextProps;
   const [newCategory, setNewCategory] =
     useState<InitialCategoryState>(initialState);
-    const [selectedFile, setSelectedFile] = useState<File | null>(null);
-    
 
   const queryClient = useQueryClient();
   const mutation = useMutation(() => addCategory(newCategory), {
@@ -60,19 +57,6 @@ const AddCategory: React.FC = () => {
     }
   };
 
-  // const handleAddCategory = async () => {
-  //   if (isFormValid()) {
-  //     const newCategoryWithImg = {
-  //       ...newCategory,
-  //       img_url: newImg || "",
-  //     };
-  //     mutation.mutate(newCategoryWithImg);
-  //   } else {
-  //     toast.error("Please fill in all fields before creating the Category", {
-  //       autoClose: 1000,
-  //     });
-  //   }
-  // };
 
   const handleInputChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -88,12 +72,12 @@ const AddCategory: React.FC = () => {
     if (file) {
       setSelectedFile(file);
       setNewImg(URL.createObjectURL(file));
-      const  categorytId = `${new Date().getTime()}_${Math.floor(
+      const categorytId = `${new Date().getTime()}_${Math.floor(
         Math.random() * 10000
       )}`;
       const storagePath = `images/${file.name + categorytId}`;
       const imageRef = ref(fileStorage, storagePath);
-      
+
       uploadBytes(imageRef, file)
         .then((snapshot) => {
           console.log("File uploaded successfully:", snapshot);
@@ -115,9 +99,7 @@ const AddCategory: React.FC = () => {
       console.error("No file selected");
     }
   };
-  
 
-  console.log("newCategory", newCategory);
 
   return (
     <>
@@ -219,7 +201,6 @@ const AddCategory: React.FC = () => {
         </div>
       </div>
 
-      <ReactQueryDevtools />
     </>
   );
 };

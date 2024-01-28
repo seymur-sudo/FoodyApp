@@ -9,15 +9,21 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import DeleteModal from "@/components/Admin/Modals/DeleteModal";
 import EditModal from "@/components/Admin/Modals/EditModal";
-import defaultRes from "../../../public/svgs/default.png"
+import defaultRes from "../../../public/svgs/default.png";
 interface RestaurantCardProps {
-  id: string|number;
+  id: string | number;
   restaurant: RestaurantPostDataType;
 }
 const RestaurantCard: React.FC<RestaurantCardProps> = ({ id, restaurant }) => {
-  const { setShow,setNewImg, show,setLastData,lastData, showDelete, setshowDelete } =
-    useSidebarContext() as SidebarContextProps;
-
+  const {
+    setShow,
+    setNewImg,
+    show,
+    setLastData,
+    lastData,
+    showDelete,
+    setshowDelete,
+  } = useSidebarContext() as SidebarContextProps;
 
   useEffect(() => {
     AOS.init({
@@ -25,59 +31,61 @@ const RestaurantCard: React.FC<RestaurantCardProps> = ({ id, restaurant }) => {
     });
     AOS.refresh();
   }, []);
-  const handleEdit=(item:RestaurantPostDataType)=>{
-    setLastData(item)
-    setNewImg(item.img_url??null)
+
+  
+  const handleEdit = (item: RestaurantPostDataType) => {
+    setLastData(item);
+    setNewImg(item.img_url ?? null);
     setTimeout(() => {
-      setShow(!show)
+      setShow(!show);
       console.log(lastData);
     }, 100);
-  }
-  const handleDelete=(delItem:RestaurantPostDataType)=>{
-    setLastData(delItem)
-    setshowDelete(!showDelete)
-  }
-  
+  };
+  const handleDelete = (delItem: RestaurantPostDataType) => {
+    setLastData(delItem);
+    setshowDelete(!showDelete);
+  };
+
   return (
     <>
-    <div
-      key={id}
-      data-aos="fade-up"
-      data-aos-delay={150}
-      className="bg-white  rounded-[5px] flex flex-row items-center justify-between"
-    >
-      <Image
-        className="w-[50px] ml-4 my-4 mr-6 h-[55px]"
-        src={restaurant.img_url||defaultRes}
-        alt="resimg"
-        width={100}
-        height={100}
-      />
-      <div className="flex flex-col">
-        <p className="text-[18px] font-medium text-[#1E1E30]">
-          {restaurant.name}
-        </p>
-        <p className="text-[14px] line-height-6 font-medium text-[#828282]">
-          {restaurant.category_id}
-        </p>
-      </div>
-      <div className="flex h-full ml-6 mr-1 flex-col justify-between">
+      <div
+        key={id}
+        data-aos="fade-up"
+        data-aos-delay={150}
+        className="bg-white  rounded-[5px] flex flex-row items-center justify-between"
+      >
         <Image
-          onClick={() => handleDelete(restaurant)}
-          className="mt-2 cursor-pointer hover:scale-[120%] duration-500"
-          src={del}
-          alt="del"
+          className="w-[50px] ml-4 my-4 mr-6 h-[55px]"
+          src={restaurant.img_url || defaultRes}
+          alt="resimg"
+          width={100}
+          height={100}
         />
-        <Image
-          onClick={() =>handleEdit(restaurant)}
-          className="mb-2 cursor-pointer hover:scale-[120%] duration-500"
-          src={edt}
-          alt="edt"
-        />
+        <div className="flex flex-col">
+          <p className="text-[18px] font-medium text-[#1E1E30]">
+            {restaurant.name}
+          </p>
+          <p className="text-[14px] line-height-6 font-medium text-[#828282]">
+            {restaurant.category_id}
+          </p>
+        </div>
+        <div className="flex h-full ml-6 mr-1 flex-col justify-between">
+          <Image
+            onClick={() => handleDelete(restaurant)}
+            className="mt-2 cursor-pointer hover:scale-[120%] duration-500"
+            src={del}
+            alt="del"
+          />
+          <Image
+            onClick={() => handleEdit(restaurant)}
+            className="mb-2 cursor-pointer hover:scale-[120%] duration-500"
+            src={edt}
+            alt="edt"
+          />
+        </div>
       </div>
-    </div>
-    <EditModal/>
-    <DeleteModal/>
+      <EditModal />
+      <DeleteModal />
     </>
   );
 };

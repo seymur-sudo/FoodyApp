@@ -71,8 +71,6 @@ const AddProduct: React.FC = () => {
     }));
   };
 
- 
-
   const handleNewImg = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -105,7 +103,6 @@ const AddProduct: React.FC = () => {
   };
 
   // console.log("newProduct", newProduct);
-
 
   return (
     <>
@@ -202,8 +199,6 @@ const AddProduct: React.FC = () => {
                   onChange={handleInputChange}
                 />
               </div>
-
-      
             </div>
           </div>
         </div>

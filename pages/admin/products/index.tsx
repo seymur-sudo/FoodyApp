@@ -10,17 +10,28 @@ import DeleteModal from "@/components/Admin/Modals/DeleteModal";
 import { SidebarContextProps } from "../../../interfaces/index";
 import { useSidebarContext } from "@/contexts/SidebarContext";
 import { getProduct } from "../../../services/index";
-import { PostDataType } from "../../../interfaces/index";
 import { useQuery } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
+import { QUERIES } from "../../../constant/Queries";
+import { PostDataType } from "../../../interfaces/index";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
 const Products: React.FC = () => {
-  const { openModal, openDeleteModal } =
+  const { setShow, setshowDelete, setEditedItem, setDeletedItem } =
     useSidebarContext() as SidebarContextProps;
 
-  const { data, isLoading, isError } = useQuery("products", getProduct, {
+  const openModal = (product: PostDataType | null) => {
+    setShow(true);
+    setEditedItem(product);
+  };
+
+  const openDeleteModal = (product: PostDataType | null) => {
+    setshowDelete(true);
+    setDeletedItem(product);
+  };
+
+  const { data, isLoading, isError } = useQuery(QUERIES.Products, getProduct, {
     refetchOnWindowFocus: false,
   });
 
@@ -51,8 +62,8 @@ const Products: React.FC = () => {
                 <div
                   key={product.id}
                   className="bg-indigo-100 shadow-shadow2  font-roboto font-medium rounded-md hover:scale-110 transition-all duration-700"
-                  data-aos="fade-up" 
-                  data-aos-delay={(index + 1) * 150} 
+                  data-aos="fade-up"
+                  data-aos-delay={(index + 1) * 150}
                 >
                   <div className="capitalize flex flex-col items-center md:items-start w-full ">
                     <Image

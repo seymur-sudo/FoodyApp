@@ -1,40 +1,43 @@
-import React,{useState,useRef} from "react";
+import React, { useState, useRef } from "react";
 import Image from "next/image";
 import uploadImg from "../../../public/svgs/upload.svg";
 import { useSidebarContext } from "../../../contexts/SidebarContext";
-import { OfferPostDataType, SidebarContextProps } from "../../../interfaces/index";
+import {
+  OfferPostDataType,
+  SidebarContextProps,
+} from "../../../interfaces/index";
 import { fileStorage } from "../../../server/configs/firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { addOffer } from "../../../services/index";
 import { toast } from "react-toastify";
 import { QUERIES } from "../../../constant/Queries";
 import { useMutation, useQueryClient } from "react-query";
-import {FadeLoader} from "react-spinners"
+import { FadeLoader } from "react-spinners";
 
 const AddOffer: React.FC = () => {
-  const firstOfferState:OfferPostDataType={
+  const firstOfferState: OfferPostDataType = {
     name: "",
-    description:"",
+    description: "",
     img_url: "",
-  }
-  const nameRef=useRef<HTMLInputElement>(null);
-  const descriptioneRef=useRef<HTMLTextAreaElement>(null);
-  const { showAdds,setSelectedFile,newImg,setNewImg, closeAddsModal } = useSidebarContext() as SidebarContextProps;
-  const [newOffer,setNewOffer]=useState<OfferPostDataType>(firstOfferState)
-  const queryClient = useQueryClient()
-  
-  
+  };
+  const nameRef = useRef<HTMLInputElement>(null);
+  const descriptioneRef = useRef<HTMLTextAreaElement>(null);
+  const { showAdds, setSelectedFile, newImg, setNewImg, closeAddsModal } =
+    useSidebarContext() as SidebarContextProps;
+  const [newOffer, setNewOffer] = useState<OfferPostDataType>(firstOfferState);
+  const queryClient = useQueryClient();
+
   const isValid = (): boolean => {
     return Object.values(newOffer).every((value) => value !== "");
   };
-  const handleNewImg = (e:React.ChangeEvent<HTMLInputElement>) =>{
+  const handleNewImg = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if(file){
+    if (file) {
       setSelectedFile(file);
       setNewImg(URL.createObjectURL(file));
       const restaurantId = `${new Date().getTime()}_${Math.floor(
         Math.random() * 1000
-      )}`
+      )}`;
       const imageRef = ref(fileStorage, `images/${file.name + restaurantId}`);
       uploadBytes(imageRef, file)
         .then((snapshot) => {
@@ -57,28 +60,28 @@ const AddOffer: React.FC = () => {
       console.error("No file selected");
     }
   };
-  const zeroValue=()=>{
-    if(nameRef.current){
-      nameRef.current.value=""
-    }else if(descriptioneRef.current){
-      descriptioneRef.current.value=""
+  const zeroValue = () => {
+    if (nameRef.current) {
+      nameRef.current.value = "";
+    } else if (descriptioneRef.current) {
+      descriptioneRef.current.value = "";
     }
-  }
-  const handleChange=()=>{
+  };
+  const handleChange = () => {
     setNewOffer({
       name: nameRef.current?.value,
-      description:descriptioneRef.current?.value,
+      description: descriptioneRef.current?.value,
       img_url: newImg,
-    })
-  }
+    });
+  };
   const mutation = useMutation(() => addOffer(newOffer), {
     onSuccess: () => {
       queryClient.invalidateQueries(QUERIES.Offers);
       setNewOffer(firstOfferState);
       setTimeout(() => {
         closeAddsModal();
-        zeroValue()
-        setNewImg(null)
+        zeroValue();
+        setNewImg(null);
       }, 1000);
       toast.success("Restaurant added successfully!", {
         autoClose: 1000,
@@ -92,14 +95,13 @@ const AddOffer: React.FC = () => {
     },
   });
 
-  const handleClose=()=>{
-    zeroValue()
-    closeAddsModal()
-  }
-  const handleAddOffer=()=>{
-    
-    mutation.mutate()
-  }
+  const handleClose = () => {
+    zeroValue();
+    closeAddsModal();
+  };
+  const handleAddOffer = () => {
+    mutation.mutate();
+  };
 
   return (
     <>
@@ -110,10 +112,10 @@ const AddOffer: React.FC = () => {
               <h1 className="capitalize text-2xl mb-2"> add offer</h1>
               <p className="capitalize text-lg">upload your offer image</p>
               <div className="h-[50vh] w-3/4 my-4">
-                  <Image
+                <Image
                   width={300}
                   height={300}
-                  src={newImg||uploadImg}
+                  src={newImg || uploadImg}
                   alt="uploaded"
                   className="object-cover w-full h-full rounded-[14px]"
                 />
@@ -149,7 +151,14 @@ const AddOffer: React.FC = () => {
                 <div className="flex flex-col items-center justify-center pt-5 pb-6 ">
                   <Image width={75} height={75} src={uploadImg} alt="upload" />
                 </div>
-                <input id="offer-add-file" onChange={(e)=>{handleNewImg(e)}} type="file" className="hidden" />
+                <input
+                  id="offer-add-file"
+                  onChange={(e) => {
+                    handleNewImg(e);
+                  }}
+                  type="file"
+                  className="hidden"
+                />
               </label>
             </div>
 
@@ -176,7 +185,6 @@ const AddOffer: React.FC = () => {
                   rows={4}
                   onChange={handleChange}
                   cols={50}
-                  
                 />
               </div>
             </div>
@@ -200,7 +208,14 @@ const AddOffer: React.FC = () => {
             `}
             disabled={!isValid()}
             onClick={handleAddOffer}
-          >{mutation.isLoading ? <div className='flex justify-center items-center mx-0 my-auto'><FadeLoader  className="w-[15px] h-[15px]"  color={"#fff"}/></div> : 'Add Offer'}
+          >
+            {mutation.isLoading ? (
+              <div className="flex justify-center items-center mx-0 my-auto">
+                <FadeLoader className="w-[15px] h-[15px]" color={"#fff"} />
+              </div>
+            ) : (
+              "Add Offer"
+            )}
           </button>
         </div>
       </div>

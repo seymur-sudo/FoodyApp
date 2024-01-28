@@ -4,6 +4,7 @@ import { AxiosPromise } from "axios";
 import {
   ApiResponse,
   RestaurantApiResponse,
+  CategoryApiResponse,
   RestaurantPostDataType,
   PostDataType,
   CategoryPostDataType,
@@ -14,11 +15,11 @@ import {
   OfferPostDataType,
 } from "../interfaces/index";
 
-// GET
+// GET_PRODUCT
 export const getProduct = (): AxiosPromise<ApiResponse> =>
   instanceAxios({ method: "GET", url: ENDPOINTS.PRODUCT });
 
-// GET_BY_ID
+// GET_BY_ID_PRODUCT
 export const getProductById = (
   productId: string | number
 ): AxiosPromise<ApiResponse> =>
@@ -32,28 +33,6 @@ export const addProduct: (
     method: "POST",
     url: ENDPOINTS.PRODUCT,
     data: newProduct,
-  });
-};
-
-// ADD_RESTAURANT
-export const addRestaurant: (
-  newRestaurant: FirstStateType
-) => AxiosPromise<RestaurantPostDataType> = (newRestaurant) => {
-  return instanceAxios({
-    method: "POST",
-    url: ENDPOINTS.RESTAURANT,
-    data: newRestaurant,
-  });
-};
-
-// ADD_CATEGORY
-export const addCategory: (
-  newCategory: InitialCategoryState
-) => AxiosPromise<CategoryPostDataType> = (newCategory) => {
-  return instanceAxios({
-    method: "POST",
-    url: ENDPOINTS.CATEGORY,
-    data: newCategory,
   });
 };
 
@@ -87,10 +66,21 @@ export const getRestaurantById = (
     url: `${ENDPOINTS.RESTAURANT}/${restaurantID}`,
   });
 
+// ADD_RESTAURANT
+export const addRestaurant: (
+  newRestaurant: FirstStateType
+) => AxiosPromise<RestaurantPostDataType> = (newRestaurant) => {
+  return instanceAxios({
+    method: "POST",
+    url: ENDPOINTS.RESTAURANT,
+    data: newRestaurant,
+  });
+};
+
 //UPDATE_RESTAURANT
 export const updateRestaurant = (
   newRestaurant: RestaurantPostDataType,
-  restaurantID: string | number |undefined
+  restaurantID: string | number | undefined
 ) => {
   return instanceAxios({
     method: "PUT",
@@ -101,7 +91,7 @@ export const updateRestaurant = (
 
 //DELETE_RESTAURANT
 export const deleteRestaurant = (
-  restaurantID: string | number|undefined
+  restaurantID: string | number | undefined
 ): AxiosPromise<RestaurantApiResponse> =>
   instanceAxios({
     method: "DELETE",
@@ -112,7 +102,7 @@ export const deleteRestaurant = (
 export const getOffer = (): AxiosPromise<OfferApiResponse> =>
   instanceAxios({ method: "GET", url: ENDPOINTS.OFFER });
 
-  // ADD_OFFER
+// ADD_OFFER
 export const addOffer: (
   newOffer: OfferPostDataType
 ) => AxiosPromise<OfferApiResponse> = (newOffer) => {
@@ -120,5 +110,40 @@ export const addOffer: (
     method: "POST",
     url: ENDPOINTS.OFFER,
     data: newOffer,
-  })
-}
+  });
+};
+
+//  GET_CATEGORY
+export const getCategory = (): AxiosPromise<CategoryApiResponse> =>
+  instanceAxios({ method: "GET", url: ENDPOINTS.CATEGORY });
+
+// ADD_CATEGORY
+export const addCategory: (
+  newCategory: InitialCategoryState
+) => AxiosPromise<CategoryPostDataType> = (newCategory) => {
+  return instanceAxios({
+    method: "POST",
+    url: ENDPOINTS.CATEGORY,
+    data: newCategory,
+  });
+};
+
+// EDIT_CATEGORY
+export const editCategory = (
+  editedCategory: CategoryPostDataType
+): AxiosPromise<CategoryApiResponse> => {
+  return instanceAxios({
+    method: "PUT",
+    url: `${ENDPOINTS.CATEGORY}/${editedCategory.id}`,
+    data: editedCategory,
+  });
+};
+
+// DELETE_CATEGORY
+export const deleteCategory = (
+  categoryId: string | number
+): AxiosPromise<CategoryApiResponse> =>
+  instanceAxios({
+    method: "DELETE",
+    url: `${ENDPOINTS.CATEGORY}/${categoryId}`,
+  });

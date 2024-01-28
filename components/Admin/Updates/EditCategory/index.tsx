@@ -1,11 +1,105 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import uploadImg from "../../../../public/svgs/upload.svg";
 import { SidebarContextProps } from "../../../../interfaces/index";
 import { useSidebarContext } from "@/contexts/SidebarContext";
+import { useMutation, useQueryClient } from "react-query";
+import { toast } from "react-toastify";
+import { QUERIES } from "../../../../constant/Queries";
+import { editCategory } from "../../../../services/index";
+import { fileStorage } from "../../../../server/configs/firebase";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 const EditCategory: React.FC = () => {
-  const { show, closeModal } = useSidebarContext() as SidebarContextProps;
+  const {
+    show,
+    closeModal,
+    editedCategory,
+    setSelectedFile,
+    newImg,
+    setNewImg,
+  } = useSidebarContext() as SidebarContextProps;
+
+  const [updatedCategory, setUpdatedCategory] = useState(editedCategory);
+
+  const queryClient = useQueryClient();
+
+  const editCategoryMutation = useMutation(editCategory, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(QUERIES.Categories);
+      toast.success("Category edited successfully", {
+        autoClose: 1000,
+      });
+      setTimeout(() => {
+        closeModal();
+      }, 1100);
+    },
+    onError: (error) => {
+      toast.error(`Error editing Category: ${error}`, {
+        autoClose: 1000,
+      });
+    },
+  });
+
+  const handleInputChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = event.target;
+    setUpdatedCategory((prevCategory) => ({
+      ...prevCategory!,
+      [name]: value,
+    }));
+  };
+
+  useEffect(() => {
+    if (editedCategory) {
+      setUpdatedCategory({ ...editedCategory });
+      setNewImg(editedCategory?.img_url || null);
+    }
+  }, [editedCategory]);
+
+  const handleNewImg = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setSelectedFile(file);
+      setNewImg(URL.createObjectURL(file));
+      const randomId = `${new Date().getTime()}_${Math.floor(
+        Math.random() * 1000
+      )}`;
+      const imageRef = ref(fileStorage, `images/${file.name + randomId}`);
+      uploadBytes(imageRef, file)
+        .then((snapshot) => {
+          getDownloadURL(snapshot.ref)
+            .then((downloadURL) => {
+              setUpdatedCategory((prevCategory) => ({
+                ...prevCategory!,
+                img_url: downloadURL,
+              }));
+              console.log(
+                "Dosyanın Firebase Edit Storage URL'si: ",
+                downloadURL
+              );
+            })
+            .catch((error) => {
+              console.error("Download URL alınırken bir hata oluştu: ", error);
+            });
+        })
+        .catch((error) => {
+          console.error("Dosya yüklenirken bir hata oluştu: ", error);
+        });
+    } else {
+      console.error("No file selected");
+    }
+  };
+  const handleEditCategory = async () => {
+    if (updatedCategory) {
+      const editWithImg = {
+        ...updatedCategory,
+        img_url: newImg || "",
+      };
+      await editCategoryMutation.mutateAsync(editWithImg);
+    }
+  };
 
   return (
     <>
@@ -15,7 +109,15 @@ const EditCategory: React.FC = () => {
             <div className="flex flex-col justify-center ">
               <h1 className="capitalize text-2xl mb-2"> Edit category</h1>
               <p className="capitalize text-lg">Edit your product image</p>
-              <div className="h-[15vh] w-3/4 bg-emerald-800 my-4">image</div>
+              <div className="h-[50vh] w-3/4 my-4">
+                <Image
+                  width={300}
+                  height={300}
+                  src={newImg || uploadImg}
+                  alt="uploaded"
+                  className="object-cover w-full h-full rounded-[14px]"
+                />
+              </div>
               <p className=" text-lg">Edit your Category information</p>
             </div>
           </div>
@@ -41,13 +143,19 @@ const EditCategory: React.FC = () => {
 
             <div className="flex items-center justify-center mb-4 md:mb-8 h-[20%]  w-full rounded-[14px] bg-[#43445A]">
               <label
-                htmlFor="dropzone-file"
+                htmlFor="add-rest-file"
                 className="flex flex-col items-center justify-center w-full rounded-[14px]  bg-[#43445A]  cursor-pointer  "
               >
                 <div className="flex flex-col items-center justify-center pt-5 pb-6 ">
                   <Image width={75} height={75} src={uploadImg} alt="upload" />
                 </div>
-                <input id="dropzone-file" type="file" className="hidden" />
+                <input
+                  name="img_url"
+                  id="add-rest-file"
+                  type="file"
+                  className="hidden"
+                  onChange={(e) => handleNewImg(e)}
+                />
               </label>
             </div>
 
@@ -61,6 +169,9 @@ const EditCategory: React.FC = () => {
                 <input
                   type="text"
                   className="w-full p-2 py-6 rounded-[14px] bg-inputBg"
+                  name="name"
+                  value={updatedCategory?.name}
+                  onChange={handleInputChange}
                 />
               </div>
             </div>
@@ -74,8 +185,13 @@ const EditCategory: React.FC = () => {
           >
             cancel
           </button>
-          <button className="capitalize rounded-[14px]  	border-color:[#970e79] border-solid  border-0 bg-[#C035A2] shadow-shadow2 hover:opacity-75 transition-all duration-500 w-5/12 py-3 md:py-4 text-[#fff] text-lg font-bold leading-5 tracking-[0.25px]">
-            Edit category
+          <button
+            onClick={handleEditCategory}
+            className="capitalize rounded-[14px]  	border-color:[#970e79] border-solid  border-0 bg-[#C035A2] shadow-shadow2 hover:opacity-75 transition-all duration-500 w-5/12 py-3 md:py-4 text-[#fff] text-lg font-bold leading-5 tracking-[0.25px]"
+          >
+            {editCategoryMutation.isLoading
+              ? "category is editing"
+              : "edit category"}
           </button>
         </div>
       </div>
