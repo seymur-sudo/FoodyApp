@@ -53,7 +53,7 @@ const Products: React.FC = () => {
   return (
     <Layout>
       <>
-        <div className="px-12 md:px-6 pb-8 bg-bgc ">
+        <div className="px-12 md:px-6 pb-8 bg-bgc h-screen ">
           <SearchBar />
 
           <div className="grid gap-10 grid-cols-1 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4">

@@ -26,15 +26,11 @@ const Restaurant: React.FC = () => {
     );
   }
   const filteredData =
-  selectedCategory !== null
-    ? data?.data.result.data.filter((restaurant: RestaurantPostDataType) => {
-        console.log("Checking restaurant", restaurant);
-        return restaurant.category_id === selectedCategory;
-      })
-    : data?.data.result.data;
-
-
-  console.log("selectedCategory", selectedCategory);
+    selectedCategory !== "" && selectedCategory !== null
+      ? data?.data.result.data.filter((restaurant: RestaurantPostDataType) => {
+          return restaurant.category_id === selectedCategory;
+        })
+      : data?.data.result.data;
 
   return (
     <Layout>
