@@ -4,6 +4,7 @@ import {
   ChildrenNode,
   PostDataType,
   RestaurantPostDataType,
+  CategoryPostDataType,
 } from "../interfaces/index";
 import { useSpring } from "@react-spring/web";
 
@@ -18,6 +19,12 @@ const defaultEditedProduct: PostDataType = {
   price: 0,
   img_url: "",
   rest_id: "",
+};
+
+const defaultEditedCategory: CategoryPostDataType = {
+  id: "",
+  name: "",
+  img_url: "",
 };
 
 export const SidebarContextProvider: React.FC<ChildrenNode> = ({
@@ -39,32 +46,28 @@ export const SidebarContextProvider: React.FC<ChildrenNode> = ({
     defaultEditedProduct
   );
 
+  const [editedCategory, setEditedCategory] =
+    useState<CategoryPostDataType | null>(defaultEditedCategory);
+  const [deletedCategory, setDeletedCategory] =
+    useState<CategoryPostDataType | null>(defaultEditedCategory);
+
   const [show, setShow] = useState<boolean>(false);
-  const openModal = (product: PostDataType | null) => {
-    setShow(true);
-    setEditedItem(product);
-  };
+  const [showDelete, setshowDelete] = useState<boolean>(false);
+
   const closeModal = () => {
     setShow(false);
     setEditedItem(null);
+   setNewImg(null);
   };
-  const [showDelete, setshowDelete] = useState<boolean>(false);
-  const openDeleteModal = (product: PostDataType | null) => {
-    setshowDelete(true);
-    setDeletedItem(product);
-  };
+
   const closeDeleteModal = () => {
     setshowDelete(false);
     setDeletedItem(null);
   };
 
-
-
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [lastData,setLastData]=useState<RestaurantPostDataType| null>(null)
-  const [newImg,setNewImg]=useState<string | null>(null)
-
-
+  const [lastData, setLastData] = useState<RestaurantPostDataType | null>(null);
+  const [newImg, setNewImg] = useState<string | null>(null);
   const [showUserModal, setShowUserModal] = useState<boolean>(false);
 
   const openUserModal = () => {
@@ -95,6 +98,10 @@ export const SidebarContextProvider: React.FC<ChildrenNode> = ({
     };
   }, [showUserModal]);
 
+
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+
+
   const contextValue = {
     isNavbarOpen,
     setNavbarOpen,
@@ -117,10 +124,8 @@ export const SidebarContextProvider: React.FC<ChildrenNode> = ({
     closeDeleteModal,
     editedItem,
     setEditedItem,
-    openModal,
     deletedItem,
     setDeletedItem,
-    openDeleteModal,
     selectedFile,
     setSelectedFile,
     showUserModal,
@@ -128,6 +133,11 @@ export const SidebarContextProvider: React.FC<ChildrenNode> = ({
     openUserModal,
     closeUserModal,
     modalSpring,
+    editedCategory,
+    setEditedCategory,
+    deletedCategory,
+    setDeletedCategory,
+    selectedCategory, setSelectedCategory
   };
 
   const Component = SidebarContext.Provider;
@@ -137,9 +147,7 @@ export const SidebarContextProvider: React.FC<ChildrenNode> = ({
 export const useSidebarContext = (): SidebarContextProps => {
   const context = useContext(SidebarContext);
   if (!context) {
-    throw new Error(
-      "useThemeContext must be used within a ThemeContextProvider"
-    );
+    throw new Error("ERROR");
   }
   return context;
 };

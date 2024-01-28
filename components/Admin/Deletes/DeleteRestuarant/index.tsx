@@ -4,20 +4,21 @@ import { SidebarContextProps } from "../../../../interfaces/index";
 import { useSidebarContext } from "@/contexts/SidebarContext";
 import Image from "next/image";
 import { toast } from "react-toastify";
-import {deleteRestaurant } from "@/services/index";
+import { deleteRestaurant } from "@/services/index";
 import { QUERIES } from "@/constant/Queries";
 import { useMutation, useQueryClient } from "react-query";
 
 const DeleteRestuarant = () => {
-  const { showDelete,setLastData,lastData, closeDeleteModal } =useSidebarContext() as SidebarContextProps;
-  const [id,setId]=useState<undefined|number|string>("")
-  const queryClient=useQueryClient()
-  const mutation = useMutation(() =>deleteRestaurant(id), {
+  const { showDelete, setLastData, lastData, closeDeleteModal } =
+    useSidebarContext() as SidebarContextProps;
+  const [id, setId] = useState<undefined | number | string>("");
+  const queryClient = useQueryClient();
+  const mutation = useMutation(() => deleteRestaurant(id), {
     onSuccess: () => {
       queryClient.invalidateQueries(QUERIES.Restaurants);
       // setEdtRestaurant(firstState);
       setTimeout(() => {
-        setLastData(null)
+        setLastData(null);
       }, 1000);
       toast.success("Restaurant deleted successfully!", {
         autoClose: 1000,
@@ -30,15 +31,15 @@ const DeleteRestuarant = () => {
       });
     },
   });
-  const handleDelete=()=>{
-    setId(lastData?.id)
+  const handleDelete = () => {
+    setId(lastData?.id);
     console.log(id);
-    
+
     setTimeout(() => {
-      mutation.mutate()
+      mutation.mutate();
     }, 400);
-    closeDeleteModal()
-  }
+    closeDeleteModal();
+  };
   return (
     <>
       <Transition appear show={showDelete} as={Fragment}>

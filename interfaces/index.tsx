@@ -26,12 +26,18 @@ export interface SidebarContextProps {
   showDelete: boolean;
   setshowDelete: React.Dispatch<React.SetStateAction<boolean>>;
   closeDeleteModal: () => void;
+  editedCategory: CategoryPostDataType | null;
+  setEditedCategory: React.Dispatch<
+    React.SetStateAction<CategoryPostDataType | null>
+  >;
+  deletedCategory: CategoryPostDataType | null;
+  setDeletedCategory: React.Dispatch<
+    React.SetStateAction<CategoryPostDataType | null>
+  >;
   editedItem: PostDataType | null;
   setEditedItem: React.Dispatch<React.SetStateAction<PostDataType | null>>;
-  openModal: (product: PostDataType | null) => void;
   deletedItem: PostDataType | null;
   setDeletedItem: React.Dispatch<React.SetStateAction<PostDataType | null>>;
-  openDeleteModal: (product: PostDataType | null) => void;
   selectedFile: File | null;
   setSelectedFile: React.Dispatch<React.SetStateAction<File | null>>;
   openUserModal: () => void;
@@ -42,6 +48,9 @@ export interface SidebarContextProps {
     opacity: SpringValue<number>;
     transform: SpringValue<string>;
   };
+
+  selectedCategory: string | null;
+  setSelectedCategory: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
 export interface ChartData {
@@ -89,10 +98,10 @@ export interface DataBubble {
 export interface PostDataType {
   id: number | string;
   name: string;
-  description: string;
-  price: number;
+  description?: string;
+  price?: number;
   img_url: string;
-  rest_id: string;
+  rest_id?: string;
 }
 
 export interface ApiResponse {
@@ -103,28 +112,28 @@ export interface ApiResponse {
   message: string;
 }
 export interface RestaurantPostDataType {
-  id?:  number | string;
-  name: string |undefined;
-  category_id: number | string |undefined;
-  img_url: string | null|undefined;
-  cuisine: string|undefined;
-  address: string|undefined;
-  delivery_min: number|undefined;
-  delivery_price: number|undefined;
+  id?: number | string;
+  name: string | undefined;
+  category_id: number | string | undefined;
+  img_url: string | null | undefined;
+  cuisine: string | undefined;
+  address: string | undefined;
+  delivery_min: number | undefined;
+  delivery_price: number | undefined;
 }
 export interface RestaurantApiResponse {
   result: {
-    data: RestaurantPostDataType[]| FirstStateType[];
+    data: RestaurantPostDataType[] | FirstStateType[];
   };
   status: number;
   message: string;
 }
-export interface OfferPostDataType{
-    name: string|null|undefined,
-    description: string | null|undefined;
-    img_url: string|null
+export interface OfferPostDataType {
+  name: string | null | undefined;
+  description: string | null | undefined;
+  img_url: string | null;
 }
-export interface OfferApiResponse{
+export interface OfferApiResponse {
   result: {
     data: OfferPostDataType[];
   };
@@ -135,11 +144,17 @@ export interface InitialStateType extends Omit<PostDataType, "id"> {}
 export interface FirstStateType extends Omit<RestaurantPostDataType, "id"> {}
 
 export interface CategoryPostDataType {
-  id: number;
+  id: number | string;
   name: string;
   img_url: string | null;
 }
 export interface InitialCategoryState
   extends Omit<CategoryPostDataType, "id"> {}
 
-
+export interface CategoryApiResponse {
+  result: {
+    data: CategoryPostDataType[];
+  };
+  status: number;
+  message: string;
+}

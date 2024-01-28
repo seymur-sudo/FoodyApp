@@ -7,6 +7,7 @@ import React, {
 } from "react";
 import { ThemeContextProps, ChildrenNode } from "../interfaces/index";
 
+
 const ThemeContext = createContext<ThemeContextProps | undefined>(undefined);
 
 const ThemeContextProvider: FC<ChildrenNode> = ({ children }) => {
@@ -41,9 +42,7 @@ const ThemeContextProvider: FC<ChildrenNode> = ({ children }) => {
 const useThemeContext = (): ThemeContextProps => {
   const context = useContext(ThemeContext);
   if (!context) {
-    throw new Error(
-      "useThemeContext must be used within a ThemeContextProvider"
-    );
+    throw new Error("ERROR");
   }
   return context;
 };

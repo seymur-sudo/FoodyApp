@@ -9,14 +9,48 @@ import { SidebarContextProps } from "../../../interfaces/index";
 import { useSidebarContext } from "@/contexts/SidebarContext";
 import EditModal from "@/components/Admin/Modals/EditModal";
 import DeleteModal from "@/components/Admin/Modals/DeleteModal";
-import { GetServerSideProps } from 'next';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { GetServerSideProps } from "next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "next-i18next";
-
+import { CategoryPostDataType } from "../../../interfaces/index";
+import { getCategory } from "../../../services/index";
+import { useQuery } from "react-query";
+import { QUERIES } from "../../../constant/Queries";
 
 const Category: React.FC = () => {
-  const { setShow, show , showDelete, setshowDelete } = useSidebarContext() as SidebarContextProps;
-  const { t } = useTranslation('common')
+  const {
+    setShow,
+    setshowDelete,
+    setEditedCategory,
+    setDeletedCategory,
+  } = useSidebarContext() as SidebarContextProps;
+  const { t } = useTranslation("common");
+
+  const { data, isLoading, isError } = useQuery(
+    QUERIES.Categories,
+    getCategory,
+    {
+      refetchOnWindowFocus: false,
+    }
+  );
+
+  const openModal = (category: CategoryPostDataType | null) => {
+    setShow(true);
+    setEditedCategory(category);
+  };
+  const openDeleteModal = (category: CategoryPostDataType | null) => {
+    setshowDelete(true);
+    setDeletedCategory(category);
+  };
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (isError) {
+    return <div>Error loading products</div>;
+  }
+
   return (
     <Layout>
       <div className="bg-bgc h-screen px-12 md:px-6">
@@ -25,69 +59,74 @@ const Category: React.FC = () => {
           <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <thead className="text-xs text-gray-700 capitalize bg-gray-50 dark:bg-gray-900 dark:text-gray-400">
               <tr>
-                <th scope="col" className="px-16 py-3">
+                <th scope="col" className="pl-16 py-3">
                   Id
                 </th>
                 <th scope="col" className="px-6 py-3">
-                  {t('Image')}
+                  {t("Image")}
                 </th>
                 <th scope="col" className="px-6 py-3">
-                  {t('Name')}
+                  {t("Name")}
                 </th>
+
                 <th scope="col" className="px-6 py-3">
-                  {t('Slug')}
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  {t('Actions')}
+                  {t("Actions")}
                 </th>
               </tr>
             </thead>
             <tbody>
-              <tr className="bg-white border-b dark:bg-[#27283C] dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-700">
-                <td className="pl-14 py-4 font-semibold text-gray-900 dark:text-white">
-                  1234
-                </td>
+              {data &&
+                data.data.result.data.map(
+                  (category: CategoryPostDataType, index) => {
+                    return (
+                      <tr
+                        key={index}
+                        className="bg-white border-b dark:bg-[#27283C] dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-700"
+                      >
+                        <td className="pl-14 py-4 font-semibold text-gray-900 dark:text-white">
+                          {category.id}
+                        </td>
 
-                <td className="p-4 ">
-                  <Image
-                    src={hamburger}
-                    alt="title"
-                    className="hover:scale-105 transition-all duration-500 w-6/7 h-[42px] rounded-md"
-                  />
-                </td>
+                        <td className="p-4 ">
+                          <Image
+                            src={
+                              category.img_url ? category.img_url : hamburger
+                            }
+                            alt={category.name}
+                            width={100}
+                            height={100}
+                            className="hover:scale-105 object-cover transition-all duration-500 w-[100px] h-[50px] rounded-md"
+                          />
+                        </td>
 
-                <td className="px-6 py-4 font-semibold text-gray-900 dark:text-white capitalize">
-                  pizza
-                </td>
+                        <td className="px-6 py-4 font-semibold text-gray-900 dark:text-white capitalize">
+                          {category.name}
+                        </td>
 
-                <td className="p-4 font-semibold text-gray-900 dark:text-white">
-                  yummy pizza
-                </td>
-
-                <td className="px-6 py-4">
-                  <div
-                    className="flex items-center"
-                   
-                  >
-                    <Image
-                      src={editIcon}
-                      alt="title"
-                      onClick={() => setShow(!show)}
-                      className="hover:scale-110 transition-all duration-500  mr-2  cursor-pointer"
-                    />
-                    <Image
-                      src={deleteIcon}
-                      alt="title"
-                      onClick={() => setshowDelete(!showDelete)}
-                      className="hover:scale-110 transition-all duration-500   cursor-pointer"
-                    />
-                  </div>
-                </td>
-              </tr>
+                        <td className="px-6 py-4">
+                          <div className="flex items-center">
+                            <Image
+                              src={editIcon}
+                              alt="title"
+                              onClick={() => openModal(category)}
+                              className="hover:scale-110 transition-all duration-500  mr-2  cursor-pointer"
+                            />
+                            <Image
+                              src={deleteIcon}
+                              alt="title"
+                              onClick={() => openDeleteModal(category)}
+                              className="hover:scale-110 transition-all duration-500   cursor-pointer"
+                            />
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  }
+                )}
             </tbody>
           </table>
           <EditModal />
-          <DeleteModal/>
+          <DeleteModal />
         </div>
       </div>
     </Layout>
@@ -96,9 +135,8 @@ const Category: React.FC = () => {
 
 export default Category;
 
-
 export const getServerSideProps: GetServerSideProps = async ({ locale }) => ({
   props: {
-    ...(await serverSideTranslations(locale as string, ['common'])),
+    ...(await serverSideTranslations(locale as string, ["common"])),
   },
 });

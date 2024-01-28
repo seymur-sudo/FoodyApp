@@ -12,7 +12,7 @@ const DeleteProduct = () => {
     useSidebarContext() as SidebarContextProps;
   const queryClient = useQueryClient();
   const mutation = useMutation({
-    mutationFn: deleteProduct, // (userId) => DeleteUser(userId),
+    mutationFn: deleteProduct, // (userId) => deleteProduct(id),
     onSuccess: () => {
       queryClient.invalidateQueries(QUERIES.Products);
       closeDeleteModal();

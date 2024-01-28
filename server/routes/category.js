@@ -39,10 +39,7 @@ export async function handlerCategoryPOST(req, res, col) {
     }
 
     
-    // if (img_url === "") {
-    //   res.status(404).json("Image URL cannot be empty. Provide a valid image URL.");
-    //   return;
-    // }
+   
 
     const category = new Category(name, img_url).toPlainObject();
 

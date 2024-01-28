@@ -3,14 +3,20 @@ import Image from "next/image";
 import uploadImg from "../../../public/svgs/upload.svg";
 import { useSidebarContext } from "../../../contexts/SidebarContext";
 import { SidebarContextProps } from "../../../interfaces/index";
-import { FirstStateType } from "../../../interfaces/index";
+import {
+  FirstStateType,
+  CategoryPostDataType,
+} from "../../../interfaces/index";
 import { fileStorage } from "../../../server/configs/firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { addRestaurant } from "../../../services/index";
 import { toast } from "react-toastify";
 import { QUERIES } from "../../../constant/Queries";
 import { useMutation, useQueryClient } from "react-query";
-import {FadeLoader} from "react-spinners"
+import { getCategory } from "../../../services/index";
+import { useQuery } from "react-query";
+import { FadeLoader } from "react-spinners";
+
 const AddRestuarant: React.FC = () => {
   const firstState: FirstStateType = {
     name: "",
@@ -21,27 +27,25 @@ const AddRestuarant: React.FC = () => {
     delivery_min: 0,
     delivery_price: 0,
   };
-  const {
-    showAdds,
-    closeAddsModal,
-    newImg,
-    setNewImg,
-  } = useSidebarContext() as SidebarContextProps;
-  const [newRestaurant, setNewRestaurant] =useState<FirstStateType>(firstState);
-  const [selectedFile, setSelectedFile] = React.useState<File | null>(null);
+  const { showAdds, closeAddsModal, newImg, setNewImg, setSelectedFile } =
+    useSidebarContext() as SidebarContextProps;
+  const [newRestaurant, setNewRestaurant] =
+    useState<FirstStateType>(firstState);
 
-  const queryClient = useQueryClient()
+  const { data } = useQuery(QUERIES.Categories, getCategory);
+
+  const queryClient = useQueryClient();
   const isValid = (): boolean => {
     return Object.values(newRestaurant).every((value) => value !== "");
   };
-  const handleNewImg = (e:React.ChangeEvent<HTMLInputElement>) =>{
+  const handleNewImg = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if(file){
+    if (file) {
       setSelectedFile(file);
       setNewImg(URL.createObjectURL(file));
       const restaurantId = `${new Date().getTime()}_${Math.floor(
         Math.random() * 1000
-      )}`
+      )}`;
       const imageRef = ref(fileStorage, `images/${file.name + restaurantId}`);
       uploadBytes(imageRef, file)
         .then((snapshot) => {
@@ -64,34 +68,44 @@ const AddRestuarant: React.FC = () => {
       console.error("No file selected");
     }
   };
-  const handleAddRestaurant= async ()=>{
+  const handleAddRestaurant = async () => {
     if (isValid()) {
       mutation.mutate();
-      } else {
-        toast.error("Please fill in all fields before creating the product", {
-          autoClose: 1000,
+    } else {
+      toast.error("Please fill in all fields before creating the product", {
+        autoClose: 1000,
       });
     }
-  }
-  const handleChange=( e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>)=>{
+  };
+  const handleChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => {
     const { name, value } = e.target;
     const parsedValue =
-      name === ("delivery_price" || "delivery_min")
-        ? parseFloat(value)
-        : value;
+      name === ("delivery_price" || "delivery_min") ? parseFloat(value) : value;
 
     setNewRestaurant((prevRestaurant) => ({
       ...prevRestaurant,
       [name]: parsedValue,
     }));
-  }
+  };
+
+  const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const categoryId = e.target.value;
+    setNewRestaurant((prevRestaurant) => ({
+      ...prevRestaurant,
+      category_id: categoryId,
+    }));
+  };
   const mutation = useMutation(() => addRestaurant(newRestaurant), {
     onSuccess: () => {
       queryClient.invalidateQueries(QUERIES.Restaurants);
       setNewRestaurant(firstState);
+      setSelectedFile(null);
       setTimeout(() => {
         closeAddsModal();
-        setNewImg(null)
       }, 1000);
       toast.success("Restaurant added successfully!", {
         autoClose: 1000,
@@ -113,10 +127,10 @@ const AddRestuarant: React.FC = () => {
               <h1 className="capitalize text-2xl mb-2"> add restuarant</h1>
               <p className="capitalize text-lg">upload your restaurant image</p>
               <div className="h-[50vh] w-3/4 my-4">
-                  <Image
+                <Image
                   width={300}
                   height={300}
-                  src={newImg||uploadImg}
+                  src={newImg || uploadImg}
                   alt="uploaded"
                   className="object-cover w-full h-full rounded-[14px]"
                 />
@@ -174,7 +188,6 @@ const AddRestuarant: React.FC = () => {
               <div className="flex flex-col">
                 <label className="mb-1">Name</label>
                 <input
-                  // ref={nameRef}
                   type="text"
                   name="name"
                   className="w-full p-2 rounded-[14px] bg-inputBg"
@@ -188,7 +201,6 @@ const AddRestuarant: React.FC = () => {
                 <textarea
                   className="w-full h-[100px]  rounded-[14px] bg-inputBg leading-10 resize-y"
                   name="cuisine"
-                  // ref={cuisineRef}
                   value={newRestaurant.cuisine}
                   onChange={handleChange}
                 />
@@ -198,7 +210,6 @@ const AddRestuarant: React.FC = () => {
                 <label className="mb-1">Delivery Price</label>
                 <input
                   type="number"
-                  // ref={deliveryPriceRef}
                   name="delivery_price"
                   className="w-full p-2 rounded-[14px] bg-inputBg"
                   value={newRestaurant.delivery_price}
@@ -209,7 +220,6 @@ const AddRestuarant: React.FC = () => {
                 <label className="mb-1">Delivery Min</label>
                 <input
                   type="number"
-                  // ref={deliveryMinRef}
                   name="delivery_min"
                   className="w-full p-2 rounded-[14px] bg-inputBg"
                   value={newRestaurant.delivery_min}
@@ -221,7 +231,6 @@ const AddRestuarant: React.FC = () => {
                 <input
                   type="text"
                   name="address"
-                  // ref={addressRef}
                   className="w-full p-2 rounded-[14px] bg-inputBg"
                   value={newRestaurant.address}
                   onChange={handleChange}
@@ -233,15 +242,18 @@ const AddRestuarant: React.FC = () => {
                 </label>
                 <select
                   id="category"
-                  name="category_id"
-                  // ref={categoryRef}
-                  className="w-full p-3 rounded-[14px] bg-inputBg"
-                  value={newRestaurant.category_id}
-                  onChange={handleChange}
+                  onChange={handleCategoryChange}
+                  className=" w-[225px] sm:[325px] md:w-[150px] my-3 px-3 py-2 rounded-[14px] bg-inputBg text-[#dddcdc]  font-medium font-roboto"
                 >
-                  <option value="">Select...</option>
-                  <option value="electronics">Electronics</option>
-                  <option value="clothing">Clothing</option>
+                  <option>Category Type</option>
+                  {data &&
+                    data.data.result.data.map(
+                      (category: CategoryPostDataType) => (
+                        <option key={category.id} value={category.name}>
+                          {category.name}
+                        </option>
+                      )
+                    )}
                 </select>
               </div>
             </div>
@@ -264,7 +276,14 @@ const AddRestuarant: React.FC = () => {
             }`}
             disabled={!isValid()}
             onClick={handleAddRestaurant}
-          >{mutation.isLoading ? <div className='flex justify-center items-center mx-0 my-auto'><FadeLoader className="w-[15px] h-[15px]" color={"#fff"}/></div> : 'Add Restaurant'}
+          >
+            {mutation.isLoading ? (
+              <div className="flex justify-center items-center mx-0 my-auto">
+                <FadeLoader className="w-[15px] h-[15px]" color={"#fff"} />
+              </div>
+            ) : (
+              "Add Restaurant"
+            )}
           </button>
         </div>
       </div>
