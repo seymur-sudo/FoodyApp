@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { GetServerSideProps } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import ResCard from "@/components/Client/RestaurantCard/ResCard";
@@ -24,6 +24,22 @@ const Restaurants = () => {
     useSidebarContext() as SidebarContextProps;
   const { data } = useQuery(QUERIES.Categories, getCategory);
   const { data: restaurants } = useQuery(QUERIES.Restaurants, getRestaurant);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+
+  const handleCategoryClick = (categoryName: string | null) => {
+    setSelectedCategory(categoryName);
+    closeUserModal();
+  };
+  const filteredRestaurants = restaurants?.data.result.data.filter(
+    (restaurant) => {
+      const category_id = restaurant.category_id;
+      return (
+        !selectedCategory ||
+        (typeof category_id === "string" &&
+          category_id.includes(selectedCategory))
+      );
+    }
+  );
 
   const { t } = useTranslation("common");
 
@@ -49,10 +65,22 @@ const Restaurants = () => {
 
         <aside className="bg-[#F3F4F6] dark:bg-gray-900 w-2/12 font-mukta asideScroll max-h-[80vh] overflow-y-auto hidden md:block">
           <ul className="px-4 py-8">
+            <li
+              className="flex items-center justify-start capitalize mb-[10%] ml-[5%] cursor-pointer"
+              onClick={() => handleCategoryClick(null)}
+            >
+              <p className="font-semibold text-xl text-[#333] dark:text-[#fff] capitilaze  tracking-wider">
+                all restaurants
+              </p>
+            </li>
             {data &&
               data.data.result.data.map((category: CategoryPostDataType) => {
                 return (
-                  <li className="flex  items-center justify-start capitalize mb-[10%] ml-[5%]" key={category.id} >
+                  <li
+                    className="flex  items-center justify-start capitalize mb-[10%] ml-[5%] cursor-pointer"
+                    onClick={() => handleCategoryClick(category.name)}
+                    key={category.id}
+                  >
                     <Image
                       src={category.img_url ? category.img_url : soup}
                       alt={category.name}
@@ -91,11 +119,23 @@ const Restaurants = () => {
                 />
               </div>
               <ul className="w-10/12 mt-[5%]">
+                <li
+                  className="flex items-center justify-start capitalize mb-[10%] ml-[5%] cursor-pointer"
+                  onClick={() => handleCategoryClick(null)}
+                >
+                  <p className="font-semibold text-xl text-[#333] dark:text-[#fff] capitilaze  tracking-wider">
+                    all restaurants
+                  </p>
+                </li>
                 {data &&
                   data.data.result.data.map(
                     (category: CategoryPostDataType) => {
                       return (
-                        <li className="font-medium flex items-center  text-black text-[18px] border-b-2 border-gray-300 dark:text-gray-100 my-3 capitalize py-2 px-6" key={category.id} >
+                        <li
+                          className="font-medium flex items-center cursor-pointer  text-black text-[18px] border-b-2 border-gray-300 dark:text-gray-100 my-3 capitalize py-2 px-6"
+                          key={category.id}
+                          onClick={() => handleCategoryClick(category.name)}
+                        >
                           <Image
                             src={category.img_url ? category.img_url : soup}
                             alt={category.name}
@@ -128,12 +168,10 @@ const Restaurants = () => {
 
         <div className="w-full md:w-9/12">
           <div className="grid gap-12 grid-cols-1 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
-            {restaurants &&
-              restaurants.data.result.data.map(
-                (restaurant: RestaurantPostDataType) => (
-                  <ResCard key={restaurant.id} restaurant={restaurant} />
-                )
-              )}
+            {filteredRestaurants &&
+              filteredRestaurants.map((restaurant: RestaurantPostDataType) => (
+                <ResCard key={restaurant.id} restaurant={restaurant} />
+              ))}
           </div>
         </div>
       </div>
