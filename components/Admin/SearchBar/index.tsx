@@ -13,7 +13,7 @@ const SearchBar: React.FC = () => {
     useSidebarContext() as SidebarContextProps;
   const { pathname } = useRouter();
 
-  const { data, refetch } = useQuery(QUERIES.Categories, getCategory);
+  const { data } = useQuery(QUERIES.Categories, getCategory);
 
   const hideButton =
     pathname === "/admin/products" ||
@@ -51,8 +51,6 @@ const SearchBar: React.FC = () => {
     return "Page";
   };
 
-  
-
   return (
     <>
       <div className=" px-[2%] py-3 my-[5%] md:mb-[3%] md:mt-[0%] bg-[#27283C]  rounded-[14px] flex flex-col items-center justify-between md:flex-row">
@@ -72,7 +70,7 @@ const SearchBar: React.FC = () => {
                 {data &&
                   data.data.result.data.map(
                     (category: CategoryPostDataType) => (
-                      <option key={category.id} value={category.id}>
+                      <option key={category.id} value={category.name}>
                         {category.name}
                       </option>
                     )
