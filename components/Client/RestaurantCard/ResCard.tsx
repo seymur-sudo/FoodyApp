@@ -27,7 +27,7 @@ const ResCard: React.FC<ResCardProps> = ({ restaurant }) => {
         <div className="capitalize flex flex-col items-center md:items-start  w-full ">
           <Image
             src={restaurant.img_url ? restaurant.img_url : soup}
-            alt="name"
+            alt="restaurant"
             width={500}
             height={200}
             className="hover:scale-105 transition-all duration-500 w-full  h-[160px] object-cover"

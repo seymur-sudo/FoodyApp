@@ -52,7 +52,7 @@ const Restaurants = () => {
             {data &&
               data.data.result.data.map((category: CategoryPostDataType) => {
                 return (
-                  <li className="flex  items-center justify-start capitalize mb-[10%] ml-[5%]">
+                  <li className="flex  items-center justify-start capitalize mb-[10%] ml-[5%]" key={category.id} >
                     <Image
                       src={category.img_url ? category.img_url : soup}
                       alt={category.name}
@@ -95,7 +95,7 @@ const Restaurants = () => {
                   data.data.result.data.map(
                     (category: CategoryPostDataType) => {
                       return (
-                        <li className="font-medium flex items-center  text-black text-[18px] border-b-2 border-gray-300 dark:text-gray-100 my-3 capitalize py-2 px-6">
+                        <li className="font-medium flex items-center  text-black text-[18px] border-b-2 border-gray-300 dark:text-gray-100 my-3 capitalize py-2 px-6" key={category.id} >
                           <Image
                             src={category.img_url ? category.img_url : soup}
                             alt={category.name}
