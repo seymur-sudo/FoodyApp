@@ -2,12 +2,16 @@ import React, { useEffect } from "react";
 import soup from "../../../public/svgs/soup.svg";
 import Image from "next/image";
 import { RestaurantPostDataType } from "@/interfaces";
+// import { useRouter } from "next/router";
+import { ROUTER } from "../../../shared/constant/router";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
 type ResCardProps = {
   restaurant: RestaurantPostDataType;
 };
+
+// const { push } = useRouter();
 
 const ResCard: React.FC<ResCardProps> = ({ restaurant }) => {
   useEffect(() => {
@@ -31,6 +35,7 @@ const ResCard: React.FC<ResCardProps> = ({ restaurant }) => {
             width={500}
             height={200}
             className="hover:scale-105 transition-all duration-500 w-full  h-[160px] object-cover"
+            // onClick={() => push(`${ROUTER.RESTAURANTS}/${restaurant.id}`)}
           />
           <h1 className="text-[#1E1E30] dark:text-gray-200 text-[24px] md:text-[18px] mt-3 mb-2 px-2">
             {restaurant.name?.slice(0, 10)}...
