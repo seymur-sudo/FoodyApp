@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { GetServerSideProps } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import ResCard from "@/components/Client/RestaurantCard/ResCard";
+import { ROUTER } from "../../shared/constant/router";
 import Image from "next/image";
 import soup from "../../public/svgs/soup.svg";
 import { IoFilterSharp } from "react-icons/io5";
@@ -17,7 +17,10 @@ import {
 import { useTranslation } from "next-i18next";
 import { useQuery } from "react-query";
 import { QUERIES } from "../../constant/Queries";
+import { useRouter } from "next/router";
 import { getCategory, getRestaurant } from "../../services/index";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const Restaurants = () => {
   const { showUserModal, openUserModal, closeUserModal, modalSpring } =
@@ -25,6 +28,7 @@ const Restaurants = () => {
   const { data } = useQuery(QUERIES.Categories, getCategory);
   const { data: restaurants } = useQuery(QUERIES.Restaurants, getRestaurant);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const { push } = useRouter();
 
   const handleCategoryClick = (categoryName: string | null) => {
     setSelectedCategory(categoryName);
@@ -42,6 +46,13 @@ const Restaurants = () => {
   );
 
   const { t } = useTranslation("common");
+
+  useEffect(() => {
+    AOS.init({
+      duration: 1000,
+    });
+    AOS.refresh();
+  }, []);
 
   return (
     <>
@@ -164,7 +175,40 @@ const Restaurants = () => {
           <div className="grid gap-12 grid-cols-1 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
             {filteredRestaurants &&
               filteredRestaurants.map((restaurant: RestaurantPostDataType) => (
-                <ResCard key={restaurant.id} restaurant={restaurant} />
+                <div
+                  className="bg-white dark:bg-black shadow-shadow4 dark:shadow-shadow4Dark  font-roboto font-medium rounded-md hover:scale-110 transition-all duration-700"
+                  data-aos="fade-up"
+                  data-aos-delay={200}
+                  key={restaurant.id}
+                >
+                  <div className="capitalize flex flex-col items-center md:items-start  w-full ">
+                    <Image
+                      onClick={() =>
+                        push(`${ROUTER.RESTAURANTS}/${restaurant.id}`)
+                      }
+                      src={restaurant.img_url ? restaurant.img_url : soup}
+                      alt="restaurant"
+                      width={500}
+                      height={200}
+                      className="hover:scale-105 transition-all duration-500 w-full cursor-pointer  h-[160px] object-cover"
+                    />
+                    <h1 className="text-[#1E1E30] dark:text-gray-200 text-[24px] md:text-[18px] mt-3 mb-2 px-2">
+                      {restaurant.name?.slice(0, 10)}...
+                    </h1>
+                    <p className="text-[#828282] dark:text-[#a7a7a7] text-xl md:text-base p-2">
+                      {restaurant.cuisine}
+                    </p>
+                  </div>
+
+                  <div className="flex flex-col md:flex-row justify-between items-center px-2 py-5">
+                    <p className="text-[#4F4F4F] dark:text-[#979797]  text-2xl md:text-lg font-bold">
+                      $ {restaurant.delivery_min}
+                    </p>
+                    <div className="flex items-center text-xl md:text-base bg-[#D63626] text-white rounded-full py-2 px-[25%]  md:px-[5%] md:py-1 my-[4%] md:my-[0%]">
+                      {restaurant.delivery_price} min
+                    </div>
+                  </div>
+                </div>
               ))}
           </div>
         </div>

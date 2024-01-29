@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import MainHeader from "@/components/Client/MainHeader";
 import Image from "next/image";
 import papa from "../../../public/svgs/papa.svg";
@@ -15,6 +15,10 @@ import DeleteModal from "@/components/Admin/Modals/DeleteModal";
 import { useTranslation } from "next-i18next";
 import { GetServerSideProps } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { useRouter } from "next/router";
+import { getRestaurantById } from "@/services";
+import { useQuery } from "react-query";
+import { QUERIES } from "../../../constant/Queries";
 
 const ResDetail = () => {
   const {
@@ -26,51 +30,65 @@ const ResDetail = () => {
     setshowDelete,
   } = useSidebarContext() as SidebarContextProps;
   const { t } = useTranslation("common");
+  const router = useRouter();
+  const { id } = router.query;
+
+  const { data, isLoading, isError } = useQuery([QUERIES.Restaurants, id], () =>
+    getRestaurantById(id as string)
+  );
+
+  console.log("restaurant",data)
 
   return (
     <>
+      {isLoading && <p>Loading...</p>}
+      {isError && <p>Error loading restaurant data</p>}
       <div className="bg-white dark:bg-black ">
         <MainHeader />
 
-        <div className="px-[2%]">
-          <Image
-            src={papa}
-            alt="papa"
-            width={500}
-            height={500}
-            className=" w-full object-cover"
-          />
-          <div className="dark:bg-white pt-2 md:pt-0 flex flex-col md:flex-row md:items-center md:justify-between px-4 pb-2">
-            <div>
-              <h1 className="capitalize  text-[#4F4F4F] text-[22px] font-bold">
-                papa johns pizza restaurant
-              </h1>
-              <p className="capitalize  text-[#828282] text-[14px] font-medium">
-                19 nizami streeet , sabail ,baku
-              </p>
-            </div>
+   
 
-            <div className="flex flex-col md:flex-row  md:items-center md:justify-between w-full md:w-4/12 ">
-              <div className="w-full py-5 md:py-0">
-                <h2 className="capitalize  text-[#4F4F4F] text-[18px] font-bold">
-                  cuisine
-                </h2>
+        {data && data.data.result.data && (
+          <div className="px-[2%]">
+            <Image
+              src={papa}
+              alt="papa"
+              width={500}
+              height={500}
+              className=" w-full object-cover"
+            />
+            <div className="dark:bg-white pt-2 md:pt-0 flex flex-col md:flex-row md:items-center md:justify-between px-4 pb-2">
+              <div>
+                <h1 className="capitalize  text-[#4F4F4F] text-[22px] font-bold">
+                  {/* {data?.data.result.data.name} */}
+                </h1>
                 <p className="capitalize  text-[#828282] text-[14px] font-medium">
-                  pizza , drink ,hotdog,sandvic,roll
+                  19 nizami streeet , sabail ,baku
                 </p>
               </div>
-              <div className="flex items-center w-full">
-                <button className="  bg-white text-[#D63626] hover:opacity-75 transition-all duration-500 flex flex-col items-start justify-center  h-12  px-2 text-sm font-medium rounded-[4px] border-2 border-[#D63626]">
-                  <span>$5</span>
-                  <span>{t("Delivery")}</span>
-                </button>
-                <button className="  ml-[5%] bg-[#D63626] text-[#fff] hover:opacity-75 transition-all duration-500 flex  items-center capitalize h-12 px-2 text-sm font-medium rounded-[4px] border-2 border-[#D63626]">
-                  <span>{t("Go Back")}</span>
-                </button>
+
+              <div className="flex flex-col md:flex-row  md:items-center md:justify-between w-full md:w-4/12 ">
+                <div className="w-full py-5 md:py-0">
+                  <h2 className="capitalize  text-[#4F4F4F] text-[18px] font-bold">
+                    cuisine
+                  </h2>
+                  <p className="capitalize  text-[#828282] text-[14px] font-medium">
+                    pizza , drink ,hotdog,sandvic,roll
+                  </p>
+                </div>
+                <div className="flex items-center w-full">
+                  <button className="  bg-white text-[#D63626] hover:opacity-75 transition-all duration-500 flex flex-col items-start justify-center  h-12  px-2 text-sm font-medium rounded-[4px] border-2 border-[#D63626]">
+                    <span>$5</span>
+                    <span>{t("Delivery")}</span>
+                  </button>
+                  <button className="  ml-[5%] bg-[#D63626] text-[#fff] hover:opacity-75 transition-all duration-500 flex  items-center capitalize h-12 px-2 text-sm font-medium rounded-[4px] border-2 border-[#D63626]">
+                    <span>{t("Go Back")}</span>
+                  </button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        )}
 
         <div className="py-[3%] px-[6%] flex justify-between">
           <div className="w-full md:w-7/12 bg-[#F3F4F6] dark:bg-gray-900 flex flex-col items-center my-scrollable-component max-h-[100vh] overflow-y-auto">

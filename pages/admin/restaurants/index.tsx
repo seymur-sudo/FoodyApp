@@ -8,7 +8,7 @@ import { getRestaurant } from "@/services/index";
 import { QUERIES } from "../../../constant/Queries";
 import { SidebarContextProps } from "../../../interfaces/index";
 import { useSidebarContext } from "@/contexts/SidebarContext";
-import usePagination from "@/components/Admin/Pagination/Pagination";
+import usePagination from "@/components/Admin/Pagination";
 import PaginationControls from "@/components/Admin/Pagination/PaginationControls";
 
 const Restaurant: React.FC = () => {
