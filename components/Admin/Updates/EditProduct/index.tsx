@@ -2,11 +2,13 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import uploadImg from "../../../../public/svgs/upload.svg";
 import { useSidebarContext } from "../../../../contexts/SidebarContext";
-import { SidebarContextProps } from "../../../../interfaces/index";
+import { RestaurantPostDataType, SidebarContextProps } from "../../../../interfaces/index";
 import { useMutation, useQueryClient } from "react-query";
 import { toast } from "react-toastify";
 import { QUERIES } from "../../../../constant/Queries";
 import { editProduct } from "../../../../services/index";
+import { useQuery } from "react-query";
+import { getRestaurant } from "../../../../services/index";
 import { fileStorage } from "../../../../server/configs/firebase";
 import {
   getDownloadURL,
@@ -23,7 +25,10 @@ const EditProduct: React.FC = () => {
     newImg,
     setNewImg,
   } = useSidebarContext() as SidebarContextProps;
-
+  const { data, isLoading, isError } = useQuery(
+    QUERIES.Restaurants,
+    getRestaurant
+  );
   const [editedProduct, setEditedProduct] = useState(editedItem);
 
   const queryClient = useQueryClient();
@@ -204,7 +209,7 @@ const EditProduct: React.FC = () => {
 
               <div className="flex flex-col">
                 <label htmlFor="category" className="mb-1">
-                  Select Category:
+                  Select Restaurant:
                 </label>
                 <select
                   id="category"
@@ -214,8 +219,10 @@ const EditProduct: React.FC = () => {
                   onChange={handleInputChange}
                 >
                   <option value="">Select...</option>
-                  <option value="electronics">Electronics</option>
-                  <option value="clothing">Clothing</option>
+                  {data?.data.result.data.map((restaurant: RestaurantPostDataType, index) => (
+                    <option key={index} value={`${restaurant.name}`}>{restaurant.name}</option>
+
+                  ))}
                 </select>
               </div>
             </div>
