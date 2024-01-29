@@ -13,9 +13,11 @@ export interface SidebarContextProps {
   closeSidebar: () => void;
   show: boolean;
   lastData: RestaurantPostDataType | null;
-  setLastData: React.Dispatch<React.SetStateAction<RestaurantPostDataType | null>>;
-  lastOffer:OfferPostDataType|null;
-  setLastOffer: React.Dispatch<React.SetStateAction<OfferPostDataType | null>>
+  setLastData: React.Dispatch<
+    React.SetStateAction<RestaurantPostDataType | null>
+  >;
+  lastOffer: OfferPostDataType | null;
+  setLastOffer: React.Dispatch<React.SetStateAction<OfferPostDataType | null>>;
   newImg: string | null;
   setNewImg: React.Dispatch<React.SetStateAction<string | null>>;
   showAdds: boolean;
@@ -95,6 +97,14 @@ export interface DataBubble {
   hour: string;
   index: number;
   value: number;
+}
+
+export interface PaginationControlsProps {
+  currentPage: number;
+  totalPages: number;
+  nextPage: () => void;
+  prevPage: () => void;
+  goToPage: (page: number) => void;
 }
 
 export interface PostDataType {

@@ -4,7 +4,7 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import ResCard from "@/components/Client/RestaurantCard/ResCard";
 import Image from "next/image";
 import soup from "../../public/svgs/soup.svg";
-import filter from "../../public/svgs/filter.svg";
+import { IoFilterSharp } from "react-icons/io5";
 import { animated } from "@react-spring/web";
 import MainHeader from "@/components/Client/MainHeader";
 import { IoIosCloseCircleOutline } from "react-icons/io";
@@ -51,14 +51,8 @@ const Restaurants = () => {
           className="sm:hidden bg-white dark:bg-gray-900 cursor-pointer text-white p-6 rounded shadow-shadow4 flex justify-center mb-[12%]"
           onClick={openUserModal}
         >
-          <Image
-            src={filter}
-            alt="filter"
-            width={100}
-            height={100}
-            className="hover:scale-105 transition-all duration-500  w-[30px]  h-[30px]   object-cover"
-          />
-          <p className="text-[#4F4F4F] dark:text-gray-300 font-medium ml-2 text-xl">
+          <IoFilterSharp className="text-[#4F4F4F] dark:text-cyan-300   hover:scale-105 transition-all duration-500  w-[30px]  h-[30px]   object-cover" />
+          <p className="text-[#4F4F4F] dark:text-cyan-300 font-medium ml-2 text-xl tracking-wider">
             {t("Filters")}
           </p>
         </div>

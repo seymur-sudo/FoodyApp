@@ -211,7 +211,7 @@ const AddProduct: React.FC = () => {
                 </label>
                 <select
                   id="restaurant"
-                  className="w-full p-3 rounded-[14px] bg-inputBg"
+                  className="w-full cursor-pointer p-3 rounded-[14px] bg-inputBg"
                   name="rest_id"
                   value={newProduct.rest_id}
                   onChange={handleInputChange}

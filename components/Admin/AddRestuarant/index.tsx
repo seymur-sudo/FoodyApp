@@ -237,13 +237,13 @@ const AddRestuarant: React.FC = () => {
                 />
               </div>
               <div className="flex mt-2 flex-col">
-                <label htmlFor="category" className="mb-1">
-                  Category:
+                <label htmlFor="category" className="mt-2">
+                Select Category:
                 </label>
                 <select
                   id="category"
                   onChange={handleCategoryChange}
-                  className=" w-[225px] sm:[325px] md:w-[150px] my-3 px-3 py-2 rounded-[14px] bg-inputBg text-[#dddcdc]  font-medium font-roboto"
+                  className=" my-3 px-2 py-[14px] cursor-pointer rounded-[14px] bg-inputBg text-[#dddcdc]  font-medium font-roboto"
                 >
                   <option>Category Type</option>
                   {data &&
