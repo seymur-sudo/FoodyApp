@@ -5,34 +5,34 @@ import hamburger from "../../../public/svgs/hamburger.svg";
 import editIcon from "../../../public/svgs/edit.svg";
 import deleteIcon from "../../../public/svgs/delete2.svg";
 import SearchBar from "@/components/Admin/SearchBar";
-import { SidebarContextProps } from "../../../interfaces/index";
+import {
+  SidebarContextProps,
+  CategoryPostDataType,
+} from "../../../interfaces/index";
 import { useSidebarContext } from "@/contexts/SidebarContext";
 import EditModal from "@/components/Admin/Modals/EditModal";
 import DeleteModal from "@/components/Admin/Modals/DeleteModal";
 import { GetServerSideProps } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "next-i18next";
-import { CategoryPostDataType } from "../../../interfaces/index";
 import { getCategory } from "../../../services/index";
 import { useQuery } from "react-query";
 import { QUERIES } from "../../../constant/Queries";
+import usePagination from "@/components/Admin/Pagination/Pagination";
+import PaginationControls from "@/components/Admin/Pagination/PaginationControls";
 
 const Category: React.FC = () => {
-  const {
-    setShow,
-    setshowDelete,
-    setEditedCategory,
-    setDeletedCategory,
-  } = useSidebarContext() as SidebarContextProps;
+  const { setShow, setshowDelete, setEditedCategory, setDeletedCategory } =
+    useSidebarContext() as SidebarContextProps;
   const { t } = useTranslation("common");
 
   const { data, isLoading, isError } = useQuery(
     QUERIES.Categories,
-    getCategory,
-    {
-      refetchOnWindowFocus: false,
-    }
+    getCategory
   );
+
+  const { currentPage, currentData, totalPages, nextPage, prevPage, goToPage } =
+    usePagination(data?.data.result.data, 3);
 
   const openModal = (category: CategoryPostDataType | null) => {
     setShow(true);
@@ -75,56 +75,59 @@ const Category: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-              {data &&
-                data.data.result.data.map(
-                  (category: CategoryPostDataType, index) => {
-                    return (
-                      <tr
-                        key={index}
-                        className="bg-white border-b dark:bg-[#27283C] dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-700"
-                      >
-                        <td className="pl-14 py-4 font-semibold text-gray-900 dark:text-white">
-                          {category.id}
-                        </td>
+              {currentData &&
+                currentData.map((category: CategoryPostDataType) => {
+                  return (
+                    <tr
+                      key={category.id}
+                      className="bg-white border-b dark:bg-[#27283C] dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-700"
+                    >
+                      <td className="pl-14 py-4 font-semibold text-gray-900 dark:text-white">
+                        {category.id}
+                      </td>
 
-                        <td className="p-4 ">
+                      <td className="p-4 ">
+                        <Image
+                          src={category.img_url ? category.img_url : hamburger}
+                          alt={category.name}
+                          width={100}
+                          height={100}
+                          className="hover:scale-105 object-cover transition-all duration-500 w-[100px] h-[50px] rounded-md"
+                        />
+                      </td>
+
+                      <td className="px-6 py-4 font-semibold text-gray-900 dark:text-white capitalize">
+                        {category.name}
+                      </td>
+
+                      <td className="px-6 py-4">
+                        <div className="flex items-center">
                           <Image
-                            src={
-                              category.img_url ? category.img_url : hamburger
-                            }
-                            alt={category.name}
-                            width={100}
-                            height={100}
-                            className="hover:scale-105 object-cover transition-all duration-500 w-[100px] h-[50px] rounded-md"
+                            src={editIcon}
+                            alt="title"
+                            onClick={() => openModal(category)}
+                            className="hover:scale-110 transition-all duration-500  mr-2  cursor-pointer"
                           />
-                        </td>
-
-                        <td className="px-6 py-4 font-semibold text-gray-900 dark:text-white capitalize">
-                          {category.name}
-                        </td>
-
-                        <td className="px-6 py-4">
-                          <div className="flex items-center">
-                            <Image
-                              src={editIcon}
-                              alt="title"
-                              onClick={() => openModal(category)}
-                              className="hover:scale-110 transition-all duration-500  mr-2  cursor-pointer"
-                            />
-                            <Image
-                              src={deleteIcon}
-                              alt="title"
-                              onClick={() => openDeleteModal(category)}
-                              className="hover:scale-110 transition-all duration-500   cursor-pointer"
-                            />
-                          </div>
-                        </td>
-                      </tr>
-                    );
-                  }
-                )}
+                          <Image
+                            src={deleteIcon}
+                            alt="title"
+                            onClick={() => openDeleteModal(category)}
+                            className="hover:scale-110 transition-all duration-500   cursor-pointer"
+                          />
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
             </tbody>
           </table>
+          <PaginationControls
+            currentPage={currentPage}
+            totalPages={totalPages}
+            nextPage={nextPage}
+            prevPage={prevPage}
+            goToPage={goToPage}
+          />
           <EditModal />
           <DeleteModal />
         </div>

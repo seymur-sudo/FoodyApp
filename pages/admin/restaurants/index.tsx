@@ -8,6 +8,8 @@ import { getRestaurant } from "@/services/index";
 import { QUERIES } from "../../../constant/Queries";
 import { SidebarContextProps } from "../../../interfaces/index";
 import { useSidebarContext } from "@/contexts/SidebarContext";
+import usePagination from "@/components/Admin/Pagination/Pagination";
+import PaginationControls from "@/components/Admin/Pagination/PaginationControls";
 
 const Restaurant: React.FC = () => {
   const { selectedCategory } = useSidebarContext() as SidebarContextProps;
@@ -15,6 +17,9 @@ const Restaurant: React.FC = () => {
     QUERIES.Restaurants,
     getRestaurant
   );
+
+  const { currentPage, currentData, totalPages, nextPage, prevPage, goToPage } =
+    usePagination(data?.data.result.data, 5);
 
   if (isLoading || isError) {
     return (
@@ -27,10 +32,10 @@ const Restaurant: React.FC = () => {
   }
   const filteredData =
     selectedCategory !== "" && selectedCategory !== null
-      ? data?.data.result.data.filter((restaurant: RestaurantPostDataType) => {
+      ? currentData.filter((restaurant: RestaurantPostDataType) => {
           return restaurant.category_id === selectedCategory;
         })
-      : data?.data.result.data;
+      : currentData;
 
   return (
     <Layout>
@@ -46,6 +51,13 @@ const Restaurant: React.FC = () => {
               />
             ))}
         </div>
+        <PaginationControls
+          currentPage={currentPage}
+          totalPages={totalPages}
+          nextPage={nextPage}
+          prevPage={prevPage}
+          goToPage={goToPage}
+        />
       </div>
     </Layout>
   );

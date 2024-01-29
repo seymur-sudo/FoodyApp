@@ -14,18 +14,25 @@ import { useQuery } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { QUERIES } from "../../../constant/Queries";
 import { PostDataType } from "../../../interfaces/index";
+import usePagination from "@/components/Admin/Pagination/Pagination";
+import PaginationControls from "@/components/Admin/Pagination/PaginationControls";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
 const Products: React.FC = () => {
-  const { setShow, setshowDelete,selectedRestaurant, setEditedItem, setDeletedItem } =
-    useSidebarContext() as SidebarContextProps;
+  const {
+    setShow,
+    setshowDelete,
+    selectedRestaurant,
+    setEditedItem,
+    setDeletedItem,
+  } = useSidebarContext() as SidebarContextProps;
 
   const openModal = (product: PostDataType | null) => {
     setShow(true);
     setEditedItem(product);
   };
-  
+
   const openDeleteModal = (product: PostDataType | null) => {
     setshowDelete(true);
     setDeletedItem(product);
@@ -34,6 +41,9 @@ const Products: React.FC = () => {
   const { data, isLoading, isError } = useQuery(QUERIES.Products, getProduct, {
     refetchOnWindowFocus: false,
   });
+
+  const { currentPage, currentData, totalPages, nextPage, prevPage, goToPage } =
+    usePagination(data?.data.result.data, 4);
 
   useEffect(() => {
     AOS.init({
@@ -50,11 +60,11 @@ const Products: React.FC = () => {
     return <div>Error loading products</div>;
   }
   const filteredData =
-  selectedRestaurant !== "" && selectedRestaurant !== null
-    ? data?.data.result.data.filter((product: PostDataType) => {
-        return product.rest_id === selectedRestaurant;
-      })
-    : data?.data.result.data;
+    selectedRestaurant !== "" && selectedRestaurant !== null
+      ? currentData.filter((product: PostDataType) => {
+          return product.rest_id === selectedRestaurant;
+        })
+      : currentData;
   return (
     <Layout>
       <>
@@ -63,7 +73,7 @@ const Products: React.FC = () => {
 
           <div className="grid gap-10 grid-cols-1 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
             {filteredData &&
-              filteredData.map((product: PostDataType, index) => (
+              filteredData.map((product: PostDataType, index: any) => (
                 <div
                   key={product.id}
                   className="bg-indigo-100 shadow-shadow2  font-roboto font-medium rounded-md hover:scale-110 transition-all duration-700"
@@ -106,7 +116,15 @@ const Products: React.FC = () => {
                 </div>
               ))}
           </div>
+          <PaginationControls
+            currentPage={currentPage}
+            totalPages={totalPages}
+            nextPage={nextPage}
+            prevPage={prevPage}
+            goToPage={goToPage}
+          />
         </div>
+
         <EditModal />
         <DeleteModal />
         <ReactQueryDevtools />
