@@ -111,9 +111,9 @@ export interface PostDataType {
   id: number | string;
   name: string;
   description?: string;
-  price?: number;
+  price: number;
   img_url: string;
-  rest_id?: string;
+  rest_id: string;
 }
 
 export interface ApiResponse {
@@ -124,7 +124,7 @@ export interface ApiResponse {
   message: string;
 }
 export interface RestaurantPostDataType {
-  id?: number | string;
+  id: number | string;
   name: string | undefined;
   category_id: number | string | undefined;
   img_url: string | null | undefined;
@@ -135,11 +135,30 @@ export interface RestaurantPostDataType {
 }
 export interface RestaurantApiResponse {
   result: {
-    data: RestaurantPostDataType[] | FirstStateType[];
+    data: RestaurantPostDataType[];
   };
   status: number;
   message: string;
 }
+
+export interface RestaurantSingleApiResponse {
+  result: {
+    data: {
+      id: number | string;
+      name: string | undefined;
+      category_id: number | string | undefined;
+      img_url: string | null | undefined;
+      cuisine: string | undefined;
+      address: string | undefined;
+      delivery_min: number | undefined;
+      delivery_price: number | undefined;
+      products: PostDataType[];
+    };
+  };
+  status: number;
+  message: string;
+}
+
 export interface OfferPostDataType {
   id?: number | string;
   name: string | null | undefined;

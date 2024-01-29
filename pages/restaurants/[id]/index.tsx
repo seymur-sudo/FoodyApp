@@ -6,7 +6,7 @@ import pizza from "../../../public/svgs/pizza.svg";
 import { LuTrash } from "react-icons/lu";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import { animated } from "@react-spring/web";
-import BasketCard from "@/components/Client/BaskerCards/BasketCard";
+import ProductCard from "@/components/Client/BaskerCards/BasketCard";
 import BasketResCard from "@/components/Client/BaskerCards/BasketResCard";
 import { useSidebarContext } from "@/contexts/SidebarContext";
 import { SidebarContextProps } from "@/interfaces";
@@ -16,9 +16,10 @@ import { useTranslation } from "next-i18next";
 import { GetServerSideProps } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useRouter } from "next/router";
-import { getRestaurantById } from "@/services";
+import { getRestaurantById, getProduct } from "@/services";
 import { useQuery } from "react-query";
 import { QUERIES } from "../../../constant/Queries";
+import { ReactQueryDevtools } from "react-query/devtools";
 
 const ResDetail = () => {
   const {
@@ -33,11 +34,27 @@ const ResDetail = () => {
   const router = useRouter();
   const { id } = router.query;
 
-  const { data, isLoading, isError } = useQuery([QUERIES.Restaurants, id], () =>
+  const {
+    data: restaurantData,
+    isLoading,
+    isError,
+  } = useQuery([QUERIES.SingleRestaurant, id], () =>
     getRestaurantById(id as string)
   );
+  const { data: products } = useQuery(QUERIES.Products, getProduct);
 
-  console.log("restaurant",data)
+  const singleRestaurant = restaurantData?.data.result.data;
+  const restaurantProducts = products?.data.result.data;
+
+  console.log("resproducts", singleRestaurant);
+
+  const filteredProducts = restaurantProducts?.filter(
+    (product) =>
+      singleRestaurant?.name &&
+      product.rest_id
+        .toLowerCase()
+        .includes(singleRestaurant.name.toLowerCase())
+  );
 
   return (
     <>
@@ -45,40 +62,37 @@ const ResDetail = () => {
       {isError && <p>Error loading restaurant data</p>}
       <div className="bg-white dark:bg-black ">
         <MainHeader />
-
-   
-
-        {data && data.data.result.data && (
+        {restaurantData && singleRestaurant && (
           <div className="px-[2%]">
             <Image
-              src={papa}
+              src={singleRestaurant.img_url ? singleRestaurant.img_url : papa}
               alt="papa"
               width={500}
               height={500}
-              className=" w-full object-cover"
+              className=" w-full object-cover h-[60vh]"
             />
-            <div className="dark:bg-white pt-2 md:pt-0 flex flex-col md:flex-row md:items-center md:justify-between px-4 pb-2">
+            <div className="bg-white dark:bg-black pt-2 md:pt-0 flex flex-col md:flex-row md:items-center md:justify-between px-4 pb-2">
               <div>
-                <h1 className="capitalize  text-[#4F4F4F] text-[22px] font-bold">
-                  {/* {data?.data.result.data.name} */}
+                <h1 className="capitalize  text-[#4F4F4F] dark:text-sky-400 py-2 text-[22px] font-bold">
+                  {singleRestaurant?.name}
                 </h1>
-                <p className="capitalize  text-[#828282] text-[14px] font-medium">
-                  19 nizami streeet , sabail ,baku
+                <p className="capitalize  text-[#828282] dark:text-sky-300 text-[14px] font-medium">
+                  {singleRestaurant?.address}
                 </p>
               </div>
 
               <div className="flex flex-col md:flex-row  md:items-center md:justify-between w-full md:w-4/12 ">
                 <div className="w-full py-5 md:py-0">
-                  <h2 className="capitalize  text-[#4F4F4F] text-[18px] font-bold">
-                    cuisine
+                  <h2 className="capitalize  text-[#4F4F4F] py-2 dark:text-sky-400 text-[18px] font-bold">
+                    {singleRestaurant?.cuisine}
                   </h2>
-                  <p className="capitalize  text-[#828282] text-[14px] font-medium">
-                    pizza , drink ,hotdog,sandvic,roll
+                  <p className="capitalize  text-[#828282] text-[14px] dark:text-sky-300 font-medium">
+                    {singleRestaurant?.category_id}
                   </p>
                 </div>
-                <div className="flex items-center w-full">
+                <div className="flex items-center w-full py-2">
                   <button className="  bg-white text-[#D63626] hover:opacity-75 transition-all duration-500 flex flex-col items-start justify-center  h-12  px-2 text-sm font-medium rounded-[4px] border-2 border-[#D63626]">
-                    <span>$5</span>
+                    <span>$ {singleRestaurant?.delivery_price}</span>
                     <span>{t("Delivery")}</span>
                   </button>
                   <button className="  ml-[5%] bg-[#D63626] text-[#fff] hover:opacity-75 transition-all duration-500 flex  items-center capitalize h-12 px-2 text-sm font-medium rounded-[4px] border-2 border-[#D63626]">
@@ -96,9 +110,11 @@ const ResDetail = () => {
               {t("Products")}
             </h1>
             <div className="w-full border-t-2 py-3 dark:border-sky-300">
-              <BasketCard />
-              <BasketCard />
-              <BasketCard />
+              {products &&
+                filteredProducts &&
+                filteredProducts.map((product) => {
+                  return <ProductCard key={product.id} product={product} />;
+                })}
 
               <div
                 className="flex justify-center w-full mt-[4%] md:hidden "
@@ -217,6 +233,7 @@ const ResDetail = () => {
       </div>
 
       <DeleteModal />
+      <ReactQueryDevtools />
     </>
   );
 };

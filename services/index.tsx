@@ -6,6 +6,7 @@ import {
   RestaurantApiResponse,
   CategoryApiResponse,
   RestaurantPostDataType,
+  RestaurantSingleApiResponse,
   PostDataType,
   CategoryPostDataType,
   FirstStateType,
@@ -60,7 +61,7 @@ export const getRestaurant = (): AxiosPromise<RestaurantApiResponse> =>
 //GET_RESTAURANT_BY_ID
 export const getRestaurantById = (
   restaurantID: string | number
-): AxiosPromise<RestaurantApiResponse> =>
+): AxiosPromise<RestaurantSingleApiResponse> =>
   instanceAxios({
     method: "GET",
     url: `${ENDPOINTS.RESTAURANT}/${restaurantID}`,
