@@ -9,7 +9,7 @@ const PaginationControls: React.FC<PaginationControlsProps> = ({
   prevPage,
   goToPage,
 }) => (
-  <div className="flex justify-center items-center pt-14 text-3xl ">
+  <div className="flex justify-center items-center pt-12 pb-6 text-3xl ">
     <button
       onClick={prevPage}
       disabled={currentPage === 1}

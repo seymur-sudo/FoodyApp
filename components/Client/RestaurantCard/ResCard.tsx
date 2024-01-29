@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import soup from "../../../public/svgs/soup.svg";
 import Image from "next/image";
 import { RestaurantPostDataType } from "@/interfaces";
-// import { useRouter } from "next/router";
 import { ROUTER } from "../../../shared/constant/router";
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -11,7 +10,6 @@ type ResCardProps = {
   restaurant: RestaurantPostDataType;
 };
 
-// const { push } = useRouter();
 
 const ResCard: React.FC<ResCardProps> = ({ restaurant }) => {
   useEffect(() => {
