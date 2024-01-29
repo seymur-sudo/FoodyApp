@@ -2,11 +2,13 @@ import React, { useState } from "react";
 import Image from "next/image";
 import uploadImg from "../../../public/svgs/upload.svg";
 import { useSidebarContext } from "../../../contexts/SidebarContext";
-import { SidebarContextProps } from "../../../interfaces/index";
+import { RestaurantPostDataType, SidebarContextProps } from "../../../interfaces/index";
 import { useMutation, useQueryClient } from "react-query";
 import { toast } from "react-toastify";
 import { InitialStateType } from "../../../interfaces/index";
 import { addProduct } from "../../../services/index";
+import { useQuery } from "react-query";
+import { getRestaurant } from "@/services/index";
 import { QUERIES } from "../../../constant/Queries";
 import { fileStorage } from "../../../server/configs/firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
@@ -20,6 +22,10 @@ const initialState: InitialStateType = {
 };
 
 const AddProduct: React.FC = () => {
+  const { data, isLoading, isError } = useQuery(
+    QUERIES.Restaurants,
+    getRestaurant
+  );
   const { isSidebarOpen, closeSidebar, setSelectedFile, newImg, setNewImg } =
     useSidebarContext() as SidebarContextProps;
   const [newProduct, setNewProduct] = useState<InitialStateType>(initialState);
@@ -198,6 +204,24 @@ const AddProduct: React.FC = () => {
                   value={newProduct.price}
                   onChange={handleInputChange}
                 />
+              </div>
+              <div className="flex flex-col">
+                <label htmlFor="restaurant" className="mb-1">
+                  Select Restaurant:
+                </label>
+                <select
+                  id="restaurant"
+                  className="w-full p-3 rounded-[14px] bg-inputBg"
+                  name="rest_id"
+                  value={newProduct.rest_id}
+                  onChange={handleInputChange}
+                >
+                  <option value="">Select...</option>
+                  {data?.data.result.data.map((restaurant:RestaurantPostDataType,index) => (
+                    <option key={index} value={`${restaurant.name}`}>{restaurant.name}</option>
+
+                  ))}
+                </select>
               </div>
             </div>
           </div>

@@ -18,14 +18,14 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 
 const Products: React.FC = () => {
-  const { setShow, setshowDelete, setEditedItem, setDeletedItem } =
+  const { setShow, setshowDelete,selectedRestaurant, setEditedItem, setDeletedItem } =
     useSidebarContext() as SidebarContextProps;
 
   const openModal = (product: PostDataType | null) => {
     setShow(true);
     setEditedItem(product);
   };
-
+  
   const openDeleteModal = (product: PostDataType | null) => {
     setshowDelete(true);
     setDeletedItem(product);
@@ -49,7 +49,12 @@ const Products: React.FC = () => {
   if (isError) {
     return <div>Error loading products</div>;
   }
-
+  const filteredData =
+  selectedRestaurant !== "" && selectedRestaurant !== null
+    ? data?.data.result.data.filter((product: PostDataType) => {
+        return product.rest_id === selectedRestaurant;
+      })
+    : data?.data.result.data;
   return (
     <Layout>
       <>
@@ -57,8 +62,8 @@ const Products: React.FC = () => {
           <SearchBar />
 
           <div className="grid gap-10 grid-cols-1 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
-            {data &&
-              data.data.result.data.map((product: PostDataType, index) => (
+            {filteredData &&
+              filteredData.map((product: PostDataType, index) => (
                 <div
                   key={product.id}
                   className="bg-indigo-100 shadow-shadow2  font-roboto font-medium rounded-md hover:scale-110 transition-all duration-700"

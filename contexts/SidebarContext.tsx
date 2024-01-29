@@ -5,6 +5,7 @@ import {
   PostDataType,
   RestaurantPostDataType,
   CategoryPostDataType,
+  OfferPostDataType,
 } from "../interfaces/index";
 import { useSpring } from "@react-spring/web";
 
@@ -66,7 +67,7 @@ export const SidebarContextProvider: React.FC<ChildrenNode> = ({
   };
 
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [lastData, setLastData] = useState<RestaurantPostDataType | null>(null);
+
   const [newImg, setNewImg] = useState<string | null>(null);
   const [showUserModal, setShowUserModal] = useState<boolean>(false);
 
@@ -100,7 +101,9 @@ export const SidebarContextProvider: React.FC<ChildrenNode> = ({
 
 
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-
+  const [selectedRestaurant,setSelectedRestaurant]=useState<string |null>(null)
+  const [lastData, setLastData] = useState<RestaurantPostDataType | null>(null);
+  const [lastOffer, setLastOffer] = useState<OfferPostDataType | null>(null);
 
   const contextValue = {
     isNavbarOpen,
@@ -112,6 +115,8 @@ export const SidebarContextProvider: React.FC<ChildrenNode> = ({
     show,
     lastData,
     setLastData,
+    lastOffer,
+    setLastOffer,
     newImg,
     setNewImg,
     setShow,
@@ -137,7 +142,10 @@ export const SidebarContextProvider: React.FC<ChildrenNode> = ({
     setEditedCategory,
     deletedCategory,
     setDeletedCategory,
-    selectedCategory, setSelectedCategory
+    selectedCategory,
+    setSelectedCategory,
+    selectedRestaurant,
+    setSelectedRestaurant
   };
 
   const Component = SidebarContext.Provider;

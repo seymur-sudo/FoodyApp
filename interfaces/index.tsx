@@ -13,9 +13,9 @@ export interface SidebarContextProps {
   closeSidebar: () => void;
   show: boolean;
   lastData: RestaurantPostDataType | null;
-  setLastData: React.Dispatch<
-    React.SetStateAction<RestaurantPostDataType | null>
-  >;
+  setLastData: React.Dispatch<React.SetStateAction<RestaurantPostDataType | null>>;
+  lastOffer:OfferPostDataType|null;
+  setLastOffer: React.Dispatch<React.SetStateAction<OfferPostDataType | null>>
   newImg: string | null;
   setNewImg: React.Dispatch<React.SetStateAction<string | null>>;
   showAdds: boolean;
@@ -51,6 +51,8 @@ export interface SidebarContextProps {
 
   selectedCategory: string | null;
   setSelectedCategory: React.Dispatch<React.SetStateAction<string | null>>;
+  selectedRestaurant: string | null;
+  setSelectedRestaurant: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
 export interface ChartData {
@@ -129,6 +131,7 @@ export interface RestaurantApiResponse {
   message: string;
 }
 export interface OfferPostDataType {
+  id?: number | string;
   name: string | null | undefined;
   description: string | null | undefined;
   img_url: string | null;

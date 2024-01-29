@@ -113,6 +113,26 @@ export const addOffer: (
   });
 };
 
+// UPDATE_OFFER
+export const updateOffer = (
+  newOffer: OfferPostDataType,
+  offerID: string | number | undefined
+) => {
+  return instanceAxios({
+    method: "PUT",
+    url: `${ENDPOINTS.OFFER}/${offerID}`,
+    data: newOffer,
+  });
+};
+
+// DELETE_OFFER
+export const deleteOffer = (
+  offerID: string | number | undefined
+): AxiosPromise<OfferPostDataType> =>
+  instanceAxios({
+    method: "DELETE",
+    url: `${ENDPOINTS.OFFER}/${offerID}`,
+  });
 //  GET_CATEGORY
 export const getCategory = (): AxiosPromise<CategoryApiResponse> =>
   instanceAxios({ method: "GET", url: ENDPOINTS.CATEGORY });

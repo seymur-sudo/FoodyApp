@@ -16,6 +16,7 @@ import { FadeLoader } from "react-spinners";
 
 const AddOffer: React.FC = () => {
   const firstOfferState: OfferPostDataType = {
+    id:"",
     name: "",
     description: "",
     img_url: "",
@@ -69,6 +70,7 @@ const AddOffer: React.FC = () => {
   };
   const handleChange = () => {
     setNewOffer({
+      id: `${new Date().getTime()}_${Math.floor(Math.random() * 1000)}`,
       name: nameRef.current?.value,
       description: descriptioneRef.current?.value,
       img_url: newImg,

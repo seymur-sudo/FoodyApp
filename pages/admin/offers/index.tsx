@@ -19,10 +19,21 @@ const Offers: React.FC = () => {
   const { data, isLoading, isError } = useQuery("offers", getOffer, {
     refetchOnWindowFocus: false,
   });
-  const { setShow, show, showDelete, setshowDelete } =
+  const { setShow,lastOffer,setLastOffer, setNewImg, show, showDelete, setshowDelete } =
     useSidebarContext() as SidebarContextProps;
   const { t } = useTranslation("common");
 
+  const handleDelete = (item:OfferPostDataType) => {
+    setLastOffer(item);
+    setshowDelete(!showDelete);
+  };
+  const handleEdit = (itemI: OfferPostDataType) => {
+    setLastOffer(itemI);
+    setNewImg(itemI.img_url ?? null);
+    setTimeout(() => {
+      setShow(!show);
+    }, 100);
+  };
   return (
     <Layout>
       <div className="bg-bgc h-screen px-12 md:px-6">
@@ -79,13 +90,13 @@ const Offers: React.FC = () => {
                     <Image
                       src={editIcon}
                       alt="title"
-                      onClick={() => setShow(!show)}
+                      onClick={() => handleEdit(offer)}
                       className="hover:scale-110 transition-all duration-500  mr-2  cursor-pointer"
                     />
                     <Image
                       src={deleteIcon}
                       alt="title"
-                      onClick={() => setshowDelete(!showDelete)}
+                      onClick={() => handleDelete(offer)}
                       className="hover:scale-110 transition-all duration-500   cursor-pointer"
                     />
                   </div>

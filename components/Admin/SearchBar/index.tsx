@@ -1,20 +1,20 @@
 import React from "react";
 import SideForElements from "../Sidebar/SideForElemnts";
 import { useRouter } from "next/router";
-import { SidebarContextProps } from "../../../interfaces/index";
+import { RestaurantPostDataType, SidebarContextProps } from "../../../interfaces/index";
 import { useSidebarContext } from "@/contexts/SidebarContext";
 import { CategoryPostDataType } from "../../../interfaces/index";
-import { getCategory } from "../../../services/index";
+import { getCategory,getRestaurant } from "../../../services/index";
 import { useQuery } from "react-query";
 import { QUERIES } from "../../../constant/Queries";
 
 const SearchBar: React.FC = () => {
-  const { showAdds, setShowAdds, selectedCategory, setSelectedCategory } =
+  const { showAdds, setShowAdds,selectedRestaurant,setSelectedRestaurant, selectedCategory, setSelectedCategory } =
     useSidebarContext() as SidebarContextProps;
   const { pathname } = useRouter();
 
-  const { data } = useQuery(QUERIES.Categories, getCategory);
-
+  const { data:categoriesData } = useQuery(QUERIES.Categories, getCategory);
+  const { data:restaurantData} = useQuery(QUERIES.Restaurants,getRestaurant);
   const hideButton =
     pathname === "/admin/products" ||
     pathname === "/admin/orders" ||
@@ -67,8 +67,8 @@ const SearchBar: React.FC = () => {
                 className=" w-[225px] sm:[325px] md:w-[150px] my-3 px-3 py-2 rounded-[14px] bg-inputBg text-[#dddcdc]  font-medium font-roboto"
               >
                 <option value="">Category Type</option>
-                {data &&
-                  data.data.result.data.map(
+                {categoriesData &&
+                  categoriesData.data.result.data.map(
                     (category: CategoryPostDataType) => (
                       <option key={category.id} value={category.name}>
                         {category.name}
@@ -83,11 +83,19 @@ const SearchBar: React.FC = () => {
             <div className="flex mr-0 md:mr-10">
               <select
                 id="category"
+                value={ selectedRestaurant || ""}
+                onChange={(e) => setSelectedRestaurant(e.target.value)}
                 className=" w-[225px] sm:[325px] md:w-[150px] my-3 px-3 py-2 rounded-[14px] bg-inputBg text-[#dddcdc]  font-medium font-roboto"
               >
                 <option value="">Restaurant</option>
-                <option value="electronics">Electronics</option>
-                <option value="clothing">Clothing</option>
+                {restaurantData &&
+                  restaurantData.data.result.data.map(
+                    (restaurant: RestaurantPostDataType) => (
+                      <option key={restaurant.id} value={restaurant.name}>
+                        {restaurant.name}
+                      </option>
+                    )
+                  )}
               </select>
             </div>
           )}
