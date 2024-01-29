@@ -124,7 +124,7 @@ export interface ApiResponse {
   message: string;
 }
 export interface RestaurantPostDataType {
-  id: number | string;
+  id?: number | string;
   name: string | undefined;
   category_id: number | string | undefined;
   img_url: string | null | undefined;
@@ -135,7 +135,7 @@ export interface RestaurantPostDataType {
 }
 export interface RestaurantApiResponse {
   result: {
-    data: RestaurantPostDataType[];
+    data: RestaurantPostDataType[] | FirstStateType[];
   };
   status: number;
   message: string;
