@@ -14,7 +14,7 @@ import { useQuery } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { QUERIES } from "../../../constant/Queries";
 import { PostDataType } from "../../../interfaces/index";
-import usePagination from "@/components/Admin/Pagination/Pagination";
+import usePagination from "@/components/Admin/Pagination";
 import PaginationControls from "@/components/Admin/Pagination/PaginationControls";
 import AOS from "aos";
 import "aos/dist/aos.css";

@@ -18,7 +18,7 @@ import { useTranslation } from "next-i18next";
 import { getCategory } from "../../../services/index";
 import { useQuery } from "react-query";
 import { QUERIES } from "../../../constant/Queries";
-import usePagination from "@/components/Admin/Pagination/Pagination";
+import usePagination from "@/components/Admin/Pagination";
 import PaginationControls from "@/components/Admin/Pagination/PaginationControls";
 
 const Category: React.FC = () => {
