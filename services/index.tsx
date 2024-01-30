@@ -56,6 +56,18 @@ export const deleteProduct = (
 ): AxiosPromise<ApiResponse> =>
   instanceAxios({ method: "DELETE", url: `${ENDPOINTS.PRODUCT}/${productId}` });
 
+// GET_USER
+export const getUser = (): AxiosPromise => {
+  const accessToken = localStorage.getItem('access_token');
+  return instanceAxios({
+    method: 'GET',
+    url: ENDPOINTS.USER,
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+};
+
 //GET_RESTAURANT
 export const getRestaurant = (): AxiosPromise<RestaurantApiResponse> =>
   instanceAxios({ method: "GET", url: ENDPOINTS.RESTAURANT });
