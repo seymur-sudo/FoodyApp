@@ -17,15 +17,31 @@ import { useRouter } from "next/router";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { getOffer } from "@/services/index";
-import { useQuery } from "react-query";
+import { useQuery,QueryClient } from "react-query";
+import { dehydrate } from "react-query/hydration";
 import MainFooter from "@/components/Client/MainFooter";
 import { ROUTER } from "../shared/constant/router";
 import Chat from "@/components/Client/Chat";
 import { OfferPostDataType } from "@/interfaces";
 
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => {
+  const queryClient = new QueryClient();
+
+  // Use the same query key "offers" to prefetch data
+  await queryClient.prefetchQuery("offers", getOffer);
+
+  return {
+    props: {
+      ...(await serverSideTranslations(locale as string, ["common"])),
+      // Dehydrate the query client state
+      dehydratedState: dehydrate(queryClient),
+    },
+  };
+};
 const Home: NextPage = () => {
   const { t } = useTranslation("common");
   const { push } = useRouter();
+  
   const { data, isLoading, isError } = useQuery("offers", getOffer, {
     refetchOnWindowFocus: false,
   });
@@ -331,10 +347,16 @@ const Home: NextPage = () => {
     </>
   );
 };
+// export const getServerSideProps: GetServerSideProps = async ({ locale }) => {
+//   const queryClient = new QueryClient();
 
+//   await queryClient.prefetchQuery("offers", getOffer);
+
+//   return {
+//     props: {
+//       ...(await serverSideTranslations(locale as string, ["common"])),
+//       dehydratedState: dehydrate(queryClient)
+//     }
+//   };
+// };
 export default Home;
-export const getServerSideProps: GetServerSideProps = async ({ locale }) => ({
-  props: {
-    ...(await serverSideTranslations(locale as string, ["common"])),
-  },
-});
