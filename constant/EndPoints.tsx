@@ -4,4 +4,5 @@ export const ENDPOINTS = {
   CATEGORY: "category",
   OFFER: "offer",
   BASKET: "basket",
+  USER:"/auth/user"
 };

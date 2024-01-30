@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import profileImg from "../../../public/svgs/profile.svg";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -12,6 +12,9 @@ import { ThemeContextProps } from "../../../interfaces/index";
 import { FiSun, FiMoon } from "react-icons/fi";
 import { useSidebarContext } from "../../../contexts/SidebarContext";
 import { SidebarContextProps } from "../../../interfaces/index";
+import axios from "axios";
+import { QUERIES } from "../../../constant/Queries";
+import { useQuery } from "react-query";
 import {
   Dropdown,
   DropdownTrigger,
@@ -19,6 +22,7 @@ import {
   DropdownItem,
 } from "@nextui-org/react";
 import ClientNavbar from "../ResNavbar";
+import { getUser } from "@/services";
 
 const MainHeader: React.FC = () => {
   const { setNavbarOpen, isNavbarOpen } =
@@ -26,6 +30,22 @@ const MainHeader: React.FC = () => {
   const { toggleTheme } = useThemeContext() as ThemeContextProps;
   const { t } = useTranslation("common");
   const router = useRouter();
+  const [isLogin,setIslogin]=useState<boolean>(false)
+  const { data:userD, isLoading, isError } = useQuery(["user"],getUser);
+  console.log(userD);
+  const logout=()=>{
+    localStorage.removeItem('access_token')
+    router.push('/login')
+  }
+  useEffect(()=>{
+    const acc_token = localStorage.getItem('access_token');
+    
+    if (!acc_token) {
+      setIslogin(false)
+    }else{
+      setIslogin(true)
+    }
+  },[isLogin])
   return (
     <div className="sm:h-[120px] h-[52px] sm:mt-[30px] sm:mx-[30px] flex items-center rounded-t-5 justify-between flex-row bg-[#F3F4F6]  dark:bg-gray-900">
       <div className="flex items-center">
@@ -110,8 +130,13 @@ const MainHeader: React.FC = () => {
         </div>
           <LangSelect />
         <div className="sm:flex hidden">
-          <Image
-            className="ml-3 cursor-pointer scale-100 hover:scale-110"
+          {!userD?(
+          <>
+            <button onClick={()=>router.push('/register')} className="text-[16px] py-[7px] px-5 sm:ml-7 sm:mr-20 bg-[#D63626] font-medium rounded-[30px] text-white">{t("Sign Up")}</button>
+          </>):(
+            <>
+            <Image
+            className="ml-3 cursor-pointer scale-100 duration-500 hover:scale-110"
             src={basketIcon}
             alt="basketIcon"
           />
@@ -119,7 +144,9 @@ const MainHeader: React.FC = () => {
             <DropdownTrigger>
               <Image
                 alt=""
-                src={profileImg}
+                src={userD.data.user.img_url
+                  ? userD.data.user.img_url
+                  :profileImg}
                 className=" ml-5 w-10 h-10 cursor-pointer mr-6 scale-100 hover:scale-11 text-[20px] font-medium text-white"
               />
             </DropdownTrigger>
@@ -129,6 +156,7 @@ const MainHeader: React.FC = () => {
               variant="flat"
             >
               <DropdownItem
+              onClick={()=>router.push('/user/profile')}
                 className="h-10  dark:hover:bg-[rgb(17,24,39)] flex"
                 key="profile"
               >
@@ -137,6 +165,7 @@ const MainHeader: React.FC = () => {
                 </p>
               </DropdownItem>
               <DropdownItem
+                onClick={()=>router.push('/user/basket')}
                 className="h-10  dark:hover:bg-[rgb(17,24,39)] flex"
                 key="your_basket"
               >
@@ -146,6 +175,7 @@ const MainHeader: React.FC = () => {
               </DropdownItem>
               <DropdownItem
                 className="h-10  dark:hover:bg-[rgb(17,24,39)] flex"
+                onClick={()=>router.push('/user/orders')}
                 key="your_order"
               >
                 <p className="text-nowrap dark:text-white font-normal text-base">
@@ -154,6 +184,7 @@ const MainHeader: React.FC = () => {
               </DropdownItem>
               <DropdownItem
                 className="h-10  dark:hover:bg-[rgb(17,24,39)] flex"
+                onClick={()=>router.push('/user/checkout')}
                 key="checkout"
               >
                 <p className="text-nowrap dark:text-white font-normal text-base">
@@ -163,6 +194,7 @@ const MainHeader: React.FC = () => {
               <DropdownItem
                 className="h-10  dark:hover:bg-[rgb(17,24,39)] flex"
                 key="logout"
+                onClick={()=>logout()}
                 color="danger"
               >
                 <p className="text-nowrap dark:text-white font-normal text-base">
@@ -171,6 +203,11 @@ const MainHeader: React.FC = () => {
               </DropdownItem>
             </DropdownMenu>
           </Dropdown>
+            </>
+          )
+          
+          }
+          
         </div>
       </div>
       <ClientNavbar />
