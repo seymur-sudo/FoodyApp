@@ -14,6 +14,8 @@ import {
   InitialCategoryState,
   OfferApiResponse,
   OfferPostDataType,
+  BasketPostDataType,
+  BasketStateType,
 } from "../interfaces/index";
 
 // GET_PRODUCT
@@ -114,15 +116,27 @@ export const addOffer: (
   });
 };
 
-// UPDATE_OFFER
+
+
+// EDIT_Offer
 export const updateOffer = (
-  newOffer: OfferPostDataType,
-  offerID: string | number | undefined
-) => {
+  editedOffer: OfferPostDataType
+): AxiosPromise<OfferApiResponse> => {
   return instanceAxios({
     method: "PUT",
-    url: `${ENDPOINTS.OFFER}/${offerID}`,
-    data: newOffer,
+    url: `${ENDPOINTS.OFFER}/${editedOffer.id}`,
+    data: editedOffer,
+  });
+};
+
+// EDIT_CATEGORY
+export const editCategory = (
+  editedCategory: CategoryPostDataType
+): AxiosPromise<CategoryApiResponse> => {
+  return instanceAxios({
+    method: "PUT",
+    url: `${ENDPOINTS.CATEGORY}/${editedCategory.id}`,
+    data: editedCategory,
   });
 };
 
@@ -149,17 +163,6 @@ export const addCategory: (
   });
 };
 
-// EDIT_CATEGORY
-export const editCategory = (
-  editedCategory: CategoryPostDataType
-): AxiosPromise<CategoryApiResponse> => {
-  return instanceAxios({
-    method: "PUT",
-    url: `${ENDPOINTS.CATEGORY}/${editedCategory.id}`,
-    data: editedCategory,
-  });
-};
-
 // DELETE_CATEGORY
 export const deleteCategory = (
   categoryId: string | number
@@ -168,3 +171,14 @@ export const deleteCategory = (
     method: "DELETE",
     url: `${ENDPOINTS.CATEGORY}/${categoryId}`,
   });
+
+// ADD_BASKET
+export const addBasket: (
+  basketProduct: BasketStateType
+) => AxiosPromise<BasketPostDataType> = (basketProduct) => {
+  return instanceAxios({
+    method: "POST",
+    url: ENDPOINTS.BASKET,
+    data: basketProduct,
+  });
+};

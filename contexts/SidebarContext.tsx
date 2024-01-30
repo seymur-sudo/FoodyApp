@@ -57,13 +57,12 @@ export const SidebarContextProvider: React.FC<ChildrenNode> = ({
 
   const closeModal = () => {
     setShow(false);
-    setEditedItem(null);
-   setNewImg(null);
+    // setEditedItem(null);
   };
 
   const closeDeleteModal = () => {
     setshowDelete(false);
-    setDeletedItem(null);
+    // setDeletedItem(null);
   };
 
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -99,9 +98,10 @@ export const SidebarContextProvider: React.FC<ChildrenNode> = ({
     };
   }, [showUserModal]);
 
-
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [selectedRestaurant,setSelectedRestaurant]=useState<string |null>(null)
+  const [selectedRestaurant, setSelectedRestaurant] = useState<string | null>(
+    null
+  );
   const [lastData, setLastData] = useState<RestaurantPostDataType | null>(null);
   const [lastOffer, setLastOffer] = useState<OfferPostDataType | null>(null);
 
@@ -145,7 +145,7 @@ export const SidebarContextProvider: React.FC<ChildrenNode> = ({
     selectedCategory,
     setSelectedCategory,
     selectedRestaurant,
-    setSelectedRestaurant
+    setSelectedRestaurant,
   };
 
   const Component = SidebarContext.Provider;

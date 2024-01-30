@@ -161,8 +161,8 @@ export interface RestaurantSingleApiResponse {
 
 export interface OfferPostDataType {
   id?: number | string;
-  name: string | null | undefined;
-  description: string | null | undefined;
+  name: string ;
+  description: string ;
   img_url: string | null;
 }
 export interface OfferApiResponse {
@@ -190,3 +190,14 @@ export interface CategoryApiResponse {
   status: number;
   message: string;
 }
+
+export interface BasketPostDataType {
+  id: string;
+  total_item: number;
+  created: number;
+  total_amount: number;
+  total_count: number;
+  items: PostDataType[];
+}
+
+export interface BasketStateType extends Omit<BasketPostDataType, "id"> {}

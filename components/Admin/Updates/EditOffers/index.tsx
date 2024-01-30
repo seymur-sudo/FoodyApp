@@ -1,4 +1,4 @@
-import React,{useRef, useState} from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import uploadImg from "../../../../public/svgs/upload.svg";
 import { fileStorage } from "@/server/configs/firebase";
@@ -7,19 +7,51 @@ import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { useSidebarContext } from "@/contexts/SidebarContext";
 import { QUERIES } from "@/constant/Queries";
 import { useMutation, useQueryClient } from "react-query";
-import { OfferPostDataType, SidebarContextProps } from "../../../../interfaces/index";
+import { SidebarContextProps } from "../../../../interfaces/index";
 import { updateOffer } from "@/services";
 
 const EditOffer: React.FC = () => {
-  const { show,lastOffer,setSelectedFile, setLastOffer,setNewImg,newImg, closeModal } = useSidebarContext() as SidebarContextProps;
-  const editOffer:OfferPostDataType={
-    name: lastOffer?.name,
-    description: lastOffer?.description,
-    img_url:newImg
-  }
-  const nameRef = useRef<HTMLInputElement>(null);
-  const descriptionRef = useRef<HTMLTextAreaElement>(null);
-  const [edtOffer,setEdtOffer]=useState<OfferPostDataType>(editOffer)
+  const { show, lastOffer, setSelectedFile, setNewImg, newImg, closeModal,selectedFile } =
+    useSidebarContext() as SidebarContextProps;
+
+  const [edtOffer, setEdtOffer] = useState(lastOffer);
+
+  const queryClient = useQueryClient();
+
+  const editMutation = useMutation(updateOffer, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(QUERIES.Offers);
+      toast.success("Offers edited successfully", {
+        autoClose: 1000,
+      });
+      setTimeout(() => {
+        closeModal();
+      }, 1100);
+    },
+    onError: (error) => {
+      toast.error(`Error editing Offers: ${error}`, {
+        autoClose: 1000,
+      });
+    },
+  });
+
+  const handleInputChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = event.target;
+    setEdtOffer((prevCategory) => ({
+      ...prevCategory!,
+      [name]: value,
+    }));
+  };
+
+  useEffect(() => {
+    if (lastOffer) {
+      setEdtOffer({ ...lastOffer });
+      setNewImg(lastOffer?.img_url);
+    }
+  }, [lastOffer]);
+
   const handleNewImg = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -34,7 +66,7 @@ const EditOffer: React.FC = () => {
           getDownloadURL(snapshot.ref)
             .then((downloadURL) => {
               setEdtOffer((prevOffer) => ({
-                ...prevOffer,
+                ...prevOffer!,
                 img_url: downloadURL,
               }));
               console.log("Dosyanın Firebase Storage URL'si: ", downloadURL);
@@ -50,43 +82,17 @@ const EditOffer: React.FC = () => {
       console.error("No file selected");
     }
   };
-  const queryClient = useQueryClient();
-  const mutation = useMutation(() => updateOffer(edtOffer, lastOffer?.id),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries(QUERIES.Offers);
-        // setEdtRestaurant(firstState);
-        setTimeout(() => {
-          closeModal();
-          setLastOffer(null);
-          setNewImg(null);
-        }, 1000);
-        toast.success("Offer edited successfully!", {
-          autoClose: 1000,
-        });
-      },
-      onError: (error) => {
-        console.error("Error added Offer:", error);
-        toast.error("Error edited Odder", {
-          autoClose: 1000,
-        });
-      },
+
+  const handleEditOffer = async () => {
+    if (edtOffer) {
+      const editWithImg = {
+        ...edtOffer,
+        img_url: newImg,
+      };
+      await editMutation.mutateAsync(editWithImg);
     }
-  );
-  const handleClose = () => {
-    closeModal();
-    setLastOffer(null);
   };
-  const handleEditOffer=()=>{
-    setEdtOffer({
-      name:nameRef.current?.value,
-      description:descriptionRef.current?.value,
-      img_url:newImg
-    })
-    setTimeout(() => {
-      mutation.mutate();
-    }, 100);
-  }
+
   return (
     <>
       <div className=" text-gray1 font-body  leading-6 tracking-wide py-8 md:pt-10  md:pb-6">
@@ -96,14 +102,14 @@ const EditOffer: React.FC = () => {
               <h1 className="capitalize text-2xl mb-2"> Edit offer</h1>
               <p className="capitalize text-lg">Edit your offer image</p>
               <div className="h-[50vh] w-3/4 my-4">
-                  <Image
-                    width={300}
-                    height={300}
-                    src={newImg || uploadImg}
-                    alt="uploaded"
-                    className="object-cover w-full h-full rounded-[14px]"
-                  />
-                </div>
+                <Image
+                  width={300}
+                  height={300}
+                  src={newImg || uploadImg}
+                  alt="uploaded"
+                  className="object-cover w-full h-full rounded-[14px]"
+                />
+              </div>
               <p className=" text-lg">Edit your offer information</p>
             </div>
           </div>
@@ -119,7 +125,6 @@ const EditOffer: React.FC = () => {
                 className={`flex  mb-8  justify-center z-50 items-center bg-[#EC5CF8] w-10 h-10 rounded-full transition-all duration-500 ${
                   show ? "" : "opacity-0 pointer-events-none "
                 }`}
-                onClick={handleClose}
               >
                 <span className="text-[#F2F2F2] text-3xl cursor-pointer z-50 mb-[6px]">
                   x
@@ -135,7 +140,13 @@ const EditOffer: React.FC = () => {
                 <div className="flex flex-col items-center justify-center pt-5 pb-6 ">
                   <Image width={75} height={75} src={uploadImg} alt="upload" />
                 </div>
-                <input id="offer-edt-file" onChange={(e)=>handleNewImg(e)} type="file" className="hidden" />
+                <input
+                  id="offer-edt-file"
+                  name="img_url"
+                  onChange={handleNewImg}
+                  type="file"
+                  className="hidden"
+                />
               </label>
             </div>
 
@@ -148,20 +159,20 @@ const EditOffer: React.FC = () => {
                 <label className="mb-1">Name</label>
                 <input
                   type="text"
-                  defaultValue={lastOffer?.name??""}
-                  ref={nameRef}
+                  name="name"
+                  value={edtOffer?.name}
+                  onChange={handleInputChange}
                   className="w-full p-2 py-6 rounded-[14px] bg-inputBg"
                 />
               </div>
               <div className="my-5 flex flex-col">
                 <label className="mb-1">Description:</label>
 
-                <textarea
+                <input
                   className="w-full pl-5 h-[125px]  rounded-[14px] bg-inputBg leading-10 resize-y"
-                  rows={4}
-                  defaultValue={lastOffer?.description??""}
-                  ref={descriptionRef}                  
-                  cols={50}
+                  name="description"
+                  value={edtOffer?.description}
+                  onChange={handleInputChange}
                 />
               </div>
             </div>
@@ -169,13 +180,13 @@ const EditOffer: React.FC = () => {
         </div>
 
         <div className="pt-[10%] flex justify-around md:justify-between">
-          <button
-            className="capitalize rounded-[14px] 	border-color: [#38394E] border-solid  border-0 bg-[#43445A] shadow-shadow1 hover:opacity-75 transition-all duration-500 w-5/12 py-3 md:py-4 text-[#fff] text-lg font-bold leading-5 tracking-[0.25px] "
-            onClick={handleClose}
-          >
+          <button className="capitalize rounded-[14px] 	border-color: [#38394E] border-solid  border-0 bg-[#43445A] shadow-shadow1 hover:opacity-75 transition-all duration-500 w-5/12 py-3 md:py-4 text-[#fff] text-lg font-bold leading-5 tracking-[0.25px] ">
             cancel
           </button>
-          <button onClick={handleEditOffer} className="capitalize rounded-[14px]  	border-color:[#970e79] border-solid  border-0 bg-[#C035A2] shadow-shadow2 hover:opacity-75 transition-all duration-500 w-5/12 py-3 md:py-4 text-[#fff] text-lg font-bold leading-5 tracking-[0.25px]">
+          <button
+            onClick={handleEditOffer}
+            className="capitalize rounded-[14px]  	border-color:[#970e79] border-solid  border-0 bg-[#C035A2] shadow-shadow2 hover:opacity-75 transition-all duration-500 w-5/12 py-3 md:py-4 text-[#fff] text-lg font-bold leading-5 tracking-[0.25px]"
+          >
             Edit offer
           </button>
         </div>
