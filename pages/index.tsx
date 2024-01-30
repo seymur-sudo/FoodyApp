@@ -16,13 +16,19 @@ import { useTranslation } from "next-i18next";
 import { useRouter } from "next/router";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import { getOffer } from "@/services/index";
+import { useQuery } from "react-query";
 import MainFooter from "@/components/Client/MainFooter";
 import { ROUTER } from "../shared/constant/router";
 import Chat from "@/components/Client/Chat";
+import { OfferPostDataType } from "@/interfaces";
 
 const Home: NextPage = () => {
   const { t } = useTranslation("common");
   const { push } = useRouter();
+  const { data, isLoading, isError } = useQuery("offers", getOffer, {
+    refetchOnWindowFocus: false,
+  });
   useEffect(() => {
     AOS.init({
       duration: 500,
@@ -173,68 +179,65 @@ const Home: NextPage = () => {
             </p>
           </div>
         </div>
-        <div
-          className={`justify-between mt-24 sm:mt-64 sm:ml-[100px] flex flex-col sm:flex-row`}
-        >
-          <div
-            data-aos="fade-up"
-            data-aos-offset="500"
-            data-aos-duration="500"
-            className=""
-          >
-            <p className="sm:text-[50px] text-[25px] sm:text-start text-center font-bold dark:text-white sm:font-black">
-              Menu That Always Make You Fall In Love
-            </p>
-            <p className="sm:text-[22px] mb-10 text-[16px] sm:text-start text-center text-[#828282] font-normal">
-              Lorem ipsum is placeholder text commonly used in the graphic,
-              print, and publishing industries for previewing layouts and visual
-              mockups.Lorem ipsum is placeholder text commonly used in the
-              graphic, print, and publishing industries for previewing layouts
-              and visual mockups.
-            </p>
-          </div>
-          <div className="relative mr-28 ml-24">
-            <div
-              className={`bg-[#D63626] dark:bg-green-900 rounded-[50px]  z-0 duration-500 rotate-[22deg] w-[190px] h-[250px] sm:w-[420px] sm:h-[550px]`}
-            ></div>
-            <Image
-              alt=""
-              src={kfcbox}
-              className="sm:w-[600px] w-[282px] h-[200px] top-[30px] sm:top-[100px] hover:scale-110 duration-500 absolute z-10 sm:h-[400px]"
-            />
-          </div>
-        </div>
-        <div
-          className={`justify-between mt-24 sm:mt-64 sm:ml-[100px] flex flex-col sm:flex-row-reverse`}
-        >
-          <div
-            data-aos="fade-up"
-            data-aos-offset="500"
-            data-aos-duration="500"
-            className=""
-          >
-            <p className="sm:text-[50px] text-[25px] sm:text-start text-center font-bold dark:text-white sm:font-black">
-              Menu That Always Make You Fall In Love
-            </p>
-            <p className="sm:text-[22px] mb-10 text-[16px] text-[#828282] sm:text-start text-center font-normal">
-              Lorem ipsum is placeholder text commonly used in the graphic,
-              print, and publishing industries for previewing layouts and visual
-              mockups.Lorem ipsum is placeholder text commonly used in the
-              graphic, print, and publishing industries for previewing layouts
-              and visual mockups.
-            </p>
-          </div>
-          <div className="relative mr-28 ml-24">
-            <div
-              className={`bg-[#D63626] dark:bg-green-900 rounded-[50px]  z-0 duration-500 rotate-[22deg] w-[190px] h-[250px] sm:w-[420px] sm:h-[550px]`}
-            ></div>
-            <Image
-              alt=""
-              src={kfcbox}
-              className="sm:w-[600px] w-[282px] h-[200px] top-[30px] sm:top-[100px] hover:scale-110 duration-500 absolute z-10 sm:h-[400px]"
-            />
-          </div>
-        </div>
+        {data && data.data.result.data.map((offer: OfferPostDataType,index) => (
+          index % 2 === 0 ? (
+                  <div key={index}
+                  className={`justify-between mt-24 sm:mt-64 sm:ml-[100px] flex flex-col sm:flex-row`}
+                >
+                  <div
+                    className=""
+                  >
+                    <p className="sm:text-[50px] text-[25px] sm:text-start text-center font-bold dark:text-white sm:font-black">
+                      {offer.name}
+                    </p>
+                    <p className="sm:text-[22px] mb-10 text-[16px] sm:text-start text-center text-[#828282] font-normal">
+                      {offer.description}
+                    </p>
+                  </div>
+                  <div className="relative mr-28 ml-24">
+                    <div
+                      className={`bg-[#D63626] dark:bg-green-900 rounded-[50px]  z-0 duration-500 rotate-[22deg] w-[190px] h-[250px] sm:w-[420px] sm:h-[550px]`}
+                    ></div>
+                    <Image
+                      alt=""
+                      width={100}
+                      priority={true}
+                      height={100}
+                      src={offer.img_url??kfcbox}
+                      className="sm:w-[600px] w-[282px] h-[200px] top-[30px] sm:top-[100px] hover:scale-110 duration-500 absolute z-10 sm:h-[400px]"
+                    />
+                  </div>
+                </div>):(
+                          <div key={index}
+                          className={`justify-between mt-24 sm:mt-64 sm:mr-[50px] flex flex-col sm:flex-row-reverse`}
+                        >
+                          <div
+                            className=""
+                          >
+                            <p className="sm:text-[50px] text-[25px] sm:text-start text-center font-bold dark:text-white sm:font-black">
+                              {offer.name}
+                            </p>
+                            <p className="sm:text-[22px] mb-10 text-[16px] text-[#828282] sm:text-start text-center font-normal">
+                              {offer.description}
+                            </p>
+                          </div>
+                          <div className="relative mr-28 ml-24">
+                            <div
+                              className={`bg-[#D63626] dark:bg-green-900 rounded-[50px]  z-0 duration-500 rotate-[22deg] w-[190px] h-[250px] sm:w-[420px] sm:h-[550px]`}
+                            ></div>
+                            <Image
+                              alt=""
+                              width={100}
+                              height={100}
+                              src={offer.img_url??kfcbox}
+                              className="sm:w-[600px] w-[282px] h-[200px] top-[30px] sm:top-[100px] hover:scale-110 duration-500 absolute z-10 sm:h-[400px]"
+                            />
+                          </div>
+                        </div>
+                )
+        ))}
+
+
 
         <p
           data-aos="zoom-in"
@@ -242,7 +245,7 @@ const Home: NextPage = () => {
         >
           {" "}
           {t("Our Popular Update New Foods")}
-          <br className="hidden sm:block" /> New Foods
+          <br className="hidden sm:block" />
         </p>
         <p
           data-aos="zoom-in"

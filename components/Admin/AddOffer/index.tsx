@@ -62,10 +62,9 @@ const AddOffer: React.FC = () => {
     }
   };
   const zeroValue = () => {
-    if (nameRef.current) {
+    if (nameRef.current && descriptioneRef.current) {
       nameRef.current.value = "";
-    } else if (descriptioneRef.current) {
-      descriptioneRef.current.value = "";
+      descriptioneRef.current.value = ""
     }
   };
   const handleChange = () => {
