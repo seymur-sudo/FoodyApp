@@ -2,7 +2,6 @@ import React from "react";
 import Layout from "@/components/Admin/Layout";
 import { useQuery } from "react-query";
 import Image from "next/image";
-import hamburger from "../../../public/svgs/hamburger.svg";
 import editIcon from "../../../public/svgs/edit.svg";
 import deleteIcon from "../../../public/svgs/delete2.svg";
 import SearchBar from "@/components/Admin/SearchBar";
@@ -12,6 +11,8 @@ import EditModal from "@/components/Admin/Modals/EditModal";
 import DeleteModal from "@/components/Admin/Modals/DeleteModal";
 import { GetServerSideProps } from "next";
 import { getOffer } from "@/services/index";
+import usePagination from "@/components/Admin/Pagination";
+import PaginationControls from "@/components/Admin/Pagination/PaginationControls";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "next-i18next";
 
@@ -22,6 +23,10 @@ const Offers: React.FC = () => {
   const { setShow,lastOffer,setLastOffer, setNewImg, show, showDelete, setshowDelete } =
     useSidebarContext() as SidebarContextProps;
   const { t } = useTranslation("common");
+
+  
+  const { currentPage, currentData, totalPages, nextPage, prevPage, goToPage } =
+    usePagination(data?.data.result.data, 3);
 
   const handleDelete = (item:OfferPostDataType) => {
     setLastOffer(item);
@@ -61,17 +66,17 @@ const Offers: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-            {data && data.data.result.data.map((offer: OfferPostDataType,index) => (
-              <tr key={index} className="bg-white border-b dark:bg-[#27283C] dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-700">
+            {currentData && currentData.map((offer: OfferPostDataType) => (
+              <tr key={offer.id} className="bg-white border-b dark:bg-[#27283C] dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-700">
                 <td className="pl-14 py-4 font-semibold text-gray-900 dark:text-white">
-                  {index+1}
+                  {offer.id}
                 </td>
 
                 <td className="p-4 ">
                   <Image
                     src={offer.img_url??""}
-                    width={75}
-                    height={75}
+                    width={100}
+                    height={100}
                     alt="title"
                     className="hover:scale-105 transition-all duration-500 w-[50px] h-[50px] rounded-md"
                   />
@@ -105,8 +110,16 @@ const Offers: React.FC = () => {
             ))}
             </tbody>
           </table>
+          <PaginationControls
+            currentPage={currentPage}
+            totalPages={totalPages}
+            nextPage={nextPage}
+            prevPage={prevPage}
+            goToPage={goToPage}
+          />
         </div>
       </div>
+      
       <EditModal />
       <DeleteModal />
     </Layout>
