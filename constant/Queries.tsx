@@ -3,5 +3,6 @@ export const QUERIES = {
   Restaurants: "restuarants",
   SingleRestaurant: "singleRestaurant",
   Categories: "categories",
-  Offers:"offers"
+  Offers: "offers",
+  Basket: "basket",
 };

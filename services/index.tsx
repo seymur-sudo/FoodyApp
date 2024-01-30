@@ -116,8 +116,6 @@ export const addOffer: (
   });
 };
 
-
-
 // EDIT_Offer
 export const updateOffer = (
   editedOffer: OfferPostDataType
@@ -178,7 +176,7 @@ export const addBasket: (
 ) => AxiosPromise<BasketPostDataType> = (basketProduct) => {
   return instanceAxios({
     method: "POST",
-    url: ENDPOINTS.BASKET,
+    url: `${ENDPOINTS.BASKET}/add`,
     data: basketProduct,
   });
 };
