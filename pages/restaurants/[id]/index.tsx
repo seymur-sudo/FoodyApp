@@ -252,9 +252,9 @@ const ResDetail = () => {
 
             {basketProductsItems ? (
               basketProductsItems.map((product: BasketPostDataType) => (
-                <div className="w-full">
+                <div className="w-full" key={product.id}>
                   <div className="w-full border-t-2 py-2 dark:border-sky-300">
-                    <div className="flex items-center justify-around pt-1 pb-2 ">
+                    <div className="flex items-center justify-around pt-1 pb-2 " >
                       <Image
                         src={product.img_url ?? pizza}
                         alt="product.name"
