@@ -42,6 +42,10 @@ export interface SidebarContextProps {
   setEditedItem: React.Dispatch<React.SetStateAction<PostDataType | null>>;
   deletedItem: PostDataType | null;
   setDeletedItem: React.Dispatch<React.SetStateAction<PostDataType | null>>;
+  deletedBasket: BasketPostDataType | null;
+  setDeletedBasket: React.Dispatch<
+    React.SetStateAction<BasketPostDataType | null>
+  >;
   selectedFile: File | null;
   setSelectedFile: React.Dispatch<React.SetStateAction<File | null>>;
   openUserModal: () => void;
@@ -203,8 +207,9 @@ export interface CategoryApiResponse {
 
 export interface BasketPostDataType {
   id?: string | number;
+  basket_id?: string | number;
   user_id: string | number;
-  product_id: string | number;
+  product_id?: string | number;
   img_url?: string | null;
   price?: number;
   name?: string;

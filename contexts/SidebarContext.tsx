@@ -6,6 +6,7 @@ import {
   RestaurantPostDataType,
   CategoryPostDataType,
   OfferPostDataType,
+  BasketPostDataType,
 } from "../interfaces/index";
 import { useSpring } from "@react-spring/web";
 
@@ -54,6 +55,10 @@ export const SidebarContextProvider: React.FC<ChildrenNode> = ({
 
   const [show, setShow] = useState<boolean>(false);
   const [showDelete, setshowDelete] = useState<boolean>(false);
+
+  const [deletedBasket, setDeletedBasket] = useState<BasketPostDataType | null>(
+    null
+  );
 
   const closeModal = () => {
     setShow(false);
@@ -150,6 +155,8 @@ export const SidebarContextProvider: React.FC<ChildrenNode> = ({
     setSelectedCategory,
     selectedRestaurant,
     setSelectedRestaurant,
+    deletedBasket,
+    setDeletedBasket,
   };
 
   const Component = SidebarContext.Provider;

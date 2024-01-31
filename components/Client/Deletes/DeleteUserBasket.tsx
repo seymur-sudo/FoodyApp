@@ -47,7 +47,7 @@ const DeleteUserBasket = () => {
               <div className="inline-block w-full max-w-md py-8 px-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-md">
                 <h1 className="text-lg font-medium leading-6 text-gray-900">
                   <p className="text-xl text-black font-bold text-center">
-                    Are you sure USER_BASKETdeleted?
+                    Are you sure USER_BASKET   deleted?
                   </p>
                 </h1>
                 <div className="mt-2 py-2  text-gray-600 text-center">
