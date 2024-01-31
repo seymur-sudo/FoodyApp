@@ -105,6 +105,8 @@ export const SidebarContextProvider: React.FC<ChildrenNode> = ({
   const [lastData, setLastData] = useState<RestaurantPostDataType | null>(null);
   const [lastOffer, setLastOffer] = useState<OfferPostDataType | null>(null);
 
+  const [userImg,setUserImg]=useState<string|null>(null)
+
   const contextValue = {
     isNavbarOpen,
     setNavbarOpen,
@@ -128,6 +130,8 @@ export const SidebarContextProvider: React.FC<ChildrenNode> = ({
     setshowDelete,
     closeDeleteModal,
     editedItem,
+    userImg,
+    setUserImg,
     setEditedItem,
     deletedItem,
     setDeletedItem,

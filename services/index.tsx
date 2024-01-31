@@ -15,6 +15,7 @@ import {
   OfferApiResponse,
   OfferPostDataType,
   BasketPostDataType,
+  UserDataType,
 } from "../interfaces/index";
 
 // GET_PRODUCT
@@ -61,6 +62,18 @@ export const getUser = (): AxiosPromise => {
   return instanceAxios({
     method: "GET",
     url: ENDPOINTS.USER,
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+};
+// EDİT_USER
+export const updateUser = (user:UserDataType): AxiosPromise => {
+  const accessToken = localStorage.getItem("access_token");
+  return instanceAxios({
+    method: "PUT",
+    url: ENDPOINTS.USER,
+    data:user,
     headers: {
       Authorization: `Bearer ${accessToken}`,
     },
