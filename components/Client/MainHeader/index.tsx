@@ -24,14 +24,15 @@ import ClientNavbar from "../ResNavbar";
 import { getUser } from "@/services";
 
 const MainHeader: React.FC = () => {
-  const { setNavbarOpen, isNavbarOpen } =
+  const [imageURL,setImageURL]=useState<string>("")
+  const { setNavbarOpen,userImg, isNavbarOpen } =
     useSidebarContext() as SidebarContextProps;
   const { toggleTheme } = useThemeContext() as ThemeContextProps;
   const { t } = useTranslation("common");
   const router = useRouter();
   const [isLogin, setIslogin] = useState<boolean>(false);
   const { data: userD, isLoading, isError } = useQuery(QUERIES.User, getUser);
-
+  
   const logout = () => {
     localStorage.removeItem("access_token");
     router.push("/login");
@@ -44,7 +45,15 @@ const MainHeader: React.FC = () => {
     } else {
       setIslogin(true);
     }
-  }, [isLogin]);
+    if (userD?.data.user.img_url) {
+      setImageURL(userD?.data.user.img_url);
+  } else if (userImg) {
+    setImageURL(userImg);
+  } else {
+      // Burada statik bir resim URL'si atanabilir
+      setImageURL(profileImg);
+  }
+  }, [userD,userImg]);
   return (
     <div className="sm:h-[120px] h-[52px] sm:mt-[30px] sm:mx-[30px] flex items-center rounded-t-5 justify-between flex-row bg-[#F3F4F6]  dark:bg-gray-900">
       <div className="flex items-center">
@@ -149,12 +158,10 @@ const MainHeader: React.FC = () => {
                 <DropdownTrigger>
                   <Image
                     alt=""
-                    src={
-                      userD.data.user.img_url
-                        ? userD.data.user.img_url
-                        : profileImg
-                    }
-                    className=" ml-5 w-10 h-10 cursor-pointer mr-6 scale-100 hover:scale-11 text-[20px] font-medium text-white"
+                    width={100}
+                    height={100}
+                    src={imageURL}
+                    className=" ml-5 w-10 rounded-full h-10 cursor-pointer mr-6 scale-100 hover:scale-11 text-[20px] font-medium text-white"
                   />
                 </DropdownTrigger>
                 <DropdownMenu

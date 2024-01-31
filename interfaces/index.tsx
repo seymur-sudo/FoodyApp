@@ -20,6 +20,8 @@ export interface SidebarContextProps {
   setLastOffer: React.Dispatch<React.SetStateAction<OfferPostDataType | null>>;
   newImg: string | null;
   setNewImg: React.Dispatch<React.SetStateAction<string | null>>;
+  userImg:string | null;
+  setUserImg:React.Dispatch<React.SetStateAction<string | null>>;
   showAdds: boolean;
   setShow: React.Dispatch<React.SetStateAction<boolean>>;
   setShowAdds: React.Dispatch<React.SetStateAction<boolean>>;
@@ -164,6 +166,14 @@ export interface OfferPostDataType {
   name: string;
   description: string;
   img_url: string | null;
+}
+export interface UserDataType{
+  email:string,
+  address: string,
+  username: string,
+  img_url: string,
+  phone: number|null,
+  fullname: string
 }
 export interface OfferApiResponse {
   result: {

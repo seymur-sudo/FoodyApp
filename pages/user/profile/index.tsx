@@ -1,22 +1,86 @@
-import React from "react";
+import React, { useState } from "react";
 import UserAside from "../../../components/Client/UserAside/index";
 import UserAsideModal from "@/components/Client/UserAsideModal";
 import MainHeader from "../../../components/Client/MainHeader/index";
 import Image from "next/image";
+import { toast } from "react-toastify";
+import { QUERIES } from "../../../constant/Queries";
+import { useMutation, useQueryClient } from "react-query";
+import { useQuery } from "react-query";
 import uploadImg from "../../../public/svgs/upload2.svg";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import { animated } from "@react-spring/web";
 import { useSidebarContext } from "@/contexts/SidebarContext";
-import { SidebarContextProps } from "@/interfaces";
+import { SidebarContextProps, UserDataType } from "@/interfaces";
 import { useTranslation } from "next-i18next";
 import { GetServerSideProps } from "next";
+import { fileStorage } from "../../../server/configs/firebase";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { updateUser } from "@/services";
 
 const ProfileUser = () => {
-  const { showUserModal, closeUserModal, modalSpring } =
+  const lastUser:UserDataType={
+    email:"",
+    address: "",
+    username: "",
+    img_url: "",
+    phone: null,
+    fullname: ""
+  }
+  const [newUser,setNewUser]=useState<UserDataType>(lastUser)
+  const { showUserModal,setSelectedFile,setUserImg,userImg, closeUserModal, modalSpring } =
     useSidebarContext() as SidebarContextProps;
   const { t } = useTranslation("common");
-
+  const handleNewImg = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setSelectedFile(file);
+      setUserImg(URL.createObjectURL(file));
+      const restaurantId = `${new Date().getTime()}_${Math.floor(
+        Math.random() * 1000
+      )}`;
+      const imageRef = ref(fileStorage, `images/${file.name + restaurantId}`);
+      uploadBytes(imageRef, file)
+        .then((snapshot) => {
+          getDownloadURL(snapshot.ref)
+            .then((downloadURL) => {
+              setNewUser((prevUser) => ({
+                ...prevUser,
+                img_url: downloadURL,
+              }));
+              console.log("Dosyanın Firebase Storage URL'si: ", downloadURL);
+            })
+            .catch((error) => {
+              console.error("Download URL alınırken bir hata oluştu: ", error);
+            });
+        })
+        .catch((error) => {
+          console.error("Dosya yüklenirken bir hata oluştu: ", error);
+        });
+    } else {
+      console.error("No file selected");
+    }
+  };
+  const queryClient = useQueryClient();
+  const mutation = useMutation(() => updateUser(newUser), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(QUERIES.User);
+      setNewUser(lastUser);
+      setSelectedFile(null);
+      setTimeout(() => {
+      }, 1000);
+      toast.success("Profile Updated successfully!", {
+        autoClose: 1000,
+      });
+    },
+    onError: (error) => {
+      console.error("Error update profile:", error);
+      toast.error("Error update profile", {
+        autoClose: 1000,
+      });
+    },
+  });
   return (
     <>
       <MainHeader />
@@ -69,7 +133,7 @@ const ProfileUser = () => {
 
           <div className="flex items-center justify-center mb-4 md:mb-8 h-[20%]  w-full ">
             <label
-              htmlFor="dropzone-file"
+              htmlFor="user_img"
               className="flex flex-col items-center justify-center w-full rounded-[14px]  cursor-pointer  "
             >
               <div className="flex flex-col items-center justify-center py-2 px-7 rounded-full  bg-white dark:bg-black">
@@ -78,7 +142,7 @@ const ProfileUser = () => {
                   {t("upload")}
                 </p>
               </div>
-              <input id="dropzone-file" type="file" className="hidden" />
+              <input onChange={(e)=>handleNewImg(e)} id="user_img" type="file" className="hidden" />
             </label>
           </div>
 
@@ -113,7 +177,7 @@ const ProfileUser = () => {
 
             <div className="flex flex-col mb-5 w-10/12 md:w-5/12">
               <label className="text-[#4F4F4F] dark:text-green-300 mb-2 font-semibold">
-                {t("Amount")}
+                {t("Email")}
               </label>
               <input
                 type="email"
