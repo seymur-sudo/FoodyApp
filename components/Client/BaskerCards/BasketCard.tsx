@@ -1,21 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import pizza from "../../../public/svgs/pizza.svg";
 import { FaPlus } from "react-icons/fa6";
 import Image from "next/image";
-import { PostDataType, BasketStateType } from "@/interfaces";
+import { PostDataType, BasketPostDataType } from "@/interfaces";
 import { QUERIES } from "../../../constant/Queries";
 import { useMutation, useQueryClient } from "react-query";
 import { toast } from "react-toastify";
-import { addBasket } from "@/services";
+import { addBasket, getUser } from "@/services";
+import { useQuery } from "react-query";
 
 type ProductCardType = {
   product: PostDataType;
 };
 
 const ProductCard: React.FC<ProductCardType> = ({ product }) => {
+  const { data: userID } = useQuery(QUERIES.User, getUser);
+  const [buttonClicked, setButtonClicked] = useState(false);
   const queryClient = useQueryClient();
   const mutation = useMutation(
-    (basketProduct: BasketStateType) => addBasket(basketProduct),
+    (basketProduct: BasketPostDataType) => addBasket(basketProduct),
     {
       onSuccess: () => {
         queryClient.invalidateQueries(QUERIES.Basket);
@@ -33,13 +36,11 @@ const ProductCard: React.FC<ProductCardType> = ({ product }) => {
   );
 
   const handleAddToBasket = () => {
-    const basketProduct: BasketStateType = {
-      total_item: 1,
-      created: Date.now(),
-      total_amount: product.price,
-      total_count: 1,
-      items: [product],
+    const basketProduct: BasketPostDataType = {
+      user_id: userID?.data.user.id,
+      product_id: product.id,
     };
+    setButtonClicked(true);
     mutation.mutate(basketProduct);
   };
 
@@ -72,10 +73,20 @@ const ProductCard: React.FC<ProductCardType> = ({ product }) => {
         </p>
 
         <div
-          className="bg-green-400 dark:bg-cyan-300 h-14 w-14 rounded-full flex items-center justify-center hover:opacity-75 transition-all duration-500 cursor-pointer"
+          className={`${
+            buttonClicked
+              ? "bg-green-400 dark:bg-cyan-400"
+              : "bg-gray-300 dark:bg-gray-400"
+          } dark:bg-cyan-300 h-14 w-14 rounded-full flex items-center justify-center hover:opacity-75 transition-all duration-500 cursor-pointer`}
           onClick={handleAddToBasket}
         >
-          <FaPlus className="text-4xl text-gray-200 dark:text-gray-900" />
+          <FaPlus
+            className={`text-4xl ${
+              buttonClicked
+                ? "text-gray-100 dark:text-gray-900"
+                : "text-gray-100 dark:text-gray-900"
+            }`}
+          />
         </div>
       </div>
     </>

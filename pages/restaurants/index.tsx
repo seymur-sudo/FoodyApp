@@ -19,6 +19,7 @@ import { useQuery } from "react-query";
 import { QUERIES } from "../../constant/Queries";
 import { useRouter } from "next/router";
 import { getCategory, getRestaurant } from "../../services/index";
+import Link from "next/link";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
@@ -187,11 +188,12 @@ const Restaurants = () => {
                         push(`${ROUTER.RESTAURANTS}/${restaurant.id}`)
                       }
                       src={restaurant.img_url ? restaurant.img_url : soup}
-                      alt="restaurant"
+                      alt={`Image for restaurant ${restaurant.name}`}
                       width={500}
                       height={200}
                       className="hover:scale-105 transition-all duration-500 w-full cursor-pointer  h-[160px] object-cover"
                     />
+
                     <h1 className="text-[#1E1E30] dark:text-gray-200 text-[24px] md:text-[18px] mt-3 mb-2 px-2">
                       {restaurant.name?.slice(0, 10)}...
                     </h1>

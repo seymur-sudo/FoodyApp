@@ -345,16 +345,16 @@ const Home: NextPage = () => {
     </>
   );
 };
-// export const getServerSideProps: GetServerSideProps = async ({ locale }) => {
-//   const queryClient = new QueryClient();
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => {
+  const queryClient = new QueryClient();
 
-//   await queryClient.prefetchQuery("offers", getOffer);
+  await queryClient.prefetchQuery("offers", getOffer);
 
-//   return {
-//     props: {
-//       ...(await serverSideTranslations(locale as string, ["common"])),
-//       dehydratedState: dehydrate(queryClient)
-//     }
-//   };
-// };
+  return {
+    props: {
+      ...(await serverSideTranslations(locale as string, ["common"])),
+      dehydratedState: dehydrate(queryClient)
+    }
+  };
+};
 export default Home;

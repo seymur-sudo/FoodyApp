@@ -15,7 +15,6 @@ import {
   OfferApiResponse,
   OfferPostDataType,
   BasketPostDataType,
-  BasketStateType,
 } from "../interfaces/index";
 
 // GET_PRODUCT
@@ -58,9 +57,9 @@ export const deleteProduct = (
 
 // GET_USER
 export const getUser = (): AxiosPromise => {
-  const accessToken = localStorage.getItem('access_token');
+  const accessToken = localStorage.getItem("access_token");
   return instanceAxios({
-    method: 'GET',
+    method: "GET",
     url: ENDPOINTS.USER,
     headers: {
       Authorization: `Bearer ${accessToken}`,
@@ -95,7 +94,7 @@ export const addRestaurant: (
 //UPDATE_RESTAURANT
 export const updateRestaurant = (
   newRestaurant: RestaurantPostDataType,
-  restaurantID: string | number | undefined
+  restaurantID: string | number
 ) => {
   return instanceAxios({
     method: "PUT",
@@ -182,13 +181,29 @@ export const deleteCategory = (
     url: `${ENDPOINTS.CATEGORY}/${categoryId}`,
   });
 
+// GET_BASKET
+export const getBasket = (): AxiosPromise => {
+  const accessToken = localStorage.getItem("access_token");
+  return instanceAxios({
+    method: "GET",
+    url: ENDPOINTS.BASKET,
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+};
+
 // ADD_BASKET
 export const addBasket: (
-  basketProduct: BasketStateType
+  basketProduct: BasketPostDataType
 ) => AxiosPromise<BasketPostDataType> = (basketProduct) => {
+  const accessToken = localStorage.getItem("access_token");
   return instanceAxios({
     method: "POST",
     url: `${ENDPOINTS.BASKET}/add`,
     data: basketProduct,
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
   });
 };
