@@ -22,6 +22,8 @@ import {
   getBasket,
   addBasket,
   getUser,
+  deleteBasket,
+  clearBasket,
 } from "@/services";
 import { useQuery } from "react-query";
 import { QUERIES } from "../../../constant/Queries";
@@ -35,14 +37,17 @@ const ResDetail = () => {
     openUserModal,
     closeUserModal,
     modalSpring,
-    showDelete,
     setshowDelete,
+    setDeletedBasket,
   } = useSidebarContext() as SidebarContextProps;
   const { t } = useTranslation("common");
   const router = useRouter();
   const { id } = router.query;
 
-  console.log("id ", id);
+  const openDeleteModal = (basketId: BasketPostDataType | null) => {
+    setshowDelete(true);
+    setDeletedBasket(basketId);
+  };
 
   const {
     data: restaurantData,
@@ -59,10 +64,9 @@ const ResDetail = () => {
   const restaurantProducts = products?.data.result.data;
   const basketProducts = basket?.data.result.data;
   const basketProductsItems = basket?.data.result.data.items;
-  console.log("basket", basketProductsItems);
 
   const queryClient = useQueryClient();
-  const mutation = useMutation(
+  const mutationAdd = useMutation(
     (basketProduct: BasketPostDataType) => addBasket(basketProduct),
     {
       onSuccess: () => {
@@ -80,12 +84,38 @@ const ResDetail = () => {
     }
   );
 
-  const handleAddToBasket = (productId: number | string) => {
+  const mutationDelete = useMutation(
+    (basketProduct: BasketPostDataType) => deleteBasket(basketProduct),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(QUERIES.Basket);
+        toast.success("Product count decremented successfully!", {
+          autoClose: 1000,
+        });
+      },
+      onError: (error) => {
+        console.error("Error decrementing product count:", error);
+        toast.error("Error decrementing product count", {
+          autoClose: 1000,
+        });
+      },
+    }
+  );
+
+  const handleBasket = (
+    productId: number | string,
+    action: "increment" | "decrement"
+  ) => {
     const basketProduct: BasketPostDataType = {
       user_id: userID?.data.user.id,
       product_id: productId,
     };
-    mutation.mutate(basketProduct);
+
+    if (action === "increment") {
+      mutationAdd.mutate(basketProduct);
+    } else if (action === "decrement") {
+      mutationDelete.mutate(basketProduct);
+    }
   };
 
   const filteredProducts = restaurantProducts?.filter(
@@ -163,13 +193,17 @@ const ResDetail = () => {
                 <div className="h-12 w-10/12 cursor-pointer hover:opacity-90 transition-all duration-500  flex items-center justify-between rounded-[100px] bg-[#D63626] dark:bg-blue-500 text-white">
                   <button className="capitalize ml-[3%] font-medium flex items-center">
                     <IoBasketSharp className=" text-3xl text-[#D63626] dark:text-cyan-50 hover:scale-110 transition-all duration-500 " />
-
-                    <p className="text-white ml-1 dark:text-cyan-100 ">
-                      3{t("items")}
-                    </p>
+                    {basketProducts && (
+                      <p className="text-white ml-1 dark:text-cyan-100 ">
+                        <span className="mr-2">
+                          {basketProducts?.total_item}
+                        </span>{" "}
+                        {t("items")}
+                      </p>
+                    )}
                   </button>
                   <p className="text-[#D63626] flex  items-center px-8 text-lg font-medium h-full rounded-[80px] border-2 border-[#D63626] dark:border-blue-500 bg-white dark:bg-gray-900 dark:text-sky-200">
-                    $37.19
+                    $ {basketProducts?.total_amount}
                   </p>
                 </div>
               </div>
@@ -195,12 +229,10 @@ const ResDetail = () => {
                 <div className="mt-4" onClick={closeUserModal}>
                   <IoIosCloseCircleOutline
                     size={40}
-                    className="text-[#BDBDBD] dark:text-sky-400  "
+                    className="text-[#BDBDBD] dark:text-sky-400  cursor-pointer hover:scale-105 transition-all duration-500"
                   />
                 </div>
                 <div>
-                  <BasketResCard />
-                  <BasketResCard />
                   <BasketResCard />
                 </div>
               </animated.div>
@@ -240,7 +272,7 @@ const ResDetail = () => {
 
                 <div
                   className="bg-[#D63626] dark:bg-cyan-300 hover:opacity-75 hover:scale-105 transition-all duration-700 cursor-pointer mr-1 py-1 px-6 rounded-md flex items-center"
-                  onClick={() => setshowDelete(!showDelete)}
+                  onClick={() => openDeleteModal(basketProducts.id)}
                 >
                   <LuTrash className="text-gray-200 dark:text-gray-900 text-xl  " />
                   <p className="capitalize font-semibold ml-2 text-gray-200 dark:text-gray-900 ">
@@ -254,7 +286,7 @@ const ResDetail = () => {
               basketProductsItems.map((product: BasketPostDataType) => (
                 <div className="w-full" key={product.id}>
                   <div className="w-full border-t-2 py-2 dark:border-sky-300">
-                    <div className="flex items-center justify-around pt-1 pb-2 " >
+                    <div className="flex items-center justify-around pt-1 pb-2 ">
                       <Image
                         src={product.img_url ?? pizza}
                         alt="product.name"
@@ -279,12 +311,22 @@ const ResDetail = () => {
                       <div className="bg-white dark:bg-gray-800 text-black dark:text-cyan-300 font-medium flex flex-col items-center px-2 py-1 rounded-3xl">
                         <span
                           className="cursor-pointer"
-                          onClick={() => handleAddToBasket(product.id || "")}
+                          onClick={() =>
+                            handleBasket(product.id || "", "increment")
+                          }
                         >
                           +
                         </span>
                         <span className="font-semibold"> {product.count}</span>
-                        <span className="cursor-pointer">-</span>
+
+                        <span
+                          className="cursor-pointer"
+                          onClick={() =>
+                            handleBasket(product.id || "", "decrement")
+                          }
+                        >
+                          -
+                        </span>
                       </div>
                     </div>
                     <div className="w-full flex justify-center mt-4"></div>
@@ -294,10 +336,12 @@ const ResDetail = () => {
             ) : (
               <p> no data</p>
             )}
+
             <div className="h-12 w-10/12 cursor-pointer hover:opacity-90 transition-all duration-500  flex items-center justify-between rounded-[100px] bg-[#D63626] dark:bg-blue-500 text-white">
               <button className="capitalize mx-[3%] font-medium flex items-center">
                 {t("Checkout")}
               </button>
+
               {basketProducts && (
                 <p className="text-[#D63626] flex  items-center px-8 text-lg font-medium h-full rounded-[80px] border-2 border-[#D63626] dark:border-blue-500 bg-white dark:bg-gray-900 dark:text-sky-200">
                   $ <span className="ml-2">{basketProducts?.total_amount}</span>

@@ -207,3 +207,33 @@ export const addBasket: (
     },
   });
 };
+
+// DELETE_BASKET
+export const deleteBasket: (
+  basketProduct: BasketPostDataType
+) => AxiosPromise<BasketPostDataType> = (basketProduct) => {
+  const accessToken = localStorage.getItem("access_token");
+  return instanceAxios({
+    method: "DELETE",
+    url: `${ENDPOINTS.BASKET}/delete`,
+    data: basketProduct,
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+};
+
+// CLEAR_BASKET
+export const clearBasket: (
+  basketId: BasketPostDataType
+) => AxiosPromise<BasketPostDataType> = (basketId) => {
+  const accessToken = localStorage.getItem("access_token");
+  return instanceAxios({
+    method: "DELETE",
+    url: `${ENDPOINTS.BASKET}/clear`,
+    data: basketId,
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+};
