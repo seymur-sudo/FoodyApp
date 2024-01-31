@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import MainHeader from "@/components/Client/MainHeader";
 import Image from "next/image";
 import papa from "../../../public/svgs/papa.svg";
@@ -9,17 +9,25 @@ import { animated } from "@react-spring/web";
 import ProductCard from "@/components/Client/BaskerCards/BasketCard";
 import BasketResCard from "@/components/Client/BaskerCards/BasketResCard";
 import { useSidebarContext } from "@/contexts/SidebarContext";
-import { SidebarContextProps } from "@/interfaces";
+import { SidebarContextProps, BasketPostDataType } from "@/interfaces";
 import { IoBasketSharp } from "react-icons/io5";
 import DeleteModal from "@/components/Admin/Modals/DeleteModal";
 import { useTranslation } from "next-i18next";
 import { GetServerSideProps } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useRouter } from "next/router";
-import { getRestaurantById, getProduct } from "@/services";
+import {
+  getRestaurantById,
+  getProduct,
+  getBasket,
+  addBasket,
+  getUser,
+} from "@/services";
 import { useQuery } from "react-query";
 import { QUERIES } from "../../../constant/Queries";
 import { ReactQueryDevtools } from "react-query/devtools";
+import { useMutation, useQueryClient } from "react-query";
+import { toast } from "react-toastify";
 
 const ResDetail = () => {
   const {
@@ -34,6 +42,8 @@ const ResDetail = () => {
   const router = useRouter();
   const { id } = router.query;
 
+  console.log("id ", id);
+
   const {
     data: restaurantData,
     isLoading,
@@ -42,11 +52,41 @@ const ResDetail = () => {
     getRestaurantById(id as string)
   );
   const { data: products } = useQuery(QUERIES.Products, getProduct);
+  const { data: basket } = useQuery(QUERIES.Basket, getBasket);
+  const { data: userID } = useQuery(QUERIES.User, getUser);
 
   const singleRestaurant = restaurantData?.data.result.data;
   const restaurantProducts = products?.data.result.data;
+  const basketProducts = basket?.data.result.data;
+  const basketProductsItems = basket?.data.result.data.items;
+  console.log("basket", basketProductsItems);
 
-  console.log("resproducts", singleRestaurant);
+  const queryClient = useQueryClient();
+  const mutation = useMutation(
+    (basketProduct: BasketPostDataType) => addBasket(basketProduct),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(QUERIES.Basket);
+        toast.success("Product added to the basket successfully!", {
+          autoClose: 1000,
+        });
+      },
+      onError: (error) => {
+        console.error("Error adding product to the basket:", error);
+        toast.error("Error adding product to the basket", {
+          autoClose: 1000,
+        });
+      },
+    }
+  );
+
+  const handleAddToBasket = (productId: number | string) => {
+    const basketProduct: BasketPostDataType = {
+      user_id: userID?.data.user.id,
+      product_id: productId,
+    };
+    mutation.mutate(basketProduct);
+  };
 
   const filteredProducts = restaurantProducts?.filter(
     (product) =>
@@ -180,53 +220,89 @@ const ResDetail = () => {
             </>
           )}
 
-          <div className="hidden  w-4/12 bg-[#F3F4F6] dark:bg-gray-900 md:flex flex-col items-center my-scrollable-component max-h-[60vh] overflow-y-auto">
-            <div className="flex justify-start items-center py-2 w-full">
-              <h1 className="capitalize py-2 text-[#4F4F4F)] dark:text-cyan-400 font-bold text-[25px]"></h1>
-              <IoBasketSharp className=" text-3xl text-[#D63626] dark:text-cyan-300 hover:scale-110 transition-all duration-500 mx-2" />
+          <div className="hidden w-4/12 bg-[#F3F4F6] dark:bg-gray-900 md:flex flex-col items-center my-scrollable-component max-h-[60vh] overflow-y-auto">
+            {basketProducts && (
+              <div className="flex justify-between items-center px-2 py-3 w-full">
+                <div className="flex justify-center items-center">
+                  <h1 className="capitalize py-2 text-[#4F4F4F)] dark:text-cyan-400 font-bold text-[25px]"></h1>
+                  <IoBasketSharp className="cursor-pointer text-3xl text-[#D63626] dark:text-cyan-300 hover:scale-110 transition-all duration-700 mx-2" />
 
-              <p className="capitalize  text-[#D63626)]  dark:text-cyan-400 font-bold text-[16px]">
-                3{t("items")}
-              </p>
-            </div>
-            <div className="w-full border-t-2 py-3 dark:border-sky-300">
-              <div className="flex items-center justify-around pt-1 pb-2 ">
-                <Image
-                  src={pizza}
-                  alt="pizza"
-                  width={100}
-                  height={100}
-                  className=" w-[45px] h-[45px]  rounded-full  object-cover"
-                />
-                <div>
-                  <h1 className="capitalize pt-2 text-[#4F4F4F] dark:text-cyan-400 text-[18px] font-medium">
-                    papa johns pizza restaurant
-                  </h1>
-                  <span className="capitalize  text-[#4F4F4F] dark:text-cyan-400 text-[18px] font-medium">
-                    $7.99
-                  </span>
+                  <p className="capitalize  text-[#D63626]  dark:text-cyan-400 font-bold text-[16px]">
+                    <span className="mr-1">
+                      {basketProducts?.total_item} {t("items")}
+                    </span>
+                    <span className="mr-1">
+                      {" "}
+                      - {basketProducts?.total_count} {t("count")}
+                    </span>
+                  </p>
                 </div>
 
-                <LuTrash
+                <div
+                  className="bg-[#D63626] dark:bg-cyan-300 hover:opacity-75 hover:scale-105 transition-all duration-700 cursor-pointer mr-1 py-1 px-6 rounded-md flex items-center"
                   onClick={() => setshowDelete(!showDelete)}
-                  className="text-red-500 dark:text-sky-300 text-2xl ml-1 hover:scale-110 transition-all duration-500 cursor-pointer"
-                />
-                <div className="bg-white dark:bg-gray-800 text-black dark:text-cyan-300 font-medium flex flex-col items-center px-2 py-1 rounded-3xl">
-                  <span>+</span>
-                  <span className="font-semibold">5</span>
-                  <span>-</span>
-                </div>
-              </div>
-              <div className="w-full flex justify-center mt-4">
-                <div className="h-12 w-10/12 cursor-pointer hover:opacity-90 transition-all duration-500  flex items-center justify-between rounded-[100px] bg-[#D63626] dark:bg-blue-500 text-white">
-                  <button className="capitalize mx-[3%] font-medium flex items-center">
-                    {t("Checkout")}
-                  </button>
-                  <p className="text-[#D63626] flex  items-center px-8 text-lg font-medium h-full rounded-[80px] border-2 border-[#D63626] dark:border-blue-500 bg-white dark:bg-gray-900 dark:text-sky-200">
-                    $37.99
+                >
+                  <LuTrash className="text-gray-200 dark:text-gray-900 text-xl  " />
+                  <p className="capitalize font-semibold ml-2 text-gray-200 dark:text-gray-900 ">
+                    clear all
                   </p>
                 </div>
               </div>
+            )}
+
+            {basketProductsItems ? (
+              basketProductsItems.map((product: BasketPostDataType) => (
+                <div className="w-full" key={product.id}>
+                  <div className="w-full border-t-2 py-2 dark:border-sky-300">
+                    <div className="flex items-center justify-around pt-1 pb-2 " >
+                      <Image
+                        src={product.img_url ?? pizza}
+                        alt="product.name"
+                        width={100}
+                        height={100}
+                        className=" w-[60px] h-[60px]  rounded-full  object-cover"
+                      />
+                      <div>
+                        <h1 className="capitalize pt-2 ml-4 text-[#4F4F4F] dark:text-cyan-400 text-[18px] font-medium">
+                          {product.name}
+                        </h1>
+                        <div className="flex  justify-center items-center ">
+                          <span className="capitalize  text-[#4F4F4F] dark:text-cyan-400 text-[18px] font-medium">
+                            $ {product.price}
+                          </span>
+                          <span className="capitalize ml-2 text-[#4F4F4F] dark:text-cyan-400 text-[18px] font-medium">
+                            $ {product.amount}
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="bg-white dark:bg-gray-800 text-black dark:text-cyan-300 font-medium flex flex-col items-center px-2 py-1 rounded-3xl">
+                        <span
+                          className="cursor-pointer"
+                          onClick={() => handleAddToBasket(product.id || "")}
+                        >
+                          +
+                        </span>
+                        <span className="font-semibold"> {product.count}</span>
+                        <span className="cursor-pointer">-</span>
+                      </div>
+                    </div>
+                    <div className="w-full flex justify-center mt-4"></div>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <p> no data</p>
+            )}
+            <div className="h-12 w-10/12 cursor-pointer hover:opacity-90 transition-all duration-500  flex items-center justify-between rounded-[100px] bg-[#D63626] dark:bg-blue-500 text-white">
+              <button className="capitalize mx-[3%] font-medium flex items-center">
+                {t("Checkout")}
+              </button>
+              {basketProducts && (
+                <p className="text-[#D63626] flex  items-center px-8 text-lg font-medium h-full rounded-[80px] border-2 border-[#D63626] dark:border-blue-500 bg-white dark:bg-gray-900 dark:text-sky-200">
+                  $ <span className="ml-2">{basketProducts?.total_amount}</span>
+                </p>
+              )}
             </div>
           </div>
         </div>

@@ -4,5 +4,6 @@ export const QUERIES = {
   SingleRestaurant: "singleRestaurant",
   Categories: "categories",
   Offers: "offers",
+  User: "user",
   Basket: "basket",
 };

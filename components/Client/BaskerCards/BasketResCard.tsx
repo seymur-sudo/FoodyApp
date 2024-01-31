@@ -1,4 +1,4 @@
-import React,{useEffect} from "react";
+import React, { useEffect } from "react";
 import pizza from "../../../public/svgs/pizza.svg";
 import Image from "next/image";
 import { LuTrash } from "react-icons/lu";
@@ -12,19 +12,20 @@ const BasketResCard = () => {
   const { showDelete, setshowDelete } =
     useSidebarContext() as SidebarContextProps;
 
-    useEffect(() => {
-      AOS.init({
-        duration: 1000,
-      });
-      AOS.refresh();
-    }, []);
-
+  useEffect(() => {
+    AOS.init({
+      duration: 1000,
+    });
+    AOS.refresh();
+  }, []);
 
   return (
     <>
-      <div className="flex z-10 items-center justify-around py-3 border-b-2 border-gray-300 dark:border-sky-300"  
-          data-aos="fade-up"
-          data-aos-delay={150}>
+      <div
+        className="flex z-10 items-center justify-around py-3 border-b-2 border-gray-300 dark:border-sky-300"
+        data-aos="fade-up"
+        data-aos-delay={150}
+      >
         <Image
           src={pizza}
           alt="pizza"
@@ -50,8 +51,7 @@ const BasketResCard = () => {
           <span>-</span>
         </div>
       </div>
-      <DeleteModal/>
-      
+      <DeleteModal />
     </>
   );
 };

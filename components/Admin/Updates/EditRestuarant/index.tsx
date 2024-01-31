@@ -102,7 +102,7 @@ const EditRestuarant: React.FC = () => {
   };
   const queryClient = useQueryClient();
   const mutation = useMutation(
-    () => updateRestaurant(edtRestaurant, lastData?.id),
+    () => updateRestaurant(edtRestaurant, lastData?.id || ""),
     {
       onSuccess: () => {
         queryClient.invalidateQueries(QUERIES.Restaurants);
