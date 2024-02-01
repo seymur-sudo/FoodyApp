@@ -5,9 +5,19 @@ import { BsDot } from "react-icons/bs";
 import { useTranslation } from "next-i18next";
 import { GetServerSideProps } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { useQuery } from "react-query";
+import { QUERIES } from "../../../constant/Queries";
+import { BasketPostDataType } from "@/interfaces";
+import { toast } from "react-toastify";
+import { getBasket } from "@/services";
 
 const UserCheckout = () => {
   const { t } = useTranslation("common");
+  const { data: basket } = useQuery(QUERIES.Basket, getBasket);
+  const basketProducts = basket?.data.result.data;
+  const basketProductsItems = basket?.data.result.data.items;
+
+  console.log("basketProductsItems", basketProductsItems);
 
   return (
     <>
@@ -99,44 +109,39 @@ const UserCheckout = () => {
 
         <div className="w-10/12 md:w-3/12 mt-[5%] md:mt-[0%] capitalize text-[#828282)] px-6 py-3 dark:text-green-300 bg:[#F3F4F6] dark:bg-gray-900  asideScroll max-h-[45vh] overflow-y-auto">
           <div>
-            <h1 className=" font-body font-normal text-lg text-center py-3">
+            <h1 className=" font-body font-semibold  text-lg text-center py-3">
               {t("Your Order")}
             </h1>
-            <ul className="py-3">
-              <li className="text-[14px] my-3">
-                {" "}
-                <span className="text-lg font-medium ">1</span> x papa coofee
-                $20$
-              </li>
-              <li className="text-[14px] my-3">
-                {" "}
-                <span className="text-lg font-medium ">1</span> x papa coofee
-                $20$
-              </li>
-              <li className="text-[14px]">
-                {" "}
-                <span className="text-lg font-medium ">1</span> x papa coofee
-                $20$
-              </li>
-              <li className="text-[14px] my-3">
-                {" "}
-                <span className="text-lg font-medium ">1</span> x papa coofee
-                $20$
-              </li>
-              <li className="text-[14px]">
-                {" "}
-                <span className="text-lg font-medium ">1</span> x papa coofee
-                $20$
-              </li>
-              <li className="text-[14px] my-3">
-                {" "}
-                <span className="text-lg font-medium ">1</span> x papa coofee
-                $20$
-              </li>
-            </ul>
+
+            {basketProductsItems && basketProductsItems.length > 0 ? (
+              basketProductsItems.map((product: BasketPostDataType) => (
+                <ul className="py-2 w-full " key={product.id}>
+                  <li className="text-[14px] my-1">
+                    <span className="text-lg font-medium">
+                      <span>{product.count}</span>
+                      <span>
+                        <span className="mx-[6px]">x</span>
+                        {product.name}
+                      </span>
+                      <span>
+                        <span className="mx-[6px] text-[18px]">$</span>
+                        <span className="ml-[2px]">{product.amount}</span>
+                      </span>
+                    </span>
+                  </li>
+                </ul>
+              ))
+            ) : (
+              <p>No data</p>
+            )}
+
             <div className="border-t-2 border-t-gray-400 dark:border-t-green-400 py-5 px-2 flex justify-between">
               <p className="font-medium text-[18px]"> {t("Total")} </p>
-              <p className="font-normal text-[14px]">$17.80</p>
+              {basketProducts && (
+                <p className="font-semibold">
+                  $ {basketProducts?.total_amount}
+                </p>
+              )}
             </div>
           </div>
         </div>
