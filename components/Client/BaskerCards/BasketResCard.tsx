@@ -4,17 +4,16 @@ import Image from "next/image";
 import { LuTrash } from "react-icons/lu";
 import { useSidebarContext } from "@/contexts/SidebarContext";
 import { SidebarContextProps, BasketPostDataType } from "@/interfaces";
-import DeleteModal from "@/components/Admin/Modals/DeleteModal";
+import { IoIosBasket } from "react-icons/io";
 import DeleteUserProduct from "../Deletes/DeleteUserProduct";
 import { useQuery } from "react-query";
 import { QUERIES } from "../../../constant/Queries";
-import { ReactQueryDevtools } from "react-query/devtools";
 import { useMutation, useQueryClient } from "react-query";
 import { toast } from "react-toastify";
 import { getUser, getBasket, deleteBasket, addBasket } from "@/services";
 
 const BasketResCard = () => {
-  const { showDelete, setshowDelete, setDeletedBasket } =
+  const { setshowDelete, setDeletedBasket } =
     useSidebarContext() as SidebarContextProps;
 
   const openDeleteModal = (basketId: BasketPostDataType | null) => {
@@ -83,7 +82,11 @@ const BasketResCard = () => {
   return (
     <>
       <div
-        className="bg-[#D63626] w-[80vw] dark:bg-cyan-300 my-3 z-10 hover:opacity-75 hover:scale-105 transition-all duration-700 cursor-pointer mr-1 py-1 px-6 rounded-md flex justify-center items-center"
+        className={`bg-[#D63626] dark:bg-cyan-300 hover:opacity-75 hover:scale-105 transition-all duration-700 cursor-pointer mr-1 py-1 px-6 rounded-md flex items-center justify-center my-2 ${
+          basketProductsItems && basketProductsItems.length === 0
+            ? "hidden"
+            : ""
+        }`}
         onClick={() => openDeleteModal(basketProducts.id)}
       >
         <LuTrash className="text-gray-200 dark:text-gray-900 text-xl  " />
@@ -92,7 +95,7 @@ const BasketResCard = () => {
         </p>
       </div>
 
-      {basketProductsItems ? (
+      {basketProductsItems && basketProductsItems.length > 0 ? (
         basketProductsItems.map((product: BasketPostDataType) => (
           <div
             key={product.id}
@@ -133,7 +136,14 @@ const BasketResCard = () => {
           </div>
         ))
       ) : (
-        <p> no data</p>
+        <div className=" flex z-10 items-center w-[80vw]   flex-col  justify-center pt-7 text-red-600 dark:text-cyan-300">
+          <div>
+            <IoIosBasket className="w-[175px] h-[150px] " />
+          </div>
+          <p className="capitalize font-bold text-xl flex flex-col items-center pb-3 ">
+            <span>oops !</span> <span>basket is empty</span>
+          </p>
+        </div>
       )}
 
       <DeleteUserProduct />

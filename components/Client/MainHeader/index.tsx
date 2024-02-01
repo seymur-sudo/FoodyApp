@@ -14,6 +14,7 @@ import { useSidebarContext } from "../../../contexts/SidebarContext";
 import { SidebarContextProps } from "../../../interfaces/index";
 import { QUERIES } from "../../../constant/Queries";
 import { useQuery } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import {
   Dropdown,
   DropdownTrigger,
@@ -21,18 +22,21 @@ import {
   DropdownItem,
 } from "@nextui-org/react";
 import ClientNavbar from "../ResNavbar";
-import { getUser } from "@/services";
+import { getUser, getBasket } from "@/services";
+import { toast } from "react-toastify";
 
 const MainHeader: React.FC = () => {
-  const [imageURL,setImageURL]=useState<string>("")
-  const { setNavbarOpen,userImg, isNavbarOpen } =
+  const [imageURL, setImageURL] = useState<string>("");
+  const { setNavbarOpen, userImg, isNavbarOpen } =
     useSidebarContext() as SidebarContextProps;
   const { toggleTheme } = useThemeContext() as ThemeContextProps;
   const { t } = useTranslation("common");
   const router = useRouter();
   const [isLogin, setIslogin] = useState<boolean>(false);
-  const { data: userD, isLoading, isError } = useQuery(QUERIES.User, getUser);
-  
+  const { data: userID } = useQuery(QUERIES.User, getUser);
+  const { data: basket } = useQuery(QUERIES.Basket, getBasket);
+  const basketProducts = basket?.data.result.data;
+
   const logout = () => {
     localStorage.removeItem("access_token");
     router.push("/login");
@@ -45,15 +49,15 @@ const MainHeader: React.FC = () => {
     } else {
       setIslogin(true);
     }
-    if (userD?.data.user.img_url) {
-      setImageURL(userD?.data.user.img_url);
-  } else if (userImg) {
-    setImageURL(userImg);
-  } else {
+    if (userID?.data.user.img_url) {
+      setImageURL(userID?.data.user.img_url);
+    } else if (userImg) {
+      setImageURL(userImg);
+    } else {
       // Burada statik bir resim URL'si atanabilir
       setImageURL(profileImg);
-  }
-  }, [userD,userImg]);
+    }
+  }, [userID, userImg]);
   return (
     <div className="sm:h-[120px] h-[52px] sm:mt-[30px] sm:mx-[30px] flex items-center rounded-t-5 justify-between flex-row bg-[#F3F4F6]  dark:bg-gray-900">
       <div className="flex items-center">
@@ -132,28 +136,37 @@ const MainHeader: React.FC = () => {
             className="sm:px-3 px-0 pt-1 md:pt-0 transition-all duration-700 "
             onClick={toggleTheme}
           >
-            <FiSun className="text-[#ea9000] text-6xl md:text-5xl  scale-[75%] hover:scale-[85%] sm:scale-100 sm:hover:scale-110 dark:text-gray-900 block dark:hidden transition-all duration-500" />
+            <FiSun className="text-red-500 text-6xl md:text-5xl  scale-[75%] hover:scale-[85%] sm:scale-100 sm:hover:scale-110 dark:text-gray-900 block dark:hidden transition-all duration-500" />
             <FiMoon className="text-[#F3F4F6] text-6xl md:text-5xl scale-[75%] hover:scale-[85%] sm:scale-100 sm:hover:scale-110 dark:text-sky-400  hidden dark:block transition-all duration-500" />
           </button>
         </div>
         <LangSelect />
         <div className="sm:flex hidden">
-          {!userD ? (
+          {!userID ? (
             <>
               <button
                 onClick={() => router.push("/register")}
-                className="text-[16px] py-[7px] px-5 sm:ml-7 sm:mr-20 bg-[#D63626] font-medium rounded-[30px] text-white"
+                className="text-[16px] py-[7px] px-5 sm:ml-7 sm:mr-20 bg-[#D63626] font-medium rounded-[30px] text-white" 
               >
                 {t("Sign Up")}
               </button>
             </>
           ) : (
             <>
-              <Image
-                className="ml-3 cursor-pointer scale-100 duration-500 hover:scale-110"
-                src={basketIcon}
-                alt="basketIcon"
-              />
+              <div className="flex justify-center items-start relative">
+                <Image
+                  className="ml-3 cursor-pointer scale-100 duration-500 hover:scale-110"
+                  src={basketIcon}
+                  alt="basketIcon"
+                />
+                {basketProducts && (
+                  <p className="h-7 w-7  absolute top-[-20px] right-[-15px] flex justify-center items-center rounded-full text-gray-100 bg-[#eb5757] ">
+                    <span className="font-bold text-">
+                      {basketProducts?.total_item}
+                    </span>
+                  </p>
+                )}
+              </div>
               <Dropdown className="">
                 <DropdownTrigger>
                   <Image

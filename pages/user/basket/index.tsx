@@ -14,22 +14,17 @@ import { GetServerSideProps } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 const BasketUser = () => {
-  const {
-    showUserModal,
-    closeUserModal,
-    modalSpring,
-
-  } = useSidebarContext() as SidebarContextProps;
+  const { showUserModal, closeUserModal, modalSpring } =
+    useSidebarContext() as SidebarContextProps;
 
   const { t } = useTranslation("common");
-
 
   return (
     <>
       <MainHeader />
       <div className="flex flex-col items-center  md:flex-row md:items-start  md:justify-evenly py-8">
         <UserAside />
-      
+
         {showUserModal && (
           <>
             <div className="fixed inset-0 bg-black dark:bg-gray-200 opacity-60 z-40 md:opacity-0"></div>
@@ -68,31 +63,25 @@ const BasketUser = () => {
             />
           </>
         )}
-
-        <div className="w-10/12 md:w-8/12 bg-[#F3F4F6] dark:bg-gray-900  max-h-[75vh] overflow-y-auto my-scrollable-component ">
+ {/* max-h-[75vh] overflow-y-auto my-scrollable-component */}
+        <div className="w-10/12 md:w-8/12 bg-[#F3F4F6] dark:bg-gray-900  ">
           <div>
             <div className="capitalize py-2 px-4">
-              <span className="text-[30px] text-[#0f0808] dark:text-blue-400 font-semibold">
+              <span className="text-[30px] text-red-600 dark:text-blue-400 font-bold">
                 {t("Your Basket")}
               </span>
-            
             </div>
             <UserBasket />
-     
-
-         
           </div>
         </div>
-
       </div>
 
-      <DeleteModal/>
+      <DeleteModal />
     </>
   );
 };
 
 export default BasketUser;
-
 
 export const getServerSideProps: GetServerSideProps = async ({ locale }) => ({
   props: {
