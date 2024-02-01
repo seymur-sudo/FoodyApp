@@ -68,8 +68,7 @@ export interface SidebarContextProps {
   ) => void;
   
   basketProducts: BasketPostDataType | null 
-
-  basketProductsItems: any[] | undefined;
+  basketProductsItems: BasketPostDataType[] | undefined;
 }
 
 export interface ChartData {
