@@ -131,7 +131,7 @@ const MainHeader: React.FC = () => {
         />
       </div>
       <div className="flex flex-row items-center">
-        <div className="flex items-center ">
+        {/* <div className="flex items-center ">
           <button
             className="sm:px-3 px-0 pt-1 md:pt-0 transition-all duration-700 "
             onClick={toggleTheme}
@@ -139,7 +139,7 @@ const MainHeader: React.FC = () => {
             <FiSun className="text-red-500 text-6xl md:text-5xl  scale-[75%] hover:scale-[85%] sm:scale-100 sm:hover:scale-110 dark:text-gray-900 block dark:hidden transition-all duration-500" />
             <FiMoon className="text-[#F3F4F6] text-6xl md:text-5xl scale-[75%] hover:scale-[85%] sm:scale-100 sm:hover:scale-110 dark:text-sky-400  hidden dark:block transition-all duration-500" />
           </button>
-        </div>
+        </div> */}
         <LangSelect />
         <div className="sm:flex hidden">
           {!userID ? (
@@ -157,10 +157,11 @@ const MainHeader: React.FC = () => {
                 <Image
                   className="ml-3 cursor-pointer scale-100 duration-500 hover:scale-110"
                   src={basketIcon}
+                  onClick={()=>{router.push("/user/basket")}}
                   alt="basketIcon"
                 />
                 {basketProducts && (
-                  <p className="h-7 w-7  absolute top-[-20px] right-[-15px] flex justify-center items-center rounded-full text-gray-100 bg-[#eb5757] ">
+                  <p className="h-5 w-5 text-[12px]  absolute top-[-10px] right-[-8px] flex justify-center items-center rounded-full text-gray-100 bg-[#eb5757] ">
                     <span className="font-bold text-">
                       {basketProducts?.total_item}
                     </span>

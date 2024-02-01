@@ -1,13 +1,63 @@
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import enImg from "../../../public/svgs/en.svg";
 import loginImg from "../../../public/svgs/LoginImg.svg";
 import { GetServerSideProps } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from "next-i18next";
-
+import { useMutation } from "react-query";
+import axios, { AxiosResponse } from "axios"; 
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
+import {FadeLoader} from "react-spinners"
 const Login: React.FC = () => {
+  const router = useRouter();
   const { t } = useTranslation('common')
+  const [email, setEmail] = useState<string>("");
+  const [isLoad, setIsLoad] = useState<boolean>(false)
+  const [password, setPassword] = useState<string>("");
+  const { mutate: signinAdmin } = useMutation({
+    mutationFn: async () =>
+      await axios.post("/api/auth/signin", {
+        email,
+        password,
+      }),
+    onSuccess: (data: AxiosResponse) => {
+      if (data  && data.data && data.data.user) {
+        setIsLoad(true)
+        setTimeout(() => {
+          toast.success("Signin successfully!", { autoClose: 1000 });
+        });
+        // console.log(data?.data.user);
+        localStorage.setItem("refresh_token_admin", data?.data.user.refresh_token);
+        localStorage.setItem("access_token_admin", data?.data.user.access_token);
+        setTimeout(() => {
+          router.push("/admin")
+        }, 2000);
+      } else {
+          toast.error("Please, Enter Correct Email and Password! ", {
+            autoClose: 1000,
+        });
+      }
+    },
+    onError: () => {
+      setTimeout(() => {
+        toast.error("Please, Enter Correct Email and Password!", {
+          autoClose: 1000,
+        });
+      });
+    },
+  });
+  const handleLoginAdmin=()=>{
+    if (email.trim()==="admin@gmail.com" && password.trim()==="1234567"){
+      signinAdmin()
+      
+    }else{
+      toast.error("Please, Enter Correct Email and Password!", {
+        autoClose: 1000,
+      });
+    }
+  }
   return (
     <>
   
@@ -31,19 +81,26 @@ const Login: React.FC = () => {
               </h1>
               <input
                 type="email"
+                onChange={(e) => setEmail(e.target.value)}
                 placeholder="E-mail"
                 className="sm:pl-40px pl-19px inline mx-auto h-resinput w-207 text-14 sm:text-18 items-center text-gray1 font-weight400 sm:rounded-4 sm:ml-47px sm:mr-58px sm:w-318 bg-inputBg sm:h-input mb-13px sm:mb-26px"
               />
               <input
                 type="password"
+                onChange={(e) => setPassword(e.target.value)}
                 placeholder="Password"
                 className="sm:pl-40px pl-19px inline mx-auto h-resinput w-207 text-14 sm:text-18 items-center text-gray1 font-weight400 sm:rounded-4 sm:ml-47px sm:mr-58px sm:w-318 bg-inputBg sm:h-input mb-23px sm:mb-26px"
               />
               <button
                 type="button"
+                onClick={()=>handleLoginAdmin()}
                 className="text-white rounded-5 sm:rounded-4 sm:mb-58px sm:ml-47px sm:mr-58px font-medium text-14 sm:text-25 hover:bg-pink00 bg-loginBtn py-6px sm:py-10px hover:opacity-75 transition-all duration-500 "
-              >
-                Sign in
+              >{isLoad ? <div className='flex justify-center items-center mx-0 my-auto'>
+              <FadeLoader
+                color="#fff"
+                // size={15}
+              />
+            </div> : t('Login')}
               </button>
             </div>
             <div className="flex sm:w-405 sm:bg-white justify-center relative ">
