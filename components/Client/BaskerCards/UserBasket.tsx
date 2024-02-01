@@ -12,10 +12,14 @@ import { IoIosBasket } from "react-icons/io";
 import { useMutation, useQueryClient } from "react-query";
 import { toast } from "react-toastify";
 import { getUser, getBasket, deleteBasket, addBasket } from "@/services";
+import { useRouter } from "next/router";
+import { ROUTER } from "../../../shared/constant/router";
 
 const UserBasket = () => {
   const { setshowDelete, setDeletedBasket } =
     useSidebarContext() as SidebarContextProps;
+
+  const { push } = useRouter();
 
   const openDeleteModal = (basketId: BasketPostDataType | null) => {
     setshowDelete(true);
@@ -183,6 +187,7 @@ const UserBasket = () => {
 
         {basketProducts && (
           <div
+            onClick={() => push(ROUTER.USER_CHECKOUT)}
             className={`h-12 w-11/12  md:w-10/12 ml-5 md:ml-0 my-3 cursor-pointer flex justify-center ${
               isBasketEmpty
                 ? "opacity-20 pointer-events-none"

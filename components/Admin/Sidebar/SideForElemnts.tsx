@@ -5,17 +5,18 @@ import { useRouter } from "next/router";
 import AddCategory from "../AddCategory/index";
 import AddRestuarant from "../AddRestuarant";
 import AddOffer from "../AddOffer";
+import { ROUTER } from "../../../shared/constant/router";
 
 const SideForElements: React.FC = () => {
   const { showAdds, closeAddsModal } =
     useSidebarContext() as SidebarContextProps;
   const router = useRouter();
   const getSidebarComponent = () => {
-    if (router.pathname === "/admin/restaurants") {
+    if (router.pathname === ROUTER.ADMIN_RESTAURANTS) {
       return <AddRestuarant />;
-    } else if (router.pathname === "/admin/category") {
+    } else if (router.pathname === ROUTER.ADMIN_CATEGORY) {
       return <AddCategory />;
-    } else if (router.pathname === "/admin/offers") {
+    } else if (router.pathname === ROUTER.ADMIN_OFFERS) {
       return <AddOffer />;
     }
     return null;
