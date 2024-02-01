@@ -12,7 +12,7 @@ import { clearBasket, getUser, getBasket } from "../../../services/index";
 import { useQuery } from "react-query";
 
 const DeleteUserProduct = () => {
-  const { showDelete, closeDeleteModal } =
+  const { showDelete, closeDeleteModal, closeUserModal } =
     useSidebarContext() as SidebarContextProps;
   const { data: userID } = useQuery(QUERIES.User, getUser);
   const { data: basket } = useQuery(QUERIES.Basket, getBasket);
@@ -42,9 +42,9 @@ const DeleteUserProduct = () => {
       user_id: userID?.data.user.id,
       basket_id: basketProducts.id,
     };
-
     mutationClear.mutate(basketId);
     closeDeleteModal();
+    closeUserModal();
   };
 
   return (
