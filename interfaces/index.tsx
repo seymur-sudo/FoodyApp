@@ -172,12 +172,12 @@ export interface OfferPostDataType {
   img_url: string | null;
 }
 export interface UserDataType{
-  email:string,
-  address: string,
-  username: string,
-  img_url: string,
-  phone: number|null,
-  fullname: string
+  email:string|undefined,
+  address: string|undefined,
+  username: string|undefined,
+  img_url: string|undefined|null,
+  phone: string|null|undefined,
+  fullname: string|undefined
 }
 export interface OfferApiResponse {
   result: {
