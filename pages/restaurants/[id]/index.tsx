@@ -27,8 +27,6 @@ import {
 import { useQuery } from "react-query";
 import { QUERIES } from "../../../constant/Queries";
 import { ReactQueryDevtools } from "react-query/devtools";
-import { useMutation, useQueryClient } from "react-query";
-import { toast } from "react-toastify";
 import { ROUTER } from "../../../shared/constant/router";
 
 const ResDetail = () => {
@@ -39,6 +37,9 @@ const ResDetail = () => {
     modalSpring,
     setshowDelete,
     setDeletedBasket,
+    handleBasket,
+    basketProducts,
+    basketProductsItems,
   } = useSidebarContext() as SidebarContextProps;
   const { t } = useTranslation("common");
   const router = useRouter();
@@ -57,66 +58,9 @@ const ResDetail = () => {
     getRestaurantById(id as string)
   );
   const { data: products } = useQuery(QUERIES.Products, getProduct);
-  const { data: basket } = useQuery(QUERIES.Basket, getBasket);
-  const { data: userID } = useQuery(QUERIES.User, getUser);
 
   const singleRestaurant = restaurantData?.data.result.data;
   const restaurantProducts = products?.data.result.data;
-  const basketProducts = basket?.data.result.data;
-  const basketProductsItems = basket?.data.result.data.items;
-
-  const queryClient = useQueryClient();
-  const mutationAdd = useMutation(
-    (basketProduct: BasketPostDataType) => addBasket(basketProduct),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries(QUERIES.Basket);
-        toast.success("Product added to the basket successfully!", {
-          autoClose: 1000,
-        });
-      },
-      onError: (error) => {
-        console.error("Error adding product to the basket:", error);
-        toast.error("Error adding product to the basket", {
-          autoClose: 1000,
-        });
-      },
-    }
-  );
-
-  const mutationDelete = useMutation(
-    (basketProduct: BasketPostDataType) => deleteBasket(basketProduct),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries(QUERIES.Basket);
-        toast.success("Product count decremented successfully!", {
-          autoClose: 1000,
-        });
-      },
-      onError: (error) => {
-        console.error("Error decrementing product count:", error);
-        toast.error("Error decrementing product count", {
-          autoClose: 1000,
-        });
-      },
-    }
-  );
-
-  const handleBasket = (
-    productId: number | string,
-    action: "increment" | "decrement"
-  ) => {
-    const basketProduct: BasketPostDataType = {
-      user_id: userID?.data.user.id,
-      product_id: productId,
-    };
-
-    if (action === "increment") {
-      mutationAdd.mutate(basketProduct);
-    } else if (action === "decrement") {
-      mutationDelete.mutate(basketProduct);
-    }
-  };
 
   const filteredProducts = restaurantProducts?.filter(
     (product) =>
@@ -279,7 +223,7 @@ const ResDetail = () => {
                         ? "hidden"
                         : ""
                     }`}
-                    onClick={() => openDeleteModal(basketProducts.id)}
+                    onClick={() => openDeleteModal(basketProducts?.id || "")}
                   >
                     <LuTrash className="text-gray-200 dark:text-gray-900 text-xl  " />
                     <p className="capitalize font-semibold ml-2 text-gray-200 dark:text-gray-900 ">

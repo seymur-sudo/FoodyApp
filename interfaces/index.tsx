@@ -20,8 +20,8 @@ export interface SidebarContextProps {
   setLastOffer: React.Dispatch<React.SetStateAction<OfferPostDataType | null>>;
   newImg: string | null;
   setNewImg: React.Dispatch<React.SetStateAction<string | null>>;
-  userImg:string | null;
-  setUserImg:React.Dispatch<React.SetStateAction<string | null>>;
+  userImg: string | null;
+  setUserImg: React.Dispatch<React.SetStateAction<string | null>>;
   showAdds: boolean;
   setShow: React.Dispatch<React.SetStateAction<boolean>>;
   setShowAdds: React.Dispatch<React.SetStateAction<boolean>>;
@@ -61,6 +61,15 @@ export interface SidebarContextProps {
   setSelectedCategory: React.Dispatch<React.SetStateAction<string | null>>;
   selectedRestaurant: string | null;
   setSelectedRestaurant: React.Dispatch<React.SetStateAction<string | null>>;
+  isBasketEmpty: boolean;
+  handleBasket: (
+    productId: number | string,
+    action: "increment" | "decrement"
+  ) => void;
+  
+  basketProducts: BasketPostDataType | null 
+
+  basketProductsItems: any[] | undefined;
 }
 
 export interface ChartData {
@@ -171,13 +180,13 @@ export interface OfferPostDataType {
   description: string;
   img_url: string | null;
 }
-export interface UserDataType{
-  email:string|undefined,
-  address: string|undefined,
-  username: string|undefined,
-  img_url: string|undefined|null,
-  phone: string|null|undefined,
-  fullname: string|undefined
+export interface UserDataType {
+  email: string | undefined;
+  address: string | undefined;
+  username: string | undefined;
+  img_url: string | undefined | null;
+  phone: string | null | undefined;
+  fullname: string | undefined;
 }
 export interface OfferApiResponse {
   result: {
@@ -206,7 +215,7 @@ export interface CategoryApiResponse {
 }
 
 export interface BasketPostDataType {
-  id?: string | number;
+  id?: string | number | any;
   basket_id?: string | number;
   user_id: string | number;
   product_id?: string | number;
@@ -215,4 +224,7 @@ export interface BasketPostDataType {
   name?: string;
   count?: number;
   amount?: number;
+  total_count?: number;
+  total_item?: number;
+  total_amount?: number;
 }
