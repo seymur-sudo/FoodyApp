@@ -6,19 +6,20 @@ import EditProduct from "../Updates/EditProduct";
 import EditCategory from "../Updates/EditCategory";
 import EditOffer from "../Updates/EditOffers";
 import EditRestuarant from "../Updates/EditRestuarant";
+import { ROUTER } from "../../../shared/constant/router";
 
 const EditModal: React.FC = () => {
   const { show, closeModal } = useSidebarContext() as SidebarContextProps;
   const router = useRouter();
 
   const getEditModal = () => {
-    if (router.pathname === "/admin/restaurants") {
+    if (router.pathname === ROUTER.ADMIN_RESTAURANTS) {
       return <EditRestuarant />;
-    } else if (router.pathname === "/admin/category") {
+    } else if (router.pathname === ROUTER.ADMIN_CATEGORY) {
       return <EditCategory />;
-    } else if (router.pathname === "/admin/offers") {
+    } else if (router.pathname === ROUTER.ADMIN_OFFERS) {
       return <EditOffer />;
-    } else if (router.pathname === "/admin/products") {
+    } else if (router.pathname === ROUTER.ADMIN_PRODUCTS) {
       return <EditProduct />;
     }
     return null;

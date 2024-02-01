@@ -76,7 +76,7 @@ const Restaurants = () => {
               onClick={() => handleCategoryClick(null)}
             >
               <p className="font-semibold text-xl text-[#333] dark:text-[#fff] capitilaze  tracking-wider">
-                all restaurants
+                all categories
               </p>
             </li>
             {data &&

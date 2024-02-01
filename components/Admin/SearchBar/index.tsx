@@ -1,51 +1,61 @@
 import React from "react";
 import SideForElements from "../Sidebar/SideForElemnts";
 import { useRouter } from "next/router";
-import { RestaurantPostDataType, SidebarContextProps } from "../../../interfaces/index";
+import {
+  RestaurantPostDataType,
+  SidebarContextProps,
+} from "../../../interfaces/index";
 import { useSidebarContext } from "@/contexts/SidebarContext";
 import { CategoryPostDataType } from "../../../interfaces/index";
-import { getCategory,getRestaurant } from "../../../services/index";
+import { getCategory, getRestaurant } from "../../../services/index";
 import { useQuery } from "react-query";
 import { QUERIES } from "../../../constant/Queries";
+import { ROUTER } from "../../../shared/constant/router";
 
 const SearchBar: React.FC = () => {
-  const { showAdds, setShowAdds,selectedRestaurant,setSelectedRestaurant, selectedCategory, setSelectedCategory } =
-    useSidebarContext() as SidebarContextProps;
+  const {
+    showAdds,
+    setShowAdds,
+    selectedRestaurant,
+    setSelectedRestaurant,
+    selectedCategory,
+    setSelectedCategory,
+  } = useSidebarContext() as SidebarContextProps;
   const { pathname } = useRouter();
 
-  const { data:categoriesData } = useQuery(QUERIES.Categories, getCategory);
-  const { data:restaurantData} = useQuery(QUERIES.Restaurants,getRestaurant);
+  const { data: categoriesData } = useQuery(QUERIES.Categories, getCategory);
+  const { data: restaurantData } = useQuery(QUERIES.Restaurants, getRestaurant);
   const hideButton =
-    pathname === "/admin/products" ||
-    pathname === "/admin/orders" ||
-    pathname === "/admin/order-history";
+    pathname === ROUTER.ADMIN_PRODUCTS ||
+    pathname === ROUTER.ADMIN_ORDERS ||
+    pathname === ROUTER.ADMIN_HISTORY;
 
-  const categorySelect = pathname === "/admin/restaurants";
-  const restaurantSelect = pathname === "/admin/products";
+  const categorySelect = pathname === ROUTER.ADMIN_RESTAURANTS;
+  const restaurantSelect = pathname === ROUTER.ADMIN_PRODUCTS;
 
   const getButtonText = () => {
-    if (pathname === "/admin/category") {
+    if (pathname === ROUTER.ADMIN_CATEGORY) {
       return "ADD CATEGORY";
-    } else if (pathname === "/admin/offers") {
+    } else if (pathname === ROUTER.ADMIN_OFFERS) {
       return "ADD OFFER";
-    } else if (pathname === "/admin/restaurants") {
+    } else if (pathname === ROUTER.ADMIN_RESTAURANTS) {
       return "ADD RESTUARANT";
     }
     return "ADD";
   };
 
   const getPageName = () => {
-    if (pathname === "/admin/category") {
+    if (pathname === ROUTER.ADMIN_CATEGORY) {
       return "Categories";
-    } else if (pathname === "/admin/offers") {
+    } else if (pathname === ROUTER.ADMIN_OFFERS) {
       return "Offers";
-    } else if (pathname === "/admin/restaurants") {
+    } else if (pathname === ROUTER.ADMIN_RESTAURANTS) {
       return "Restaurants";
-    } else if (pathname === "/admin/products") {
+    } else if (pathname === ROUTER.ADMIN_PRODUCTS) {
       return "Products";
-    } else if (pathname === "/admin/orders") {
+    } else if (pathname === ROUTER.ADMIN_ORDERS) {
       return "Orders";
-    } else if (pathname === "/admin/order-history") {
+    } else if (pathname === ROUTER.ADMIN_HISTORY) {
       return "Order History";
     }
     return "Page";
@@ -83,7 +93,7 @@ const SearchBar: React.FC = () => {
             <div className="flex mr-0 md:mr-10">
               <select
                 id="category"
-                value={ selectedRestaurant || ""}
+                value={selectedRestaurant || ""}
                 onChange={(e) => setSelectedRestaurant(e.target.value)}
                 className=" w-[225px] sm:[325px] md:w-[150px] my-3 px-3 py-2 rounded-[14px] bg-inputBg text-[#dddcdc]  font-medium font-roboto"
               >
