@@ -9,6 +9,11 @@ import {
   BasketPostDataType,
 } from "../interfaces/index";
 import { useSpring } from "@react-spring/web";
+import { useQuery } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
+import { toast } from "react-toastify";
+import { getUser, getBasket, deleteBasket, addBasket } from "@/services";
+import { QUERIES } from "../constant/Queries";
 
 const SidebarContext = createContext<SidebarContextProps | undefined>(
   undefined
@@ -32,6 +37,66 @@ const defaultEditedCategory: CategoryPostDataType = {
 export const SidebarContextProvider: React.FC<ChildrenNode> = ({
   children,
 }) => {
+  const { data: basket } = useQuery(QUERIES.Basket, getBasket);
+  const { data: userID } = useQuery(QUERIES.User, getUser);
+  const basketProducts = basket?.data.result.data;
+  const basketProductsItems = basket?.data.result.data.items;
+
+  const queryClient = useQueryClient();
+  const mutationAdd = useMutation(
+    (basketProduct: BasketPostDataType) => addBasket(basketProduct),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(QUERIES.Basket);
+        toast.success("Product added to the basket successfully!", {
+          autoClose: 1000,
+        });
+      },
+      onError: (error) => {
+        console.error("Error adding product to the basket:", error);
+        toast.error("Error adding product to the basket", {
+          autoClose: 1000,
+        });
+      },
+    }
+  );
+
+  const mutationDelete = useMutation(
+    (basketProduct: BasketPostDataType) => deleteBasket(basketProduct),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(QUERIES.Basket);
+        toast.success("Product count decremented successfully!", {
+          autoClose: 1000,
+        });
+      },
+      onError: (error) => {
+        console.error("Error decrementing product count:", error);
+        toast.error("Error decrementing product count", {
+          autoClose: 1000,
+        });
+      },
+    }
+  );
+
+  const handleBasket = (
+    productId: number | string,
+    action: "increment" | "decrement"
+  ) => {
+    const basketProduct: BasketPostDataType = {
+      user_id: userID?.data.user.id,
+      product_id: productId,
+    };
+
+    if (action === "increment") {
+      mutationAdd.mutate(basketProduct);
+    } else if (action === "decrement") {
+      mutationDelete.mutate(basketProduct);
+    }
+  };
+
+  const isBasketEmpty = !basketProducts || basketProducts.total_item === 0;
+
   const [isNavbarOpen, setNavbarOpen] = useState<boolean>(false);
   const closeNavbar = () => setNavbarOpen(false);
 
@@ -110,9 +175,13 @@ export const SidebarContextProvider: React.FC<ChildrenNode> = ({
   const [lastData, setLastData] = useState<RestaurantPostDataType | null>(null);
   const [lastOffer, setLastOffer] = useState<OfferPostDataType | null>(null);
 
-  const [userImg,setUserImg]=useState<string|null>(null)
+  const [userImg, setUserImg] = useState<string | null>(null);
 
   const contextValue = {
+    isBasketEmpty,
+    handleBasket,
+    basketProducts,
+    basketProductsItems,
     isNavbarOpen,
     setNavbarOpen,
     closeNavbar,

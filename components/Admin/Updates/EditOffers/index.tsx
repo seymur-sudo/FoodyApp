@@ -11,7 +11,7 @@ import { SidebarContextProps } from "../../../../interfaces/index";
 import { updateOffer } from "@/services";
 
 const EditOffer: React.FC = () => {
-  const { show, lastOffer, setSelectedFile, setNewImg, newImg, closeModal,selectedFile } =
+  const { show, lastOffer, setSelectedFile, setNewImg, newImg, closeModal } =
     useSidebarContext() as SidebarContextProps;
 
   const [edtOffer, setEdtOffer] = useState(lastOffer);

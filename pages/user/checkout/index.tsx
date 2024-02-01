@@ -5,20 +5,14 @@ import { BsDot } from "react-icons/bs";
 import { useTranslation } from "next-i18next";
 import { GetServerSideProps } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { useQuery } from "react-query";
-import { QUERIES } from "../../../constant/Queries";
-import { BasketPostDataType } from "@/interfaces";
-import { toast } from "react-toastify";
-import { getBasket } from "@/services";
+import { useSidebarContext } from "@/contexts/SidebarContext";
+import { SidebarContextProps, BasketPostDataType } from "@/interfaces";
 import { IoIosBasket } from "react-icons/io";
 
 const UserCheckout = () => {
+  const { basketProducts, basketProductsItems } =
+    useSidebarContext() as SidebarContextProps;
   const { t } = useTranslation("common");
-  const { data: basket } = useQuery(QUERIES.Basket, getBasket);
-  const basketProducts = basket?.data.result.data;
-  const basketProductsItems = basket?.data.result.data.items;
-
-  console.log("basketProductsItems", basketProductsItems);
 
   return (
     <>
