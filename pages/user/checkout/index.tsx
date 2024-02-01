@@ -10,6 +10,7 @@ import { QUERIES } from "../../../constant/Queries";
 import { BasketPostDataType } from "@/interfaces";
 import { toast } from "react-toastify";
 import { getBasket } from "@/services";
+import { IoIosBasket } from "react-icons/io";
 
 const UserCheckout = () => {
   const { t } = useTranslation("common");
@@ -109,7 +110,7 @@ const UserCheckout = () => {
 
         <div className="w-10/12 md:w-3/12 mt-[5%] md:mt-[0%] capitalize text-[#828282)] px-6 py-3 dark:text-green-300 bg:[#F3F4F6] dark:bg-gray-900  asideScroll max-h-[45vh] overflow-y-auto">
           <div>
-            <h1 className=" font-body font-semibold  text-lg text-center py-3">
+            <h1 className=" font-body font-bold  text-xl text-center py-3">
               {t("Your Order")}
             </h1>
 
@@ -132,7 +133,14 @@ const UserCheckout = () => {
                 </ul>
               ))
             ) : (
-              <p>No data</p>
+              <div className=" flex items-center   flex-col  justify-center  pb-4 text-red-600 dark:text-green-400">
+                <div>
+                  <IoIosBasket className="w-[125px] h-[100px] " />
+                </div>
+                <p className="capitalize font-bold  flex flex-col items-center pb-3 ">
+                  <span>oops !</span> <span>basket is empty</span>
+                </p>
+              </div>
             )}
 
             <div className="border-t-2 border-t-gray-400 dark:border-t-green-400 py-5 px-2 flex justify-between">
