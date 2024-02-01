@@ -3,7 +3,6 @@ import UserAside from "../../../components/Client/UserAside/index";
 import UserAsideModal from "@/components/Client/UserAsideModal";
 import MainHeader from "../../../components/Client/MainHeader/index";
 import UserBasket from "../../../components/Client/BaskerCards/UserBasket";
-import { IoBasketSharp } from "react-icons/io5";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import { animated } from "@react-spring/web";
 import { useSidebarContext } from "@/contexts/SidebarContext";
