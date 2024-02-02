@@ -74,8 +74,9 @@ export interface SidebarContextProps {
     productId: number | string,
     action: "increment" | "decrement"
   ) => void;
-
+  
   basketProducts: BasketPostDataType | null;
+
   basketProductsItems: BasketPostDataType[] | undefined;
 }
 
