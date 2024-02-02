@@ -62,7 +62,6 @@ const BasketUser = () => {
             />
           </>
         )}
- {/* max-h-[75vh] overflow-y-auto my-scrollable-component */}
         <div className="w-10/12 md:w-8/12 bg-[#F3F4F6] dark:bg-gray-900  ">
           <div>
             <div className="capitalize py-2 px-4">

@@ -1,8 +1,9 @@
 import React from "react";
 import Layout from "@/components/Admin/Layout";
-import Image from "next/image";
-import deleteIcon from "../../../public/svgs/delete2.svg";
 import SearchBar from "@/components/Admin/SearchBar";
+import { LuTrash } from "react-icons/lu";
+import { FaEye } from "react-icons/fa";
+import DeleteOffer from "@/components/Admin/Deletes/DeleteOffer";
 import DeleteModal from "@/components/Admin/Modals/DeleteModal";
 import { SidebarContextProps } from "../../../interfaces/index";
 import { useSidebarContext } from "@/contexts/SidebarContext";
@@ -17,8 +18,11 @@ import { getOrders } from "@/services";
 import Moment from "moment";
 
 const Orders: React.FC = () => {
-  const { showDelete, setshowDelete } =
-    useSidebarContext() as SidebarContextProps;
+  const {
+    setshowDelete,
+    deletedOrder,
+    setDeletedOrder,
+  } = useSidebarContext() as SidebarContextProps;
   const { t } = useTranslation("common");
   const {
     data: orders,
@@ -26,7 +30,11 @@ const Orders: React.FC = () => {
     isError,
   } = useQuery(QUERIES.Order, getOrders);
   const orderList = orders?.data.result.data;
-  console.log("orders", orderList);
+
+  const openDeleteModal = (orderData: OrderPostDataType | null) => {
+    setshowDelete(true);
+    setDeletedOrder(orderData);
+  };
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -101,13 +109,12 @@ const Orders: React.FC = () => {
                       {order.contact}
                     </td>
 
-                    <td className="pl-9 py-4">
+                    <td className="pl-5 py-4">
                       <div className="flex items-center">
-                        <Image
-                          src={deleteIcon}
-                          alt="title"
-                          onClick={() => setshowDelete(!showDelete)}
-                          className="hover:scale-110 transition-all duration-500   cursor-pointer"
+                        <FaEye className="hover:scale-110 transition-all duration-500 mr-2 text-cyan-400  text-2xl cursor-pointer" />
+                        <LuTrash
+                          onClick={() => openDeleteModal(order)}
+                          className="hover:scale-110 transition-all duration-500  text-red-400 text-2xl cursor-pointer"
                         />
                       </div>
                     </td>
@@ -118,7 +125,8 @@ const Orders: React.FC = () => {
         </div>
       </div>
       <ReactQueryDevtools />
-      <DeleteModal />
+      {/* <DeleteOffer /> */}
+      <DeleteModal/>
     </Layout>
   );
 };

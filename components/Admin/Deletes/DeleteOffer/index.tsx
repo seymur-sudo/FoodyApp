@@ -7,37 +7,37 @@ import { deleteOffer } from "@/services/index";
 import { QUERIES } from "@/constant/Queries";
 import { useMutation, useQueryClient } from "react-query";
 const DeleteOffer = () => {
-  const { showDelete,lastOffer,setLastOffer, closeDeleteModal } =
+  const { showDelete, lastOffer, setLastOffer, closeDeleteModal } =
     useSidebarContext() as SidebarContextProps;
-    const [id, setId] = useState<undefined | number | string>("");
-    const queryClient = useQueryClient();
-    const mutation = useMutation(() => deleteOffer(id), {
-      onSuccess: () => {
-        queryClient.invalidateQueries(QUERIES.Offers);
-        // setEdtRestaurant(firstState);
-        setTimeout(() => {
-          setLastOffer(null);
-        }, 1000);
-        toast.success("Restaurant deleted successfully!", {
-          autoClose: 1000,
-        });
-      },
-      onError: (error) => {
-        console.error("Error deleted Restaurant:", error);
-        toast.error("Error deleted Restaurant", {
-          autoClose: 1000,
-        });
-      },
-    });
-    const handleDelete = () => {
-      setId(lastOffer?.id);
-      console.log(id);
-  
+  const [id, setId] = useState<undefined | number | string>("");
+  const queryClient = useQueryClient();
+  const mutation = useMutation(() => deleteOffer(id), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(QUERIES.Offers);
+      // setEdtRestaurant(firstState);
       setTimeout(() => {
-        mutation.mutate();
-      }, 400);
-      closeDeleteModal();
-    };
+        setLastOffer(null);
+      }, 1000);
+      toast.success("Restaurant deleted successfully!", {
+        autoClose: 1000,
+      });
+    },
+    onError: (error) => {
+      console.error("Error deleted Restaurant:", error);
+      toast.error("Error deleted Restaurant", {
+        autoClose: 1000,
+      });
+    },
+  });
+  const handleDelete = () => {
+    setId(lastOffer?.id);
+    console.log(id);
+
+    setTimeout(() => {
+      mutation.mutate();
+    }, 400);
+    closeDeleteModal();
+  };
   return (
     <>
       <Transition appear show={showDelete} as={Fragment}>
@@ -83,8 +83,8 @@ const DeleteOffer = () => {
                 </h1>
                 <div className="mt-2 py-2  text-gray-600 text-center">
                   <p>
-                    Attention if you delete this <br /> OFFER it will not
-                    come back
+                    Attention if you delete this <br /> OFFER it will not come
+                    back
                   </p>
                 </div>
 

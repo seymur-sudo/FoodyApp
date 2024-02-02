@@ -17,6 +17,7 @@ import {
   BasketPostDataType,
   UserDataType,
   OrderPostDataType,
+  OrderApiResponse,
 } from "../interfaces/index";
 
 // GET_PRODUCT
@@ -267,7 +268,7 @@ export const addOrder: (
   });
 };
 
-// GET_USER
+// GET_ORDER
 export const getOrders = (): AxiosPromise => {
   const accessToken = localStorage.getItem("access_token");
   return instanceAxios({
@@ -287,5 +288,18 @@ export const getUserOrder = (): AxiosPromise => {
     headers: {
       Authorization: `Bearer ${accessToken}`,
     },
+  });
+};
+
+// DELETE_ORDER
+export const deleteOrder = (orders: OrderPostDataType): AxiosPromise => {
+  const accessToken = localStorage.getItem("access_token");
+  return instanceAxios({
+    method: "DELETE",
+    url: ENDPOINTS.ORDER,
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+    data: { order_id: orders },
   });
 };

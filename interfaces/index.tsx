@@ -59,6 +59,14 @@ export interface SidebarContextProps {
 
   selectedCategory: string | null;
   setSelectedCategory: React.Dispatch<React.SetStateAction<string | null>>;
+  selectedOrder: OrderPostDataType | null;
+  setSelectedOrder: React.Dispatch<
+    React.SetStateAction<OrderPostDataType | null>
+  >;
+  deletedOrder: OrderPostDataType | null;
+  setDeletedOrder: React.Dispatch<
+    React.SetStateAction<OrderPostDataType | null>
+  >;
   selectedRestaurant: string | null;
   setSelectedRestaurant: React.Dispatch<React.SetStateAction<string | null>>;
   isBasketEmpty: boolean;
@@ -234,7 +242,13 @@ export interface OrderPostDataType {
   payment_method: string | undefined;
   id: string | number | any;
   customer_id: string | number | any;
-  created:string;
-  amount:number;
-  
+  created: string;
+  amount: number;
+}
+export interface OrderApiResponse {
+  result: {
+    data: OrderPostDataType[];
+  };
+  status: number;
+  message: string;
 }
