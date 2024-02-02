@@ -236,14 +236,14 @@ export interface BasketPostDataType {
   total_amount?: number;
 }
 export interface OrderPostDataType {
-  basket_id: string;
-  delivery_address: string | undefined;
-  contact: string | undefined;
-  payment_method: string | undefined;
-  id: string | number | any;
-  customer_id: string | number | any;
-  created: string;
-  amount: number;
+  basket_id?: string;
+  delivery_address?: string | undefined;
+  contact?: string | undefined;
+  payment_method?: string | undefined;
+  id?: string | number | any;
+  customer_id?: string | number | any;
+  created?: string;
+  amount?: number;
 }
 export interface OrderApiResponse {
   result: {

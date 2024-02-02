@@ -56,9 +56,9 @@ const Orders: React.FC = () => {
       (b.delivery_address ?? "").localeCompare(a.delivery_address ?? "")
     );
   } else if (sortingValue === "Low-to-High") {
-    sortedProducts.sort((a, b) => a.amount - b.amount);
+    sortedProducts.sort((a, b) => (a.amount || 0) - (b.amount || 0));
   } else {
-    sortedProducts.sort((a, b) => b.amount - a.amount);
+    sortedProducts.sort((a, b) => (b.amount || 0) - (a.amount || 0));
   }
 
   if (isLoading) {
@@ -95,7 +95,7 @@ const Orders: React.FC = () => {
         <div className=" overflow-x-auto shadow-md sm:rounded-lg ">
           <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <thead className="text-xs text-gray-700 capitalize bg-gray-50 dark:bg-gray-900 dark:text-gray-400">
-              <tr >
+              <tr>
                 <th scope="col" className="px-16 py-3">
                   Id
                 </th>
@@ -125,7 +125,10 @@ const Orders: React.FC = () => {
             <tbody>
               {sortedProducts &&
                 sortedProducts.map((order: OrderPostDataType, index) => (
-                  <tr key={order.id} className="bg-white border-b dark:bg-[#27283C] dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-700">
+                  <tr
+                    key={order.id}
+                    className="bg-white border-b dark:bg-[#27283C] dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-700"
+                  >
                     <td className="pl-14 py-4 font-semibold text-gray-900 dark:text-white">
                       <p className="flex justify-start items-center">
                         <span>{(currentPage - 1) * 5 + index + 1}</span>
