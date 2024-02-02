@@ -21,6 +21,7 @@ const DeleteCategory = () => {
       });
     },
   });
+  console.log("deletedCategory",deletedCategory)
 
   return (
     <>

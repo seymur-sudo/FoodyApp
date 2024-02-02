@@ -59,6 +59,14 @@ export interface SidebarContextProps {
 
   selectedCategory: string | null;
   setSelectedCategory: React.Dispatch<React.SetStateAction<string | null>>;
+  selectedOrder: OrderPostDataType | null;
+  setSelectedOrder: React.Dispatch<
+    React.SetStateAction<OrderPostDataType | null>
+  >;
+  deletedOrder: OrderPostDataType | null;
+  setDeletedOrder: React.Dispatch<
+    React.SetStateAction<OrderPostDataType | null>
+  >;
   selectedRestaurant: string | null;
   setSelectedRestaurant: React.Dispatch<React.SetStateAction<string | null>>;
   isBasketEmpty: boolean;
@@ -66,8 +74,8 @@ export interface SidebarContextProps {
     productId: number | string,
     action: "increment" | "decrement"
   ) => void;
-  
-  basketProducts: BasketPostDataType | null 
+
+  basketProducts: BasketPostDataType | null;
   basketProductsItems: BasketPostDataType[] | undefined;
 }
 
@@ -174,7 +182,7 @@ export interface RestaurantSingleApiResponse {
 }
 
 export interface OfferPostDataType {
-  id?: number | string;
+  id?: number | string | any;
   name: string;
   description: string;
   img_url: string | null;
@@ -198,7 +206,7 @@ export interface InitialStateType extends Omit<PostDataType, "id"> {}
 export interface FirstStateType extends Omit<RestaurantPostDataType, "id"> {}
 
 export interface CategoryPostDataType {
-  id: number | string;
+  id: number | string | any;
   name: string;
   img_url: string | null;
 }
@@ -227,9 +235,20 @@ export interface BasketPostDataType {
   total_item?: number;
   total_amount?: number;
 }
-export interface OrderPostDataType{
-  basket_id: string,
-  delivery_address: string|undefined,
-  contact: string|undefined,
-  payment_method:string|undefined
+export interface OrderPostDataType {
+  basket_id?: string;
+  delivery_address?: string | undefined;
+  contact?: string | undefined;
+  payment_method?: string | undefined;
+  id?: string | number | any;
+  customer_id?: string | number | any;
+  created?: string;
+  amount?: number;
+}
+export interface OrderApiResponse {
+  result: {
+    data: OrderPostDataType[];
+  };
+  status: number;
+  message: string;
 }

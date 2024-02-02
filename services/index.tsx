@@ -17,6 +17,7 @@ import {
   BasketPostDataType,
   UserDataType,
   OrderPostDataType,
+  OrderApiResponse,
 } from "../interfaces/index";
 
 // GET_PRODUCT
@@ -69,12 +70,12 @@ export const getUser = (): AxiosPromise => {
   });
 };
 // EDİT_USER
-export const updateUser = (user:UserDataType): AxiosPromise => {
+export const updateUser = (user: UserDataType): AxiosPromise => {
   const accessToken = localStorage.getItem("access_token");
   return instanceAxios({
     method: "PUT",
     url: ENDPOINTS.USER,
-    data:user,
+    data: user,
     headers: {
       Authorization: `Bearer ${accessToken}`,
     },
@@ -254,13 +255,25 @@ export const clearBasket: (
 
 // ADD_ORDER
 export const addOrder: (
-  orderBill: OrderPostDataType
-) => AxiosPromise<OrderPostDataType> = (orderBill) => {
+  orders: OrderPostDataType
+) => AxiosPromise<OrderPostDataType> = (orders) => {
   const accessToken = localStorage.getItem("access_token");
   return instanceAxios({
     method: "POST",
     url: `${ENDPOINTS.ORDER}/add`,
-    data: orderBill,
+    data: orders,
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+};
+
+// GET_ORDER
+export const getOrders = (): AxiosPromise => {
+  const accessToken = localStorage.getItem("access_token");
+  return instanceAxios({
+    method: "GET",
+    url: ENDPOINTS.ORDER,
     headers: {
       Authorization: `Bearer ${accessToken}`,
     },
@@ -271,9 +284,22 @@ export const getUserOrder = (): AxiosPromise => {
   const accessToken = localStorage.getItem("access_token");
   return instanceAxios({
     method: "GET",
-    url:  `${ENDPOINTS.ORDER}/user`,
+    url: `${ENDPOINTS.ORDER}/user`,
     headers: {
       Authorization: `Bearer ${accessToken}`,
     },
+  });
+};
+
+// DELETE_ORDER
+export const deleteOrder = (orders: OrderPostDataType): AxiosPromise => {
+  const accessToken = localStorage.getItem("access_token");
+  return instanceAxios({
+    method: "DELETE",
+    url: ENDPOINTS.ORDER,
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+    data: { order_id: orders },
   });
 };
