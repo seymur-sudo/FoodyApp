@@ -95,7 +95,7 @@ const Orders: React.FC = () => {
         <div className=" overflow-x-auto shadow-md sm:rounded-lg ">
           <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <thead className="text-xs text-gray-700 capitalize bg-gray-50 dark:bg-gray-900 dark:text-gray-400">
-              <tr>
+              <tr >
                 <th scope="col" className="px-16 py-3">
                   Id
                 </th>
@@ -125,7 +125,7 @@ const Orders: React.FC = () => {
             <tbody>
               {sortedProducts &&
                 sortedProducts.map((order: OrderPostDataType, index) => (
-                  <tr className="bg-white border-b dark:bg-[#27283C] dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-700">
+                  <tr key={order.id} className="bg-white border-b dark:bg-[#27283C] dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-700">
                     <td className="pl-14 py-4 font-semibold text-gray-900 dark:text-white">
                       <p className="flex justify-start items-center">
                         <span>{(currentPage - 1) * 5 + index + 1}</span>
