@@ -182,7 +182,7 @@ export interface RestaurantSingleApiResponse {
 }
 
 export interface OfferPostDataType {
-  id?: number | string;
+  id?: number | string | any;
   name: string;
   description: string;
   img_url: string | null;
@@ -206,7 +206,7 @@ export interface InitialStateType extends Omit<PostDataType, "id"> {}
 export interface FirstStateType extends Omit<RestaurantPostDataType, "id"> {}
 
 export interface CategoryPostDataType {
-  id: number | string;
+  id: number | string | any;
   name: string;
   img_url: string | null;
 }

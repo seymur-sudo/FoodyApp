@@ -14,8 +14,6 @@ import { useQuery } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { QUERIES } from "../../../constant/Queries";
 import { PostDataType } from "../../../interfaces/index";
-import usePagination from "@/components/Admin/Pagination";
-import PaginationControls from "@/components/Admin/Pagination/PaginationControls";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
@@ -42,8 +40,14 @@ const Products: React.FC = () => {
     refetchOnWindowFocus: false,
   });
 
-  const { currentPage, currentData, totalPages, nextPage, prevPage, goToPage } =
-    usePagination(data?.data.result.data, 4);
+  const productsData = data?.data.result.data;
+
+  const filteredData =
+    selectedRestaurant !== "" && selectedRestaurant !== null
+      ? productsData?.filter((product: PostDataType) => {
+          return product.rest_id === selectedRestaurant;
+        })
+      : productsData;
 
   useEffect(() => {
     AOS.init({
@@ -59,16 +63,11 @@ const Products: React.FC = () => {
   if (isError) {
     return <div>Error loading products</div>;
   }
-  const filteredData =
-    selectedRestaurant !== "" && selectedRestaurant !== null
-      ? currentData.filter((product: PostDataType) => {
-          return product.rest_id === selectedRestaurant;
-        })
-      : currentData;
+
   return (
     <Layout>
       <>
-        <div className="px-12 md:px-6 pb-8 bg-bgc h-screen ">
+        <div className="px-12 md:px-6 pb-8 bg-bgc min-h-screen ">
           <SearchBar />
 
           <div className="grid gap-10 grid-cols-1 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
@@ -77,7 +76,7 @@ const Products: React.FC = () => {
                 <div
                   key={product.id}
                   className="bg-indigo-100 shadow-shadow2  font-roboto font-medium rounded-md hover:scale-110 transition-all duration-700"
-                  data-aos="fade-up"
+                  data-aos="fade-right"
                   data-aos-delay={(index + 1) * 150}
                 >
                   <div className="capitalize flex flex-col items-center md:items-start w-full ">
@@ -116,13 +115,6 @@ const Products: React.FC = () => {
                 </div>
               ))}
           </div>
-          <PaginationControls
-            currentPage={currentPage}
-            totalPages={totalPages}
-            nextPage={nextPage}
-            prevPage={prevPage}
-            goToPage={goToPage}
-          />
         </div>
 
         <EditModal />
