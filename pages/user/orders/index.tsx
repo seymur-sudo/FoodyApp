@@ -8,6 +8,8 @@ import { IoIosCloseCircleOutline } from "react-icons/io";
 import { animated } from "@react-spring/web";
 import { useSidebarContext } from "@/contexts/SidebarContext";
 import { SidebarContextProps } from "@/interfaces";
+import { QUERIES } from "../../../constant/Queries";
+import { useQuery } from "react-query"
 import DeleteModal from "@/components/Admin/Modals/DeleteModal";
 import {
   Dropdown,
@@ -18,8 +20,10 @@ import {
 import { useTranslation } from "next-i18next";
 import { GetServerSideProps } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { getUserOrder } from "@/services";
 
 const UserOrders = () => {
+  const { data:userOrder, isLoading, isError } = useQuery(QUERIES.UserOrder, getUserOrder)
   const {
     showUserModal,
     closeUserModal,

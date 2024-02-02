@@ -131,7 +131,7 @@ const MainHeader: React.FC = () => {
         />
       </div>
       <div className="flex flex-row items-center">
-        {/* <div className="flex items-center ">
+        <div className="flex items-center ">
           <button
             className="sm:px-3 px-0 pt-1 md:pt-0 transition-all duration-700 "
             onClick={toggleTheme}
@@ -139,7 +139,7 @@ const MainHeader: React.FC = () => {
             <FiSun className="text-red-500 text-6xl md:text-5xl  scale-[75%] hover:scale-[85%] sm:scale-100 sm:hover:scale-110 dark:text-gray-900 block dark:hidden transition-all duration-500" />
             <FiMoon className="text-[#F3F4F6] text-6xl md:text-5xl scale-[75%] hover:scale-[85%] sm:scale-100 sm:hover:scale-110 dark:text-sky-400  hidden dark:block transition-all duration-500" />
           </button>
-        </div> */}
+        </div>
         <LangSelect />
         <div className="sm:flex hidden">
           {!userID ? (
