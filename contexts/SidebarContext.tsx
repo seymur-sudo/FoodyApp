@@ -7,6 +7,7 @@ import {
   CategoryPostDataType,
   OfferPostDataType,
   BasketPostDataType,
+  OrderPostDataType,
 } from "../interfaces/index";
 import { useSpring } from "@react-spring/web";
 import { useQuery } from "react-query";
@@ -32,6 +33,17 @@ const defaultEditedCategory: CategoryPostDataType = {
   id: "",
   name: "",
   img_url: "",
+};
+
+const defaultOrder: OrderPostDataType = {
+  basket_id: "",
+  delivery_address: "",
+  contact: "",
+  payment_method: "",
+  id: "",
+  customer_id: "",
+  created: "",
+  amount: 0,
 };
 
 export const SidebarContextProvider: React.FC<ChildrenNode> = ({
@@ -127,12 +139,10 @@ export const SidebarContextProvider: React.FC<ChildrenNode> = ({
 
   const closeModal = () => {
     setShow(false);
-    // setEditedItem(null);
   };
 
   const closeDeleteModal = () => {
     setshowDelete(false);
-    // setDeletedItem(null);
   };
 
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -177,7 +187,18 @@ export const SidebarContextProvider: React.FC<ChildrenNode> = ({
 
   const [userImg, setUserImg] = useState<string | null>(null);
 
+  const [selectedOrder, setSelectedOrder] = useState<OrderPostDataType | null>(
+    defaultOrder
+  );
+  const [deletedOrder, setDeletedOrder] = useState<OrderPostDataType | null>(
+    defaultOrder
+  );
+
   const contextValue = {
+    selectedOrder,
+    setSelectedOrder,
+    deletedOrder,
+    setDeletedOrder,
     isBasketEmpty,
     handleBasket,
     basketProducts,
