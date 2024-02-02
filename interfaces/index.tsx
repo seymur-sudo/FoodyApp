@@ -66,8 +66,8 @@ export interface SidebarContextProps {
     productId: number | string,
     action: "increment" | "decrement"
   ) => void;
-  
-  basketProducts: BasketPostDataType | null 
+
+  basketProducts: BasketPostDataType | null;
   basketProductsItems: BasketPostDataType[] | undefined;
 }
 
@@ -227,9 +227,14 @@ export interface BasketPostDataType {
   total_item?: number;
   total_amount?: number;
 }
-export interface OrderPostDataType{
-  basket_id: string,
-  delivery_address: string|undefined,
-  contact: string|undefined,
-  payment_method:string|undefined
+export interface OrderPostDataType {
+  basket_id: string;
+  delivery_address: string | undefined;
+  contact: string | undefined;
+  payment_method: string | undefined;
+  id: string | number | any;
+  customer_id: string | number | any;
+  created:string;
+  amount:number;
+  
 }

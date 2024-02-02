@@ -9,12 +9,32 @@ import { useSidebarContext } from "@/contexts/SidebarContext";
 import { GetServerSideProps } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "next-i18next";
-
+import { useQuery } from "react-query";
+import { ReactQueryDevtools } from "react-query/devtools";
+import { QUERIES } from "../../../constant/Queries";
+import { OrderPostDataType } from "../../../interfaces/index";
+import { getOrders } from "@/services";
+import Moment from "moment";
 
 const Orders: React.FC = () => {
   const { showDelete, setshowDelete } =
     useSidebarContext() as SidebarContextProps;
   const { t } = useTranslation("common");
+  const {
+    data: orders,
+    isLoading,
+    isError,
+  } = useQuery(QUERIES.Order, getOrders);
+  const orderList = orders?.data.result.data;
+  console.log("orders", orderList);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (isError) {
+    return <div>Error loading products</div>;
+  }
 
   return (
     <Layout>
@@ -51,47 +71,53 @@ const Orders: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-              <tr className="bg-white border-b dark:bg-[#27283C] dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-700">
-                <td className="pl-14 py-4 font-semibold text-gray-900 dark:text-white">
-                  1234
-                </td>
+              {orderList &&
+                orderList.map((order: OrderPostDataType) => (
+                  <tr className="bg-white border-b dark:bg-[#27283C] dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-700">
+                    <td className="pl-14 py-4 font-semibold text-gray-900 dark:text-white">
+                      {order.id.slice(0, 5)}
+                    </td>
 
-                <td className="p-4 pl-8">02401</td>
+                    <td className="p-4 pl-8">
+                      {order.customer_id.slice(0, 5)}
+                    </td>
 
-                <td className="pr-8 py-4 font-semibold text-gray-900 dark:text-white capitalize">
-                  25 dec 2023
-                </td>
+                    <td className="pr-8 py-4 font-semibold text-gray-900 dark:text-white capitalize">
+                      {Moment(order.created).format("DD-MM-YY - HH:mm:ss")}
+                    </td>
 
-                <td className="px-1 font-semibold text-gray-900 dark:text-white">
-                  20 eve street 545..
-                </td>
+                    <td className="pl-8 font-semibold text-gray-900 dark:text-white">
+                      {order.delivery_address}
+                    </td>
 
-                <td className="p-4 pl-8 font-semibold text-gray-900 dark:text-white">
-                  333.3
-                </td>
-                <td className="p-4 px-6 font-semibold text-gray-900 dark:text-white">
-                  cash on delivery
-                </td>
+                    <td className="p-4 pl-8 font-semibold text-gray-900 dark:text-white">
+                      {order.amount}
+                    </td>
+                    <td className="p-4 px-6 font-semibold text-gray-900 dark:text-white">
+                      {order.payment_method}
+                    </td>
 
-                <td className="p-4 font-semibold text-gray-900 dark:text-white">
-                  055 350 92 92
-                </td>
+                    <td className="p-4 font-semibold text-gray-900 dark:text-white">
+                      {order.contact}
+                    </td>
 
-                <td className="pl-9 py-4">
-                  <div className="flex items-center">
-                    <Image
-                      src={deleteIcon}
-                      alt="title"
-                      onClick={() => setshowDelete(!showDelete)}
-                      className="hover:scale-110 transition-all duration-500   cursor-pointer"
-                    />
-                  </div>
-                </td>
-              </tr>
+                    <td className="pl-9 py-4">
+                      <div className="flex items-center">
+                        <Image
+                          src={deleteIcon}
+                          alt="title"
+                          onClick={() => setshowDelete(!showDelete)}
+                          className="hover:scale-110 transition-all duration-500   cursor-pointer"
+                        />
+                      </div>
+                    </td>
+                  </tr>
+                ))}
             </tbody>
           </table>
         </div>
       </div>
+      <ReactQueryDevtools />
       <DeleteModal />
     </Layout>
   );
