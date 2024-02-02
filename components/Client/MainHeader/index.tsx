@@ -157,10 +157,11 @@ const MainHeader: React.FC = () => {
                 <Image
                   className="ml-3 cursor-pointer scale-100 duration-500 hover:scale-110"
                   src={basketIcon}
+                  onClick={()=>{router.push("/user/basket")}}
                   alt="basketIcon"
                 />
                 {basketProducts && (
-                  <p className="h-7 w-7  absolute top-[-20px] right-[-15px] flex justify-center items-center rounded-full text-gray-100 bg-[#eb5757] ">
+                  <p className="h-5 w-5 text-[12px]  absolute top-[-10px] right-[-8px] flex justify-center items-center rounded-full text-gray-100 bg-[#eb5757] ">
                     <span className="font-bold text-">
                       {basketProducts?.total_item}
                     </span>

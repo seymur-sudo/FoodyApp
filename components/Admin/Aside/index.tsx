@@ -8,12 +8,20 @@ import OrderIcon from "../../../public/svgs/AdminOrderIcon.svg";
 import OfferIcon from "../../../public/svgs/AdminOfferIcon.svg";
 import LogoutIcon from "../../../public/svgs/AdminLogoutIcon.svg";
 import { BottomLogo } from "../BottomLogo";
+import { useRouter } from "next/navigation";
 import { ROUTER } from "../../../shared/constant/router";
 import { useTranslation } from "next-i18next";
 import Image from "next/image";
 
 export const Aside: React.FC = () => {
   const { t } = useTranslation("common");
+  const router = useRouter();
+  const handleLogout=()=>{
+    localStorage.removeItem("access_token_admin")
+    localStorage.removeItem("refresh_token_admin")
+    router.push("/admin/login")
+    
+  }
   return (
     <div className="h-full flex flex-col bg-bgc">
       <aside className=" sm:block hidden h-2/5 w-fit pb-10 pt-8 pl-6 pr-4 rounded-xl bg-[#C74FEB]">
@@ -73,7 +81,7 @@ export const Aside: React.FC = () => {
         </Link>
         <Link
           className="flex h-10 cursor-pointer mb-2 pl-4 hover:bg-[#CD61ED] rounded-xl items-center flex-row"
-          href={ROUTER.ADMIN_LOGIN}
+          href="" onClick={()=>handleLogout()}
         >
           <Image className="mr-4" alt="icon" src={LogoutIcon} />
           <p className="text-[#FCDDEC] text-nowrap mr-20 font-medium font-body text-[14px]">

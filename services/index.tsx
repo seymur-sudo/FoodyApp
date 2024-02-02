@@ -16,6 +16,7 @@ import {
   OfferPostDataType,
   BasketPostDataType,
   UserDataType,
+  OrderPostDataType,
 } from "../interfaces/index";
 
 // GET_PRODUCT
@@ -245,6 +246,32 @@ export const clearBasket: (
     method: "DELETE",
     url: `${ENDPOINTS.BASKET}/clear`,
     data: basketId,
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+};
+
+// ADD_ORDER
+export const addOrder: (
+  orderBill: OrderPostDataType
+) => AxiosPromise<OrderPostDataType> = (orderBill) => {
+  const accessToken = localStorage.getItem("access_token");
+  return instanceAxios({
+    method: "POST",
+    url: `${ENDPOINTS.ORDER}/add`,
+    data: orderBill,
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+};
+// GET_USER_ORDER
+export const getUserOrder = (): AxiosPromise => {
+  const accessToken = localStorage.getItem("access_token");
+  return instanceAxios({
+    method: "GET",
+    url:  `${ENDPOINTS.ORDER}/user`,
     headers: {
       Authorization: `Bearer ${accessToken}`,
     },

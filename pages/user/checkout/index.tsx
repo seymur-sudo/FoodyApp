@@ -1,21 +1,107 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import UserAside from "../../../components/Client/UserAside/index";
 import MainHeader from "../../../components/Client/MainHeader/index";
 import { BsDot } from "react-icons/bs";
 import { useTranslation } from "next-i18next";
 import { GetServerSideProps } from "next";
+import {OrderPostDataType} from "../../../interfaces/index";
+import { useMutation, useQueryClient } from "react-query";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useSidebarContext } from "@/contexts/SidebarContext";
 import { SidebarContextProps, BasketPostDataType } from "@/interfaces";
+import { useQuery } from "react-query"
 import { IoIosBasket } from "react-icons/io";
+import { addOrder,getUser } from "@/services";
+import { toast } from "react-toastify";
+import { QUERIES } from "../../../constant/Queries";
 
 const UserCheckout = () => {
+  const { data: userD, isLoading, isError } = useQuery(QUERIES.User, getUser)
   const { basketProducts, basketProductsItems } =
     useSidebarContext() as SidebarContextProps;
   const { t } = useTranslation("common");
+  const orderBill:OrderPostDataType={
+    basket_id: "",
+    delivery_address: "",
+    contact:"",
+    payment_method:""
+  }
+  const addressRef=useRef<HTMLInputElement>(null)
+  const phoneRef=useRef<HTMLInputElement>(null)
+  const radioRef0 = useRef<HTMLInputElement>(null);
+  const radioRef1 = useRef<HTMLInputElement>(null);
+  const [radioSelect,setRadioSelect]=useState<number|null>(null)
+  const [newOrder,setNewOrder]=useState<OrderPostDataType>(orderBill)
+  const queryClient = useQueryClient();
+  const mutation = useMutation(() => addOrder(newOrder), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(QUERIES.Basket);
+      // setNewOrder();
+      setTimeout(() => {
+      }, 1100);
+      toast.success("Order added successfully!", {
+        autoClose: 1000,
+      });
+    },
+    onError: (error) =>{
+      console.error("Error added Order:", error);
+      toast.error("Error added Order", {
+        autoClose: 1000,
+      });
+    },
+  });
+  const handleCheckRadio = () => {
+    if (radioRef1.current && radioRef1.current.checked) {
+      setRadioSelect(+radioRef1.current.id);
+      
+    } else if (radioRef0.current && radioRef0.current.checked) {
+      setRadioSelect(+radioRef0.current.id);
+    } else {
+      setRadioSelect(null);
+    }
+  };
+  const handleAddOrder=()=>{
+    handleCheckRadio()
+    setNewOrder({
+      basket_id: basketProducts?.id,
+      delivery_address: addressRef.current?.value,
+      contact:phoneRef.current?.value,
+      payment_method:`${radioSelect===1?"Pay at the door":radioSelect===0?"By Credit Card":""}`
+    })
+    setTimeout(() => {
+      if(phoneRef.current?.value.trim()===""&&addressRef.current?.value.trim()!==""&&((radioRef1.current && radioRef1.current.checked)||(radioRef0.current && radioRef0.current.checked))){
+        toast.error("Please enter the contact number", {
+          autoClose: 1000,
+        })
+      }
+      else if(addressRef.current?.value.trim()===""&& phoneRef.current?.value.trim()!==""&&((radioRef1.current && radioRef1.current.checked)||(radioRef0.current && radioRef0.current.checked))){
+        toast.error("Please enter the address", {
+          autoClose: 1000,
+        })
+      }
+      else if(addressRef.current?.value.trim()===""&& phoneRef.current?.value.trim()===""&&((radioRef1.current && radioRef1.current.checked)||(radioRef0.current && radioRef0.current.checked))){
+        toast.error("Please enter the address and contact number", {
+          autoClose: 1000,
+        })
+      }
+      else if(addressRef.current?.value.trim()!==""&& phoneRef.current?.value.trim()!==""&&(radioRef1.current && !radioRef1.current.checked)&&(radioRef0.current && !radioRef0.current.checked)){
+        toast.error("Please select the payment method", {
+          autoClose: 1000,
+        })
+      }
+      else if(addressRef.current?.value.trim()===""&& phoneRef.current?.value.trim()===""&&((radioRef1.current && !radioRef1.current.checked)&&(radioRef0.current && !radioRef0.current.checked))){
+        toast.error("Please fill the gaps and select the payment method", {
+          autoClose: 1000,
+        })
+      }
+      else if(addressRef.current?.value.trim()!==""&& phoneRef.current?.value.trim()!==""&&((radioRef1.current && radioRef1.current.checked)||(radioRef0.current && radioRef0.current.checked))){
+        mutation.mutate()
+      }
+    }, 100);
+  }
 
   return (
-    <>
+    <div>
       <MainHeader />
       <div className="flex flex-col items-center  md:flex-row md:items-start  md:justify-evenly py-8">
         <UserAside />
@@ -32,6 +118,8 @@ const UserCheckout = () => {
               </label>
               <input
                 type="text"
+                defaultValue={userD?userD.data.user.address:""}
+                ref={addressRef}
                 className="py-2 px-4 bg-white dark:bg-black text-black dark:text-white rounded-[4px]"
               />
             </div>
@@ -41,6 +129,8 @@ const UserCheckout = () => {
               </label>
               <input
                 type="text"
+                ref={phoneRef}
+                defaultValue={userD?userD.data.user.phone:""}
                 className="py-2 px-4 bg-white dark:bg-black text-black dark:text-white rounded-[4px]"
               />
             </div>
@@ -58,8 +148,9 @@ const UserCheckout = () => {
                     <input
                       name="type"
                       type="radio"
+                      ref={radioRef1}
                       className="before:content[''] peer relative h-10 w-10 cursor-pointer appearance-none rounded-full border-2 border-green-500 text-green-600 duration-500  transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-green-500 before:opacity-0 before:transition-opacity checked:border-green-500 checked:before:bg-green-500 hover:before:opacity-10"
-                      id="on"
+                      id={"1"}
                     />
                     <span className="absolute text-green-600 transition-opacity opacity-0 pointer-events-none top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 peer-checked:opacity-100">
                       <BsDot
@@ -77,8 +168,9 @@ const UserCheckout = () => {
                     <input
                       name="type"
                       type="radio"
+                      ref={radioRef0}
                       className="before:content[''] peer relative h-10 w-10 cursor-pointer duration-500 appearance-none rounded-full border-2 border-green-500 text-green-600 transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-green-500 before:opacity-0 before:transition-opacity checked:border-green-500 checked:before:bg-green-500 hover:before:opacity-10"
-                      id="off"
+                      id="0"
                     />
                     <span className="absolute text-green-700 transition-opacity opacity-0 pointer-events-none top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 peer-checked:opacity-100">
                       <BsDot
@@ -95,7 +187,9 @@ const UserCheckout = () => {
             </div>
 
             <div className="flex flex-col mt-8 w-10/12">
-              <button className="capitalize py-[5px] px-4 bg-[#6FCF97] font-bold text-lg text-white dark:text-gray-900 rounded-[4px] hover:bg-[#54ff9b]  transition-all duration-500 cursor-pointer  ">
+              <button 
+              onClick={handleAddOrder}
+              className="capitalize py-[5px] px-4 bg-[#6FCF97] font-bold text-lg text-white dark:text-gray-900 rounded-[4px] hover:bg-[#54ff9b]  transition-all duration-500 cursor-pointer  ">
                 {t("Send")}
               </button>
             </div>
@@ -148,7 +242,7 @@ const UserCheckout = () => {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

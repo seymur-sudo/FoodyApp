@@ -227,3 +227,9 @@ export interface BasketPostDataType {
   total_item?: number;
   total_amount?: number;
 }
+export interface OrderPostDataType{
+  basket_id: string,
+  delivery_address: string|undefined,
+  contact: string|undefined,
+  payment_method:string|undefined
+}
