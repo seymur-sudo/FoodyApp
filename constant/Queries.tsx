@@ -5,5 +5,7 @@ export const QUERIES = {
   Categories: "categories",
   Offers: "offers",
   User: "user",
+  Order:"order",
+  UserOrder:"userOrder",
   Basket: "basket",
 };
