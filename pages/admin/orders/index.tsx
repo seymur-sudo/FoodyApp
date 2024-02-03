@@ -12,16 +12,25 @@ import { useTranslation } from "next-i18next";
 import { useQuery } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { QUERIES } from "../../../constant/Queries";
-import { OrderPostDataType } from "../../../interfaces/index";
+import { OrderPostDataType,orderItem  } from "../../../interfaces/index";
 import { getOrders } from "@/services";
 import Moment from "moment";
 import usePagination from "@/components/Admin/Pagination";
+import { IoIosCloseCircleOutline } from "react-icons/io";
+import { animated } from "@react-spring/web";
 import PaginationControls from "@/components/Admin/Pagination/PaginationControls";
+import Image from "next/image";
 
 type SortingValue = "A-Z" | "Z-A" | "Low-to-High" | "High-to-Low";
 
 const Orders: React.FC = () => {
-  const { setshowDelete, setDeletedOrder } =
+  const [orderItems, setOrderItems] = useState<orderItem[]>();
+  const { 
+    setshowDelete,    
+    showUserModal,
+    closeUserModal,
+    modalSpring,
+    openUserModal, setDeletedOrder } =
     useSidebarContext() as SidebarContextProps;
   const { t } = useTranslation("common");
   const {
@@ -73,7 +82,95 @@ const Orders: React.FC = () => {
     <Layout>
       <div className="bg-bgc h-screen px-12 md:px-6 ">
         <SearchBar />
+        {showUserModal && (
+          <>
+            <div className="fixed inset-0 bg-black  dark:bg-gray-200 opacity-60 z-40 md:opacity-0"></div>
 
+            <animated.div
+              style={{
+                ...modalSpring,
+                position: "fixed",
+                top: "30vh",
+                left: "22vw",
+                right: 0,
+                zIndex: 50,
+              }}
+              className="bg-white dark:bg-gray-800 rounded-t-[20px] flex flex-col w-7/12 max-h-[45vh] overflow-y-auto items-center justify-start  asideScroll"
+            >
+              <div className="my-2" onClick={closeUserModal}>
+                <IoIosCloseCircleOutline
+                  size={40}
+                  className="text-[#BDBDBD] dark:text-sky-400 cursor-pointer "
+                />
+              </div>
+              <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                <thead className="text-xs text-gray-700 capitalize bg-white dark:bg-gray-700 dark:text-gray-400">
+                  <tr>
+                    <th scope="col" className="pl-14 py-3">
+                      {t("Image")}
+                    </th>
+                    <th scope="col" className="px-6 py-3">
+                      {t("Name")}
+                    </th>
+                    <th scope="col" className="px-6 py-3">
+                      {t("Price")}
+                    </th>
+                    <th scope="col" className="px-6 py-3">
+                      {t("Count")}
+                    </th>
+                    <th scope="col" className="px-6 py-3">
+                      {t("Amount")}
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                {orderItems&&
+                orderItems?.map((product:any , index: number) => (
+                  <tr key={index} className="bg-white border-b dark:bg-[#27283C] dark:border-gray-800 hover:bg-gray-100 dark:hover:bg-gray-900 transition-all duration-700">
+                    <td className="pl-14 py-4 font-semibold text-gray-900 dark:text-white">
+                      <Image
+                        alt="soup"
+                        width={100}
+                        height={100}
+                        src={product?.img_url??""}
+                        className="w-[45px] h-[45px] rounded-full cursor-pointer  hover:scale-110   transition-all duration-500"
+                      />
+                    </td>
+
+                    <td className="px-5"> {product?.name}</td>
+
+                    <td className="pl-4 py-4 font-semibold text-gray-900 dark:text-white capitalize">
+                      $ {product?.price}
+                    </td>
+
+                    <td className="px-6 font-semibold text-gray-900 dark:text-white">
+                    {product?.count}
+                    </td>
+
+                    <td className="p-4 pl-8 font-semibold text-gray-900 dark:text-white">
+                      {product.amount}
+                    </td>
+                  </tr>
+                ))}
+                  
+                </tbody>
+              </table>
+            </animated.div>
+            <animated.div
+              style={{
+                position: "fixed",
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                backgroundColor: "black",
+                zIndex: 40,
+                opacity: 0,
+              }}
+              onClick={closeUserModal}
+            />
+          </>
+        )}
         <div className="w-full flex items-center mb-6">
           <select
             className="pl-4 py-3  rounded-md w-8/12  md:w-2/12 cursor-pointer bg-[#27283C] text-gray-200 "
