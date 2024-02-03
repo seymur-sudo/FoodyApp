@@ -50,7 +50,10 @@ const Orders: React.FC = () => {
     setshowDelete(true);
     setDeletedOrder(orderData);
   };
-
+  const handleOrderShow = (item: orderItem[]) => {
+    openUserModal();
+    setOrderItems(item);
+  };
   const handleSortProducts = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSortingValue(event.target.value as SortingValue);
   };
@@ -263,7 +266,9 @@ const Orders: React.FC = () => {
 
                     <td className="pl-5 py-4">
                       <div className="flex items-center">
-                        <FaEye className="hover:scale-110 transition-all duration-500 mr-2 text-cyan-400  text-2xl cursor-pointer" />
+                        <FaEye
+                          onClick={() => handleOrderShow(order.products)} 
+                          className="hover:scale-110 transition-all duration-500 mr-2 text-cyan-400  text-2xl cursor-pointer" />
                         <LuTrash
                           onClick={() => openDeleteModal(order)}
                           className="hover:scale-110 transition-all duration-500  text-red-400 text-2xl cursor-pointer"
