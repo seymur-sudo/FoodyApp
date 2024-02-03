@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import UserAside from "../../../components/Client/UserAside/index";
 import MainHeader from "../../../components/Client/MainHeader/index";
 import Image from "next/image";
 import threePoint from "../../../public/svgs/threePoint.svg";
 import soup from "../../../public/svgs/soup.svg";
+import moment from "moment"
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import { animated } from "@react-spring/web";
 import { useSidebarContext } from "@/contexts/SidebarContext";
@@ -21,9 +22,14 @@ import { useTranslation } from "next-i18next";
 import { GetServerSideProps } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { getUserOrder } from "@/services";
-
+interface orderItem{
+  img_url:string|undefined,
+  amount:number|undefined,
+  price:number|undefined,
+  name:string|undefined,
+  count:number|undefined
+}
 const UserOrders = () => {
-  const { data:userOrder, isLoading, isError } = useQuery(QUERIES.UserOrder, getUserOrder)
   const {
     showUserModal,
     closeUserModal,
@@ -32,9 +38,21 @@ const UserOrders = () => {
     showDelete,
     setshowDelete,
   } = useSidebarContext() as SidebarContextProps;
+  const { data:userOrder, isLoading, isError } = useQuery(QUERIES.UserOrder, getUserOrder)
 
+  const timeS= userOrder?.data.result.data.map((order:any)=>order?.created)
+  const editedTime = timeS?.map((time:string)=>{
+    return moment(time).format('ll');
+  })
+  const [orderItems,setOrderItems]=useState<orderItem[]>()
+  const handleOrderShow=(item:orderItem[])=>{
+    openUserModal()
+    setOrderItems(item)
+    console.log(item);
+    
+  }
+  
   const { t } = useTranslation("common");
-
   return (
     <>
       <MainHeader />
@@ -83,29 +101,35 @@ const UserOrders = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr className="bg-white border-b dark:bg-[#27283C] dark:border-gray-800 hover:bg-gray-100 dark:hover:bg-gray-900 transition-all duration-700">
+                {orderItems&&
+                orderItems?.map((product:any , index: number) => (
+                  <tr key={index} className="bg-white border-b dark:bg-[#27283C] dark:border-gray-800 hover:bg-gray-100 dark:hover:bg-gray-900 transition-all duration-700">
                     <td className="pl-14 py-4 font-semibold text-gray-900 dark:text-white">
                       <Image
                         alt="soup"
-                        src={soup}
+                        width={100}
+                        height={100}
+                        src={product?.img_url??""}
                         className="w-[45px] h-[45px] rounded-full cursor-pointer  hover:scale-110   transition-all duration-500"
                       />
                     </td>
 
-                    <td className="px-5"> coffee</td>
+                    <td className="px-5"> {product?.name}</td>
 
                     <td className="pl-4 py-4 font-semibold text-gray-900 dark:text-white capitalize">
-                      $ 3.49
+                      $ {product?.price}
                     </td>
 
                     <td className="px-6 font-semibold text-gray-900 dark:text-white">
-                      43
+                    {product?.count}
                     </td>
 
                     <td className="p-4 pl-8 font-semibold text-gray-900 dark:text-white">
-                      33
+                      {product.amount}
                     </td>
                   </tr>
+                ))}
+                  
                 </tbody>
               </table>
             </animated.div>
@@ -161,69 +185,76 @@ const UserOrders = () => {
                 </tr>
               </thead>
               <tbody>
-                <tr className="bg-white border-b dark:bg-[#27283C] dark:border-gray-800 hover:bg-gray-100 dark:hover:bg-gray-900 transition-all duration-700">
-                  <td className="pl-14 py-4 font-semibold text-gray-900 dark:text-white">
-                    1234
-                  </td>
+                {userOrder&&
+                userOrder?.data.result.data.map((order:any , index: number) => (
+                  <tr key={index} className="bg-white border-b dark:bg-[#27283C] dark:border-gray-800 hover:bg-gray-100 dark:hover:bg-gray-900 transition-all duration-700">
+                <td className="pl-14 py-4 font-semibold text-gray-900 dark:text-white">
+                  {order.id.slice(0,5)}
+                </td>
 
-                  <td className="px-5">02401</td>
+                <td className="px-5">{order.customer_id.slice(0,5)}</td>
 
-                  <td className="pl-4 py-4 font-semibold text-gray-900 dark:text-white capitalize">
-                    25 dec 2023
-                  </td>
+                <td className="pl-4 py-4 font-semibold text-gray-900 dark:text-white capitalize">
+                  {editedTime[index]}
+                </td>
 
-                  <td className="px-6 font-semibold text-gray-900 dark:text-white">
-                    20 eve street 545 avenue..
-                  </td>
+                <td className="px-6 font-semibold text-gray-900 dark:text-white">
+                  {order.delivery_address}
+                </td>
 
-                  <td className="p-4 pl-8 font-semibold text-gray-900 dark:text-white">
-                    333.3
-                  </td>
-                  <td className="p-4 px-6 font-semibold text-gray-900 dark:text-white">
-                    cash on delivery
-                  </td>
+                <td className="p-4 pl-8 font-semibold text-gray-900 dark:text-white">
+                {order.amount}
+                </td>
+                <td className="p-4 px-6 font-semibold text-gray-900 dark:text-white">
+                  {order.payment_method}
+                </td>
 
-                  <td className="py-4 font-semibold text-gray-900 dark:text-white">
-                    055 350 92 92
-                  </td>
+                <td className="py-4 font-semibold text-gray-900 dark:text-white">
+                  {order.contact}
+                </td>
 
-                  <td className="pl-6 py-4">
-                    <Dropdown className="shadow-shadow5 dark:shadow-shadow5Dark rounded-md">
-                      <DropdownTrigger>
-                        <Image
-                          alt="show"
-                          src={threePoint}
-                          className="w-10 h-6 cursor-pointer  hover:scale-110  font-medium  transition-all duration-700"
-                        />
-                      </DropdownTrigger>
-                      <DropdownMenu
-                        className="bg-white dark:bg-slate-800"
-                        aria-label="User Actions"
-                        variant="flat"
-                      >
-                        <DropdownItem className="h-12 flex " key="show">
-                          <p
-                            className="  capitalize font-semibold text-[#6FCF97] "
-                            onClick={openUserModal}
-                          >
-                            {t("Show")}
-                          </p>
-                        </DropdownItem>
-                        <DropdownItem
-                          className="h-12 flex capitalize"
-                          key="delete"
+                <td className="pl-6 py-4">
+                  <Dropdown className="shadow-shadow5 dark:shadow-shadow5Dark rounded-md">
+                    <DropdownTrigger>
+                      <Image
+                        alt="show"
+                        src={threePoint}
+                        className="w-10 h-6 cursor-pointer  hover:scale-110  font-medium  transition-all duration-700"
+                      />
+                    </DropdownTrigger>
+                    <DropdownMenu
+                      className="bg-white dark:bg-slate-800"
+                      aria-label="User Actions"
+                      variant="flat"
+                    >
+                      <DropdownItem className="h-12 flex " key="show">
+                        <p
+                          className="  capitalize font-semibold text-[#6FCF97] "
+                          onClick={()=>
+                            handleOrderShow(order.products)
+                          }
                         >
-                          <p
-                            className=" font-semibold text-[#EB5757] "
-                            onClick={() => setshowDelete(!showDelete)}
-                          >
-                            {t("Delete")}
-                          </p>
-                        </DropdownItem>
-                      </DropdownMenu>
-                    </Dropdown>
-                  </td>
-                </tr>
+                          {t("Show")}
+                        </p>
+                      </DropdownItem>
+                      <DropdownItem
+                        className="h-12 flex capitalize"
+                        key="delete"
+                      >
+                        <p
+                          className=" font-semibold text-[#EB5757] "
+                          onClick={() =>setshowDelete(!showDelete) }
+                        >
+                          {t("Delete")}
+                        </p>
+                      </DropdownItem>
+                    </DropdownMenu>
+                  </Dropdown>
+                </td>
+              </tr>
+                ))
+                }
+              
               </tbody>
             </table>
             <DeleteModal />
