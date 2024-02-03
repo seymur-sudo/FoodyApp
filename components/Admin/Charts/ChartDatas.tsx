@@ -49,8 +49,8 @@ export const data3: DataItems[] = [
   { name: "Aug", Expense: 7527, Income: 8241 },
   { name: "Sep", Expense: 9658, Income: 7453 },
   { name: "Oct", Expense: 3527, Income: 7211 },
-  { name: "Nov", Expense: 7865, Income: 1265 },
-  { name: "Dec", Expense: 11000, Income: 1453 },
+  { name: "Nov", Expense: 7865, Income: 4265 },
+  { name: "Dec", Expense: 7000, Income: 9453 },
 ];
 
 export const data01: DataBubble[] = [

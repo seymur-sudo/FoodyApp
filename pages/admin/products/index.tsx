@@ -14,8 +14,6 @@ import { useQuery } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { QUERIES } from "../../../constant/Queries";
 import { PostDataType } from "../../../interfaces/index";
-import usePagination from "@/components/Admin/Pagination";
-import PaginationControls from "@/components/Admin/Pagination/PaginationControls";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
@@ -38,12 +36,8 @@ const Products: React.FC = () => {
     setDeletedItem(product);
   };
 
-  const { data, isLoading, isError } = useQuery(QUERIES.Products, getProduct, {
-    refetchOnWindowFocus: false,
-  });
-
-  const { currentPage, currentData, totalPages, nextPage, prevPage, goToPage } =
-    usePagination(data?.data.result.data, 4);
+  const { data, isLoading, isError } = useQuery(QUERIES.Products, getProduct);
+  const productsData = data?.data.result.data;
 
   useEffect(() => {
     AOS.init({
@@ -61,14 +55,14 @@ const Products: React.FC = () => {
   }
   const filteredData =
     selectedRestaurant !== "" && selectedRestaurant !== null
-      ? currentData.filter((product: PostDataType) => {
+      ? productsData?.filter((product: PostDataType) => {
           return product.rest_id === selectedRestaurant;
         })
-      : currentData;
+      : productsData;
   return (
     <Layout>
       <>
-        <div className="px-12 md:px-6 pb-8 bg-bgc h-screen ">
+        <div className="px-12 md:px-6 pb-8 bg-bgc min-h-screen md:h-screen ">
           <SearchBar />
 
           <div className="grid gap-10 grid-cols-1 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
@@ -116,13 +110,6 @@ const Products: React.FC = () => {
                 </div>
               ))}
           </div>
-          <PaginationControls
-            currentPage={currentPage}
-            totalPages={totalPages}
-            nextPage={nextPage}
-            prevPage={prevPage}
-            goToPage={goToPage}
-          />
         </div>
 
         <EditModal />
