@@ -237,6 +237,7 @@ export interface BasketPostDataType {
 }
 export interface OrderPostDataType {
   basket_id?: string;
+  products?:any;
   delivery_address?: string | undefined;
   contact?: string | undefined;
   payment_method?: string | undefined;

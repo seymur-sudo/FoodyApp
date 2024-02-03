@@ -11,6 +11,7 @@ import { SidebarContextProps, orderItem } from "@/interfaces";
 import { QUERIES } from "../../../constant/Queries";
 import { useQuery } from "react-query";
 import DeleteModal from "@/components/Admin/Modals/DeleteModal";
+import { PDFDocument, rgb } from 'pdf-lib';
 import {
   Dropdown,
   DropdownTrigger,
@@ -51,7 +52,28 @@ const UserOrders = () => {
     openUserModal();
     setOrderItems(item);
   };
-
+  // const generatePDF = async () => {
+  //   // PDF oluşturma işlemleri
+  //   const pdfDoc = await PDFDocument.create();
+  //   const page = pdfDoc.addPage([350, 250]);
+  
+  //   page.drawText('Merhaba, dünya!', {
+  //     x: 50,
+  //     y: 200,
+  //     size: 30,
+  //     color: rgb(0, 0, 0),
+  //   });
+  
+  //   // PDF dosyasını Uint8Array olarak al
+  //   const pdfBytes = await pdfDoc.save();
+  
+  //   // PDF dosyasını indir
+  //   const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+  //   const link = document.createElement('a');
+  //   link.href = window.URL.createObjectURL(blob);
+  //   link.download = 'example.pdf';
+  //   link.click();
+  // };
   const openDeleteModal = (orderData: OrderPostDataType | null) => {
     setshowDelete(true);
     setDeletedOrder(orderData);
