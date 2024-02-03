@@ -23,7 +23,7 @@ const ResNavbar: React.FC = () => {
     <div
       onClick={closeNavbar}
       className={`${
-        isNavbarOpen ? "right-0 sm:hidden" : "right-full"
+        isNavbarOpen ? "right-0 sm:hidden z-50" : "right-full z-50"
       } fixed duration-300 top-0 w-full h-full bg-[#00000066]`}
     >
       <div className="h-full z-50 duration-500 w-fit bg-[#C74FEB] ">

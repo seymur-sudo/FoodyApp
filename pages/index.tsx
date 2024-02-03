@@ -1,5 +1,5 @@
 import type { NextPage } from "next";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Head from "next/head";
 import PizzaH from "../public/svgs/hoveredPizza.svg";
 import card1 from "../public/svgs/card1.svg";
@@ -21,28 +21,15 @@ import { useQuery, QueryClient } from "react-query";
 import { dehydrate } from "react-query/hydration";
 import MainFooter from "@/components/Client/MainFooter";
 import { ROUTER } from "../shared/constant/router";
-import Chat from "@/components/Client/Chat";
+import ReactPlayer from "react-player";
 import { OfferPostDataType } from "@/interfaces";
+import { QUERIES } from "../constant/Queries";
 
-// export const getServerSideProps: GetServerSideProps = async ({ locale }) => {
-//   const queryClient = new QueryClient();
-
-//   // Use the same query key "offers" to prefetch data
-//   await queryClient.prefetchQuery("offers", getOffer);
-
-//   return {
-//     props: {
-//       ...(await serverSideTranslations(locale as string, ["common"])),
-//       // Dehydrate the query client state
-//       dehydratedState: dehydrate(queryClient),
-//     },
-//   };
-// };
 const Home: NextPage = () => {
   const { t } = useTranslation("common");
   const { push } = useRouter();
 
-  const { data, isLoading, isError } = useQuery("offers", getOffer, {
+  const { data, isLoading, isError } = useQuery(QUERIES.Offers, getOffer, {
     refetchOnWindowFocus: false,
   });
   useEffect(() => {
@@ -51,6 +38,14 @@ const Home: NextPage = () => {
     });
     AOS.refresh();
   }, []);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (isError) {
+    return <div>Error loading products</div>;
+  }
 
   return (
     <>
@@ -136,6 +131,7 @@ const Home: NextPage = () => {
             </div>
           </div>
         </div>
+
         <div data-aos="zoom-in" className="text-center mt-20">
           <p className="text-[40px] dark:text-white font-black">
             {t("Features")}
@@ -253,11 +249,24 @@ const Home: NextPage = () => {
             )
           )}
 
+        <div className="w-8/12  mx-auto text-center pt-20"  data-aos="zoom-in">
+          <h1 className="capitalize  text-xl md:text-5xl font-body pt-5 pb-9 font-bold text-transparent bg-gradient-to-r bg-clip-text  from-gray-900  to-red-400 dark:from-green-300 dark:to-orange-400 ">
+            foody delivery advertisement
+          </h1>
+          <div className="border-[3px] h-[40vh] md:h-[78vh] rounded-md border-red-600 dark:border-green-300">
+            <ReactPlayer
+              url="https://www.youtube.com/watch?v=OZzoAw9QHXY"
+              width="100%"
+              height="100%"
+              controls
+            />
+          </div>
+        </div>
+
         <p
           data-aos="zoom-in"
           className="text-center mt-32 dark:text-white sm:text-[40px] text-[25px] font-black font-[Roboto]"
         >
-          {" "}
           {t("Our Popular Update New Foods")}
           <br className="hidden sm:block" />
         </p>
@@ -353,8 +362,8 @@ export const getServerSideProps: GetServerSideProps = async ({ locale }) => {
   return {
     props: {
       ...(await serverSideTranslations(locale as string, ["common"])),
-      dehydratedState: dehydrate(queryClient)
-    }
+      dehydratedState: dehydrate(queryClient),
+    },
   };
 };
 export default Home;
