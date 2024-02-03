@@ -66,7 +66,7 @@ const MainHeader: React.FC = () => {
           onClick={() => setNavbarOpen(!isNavbarOpen)}
           className="text-black sm:hidden block ml-4 mr-3 dark:text-white"
         />
-        <p className=" flex py-auto sm:ml-14 flex-row items-center text-center font-mukta sm:text-[36px] text-[25px] font-extrabold text-[#000000] dark:text-gray-100">
+        <p onClick={()=>router.push("/admin")} className=" flex py-auto sm:ml-14 flex-row items-center text-center font-mukta sm:text-[36px] text-[25px] font-extrabold text-[#000000] dark:text-gray-100">
           Foody<span className="text-[#EAAB00] dark:text-sky-400 ">.</span>
         </p>
       </div>
