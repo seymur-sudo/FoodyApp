@@ -66,6 +66,8 @@ const UserOrders = () => {
     setSortingValue(event.target.value as SortingValue);
   };
 
+
+  console.log("userOrder",userOrder?.data.result.data )
   const sortedProducts: OrderPostDataType[] = [
     ...(userOrder?.data.result.data || []),
   ];
@@ -187,7 +189,7 @@ const UserOrders = () => {
           </>
         )}
 
-        <div className="w-10/12 md:w-8/12 bg-[#F3F4F6] dark:bg-gray-900 asideScroll max-h-[75vh] overflow-y-auto">
+        <div className="w-10/12 md:w-8/12 bg-[#F3F4F6] dark:bg-gray-900 my-scrollable-component max-h-[75vh] overflow-y-auto">
           <div className="w-full flex items-center mb-6">
             <select
               className="pl-4 py-3  rounded-md w-8/12  md:w-2/12 cursor-pointer bg-[#e5ecf9] dark:bg-[#27283C] dark:text-gray-200 "
@@ -200,13 +202,13 @@ const UserOrders = () => {
               <option value="High-to-Low">High To Low Amount</option>
             </select>
             <button
-              className="ml-4 px-4 py-[10px] w-3/12  md:w-1/12 rounded-md cursor-pointer bg-blue-900 dark:bg-blue-600 text-gray-200 hover:opacity-75 transition-all duration-500"
+              className="ml-4 px-4 py-[10px] w-3/12  md:w-1/12 rounded-md cursor-pointer bg-red-100 text-[#D63626] dark:bg-cyan-100 dark:text-blue-500  font-semibold hover:opacity-75 transition-all duration-500"
               onClick={resetSorting}
             >
               Reset
             </button>
           </div>
-          <h1 className="capitalize text-[#4F4F4F] dark:text-sky-300 text-[30px] font-semibold ml-7 mt-6">
+          <h1 className="capitalize text-[#D63626] dark:text-sky-300 text-[30px] font-semibold ml-6 ">
             {t("Your Orders")}
           </h1>
 
@@ -245,7 +247,7 @@ const UserOrders = () => {
                   sortedProducts?.map((order: any, index: number) => (
                     <tr
                       key={index}
-                      className="bg-white border-b dark:bg-[#27283C] dark:border-gray-800 hover:bg-gray-100 dark:hover:bg-gray-900 transition-all duration-700"
+                      className="bg-white border-b cursor-pointer dark:bg-[#27283C] dark:border-gray-800 hover:bg-gray-100  dark:hover:bg-gray-900 transition-all duration-700"
                     >
                       <td className="pl-14 py-4 font-semibold text-gray-900 dark:text-white">
                         {order.id.slice(0, 5)}

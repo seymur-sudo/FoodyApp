@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import MainHeader from "@/components/Client/MainHeader";
 import Image from "next/image";
 import papa from "../../../public/svgs/papa.svg";
@@ -9,7 +9,11 @@ import { animated } from "@react-spring/web";
 import ProductCard from "@/components/Client/BaskerCards/BasketCard";
 import BasketResCard from "@/components/Client/BaskerCards/BasketResCard";
 import { useSidebarContext } from "@/contexts/SidebarContext";
-import { SidebarContextProps, BasketPostDataType } from "@/interfaces";
+import {
+  SidebarContextProps,
+  BasketPostDataType,
+  PostDataType,
+} from "@/interfaces";
 import { IoBasketSharp } from "react-icons/io5";
 import DeleteModal from "@/components/Admin/Modals/DeleteModal";
 import { useTranslation } from "next-i18next";
@@ -29,6 +33,8 @@ import { QUERIES } from "../../../constant/Queries";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { ROUTER } from "../../../shared/constant/router";
 
+type SortingValue = "A-Z" | "Z-A" | "Low-to-High" | "High-to-Low";
+
 const ResDetail = () => {
   const {
     showUserModal,
@@ -44,6 +50,10 @@ const ResDetail = () => {
   const { t } = useTranslation("common");
   const router = useRouter();
   const { id } = router.query;
+  const [sortingValue, setSortingValue] = useState<SortingValue>("A-Z");
+  const resetSorting = () => {
+    setSortingValue("A-Z");
+  };
 
   const openDeleteModal = (basketId: BasketPostDataType | null) => {
     setshowDelete(true);
@@ -70,6 +80,21 @@ const ResDetail = () => {
         .includes(singleRestaurant.name.toLowerCase())
   );
 
+  const handleSortProducts = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSortingValue(event.target.value as SortingValue);
+  };
+
+  const sortedProducts: PostDataType[] = [...(filteredProducts || [])];
+  if (sortingValue === "A-Z") {
+    sortedProducts.sort((a, b) => (a.name ?? "").localeCompare(b.name ?? ""));
+  } else if (sortingValue === "Z-A") {
+    sortedProducts.sort((a, b) => (b.name ?? "").localeCompare(a.name ?? ""));
+  } else if (sortingValue === "Low-to-High") {
+    sortedProducts.sort((a, b) => (a.price || 0) - (b.price || 0));
+  } else {
+    sortedProducts.sort((a, b) => (b.price || 0) - (a.price || 0));
+  }
+
   const isBasketEmpty = !basketProducts || basketProducts.total_item === 0;
 
   return (
@@ -78,6 +103,7 @@ const ResDetail = () => {
       {isError && <p>Error loading restaurant data</p>}
       <div className="bg-white dark:bg-black ">
         <MainHeader />
+
         {restaurantData && singleRestaurant && (
           <div className="px-[2%]">
             <Image
@@ -122,13 +148,31 @@ const ResDetail = () => {
 
         <div className="py-[3%] px-[6%] flex justify-between">
           <div className="w-full md:w-7/12 bg-[#F3F4F6] dark:bg-gray-900 flex flex-col items-center my-scrollable-component max-h-[100vh] overflow-y-auto">
-            <h1 className="capitalize py-5 text-[#4F4F4F)] dark:text-cyan-400 font-bold text-[25px]">
+            <div className="w-full flex items-center justify-center  mb-5">
+              <select
+                className="pl-3 py-2  rounded-md w-5/12  md:w-3/12 cursor-pointer bg-gray-200 text-gray-800   dark:bg-gray-800 dark:text-white  "
+                value={sortingValue}
+                onChange={handleSortProducts}
+              >
+                <option value="A-Z">A-Z Product</option>
+                <option value="Z-A">Z-A Product</option>
+                <option value="Low-to-High">Low To High Price</option>
+                <option value="High-to-Low">High To Low Price</option>
+              </select>
+              <button
+                className="ml-4 px-4 py-[6px] w-2/12  md:w-2/12 rounded-md cursor-pointer bg-red-600 dark:bg-sky-500 text-gray-100 hover:opacity-75 transition-all duration-500"
+                onClick={resetSorting}
+              >
+                Reset
+              </button>
+            </div>
+            <h1 className="capitalize pb-5 text-[#4F4F4F)] dark:text-cyan-400 font-bold text-[25px]">
               {t("Products")}
             </h1>
             <div className="w-full border-t-2 py-3 dark:border-sky-300">
               {products &&
-                filteredProducts &&
-                filteredProducts.map((product) => {
+                sortedProducts &&
+                sortedProducts.map((product) => {
                   return <ProductCard key={product.id} product={product} />;
                 })}
 

@@ -49,7 +49,7 @@ const UserAside = () => {
         <li
           className={`flex items-center px-6 py-3 my-2 rounded-[4px] ${
             pathname === ROUTER.USER_CHECKOUT
-              ? "text-[#D63626] dark:text-blue-500 bg-red-100 dark:bg-cyan-100"
+              ? "text-[#D63626] dark:text-green-800 bg-red-100 dark:bg-green-300"
               : "text-[#828282] dark:text-gray-400"
           }`}
           onClick={() => push(ROUTER.USER_CHECKOUT)}
