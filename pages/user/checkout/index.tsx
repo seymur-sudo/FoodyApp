@@ -4,46 +4,45 @@ import MainHeader from "../../../components/Client/MainHeader/index";
 import { BsDot } from "react-icons/bs";
 import { useTranslation } from "next-i18next";
 import { GetServerSideProps } from "next";
-import {OrderPostDataType} from "../../../interfaces/index";
+import { OrderPostDataType } from "../../../interfaces/index";
 import { useMutation, useQueryClient } from "react-query";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useSidebarContext } from "@/contexts/SidebarContext";
 import { SidebarContextProps, BasketPostDataType } from "@/interfaces";
-import { useQuery } from "react-query"
+import { useQuery } from "react-query";
 import { IoIosBasket } from "react-icons/io";
-import { addOrder,getUser } from "@/services";
+import { addOrder, getUser } from "@/services";
 import { toast } from "react-toastify";
 import { QUERIES } from "../../../constant/Queries";
 
 const UserCheckout = () => {
-  const { data: userD, isLoading, isError } = useQuery(QUERIES.User, getUser)
+  const { data: userD, isLoading, isError } = useQuery(QUERIES.User, getUser);
   const { basketProducts, basketProductsItems } =
     useSidebarContext() as SidebarContextProps;
   const { t } = useTranslation("common");
-  const orderBill:OrderPostDataType={
+  const orderBill: OrderPostDataType = {
     basket_id: "",
     delivery_address: "",
-    contact:"",
-    payment_method:""
-  }
-  const addressRef=useRef<HTMLInputElement>(null)
-  const phoneRef=useRef<HTMLInputElement>(null)
+    contact: "",
+    payment_method: "",
+  };
+  const addressRef = useRef<HTMLInputElement>(null);
+  const phoneRef = useRef<HTMLInputElement>(null);
   const radioRef0 = useRef<HTMLInputElement>(null);
   const radioRef1 = useRef<HTMLInputElement>(null);
-  const [radioSelect,setRadioSelect]=useState<number|null>(null)
-  const [newOrder,setNewOrder]=useState<OrderPostDataType>(orderBill)
+
+  const [radioSelect, setRadioSelect] = useState<number | null>(null);
+  const [newOrder, setNewOrder] = useState<OrderPostDataType>(orderBill);
   const queryClient = useQueryClient();
   const mutation = useMutation(() => addOrder(newOrder), {
     onSuccess: () => {
       queryClient.invalidateQueries(QUERIES.Basket);
-      // setNewOrder();
-      setTimeout(() => {
-      }, 1100);
+      setTimeout(() => {}, 1100);
       toast.success("Order added successfully!", {
         autoClose: 1000,
       });
     },
-    onError: (error) =>{
+    onError: (error) => {
       console.error("Error added Order:", error);
       toast.error("Error added Order", {
         autoClose: 1000,
@@ -53,52 +52,71 @@ const UserCheckout = () => {
   const handleCheckRadio = () => {
     if (radioRef1.current && radioRef1.current.checked) {
       setRadioSelect(+radioRef1.current.id);
-      
     } else if (radioRef0.current && radioRef0.current.checked) {
       setRadioSelect(+radioRef0.current.id);
     } else {
       setRadioSelect(null);
     }
   };
-  const handleAddOrder=()=>{
-    handleCheckRadio()
+  const handleAddOrder = () => {
+    handleCheckRadio();
+
+    const selectedPaymentMethod =
+      radioRef1.current && radioRef1.current.checked
+        ? "Pay at the door"
+        : radioRef0.current && radioRef0.current.checked
+        ? "By Credit Card"
+        : "";
+
     setNewOrder({
       basket_id: basketProducts?.id,
       delivery_address: addressRef.current?.value,
-      contact:phoneRef.current?.value,
-      payment_method:`${radioSelect===1?"Pay at the door":radioSelect===0?"By Credit Card":""}`
-    })
+      contact: phoneRef.current?.value,
+      payment_method: selectedPaymentMethod,
+    });
+
     setTimeout(() => {
-      if(phoneRef.current?.value.trim()===""&&addressRef.current?.value.trim()!==""&&((radioRef1.current && radioRef1.current.checked)||(radioRef0.current && radioRef0.current.checked))){
+      if (
+        phoneRef.current?.value.trim() === "" &&
+        addressRef.current?.value.trim() !== "" &&
+        selectedPaymentMethod === "Pay at the door"
+      ) {
         toast.error("Please enter the contact number", {
           autoClose: 1000,
-        })
-      }
-      else if(addressRef.current?.value.trim()===""&& phoneRef.current?.value.trim()!==""&&((radioRef1.current && radioRef1.current.checked)||(radioRef0.current && radioRef0.current.checked))){
+        });
+      } else if (
+        addressRef.current?.value.trim() === "" &&
+        phoneRef.current?.value.trim() !== "" &&
+        selectedPaymentMethod === "Pay at the door"
+      ) {
         toast.error("Please enter the address", {
           autoClose: 1000,
-        })
-      }
-      else if(addressRef.current?.value.trim()===""&& phoneRef.current?.value.trim()===""&&((radioRef1.current && radioRef1.current.checked)||(radioRef0.current && radioRef0.current.checked))){
+        });
+      } else if (
+        addressRef.current?.value.trim() === "" &&
+        phoneRef.current?.value.trim() === "" &&
+        selectedPaymentMethod === "Pay at the door"
+      ) {
         toast.error("Please enter the address and contact number", {
           autoClose: 1000,
-        })
-      }
-      else if(addressRef.current?.value.trim()!==""&& phoneRef.current?.value.trim()!==""&&(radioRef1.current && !radioRef1.current.checked)&&(radioRef0.current && !radioRef0.current.checked)){
+        });
+      } else if (
+        addressRef.current?.value.trim() !== "" &&
+        phoneRef.current?.value.trim() !== "" &&
+        selectedPaymentMethod === ""
+      ) {
         toast.error("Please select the payment method", {
           autoClose: 1000,
-        })
-      }
-      else if(addressRef.current?.value.trim()===""&& phoneRef.current?.value.trim()===""&&((radioRef1.current && !radioRef1.current.checked)&&(radioRef0.current && !radioRef0.current.checked))){
-        toast.error("Please fill the gaps and select the payment method", {
-          autoClose: 1000,
-        })
-      }
-      else if(addressRef.current?.value.trim()!==""&& phoneRef.current?.value.trim()!==""&&((radioRef1.current && radioRef1.current.checked)||(radioRef0.current && radioRef0.current.checked))){
-        mutation.mutate()
+        });
+      } else if (
+        addressRef.current?.value.trim() !== "" &&
+        phoneRef.current?.value.trim() !== "" &&
+        selectedPaymentMethod !== ""
+      ) {
+        mutation.mutate();
       }
     }, 100);
-  }
+  };
 
   return (
     <div>
@@ -118,7 +136,7 @@ const UserCheckout = () => {
               </label>
               <input
                 type="text"
-                defaultValue={userD?userD.data.user.address:""}
+                defaultValue={userD ? userD.data.user.address : ""}
                 ref={addressRef}
                 className="py-2 px-4 bg-white dark:bg-black text-black dark:text-white rounded-[4px]"
               />
@@ -130,7 +148,7 @@ const UserCheckout = () => {
               <input
                 type="text"
                 ref={phoneRef}
-                defaultValue={userD?userD.data.user.phone:""}
+                defaultValue={userD ? userD.data.user.phone : ""}
                 className="py-2 px-4 bg-white dark:bg-black text-black dark:text-white rounded-[4px]"
               />
             </div>
@@ -150,7 +168,7 @@ const UserCheckout = () => {
                       type="radio"
                       ref={radioRef1}
                       className="before:content[''] peer relative h-10 w-10 cursor-pointer appearance-none rounded-full border-2 border-green-500 text-green-600 duration-500  transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-green-500 before:opacity-0 before:transition-opacity checked:border-green-500 checked:before:bg-green-500 hover:before:opacity-10"
-                      id={"1"}
+                      id="1"
                     />
                     <span className="absolute text-green-600 transition-opacity opacity-0 pointer-events-none top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 peer-checked:opacity-100">
                       <BsDot
@@ -159,10 +177,14 @@ const UserCheckout = () => {
                       />
                     </span>
                   </label>
-                  <label className="mt-px  text-green-600 dark:text-green-300 font-semibold cursor-pointer select-none">
+                  <label
+                    htmlFor="1"
+                    className="mt-px  text-green-600 dark:text-green-300 font-semibold cursor-pointer select-none"
+                  >
                     Pay at the door
                   </label>
                 </div>
+
                 <div className="inline-flex items-center">
                   <label className="relative flex items-center p-3 rounded-full cursor-pointer">
                     <input
@@ -179,7 +201,10 @@ const UserCheckout = () => {
                       />
                     </span>
                   </label>
-                  <label className="mt-px  font-semibold text-green-600 dark:text-green-300 cursor-pointer select-none">
+                  <label
+                    htmlFor="0"
+                    className="mt-px  font-semibold text-green-600 dark:text-green-300 cursor-pointer select-none"
+                  >
                     By Credit Card
                   </label>
                 </div>
@@ -187,9 +212,10 @@ const UserCheckout = () => {
             </div>
 
             <div className="flex flex-col mt-8 w-10/12">
-              <button 
-              onClick={handleAddOrder}
-              className="capitalize py-[5px] px-4 bg-[#6FCF97] font-bold text-lg text-white dark:text-gray-900 rounded-[4px] hover:bg-[#54ff9b]  transition-all duration-500 cursor-pointer  ">
+              <button
+                onClick={handleAddOrder}
+                className="capitalize py-[5px] px-4 bg-[#6FCF97] font-bold text-lg text-white dark:text-gray-900 rounded-[4px] hover:bg-[#54ff9b]  transition-all duration-500 cursor-pointer  "
+              >
                 {t("Send")}
               </button>
             </div>
