@@ -252,3 +252,11 @@ export interface OrderApiResponse {
   status: number;
   message: string;
 }
+
+export interface orderItem {
+  img_url: string | undefined;
+  amount: number | undefined;
+  price: number | undefined;
+  name: string | undefined;
+  count: number | undefined;
+}
