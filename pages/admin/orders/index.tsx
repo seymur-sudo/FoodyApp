@@ -12,7 +12,7 @@ import { useTranslation } from "next-i18next";
 import { useQuery } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { QUERIES } from "../../../constant/Queries";
-import { OrderPostDataType,orderItem  } from "../../../interfaces/index";
+import { OrderPostDataType, orderItem } from "../../../interfaces/index";
 import { getOrders } from "@/services";
 import Moment from "moment";
 import usePagination from "@/components/Admin/Pagination";
@@ -25,13 +25,14 @@ type SortingValue = "A-Z" | "Z-A" | "Low-to-High" | "High-to-Low";
 
 const Orders: React.FC = () => {
   const [orderItems, setOrderItems] = useState<orderItem[]>();
-  const { 
-    setshowDelete,    
+  const {
+    setshowDelete,
     showUserModal,
     closeUserModal,
     modalSpring,
-    openUserModal, setDeletedOrder } =
-    useSidebarContext() as SidebarContextProps;
+    openUserModal,
+    setDeletedOrder,
+  } = useSidebarContext() as SidebarContextProps;
   const { t } = useTranslation("common");
   const {
     data: orders,
@@ -127,35 +128,37 @@ const Orders: React.FC = () => {
                   </tr>
                 </thead>
                 <tbody>
-                {orderItems&&
-                orderItems?.map((product:any , index: number) => (
-                  <tr key={index} className="bg-white border-b dark:bg-[#27283C] dark:border-gray-800 hover:bg-gray-100 dark:hover:bg-gray-900 transition-all duration-700">
-                    <td className="pl-14 py-4 font-semibold text-gray-900 dark:text-white">
-                      <Image
-                        alt="soup"
-                        width={100}
-                        height={100}
-                        src={product?.img_url??""}
-                        className="w-[45px] h-[45px] rounded-full cursor-pointer  hover:scale-110   transition-all duration-500"
-                      />
-                    </td>
+                  {orderItems &&
+                    orderItems?.map((product: any, index: number) => (
+                      <tr
+                        key={index}
+                        className="bg-white border-b dark:bg-[#27283C] dark:border-gray-800 hover:bg-gray-100 dark:hover:bg-gray-900 transition-all duration-700"
+                      >
+                        <td className="pl-14 py-4 font-semibold text-gray-900 dark:text-white">
+                          <Image
+                            alt="soup"
+                            width={100}
+                            height={100}
+                            src={product?.img_url ?? ""}
+                            className="w-[45px] h-[45px] rounded-full cursor-pointer  hover:scale-110   transition-all duration-500"
+                          />
+                        </td>
 
-                    <td className="px-5"> {product?.name}</td>
+                        <td className="px-5"> {product?.name}</td>
 
-                    <td className="pl-4 py-4 font-semibold text-gray-900 dark:text-white capitalize">
-                      $ {product?.price}
-                    </td>
+                        <td className="pl-4 py-4 font-semibold text-gray-900 dark:text-white capitalize">
+                          $ {product?.price}
+                        </td>
 
-                    <td className="px-6 font-semibold text-gray-900 dark:text-white">
-                    {product?.count}
-                    </td>
+                        <td className="px-6 font-semibold text-gray-900 dark:text-white">
+                          {product?.count}
+                        </td>
 
-                    <td className="p-4 pl-8 font-semibold text-gray-900 dark:text-white">
-                      {product.amount}
-                    </td>
-                  </tr>
-                ))}
-                  
+                        <td className="p-4 pl-8 font-semibold text-gray-900 dark:text-white">
+                          {product.amount}
+                        </td>
+                      </tr>
+                    ))}
                 </tbody>
               </table>
             </animated.div>
@@ -267,8 +270,9 @@ const Orders: React.FC = () => {
                     <td className="pl-5 py-4">
                       <div className="flex items-center">
                         <FaEye
-                          onClick={() => handleOrderShow(order.products)} 
-                          className="hover:scale-110 transition-all duration-500 mr-2 text-cyan-400  text-2xl cursor-pointer" />
+                          onClick={() => handleOrderShow(order.products)}
+                          className="hover:scale-110 transition-all duration-500 mr-2 text-cyan-400  text-2xl cursor-pointer"
+                        />
                         <LuTrash
                           onClick={() => openDeleteModal(order)}
                           className="hover:scale-110 transition-all duration-500  text-red-400 text-2xl cursor-pointer"

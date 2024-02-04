@@ -70,7 +70,7 @@ const Home: NextPage = () => {
             <div className="flex mt-11 flex-col sm:flex-row">
               <button
                 onClick={() => push(ROUTER.LOGIN)}
-                className="text-white font-medium text-[25px] px-[43px] mb-4 sm:w-full w-fit mx-auto sm:mr-10 py-[12px] dark:hover:bg-green-800 dark:bg-green-900 rounded-[30px] bg-[#D63626] cursor-pointer  transition-all duration-500"
+                className="text-white font-medium text-[25px] px-[43px] mb-4 sm:w-full w-fit mx-auto sm:mr-10 py-[12px] dark:hover:bg-green-700 dark:bg-green-600 rounded-[30px] bg-[#D63626] cursor-pointer  transition-all duration-500"
               >
                 {t("Register")}
               </button>
@@ -88,7 +88,7 @@ const Home: NextPage = () => {
               />
               <div
                 data-aos="fade-left"
-                className=" float-animation -right-[30px] -top-[15px] sm:flex hidden items-center absolute rounded-[15px] h-[92px] dark:bg-green-900 bg-white w-fit z-20 flex-row"
+                className=" float-animation -right-[30px] -top-[15px] sm:flex hidden items-center absolute rounded-[15px] h-[92px] dark:bg-green-600 bg-white w-fit z-20 flex-row"
               >
                 <Image className="ml-5 mr-6" alt="pizza" src={PizzaH} />
                 <div className="flex flex-col mr-15">
@@ -102,7 +102,7 @@ const Home: NextPage = () => {
               </div>
               <div
                 data-aos="fade-right"
-                className=" float-animation bottom-20 -left-[100px] sm:flex items-center hidden absolute rounded-[15px] h-[92px] dark:bg-green-900 bg-white w-fit z-20 flex-row"
+                className=" float-animation bottom-20 -left-[100px] sm:flex items-center hidden absolute rounded-[15px] h-[92px] dark:bg-green-600 bg-white w-fit z-20 flex-row"
               >
                 <Image className="ml-5 mr-6" alt="pizza" src={FriH} />
                 <div className="flex flex-col mr-15">
@@ -116,7 +116,7 @@ const Home: NextPage = () => {
               </div>
               <div
                 data-aos="fade-left"
-                className=" float-animation top-[100px] sm:-bottom-12 right-0 flex items-center absolute rounded-[15px] h-[92px] dark:bg-green-900 bg-white w-fit z-20 flex-row"
+                className=" float-animation top-[100px] sm:-bottom-12 right-0 flex items-center absolute rounded-[15px] h-[92px] dark:bg-green-600 bg-white w-fit z-20 flex-row"
               >
                 <Image className="ml-5 mr-6" alt="pizza" src={BurgerH} />
                 <div className="flex flex-col mr-15">

@@ -24,13 +24,12 @@ export const Header: React.FC = () => {
       </div>
       <div className="flex gap-5 flex-row items-center ">
         <button
-          className=" flex-row flex font-bold text-[10px] font-body px-2 py-1 scale-150 sm:scale-100 sm:p-2 rounded-2xl hover:bg-[#f15cd1] text-[#F5F5F5] bg-[#C035A2]"
+          className=" flex-row flex font-bold text-[14px] font-body px-2 py-1 scale-150 sm:scale-100 sm:p-2 rounded-2xl hover:bg-[#f15cd1] text-[#F5F5F5] bg-[#C035A2]"
           onClick={() => setSidebarOpen(!isSidebarOpen)}
         >
-          + <span className="hidden sm:flex">{t('Add Product')}</span>
+          + <span className="hidden  sm:flex">{t('Add Product')}</span>
         </button>
         <LangSelect/>
-        {/* <Image className=" opacity-70 hover:opacity-100" alt="lang" src={en} /> */}
         <div className="flex flex-row items-center mr-3">
           <Image className="sm:mr-4" alt="adminProfile" src={AdminProfile} />
           <p className="text-[16px] hidden sm:block font-medium font-body text-[#F5F5F5DE] mt-1">
