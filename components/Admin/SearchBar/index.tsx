@@ -21,7 +21,7 @@ const SearchBar: React.FC = () => {
     selectedCategory,
     setSelectedCategory,
   } = useSidebarContext() as SidebarContextProps;
-  const { pathname } = useRouter();
+  const { pathname, push } = useRouter();
 
   const { data: categoriesData } = useQuery(QUERIES.Categories, getCategory);
   const { data: restaurantData } = useQuery(QUERIES.Restaurants, getRestaurant);
@@ -32,6 +32,8 @@ const SearchBar: React.FC = () => {
 
   const categorySelect = pathname === ROUTER.ADMIN_RESTAURANTS;
   const restaurantSelect = pathname === ROUTER.ADMIN_PRODUCTS;
+  const orderBtn = pathname === ROUTER.ADMIN_ORDERS;
+  const historyBtn = pathname === ROUTER.ADMIN_ORDER_HISTORY;
 
   const getButtonText = () => {
     if (pathname === ROUTER.ADMIN_CATEGORY) {
@@ -109,6 +111,10 @@ const SearchBar: React.FC = () => {
               </select>
             </div>
           )}
+
+          {orderBtn && <button onClick={()=> push(ROUTER.ADMIN_HISTORY)} className="bg-pink font-semibold text-white py-1 px-3 rounded-lg font-mutka hover:opacity-60 transition-all duration-500 cursor-pointer">History</button>}
+
+          {historyBtn && <button onClick={()=> push(ROUTER.ADMIN_ORDERS)} className="bg-pink font-semibold text-white py-1 px-3 rounded-lg font-mutka hover:opacity-60 transition-all duration-500 cursor-pointer">Orders</button>}
 
           {!hideButton && (
             <>

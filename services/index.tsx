@@ -17,7 +17,6 @@ import {
   BasketPostDataType,
   UserDataType,
   OrderPostDataType,
-  OrderApiResponse,
 } from "../interfaces/index";
 
 // GET_PRODUCT
@@ -301,5 +300,17 @@ export const deleteOrder = (orders: OrderPostDataType): AxiosPromise => {
       Authorization: `Bearer ${accessToken}`,
     },
     data: { order_id: orders },
+  });
+};
+
+// GET_ORDER_HISTORY
+export const getHistory = (): AxiosPromise => {
+  const accessToken = localStorage.getItem("access_token");
+  return instanceAxios({
+    method: "GET",
+    url: ENDPOINTS.HISTORY,
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
   });
 };

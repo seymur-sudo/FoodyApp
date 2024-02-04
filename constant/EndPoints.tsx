@@ -5,5 +5,6 @@ export const ENDPOINTS = {
   OFFER: "offer",
   BASKET: "basket",
   USER: "/auth/user",
-  ORDER:"/order"
+  ORDER: "/order",
+  HISTORY: "/order/history",
 };
