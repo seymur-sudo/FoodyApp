@@ -20,14 +20,7 @@ import { useTranslation } from "next-i18next";
 import { GetServerSideProps } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useRouter } from "next/router";
-import {
-  getRestaurantById,
-  getProduct,
-  getBasket,
-  addBasket,
-  getUser,
-  deleteBasket,
-} from "@/services";
+import { getRestaurantById, getProduct } from "@/services";
 import { useQuery } from "react-query";
 import { QUERIES } from "../../../constant/Queries";
 import { ReactQueryDevtools } from "react-query/devtools";

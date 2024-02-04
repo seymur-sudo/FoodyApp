@@ -19,7 +19,6 @@ import { useQuery } from "react-query";
 import { QUERIES } from "../../constant/Queries";
 import { useRouter } from "next/router";
 import { getCategory, getRestaurant } from "../../services/index";
-import Link from "next/link";
 import AOS from "aos";
 import "aos/dist/aos.css";
 

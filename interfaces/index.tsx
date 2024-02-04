@@ -146,18 +146,18 @@ export interface ApiResponse {
   message: string;
 }
 export interface RestaurantPostDataType {
-  id?: number | string;
-  name: string | undefined;
+  id?: number | string | any;
   category_id: number | string | undefined;
   img_url: string | null | undefined;
   cuisine: string | undefined;
   address: string | undefined;
   delivery_min: number | undefined;
   delivery_price: number | undefined;
+  name?:string;
 }
 export interface RestaurantApiResponse {
   result: {
-    data: RestaurantPostDataType[] | FirstStateType[];
+    data: RestaurantPostDataType[] ;
   };
   status: number;
   message: string;
