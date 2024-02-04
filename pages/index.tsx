@@ -59,7 +59,7 @@ const Home: NextPage = () => {
 
         <div className="bg-[#F3F4F6] flex sm:flex-row flex-col-reverse justify-between dark:bg-gray-900 sm:mx-[30px]">
           <div className="sm:ml-14 w-fit">
-            <p className=" sm:text-6xl text-[20px] sm:pt-[120px] pt-[300px] sm:px-0 px-10 py-4 text-center sm:text-start font-[Roboto] font-black dark:text-white text-black">
+            <p className=" sm:text-6xl text-[20px] sm:pt-[120px] pt-[300px] sm:px-0 px-10 py-4 text-center sm:text-start font-[Roboto] font-bold text-transparent bg-gradient-to-r bg-clip-text  from-gray-900  to-red-400 dark:from-green-300 dark:to-orange-400">
               {t("Our Food site makes it easy to find local food")}
             </p>
             <p className="sm:text-[22px] text-[#828282] text-[16px] text-center sm:text-start font-normal">

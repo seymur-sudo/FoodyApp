@@ -14,7 +14,6 @@ import { useSidebarContext } from "../../../contexts/SidebarContext";
 import { SidebarContextProps } from "../../../interfaces/index";
 import { QUERIES } from "../../../constant/Queries";
 import { useQuery } from "react-query";
-import { useMutation, useQueryClient } from "react-query";
 import {
   Dropdown,
   DropdownTrigger,
@@ -23,7 +22,7 @@ import {
 } from "@nextui-org/react";
 import ClientNavbar from "../ResNavbar";
 import { getUser, getBasket } from "@/services";
-import { toast } from "react-toastify";
+import SearchFilter from "../SearchFilter";
 
 const MainHeader: React.FC = () => {
   const [imageURL, setImageURL] = useState<string>("");
@@ -54,7 +53,6 @@ const MainHeader: React.FC = () => {
     } else if (userImg) {
       setImageURL(userImg);
     } else {
-      // Burada statik bir resim URL'si atanabilir
       setImageURL(profileImg);
     }
   }, [userID, userImg]);
@@ -66,7 +64,10 @@ const MainHeader: React.FC = () => {
           onClick={() => setNavbarOpen(!isNavbarOpen)}
           className="text-black sm:hidden block ml-4 mr-3 dark:text-white"
         />
-        <p onClick={()=>router.push("/admin")} className=" flex py-auto sm:ml-14 flex-row items-center text-center font-mukta sm:text-[36px] text-[25px] font-extrabold text-[#000000] dark:text-gray-100">
+        <p
+          onClick={() => router.push("/admin")}
+          className=" flex py-auto sm:ml-14 flex-row items-center text-center font-mukta sm:text-[36px] text-[25px] font-extrabold text-[#000000] dark:text-gray-100"
+        >
           Foody<span className="text-[#EAAB00] dark:text-sky-400 ">.</span>
         </p>
       </div>
@@ -123,13 +124,8 @@ const MainHeader: React.FC = () => {
         </Link>
       </div>
 
-      <div className="hidden sm:block">
-        <input
-          className="h-11 sm:pl-5 w-max rounded-[10px]"
-          placeholder="Search Restaurant..."
-          type="text"
-        />
-      </div>
+      <SearchFilter />
+
       <div className="flex flex-row items-center">
         <div className="flex items-center ">
           <button
@@ -146,7 +142,7 @@ const MainHeader: React.FC = () => {
             <>
               <button
                 onClick={() => router.push("/register")}
-                className="text-[16px] py-[7px] px-5 sm:ml-7 sm:mr-20 bg-[#D63626] font-medium rounded-[30px] text-white" 
+                className="text-[16px] py-[7px] px-5 sm:ml-7 sm:mr-20 bg-[#D63626] font-medium rounded-[30px] text-white"
               >
                 {t("Sign Up")}
               </button>
@@ -157,7 +153,9 @@ const MainHeader: React.FC = () => {
                 <Image
                   className="ml-3 cursor-pointer scale-100 duration-500 hover:scale-110"
                   src={basketIcon}
-                  onClick={()=>{router.push("/user/basket")}}
+                  onClick={() => {
+                    router.push("/user/basket");
+                  }}
                   alt="basketIcon"
                 />
                 {basketProducts && (
