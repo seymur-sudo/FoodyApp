@@ -14,11 +14,14 @@ import { IoIosBasket } from "react-icons/io";
 import { addOrder, getUser } from "@/services";
 import { toast } from "react-toastify";
 import { QUERIES } from "../../../constant/Queries";
+import { FaCheck } from "react-icons/fa6";
+import { isValidPhone } from "@/constant/ValidRegex";
 
 const UserCheckout = () => {
   const { data: userD, isLoading, isError } = useQuery(QUERIES.User, getUser);
   const { basketProducts, basketProductsItems } =
     useSidebarContext() as SidebarContextProps;
+  const [orderAdded, setOrderAdded] = useState<boolean>(false);
   const { t } = useTranslation("common");
   const orderBill: OrderPostDataType = {
     basket_id: "",
@@ -33,6 +36,7 @@ const UserCheckout = () => {
 
   const [radioSelect, setRadioSelect] = useState<number | null>(null);
   const [newOrder, setNewOrder] = useState<OrderPostDataType>(orderBill);
+
   const queryClient = useQueryClient();
   const mutation = useMutation(() => addOrder(newOrder), {
     onSuccess: () => {
@@ -59,6 +63,13 @@ const UserCheckout = () => {
     }
   };
   const handleAddOrder = () => {
+    const phoneValue = phoneRef.current?.value;
+
+    if (phoneValue && !isValidPhone(phoneValue)) {
+      toast.error("Please enter a valid phone number", { autoClose: 1500 });
+      return;
+    }
+
     handleCheckRadio();
 
     const selectedPaymentMethod =
@@ -76,47 +87,44 @@ const UserCheckout = () => {
     });
 
     setTimeout(() => {
-      if (
-        phoneRef.current?.value.trim() === "" &&
-        addressRef.current?.value.trim() !== "" &&
-        selectedPaymentMethod === "Pay at the door"
-      ) {
-        toast.error("Please enter the contact number", {
+      if (basketProductsItems?.length === 0) {
+        toast.error("Please add items to your basket before placing an order", {
           autoClose: 1000,
         });
       } else if (
-        addressRef.current?.value.trim() === "" &&
-        phoneRef.current?.value.trim() !== "" &&
-        selectedPaymentMethod === "Pay at the door"
-      ) {
-        toast.error("Please enter the address", {
-          autoClose: 1000,
-        });
-      } else if (
-        addressRef.current?.value.trim() === "" &&
-        phoneRef.current?.value.trim() === "" &&
-        selectedPaymentMethod === "Pay at the door"
-      ) {
-        toast.error("Please enter the address and contact number", {
-          autoClose: 1000,
-        });
-      } else if (
-        addressRef.current?.value.trim() !== "" &&
-        phoneRef.current?.value.trim() !== "" &&
+        addressRef.current?.value.trim() === "" ||
+        phoneRef.current?.value.trim() === "" ||
         selectedPaymentMethod === ""
       ) {
-        toast.error("Please select the payment method", {
-          autoClose: 1000,
-        });
-      } else if (
-        addressRef.current?.value.trim() !== "" &&
-        phoneRef.current?.value.trim() !== "" &&
-        selectedPaymentMethod !== ""
-      ) {
+        if (addressRef.current?.value.trim() === "") {
+          toast.error("Please enter the address", {
+            autoClose: 1000,
+          });
+        }
+        if (phoneRef.current?.value.trim() === "") {
+          toast.error("Please enter the contact number", {
+            autoClose: 1000,
+          });
+        }
+        if (selectedPaymentMethod === "") {
+          toast.error("Please select the payment method", {
+            autoClose: 1000,
+          });
+        }
+      } else {
         mutation.mutate();
+        setOrderAdded(true);
       }
     }, 100);
   };
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (isError) {
+    return <div>Error loading products</div>;
+  }
 
   return (
     <div>
@@ -124,14 +132,13 @@ const UserCheckout = () => {
       <div className="flex flex-col items-center  md:flex-row md:items-start  md:justify-evenly py-8">
         <UserAside />
 
-        <div className="w-10/12 md:w-5/12 py-3 bg-[#F3F4F6] dark:bg-gray-900 ">
-          <h1 className="capitalize text-[#4F4F4F] dark:text-green-300 text-[30px] font-semibold ml-10 my-6">
-            {t("Checkout")}
-          </h1>
-
-          <div className="flex flex-wrap justify-evenly w-full pt-2 pb-5">
-            <div className="flex flex-col mb-7 text-lg  w-10/12">
-              <label className="text-[#4F4F4F] dark:text-green-300 mb-4 font-semibold">
+        {!orderAdded ? (
+          <div className="w-10/12 md:w-5/12 py-3 bg-[#F3F4F6] dark:bg-gray-900 flex flex-wrap justify-evenly pt-2 pb-3 ">
+            <h1 className="capitalize text-[#4F4F4F] dark:text-green-300 text-[30px] font-bold my-3 text-left">
+              {t("Checkout")}
+            </h1>
+            <div className="flex flex-col mb-4   w-10/12">
+              <label className="text-[#4F4F4F] dark:text-green-300 mb-3 font-bold">
                 Delivery Address
               </label>
               <input
@@ -141,8 +148,8 @@ const UserCheckout = () => {
                 className="py-2 px-4 bg-white dark:bg-black text-black dark:text-white rounded-[4px]"
               />
             </div>
-            <div className="flex flex-col mb-7 text-lg w-10/12">
-              <label className="text-[#4F4F4F] dark:text-green-300 mb-4 font-semibold">
+            <div className="flex flex-col mb-5  w-10/12">
+              <label className="text-[#4F4F4F] dark:text-green-300 mb-3 font-bold">
                 Contact Number
               </label>
               <input
@@ -153,7 +160,7 @@ const UserCheckout = () => {
               />
             </div>
 
-            <div className="flex flex-col my-3 mr-5 w-10/12">
+            <div className="flex flex-col my-2 mr-5 w-10/12">
               <label className="capitalize text-xl text-[#4F4F4F] dark:text-green-300 font-bold m-4 ">
                 {t("Payment Method")}
               </label>
@@ -167,7 +174,7 @@ const UserCheckout = () => {
                       name="type"
                       type="radio"
                       ref={radioRef1}
-                      className="before:content[''] peer relative h-10 w-10 cursor-pointer appearance-none rounded-full border-2 border-green-500 text-green-600 duration-500  transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-green-500 before:opacity-0 before:transition-opacity checked:border-green-500 checked:before:bg-green-500 hover:before:opacity-10"
+                      className="before:content[''] peer relative h-8 w-8 cursor-pointer appearance-none rounded-full border-2 border-green-500 text-green-600 duration-500  transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-green-500 before:opacity-0 before:transition-opacity checked:border-green-500 checked:before:bg-green-500 hover:before:opacity-10"
                       id="1"
                     />
                     <span className="absolute text-green-600 transition-opacity opacity-0 pointer-events-none top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 peer-checked:opacity-100">
@@ -181,7 +188,7 @@ const UserCheckout = () => {
                     htmlFor="1"
                     className="mt-px  text-green-600 dark:text-green-300 font-semibold cursor-pointer select-none"
                   >
-                    Pay at the door
+                    {t("Pay at the door")}
                   </label>
                 </div>
 
@@ -191,7 +198,7 @@ const UserCheckout = () => {
                       name="type"
                       type="radio"
                       ref={radioRef0}
-                      className="before:content[''] peer relative h-10 w-10 cursor-pointer duration-500 appearance-none rounded-full border-2 border-green-500 text-green-600 transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-green-500 before:opacity-0 before:transition-opacity checked:border-green-500 checked:before:bg-green-500 hover:before:opacity-10"
+                      className="before:content[''] peer relative h-8 w-8 cursor-pointer duration-500 appearance-none rounded-full border-2 border-green-500 text-green-600 transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-green-500 before:opacity-0 before:transition-opacity checked:border-green-500 checked:before:bg-green-500 hover:before:opacity-10"
                       id="0"
                     />
                     <span className="absolute text-green-700 transition-opacity opacity-0 pointer-events-none top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 peer-checked:opacity-100">
@@ -203,15 +210,15 @@ const UserCheckout = () => {
                   </label>
                   <label
                     htmlFor="0"
-                    className="mt-px  font-semibold text-green-600 dark:text-green-300 cursor-pointer select-none"
+                    className=" font-semibold text-green-600 dark:text-green-300 cursor-pointer select-none"
                   >
-                    By Credit Card
+                    {t("By Credit Card")}
                   </label>
                 </div>
               </div>
             </div>
 
-            <div className="flex flex-col mt-8 w-10/12">
+            <div className="flex flex-col py-5 w-10/12">
               <button
                 onClick={handleAddOrder}
                 className="capitalize py-[5px] px-4 bg-[#6FCF97] font-bold text-lg text-white dark:text-gray-900 rounded-[4px] hover:bg-[#54ff9b]  transition-all duration-500 cursor-pointer  "
@@ -220,53 +227,67 @@ const UserCheckout = () => {
               </button>
             </div>
           </div>
-        </div>
+        ) : (
+          <div className="w-10/12 md:w-8/12 py-3 bg-[#F3F4F6] dark:bg-gray-900 flex flex-col justify-center items-center min-h-[65vh]">
+            <div className="flex  justify-center items-center bg-green-600 dark:bg-green-300 text-white dark:text-gray-800 rounded-full h-[200px] w-[200px]">
+              <FaCheck className="text-[150px]" />
+            </div>
 
-        <div className="w-10/12 md:w-3/12 mt-[5%] md:mt-[0%] capitalize text-[#828282)] px-6 py-3 dark:text-green-300 bg:[#F3F4F6] dark:bg-gray-900  asideScroll max-h-[45vh] overflow-y-auto">
-          <div>
-            <h1 className=" font-body font-bold  text-xl text-center py-3">
-              {t("Your Order")}
-            </h1>
+            <p className="text-black dark:text-green-300  text-xl md:text-3xl font-bold mt-7">
+              {t("Your order has been received")}
+            </p>
+          </div>
+        )}
 
-            {basketProductsItems && basketProductsItems.length > 0 ? (
-              basketProductsItems.map((product: BasketPostDataType) => (
-                <ul className="py-2 w-full " key={product.id}>
-                  <li className="text-[14px] my-1">
-                    <span className="text-lg font-medium">
-                      <span>{product.count}</span>
-                      <span>
-                        <span className="mx-[6px]">x</span>
-                        {product.name}
+        {!orderAdded ? (
+          <div className="w-10/12 md:w-3/12 mt-[5%] md:mt-[0%] capitalize text-[#828282)] px-6 py-3 dark:text-green-300 bg-[#F3F4F6] dark:bg-gray-900  asideScroll max-h-[45vh] overflow-y-auto">
+            <div>
+              <h1 className=" font-body font-bold  text-xl text-center py-3">
+                {t("Your Order")}
+              </h1>
+
+              {basketProductsItems && basketProductsItems.length > 0 ? (
+                basketProductsItems.map((product: BasketPostDataType) => (
+                  <ul className="py-2 w-full " key={product.id}>
+                    <li className="text-[14px] my-1">
+                      <span className="text-lg font-medium">
+                        <span>{product.count}</span>
+                        <span>
+                          <span className="mx-[6px]">x</span>
+                          {product.name}
+                        </span>
+                        <span>
+                          <span className="mx-[6px] text-[18px]">$</span>
+                          <span className="ml-[2px]">{product.amount}</span>
+                        </span>
                       </span>
-                      <span>
-                        <span className="mx-[6px] text-[18px]">$</span>
-                        <span className="ml-[2px]">{product.amount}</span>
-                      </span>
-                    </span>
-                  </li>
-                </ul>
-              ))
-            ) : (
-              <div className=" flex items-center   flex-col  justify-center  pb-4 text-red-600 dark:text-green-400">
-                <div>
-                  <IoIosBasket className="w-[125px] h-[100px] " />
+                    </li>
+                  </ul>
+                ))
+              ) : (
+                <div className=" flex items-center   flex-col  justify-center  pb-4 text-red-600 dark:text-green-400">
+                  <div>
+                    <IoIosBasket className="w-[125px] h-[100px] " />
+                  </div>
+                  <p className="capitalize font-bold  flex flex-col items-center pb-3 ">
+                    <span>oops !</span> <span>basket is empty</span>
+                  </p>
                 </div>
-                <p className="capitalize font-bold  flex flex-col items-center pb-3 ">
-                  <span>oops !</span> <span>basket is empty</span>
-                </p>
-              </div>
-            )}
-
-            <div className="border-t-2 border-t-gray-400 dark:border-t-green-400 py-5 px-2 flex justify-between">
-              <p className="font-medium text-[18px]"> {t("Total")} </p>
-              {basketProducts && (
-                <p className="font-semibold">
-                  $ {basketProducts?.total_amount}
-                </p>
               )}
+
+              <div className="border-t-2 border-t-gray-400 dark:border-t-green-400 py-5 px-2 flex justify-between">
+                <p className="font-medium text-[18px]"> {t("Total")} </p>
+                {basketProducts && (
+                  <p className="font-semibold">
+                    $ {basketProducts?.total_amount}
+                  </p>
+                )}
+              </div>
             </div>
           </div>
-        </div>
+        ) : (
+          ""
+        )}
       </div>
     </div>
   );
