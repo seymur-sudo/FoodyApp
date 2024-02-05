@@ -19,9 +19,10 @@ const Login: React.FC = () => {
   const [cookie, setCookie] = useState<string|undefined|null>(null)
   const [isLoad, setIsLoad] = useState<boolean>(false)
   const [password, setPassword] = useState<string>("");  
+  const accessJWT = Cookies.get('accessJWT');
   useEffect(() => {
     setCookie(Cookies.get('accessJWT'))
-  }, [Cookies.get('accessJWT')])
+  }, [accessJWT])
   const { mutate: signinAdmin } = useMutation({
     mutationFn: async () =>
       await axios.post("/api/auth/signin", {
