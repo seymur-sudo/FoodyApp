@@ -10,10 +10,10 @@ const UserAside = () => {
   const { push, pathname } = useRouter();
 
   return (
-    <div className="w-3/12 hidden md:flex flex-col items-center pt-4 pb-8  bg-[#F3F4F6] dark:bg-gray-900 capitalize rounded-md ">
+    <div className="w-3/12 hidden h-[66vh] md:flex flex-col items-center pt-4 pb-8  bg-[#F3F4F6] dark:bg-gray-900 capitalize rounded-md ">
       <ul className="cursor-pointer py-4   text-[#828282)] dark:text-cyan-300 ">
         <li
-          className={`flex items-center px-6 py-3 rounded-[4px] ${
+          className={`flex items-center p-6 rounded-[4px] ${
             pathname === ROUTER.USER_PROFILE
               ? "text-[#D63626] dark:text-blue-500 bg-red-100 dark:bg-cyan-100"
               : "text-[#828282] dark:text-gray-400"
@@ -24,7 +24,7 @@ const UserAside = () => {
           <span className="text-xl font-semibold ">your profile</span>
         </li>
         <li
-          className={`flex items-center px-6 py-3 rounded-[4px] ${
+          className={`flex items-center p-6 rounded-[4px] ${
             pathname === ROUTER.USER_BASKET
               ? "text-[#D63626] dark:text-blue-500 bg-red-100 dark:bg-cyan-100"
               : "text-[#828282] dark:text-gray-400"
@@ -36,7 +36,7 @@ const UserAside = () => {
         </li>
 
         <li
-          className={`flex items-center px-6 py-3 mt-2 rounded-[4px] ${
+          className={`flex items-center p-6  rounded-[4px] ${
             pathname === ROUTER.USER_ORDERS
               ? "text-[#D63626] dark:text-blue-500 bg-red-100 dark:bg-cyan-100"
               : "text-[#828282] dark:text-gray-400"
@@ -47,7 +47,7 @@ const UserAside = () => {
           <span className="text-xl font-semibold ">your orders</span>
         </li>
         <li
-          className={`flex items-center px-6 py-3 my-2 rounded-[4px] ${
+          className={`flex items-center p-6 rounded-[4px] ${
             pathname === ROUTER.USER_CHECKOUT
               ? "text-[#D63626] dark:text-green-800 bg-red-100 dark:bg-green-300"
               : "text-[#828282] dark:text-gray-400"
@@ -58,7 +58,7 @@ const UserAside = () => {
           <span className="text-xl font-semibold ">checkout</span>
         </li>
         <li
-          className={`flex items-center px-6 py-3 rounded-[4px] ${
+          className={`flex items-center p-6 rounded-[4px] ${
             pathname === ROUTER.USER_BASKET
               ? "text-[#D63626] dark:text-blue-500 bg-red-100 dark:bg-cyan-100"
               : "text-[#828282] dark:text-gray-400"

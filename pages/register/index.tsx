@@ -10,11 +10,14 @@ import axios from "axios";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useMutation } from "react-query";
 import { FadeLoader } from "react-spinners";
+import { ROUTER } from "../../shared/constant/router";
+import { isValidEmail } from "@/constant/ValidRegex";
 
 const RegisterPage: React.FC = () => {
   const { t } = useTranslation("common");
-  const router = useRouter();
-  const [isLoad,setIsLoad]=useState<boolean>(false)
+  const { push } = useRouter();
+
+  const [isLoad, setIsLoad] = useState<boolean>(false);
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [fullName, setFullName] = useState<string>("");
@@ -30,15 +33,15 @@ const RegisterPage: React.FC = () => {
       }),
     onSuccess: (data) => {
       if (data) {
-        setIsLoad(true)
+        setIsLoad(true);
         setTimeout(() => {
           toast.success("Registered With Successfully", {
             autoClose: 1000,
           });
         });
         setTimeout(() => {
-          router.push("/login");
-        }, 2000);
+          push(ROUTER.LOGIN);
+        }, 1500);
       } else {
         setTimeout(() => {
           toast.error("Please, Enter Correct Email and Password!", {
@@ -55,7 +58,25 @@ const RegisterPage: React.FC = () => {
     },
   });
 
+  const isFormValid = (): boolean => {
+    return (
+      email.trim() !== "" &&
+      password.trim() !== "" &&
+      userName.trim() !== "" &&
+      fullName.trim() !== ""
+    );
+  };
+
   const signupClient = () => {
+    if (!isFormValid()) {
+      toast.error("Please fill in all required fields", { autoClose: 1500 });
+      return;
+    }
+    if (!isValidEmail(email)) {
+      toast.error("Please enter a valid email address", { autoClose: 1500 });
+      return;
+    }
+
     signupUser();
   };
   return (
@@ -67,9 +88,9 @@ const RegisterPage: React.FC = () => {
       </Head>
       <main className="sm:mr-32px sm:ml-32px" style={{ zoom: "0.66" }}>
         <ClientHeader />
-        <div className="flex-col mx-3 my-3 flex lg:flex-row sm:mx-0">
+        <div className="flex-col mx-3  flex lg:flex-row sm:mx-0">
           <div
-            className="bg-clientRed dark:bg-green-900 py-3 lg:w-3/6 w-full lg:h-[900px] h-[160px] sm:pt-24 sm:pl-40 sm:mr-10 sm:pb-48 sm:pr-15 px-10 rounded-4 mb-11"
+            className="bg-clientRed dark:bg-green-600 py-3 lg:w-3/6 w-full lg:h-[900px] h-[160px] sm:pt-24 sm:pl-40 sm:mr-10 sm:pb-48 sm:pr-15 px-10 rounded-4 mb-11"
             data-aos="fade-right"
           >
             <Image
@@ -83,12 +104,12 @@ const RegisterPage: React.FC = () => {
           <div className="lg:w-2/6 mx-auto w-full" data-aos="fade-left">
             <div className="flex lg:ml-20 mx-auto justify-center flex-row sm:gap-x-16 sm:ml-174px sm:mb-18 sm:mt-105px gap-x-9 mb-15">
               <p
-                onClick={() => router.push("/login")}
+                onClick={() => push(ROUTER.LOGIN)}
                 className="cursor-pointer dark:text-white text-clientGray sm:text-3xl text-xl font-normal"
               >
                 {t("Login")}
               </p>
-              <p className="text-clientRed dark:text-green-400 sm:text-3xl text-xl font-medium sm:mr-44">
+              <p className="text-clientRed dark:text-green-300 sm:text-3xl text-xl font-medium sm:mr-44">
                 {t("Register")}
               </p>
             </div>
@@ -141,15 +162,15 @@ const RegisterPage: React.FC = () => {
               onClick={() => {
                 signupClient();
               }}
-              className="w-full text-22 rounded-5 text-white sm:h-68px dark:bg-green-900 bg-clientRed font-medium h-14"
+              className="w-full text-2xl font-semibold rounded-5 text-white sm:h-68px dark:bg-green-600 bg-clientRed  h-14 hover:opacity-75 transition-all duration-500"
             >
-              {isLoad ? <div className='flex justify-center items-center mx-0 my-auto'>
-                <FadeLoader
-                  color="#fff"
-                  // size={15}
-                />
-              </div> : t("Register")}
-              
+              {isLoad ? (
+                <div className="flex justify-center items-center mx-0 my-auto">
+                  <FadeLoader color="#fff" />
+                </div>
+              ) : (
+                t("Register")
+              )}
             </button>
           </div>
         </div>

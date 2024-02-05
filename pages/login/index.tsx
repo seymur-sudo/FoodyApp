@@ -9,13 +9,16 @@ import ClientHeader from "@/components/Client/ClientHeader";
 import { GetServerSideProps } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useMutation } from "react-query";
-import axios, { AxiosResponse } from "axios"; 
-import {FadeLoader} from "react-spinners"
+import axios, { AxiosResponse } from "axios";
+import { FadeLoader } from "react-spinners";
+import { isValidEmail } from "@/constant/ValidRegex";
+import { ROUTER } from "../../shared/constant/router";
+
 const LoginPage: React.FC = () => {
   const { t } = useTranslation("common");
-  const router = useRouter();
+  const { push } = useRouter();
   const [email, setEmail] = useState<string>("");
-  const [isLoad, setIsLoad] = useState<boolean>(false)
+  const [isLoad, setIsLoad] = useState<boolean>(false);
   const [password, setPassword] = useState<string>("");
 
   const { mutate: signinUser } = useMutation({
@@ -25,20 +28,19 @@ const LoginPage: React.FC = () => {
         password,
       }),
     onSuccess: (data: AxiosResponse) => {
-      if (data  && data.data && data.data.user) {
-        setIsLoad(true)
+      if (data && data.data && data.data.user) {
+        setIsLoad(true);
         setTimeout(() => {
           toast.success("Signin successfully!", { autoClose: 1000 });
         });
-        // console.log(data?.data.user);
         localStorage.setItem("refresh_token", data?.data.user.refresh_token);
         localStorage.setItem("access_token", data?.data.user.access_token);
         setTimeout(() => {
-          router.push("/");
-        }, 2000);
+          push(ROUTER.HOME);
+        }, 1500);
       } else {
-          toast.error("Please, Enter Correct Email and Password! ", {
-            autoClose: 1000,
+        toast.error("Please, Enter Correct Email and Password! ", {
+          autoClose: 1000,
         });
       }
     },
@@ -51,7 +53,20 @@ const LoginPage: React.FC = () => {
     },
   });
 
+  const isFormValid = (): boolean => {
+    return email.trim() !== "" && password.trim() !== "";
+  };
+
   const signClient = () => {
+    if (!isFormValid()) {
+      toast.error("Please fill in all required fields", { autoClose: 1500 });
+      return;
+    }
+    if (!isValidEmail(email)) {
+      toast.error("Please enter a valid email address", { autoClose: 1500 });
+      return;
+    }
+
     signinUser();
   };
   return (
@@ -68,7 +83,7 @@ const LoginPage: React.FC = () => {
         <ClientHeader />
         <div className="md:flex-row flex-col mx-3 my-3 flex sm:mx-0 ">
           <div
-            className="lg:w-3/6 md:w-[50%] dark:bg-green-900 w-full bg-clientRed lg:h-fit h-[160px] rounded-4 sm:mr-10"
+            className="lg:w-3/6 md:w-[50%] dark:bg-green-600 w-full bg-clientRed lg:h-fit h-[160px] rounded-4 sm:mr-10"
             data-aos="fade-right"
           >
             <Image
@@ -85,7 +100,7 @@ const LoginPage: React.FC = () => {
                 {t("Login")}
               </p>
               <p
-                onClick={() => router.push("/register")}
+                onClick={() => push(ROUTER.REGISTER)}
                 className="cursor-pointer dark:text-white text-clientGray sm:text-3xl text-xl font-normal sm:mr-48"
               >
                 {t("Register")}
@@ -116,14 +131,15 @@ const LoginPage: React.FC = () => {
             </div>
             <button
               onClick={() => signClient()}
-              className="w-full rounded-5 dark:bg-green-900 text-22 text-white sm:h-68px bg-clientRed font-medium h-14"
+              className="w-full rounded-5 dark:bg-green-600 text-22 text-white sm:h-68px bg-clientRed text-2xl font-semibold h-14 hover:opacity-75 transition-all duration-500"
             >
-              {isLoad ? <div className='flex justify-center items-center mx-0 my-auto'>
-                <FadeLoader
-                  color="#fff"
-                  // size={15}
-                />
-              </div> : t('Login')}
+              {isLoad ? (
+                <div className="flex justify-center items-center mx-0 my-auto">
+                  <FadeLoader color="#fff" />
+                </div>
+              ) : (
+                t("Login")
+              )}
             </button>
           </div>
         </div>
