@@ -10,6 +10,7 @@ export const ROUTER = {
     ADMIN_OFFERS: "/admin/offers",
     ADMIN_PRODUCTS: "/admin/products",
     ABOUT_US:"/about-us",
+    ADMIN_CHAT:"/admin/chat",
     RESTAURANTS:"/restaurants",
     HOW_IT_WORKS:"/how-it-works",
     FAQS:"/faqs",
