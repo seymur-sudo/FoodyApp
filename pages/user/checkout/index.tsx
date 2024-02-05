@@ -15,6 +15,7 @@ import { addOrder, getUser } from "@/services";
 import { toast } from "react-toastify";
 import { QUERIES } from "../../../constant/Queries";
 import { FaCheck } from "react-icons/fa6";
+import { isValidPhone } from "@/constant/ValidRegex";
 
 const UserCheckout = () => {
   const { data: userD, isLoading, isError } = useQuery(QUERIES.User, getUser);
@@ -62,6 +63,13 @@ const UserCheckout = () => {
     }
   };
   const handleAddOrder = () => {
+    const phoneValue = phoneRef.current?.value;
+
+    if (phoneValue && !isValidPhone(phoneValue)) {
+      toast.error("Please enter a valid phone number", { autoClose: 1500 });
+      return;
+    }
+
     handleCheckRadio();
 
     const selectedPaymentMethod =
