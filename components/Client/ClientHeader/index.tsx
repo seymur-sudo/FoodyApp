@@ -8,7 +8,7 @@ const ClientHeader = () => {
   const { toggleTheme } = useThemeContext() as ThemeContextProps;
   return (
     <>
-      <nav className="items-center flex-row dark:bg-green-900 rounded-4 mb-20px sm:mt-30 pr-6 flex bg-clientRed justify-between">
+      <nav className="items-center flex-row dark:bg-green-600 rounded-4 mb-20px sm:mt-30 pr-6 flex bg-clientRed justify-between">
         <div className=" text-white ml-3 font-mukta text-25 sm:text-35 font-extrabold my-13px sm:ml-9 sm:my-9">
           Foody.
         </div>

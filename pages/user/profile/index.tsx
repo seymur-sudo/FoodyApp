@@ -1,4 +1,4 @@
-import React, { useState,useRef } from "react";
+import React, { useState, useRef } from "react";
 import UserAside from "../../../components/Client/UserAside/index";
 import UserAsideModal from "@/components/Client/UserAsideModal";
 import MainHeader from "../../../components/Client/MainHeader/index";
@@ -17,27 +17,34 @@ import { GetServerSideProps } from "next";
 import { fileStorage } from "../../../server/configs/firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { updateUser,getUser } from "@/services";
+import { updateUser, getUser } from "@/services";
+import { isValidPhone } from "@/constant/ValidRegex";
 
 const ProfileUser = () => {
-  const { data: userD, isLoading, isError } = useQuery(QUERIES.User, getUser)
+  const { data: userD, isLoading, isError } = useQuery(QUERIES.User, getUser);
   console.log(userD);
   const fullNRef = useRef<HTMLInputElement>(null);
   const addressRef = useRef<HTMLInputElement>(null);
   const userNRef = useRef<HTMLInputElement>(null);
   const phoneRef = useRef<HTMLInputElement>(null);
   const mailRef = useRef<HTMLInputElement>(null);
-  const lastUser:UserDataType={
-    email:"",
+  const lastUser: UserDataType = {
+    email: "",
     address: "",
     username: "",
     img_url: "",
     phone: null,
-    fullname: ""
-  }
-  const [newUser,setNewUser]=useState<UserDataType>(lastUser)
-  const { showUserModal,setSelectedFile,setUserImg,userImg, closeUserModal, modalSpring } =
-    useSidebarContext() as SidebarContextProps;
+    fullname: "",
+  };
+  const [newUser, setNewUser] = useState<UserDataType>(lastUser);
+  const {
+    showUserModal,
+    setSelectedFile,
+    setUserImg,
+    userImg,
+    closeUserModal,
+    modalSpring,
+  } = useSidebarContext() as SidebarContextProps;
   const { t } = useTranslation("common");
   const handleNewImg = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -74,10 +81,9 @@ const ProfileUser = () => {
     onSuccess: () => {
       queryClient.invalidateQueries(QUERIES.User);
       setNewUser(lastUser);
-      setUserImg(null)
+      setUserImg(null);
       setSelectedFile(null);
-      setTimeout(() => {
-      }, 1000);
+      setTimeout(() => {}, 1000);
       toast.success("Profile Updated successfully!", {
         autoClose: 1000,
       });
@@ -89,21 +95,36 @@ const ProfileUser = () => {
       });
     },
   });
-  const handleUpdateUser=()=>{
+  const handleUpdateUser = () => {
+    const phoneValue = phoneRef.current?.value;
+
+    if (
+      !fullNRef.current?.value ||
+      !userNRef.current?.value ||
+      !phoneValue ||
+      !addressRef.current?.value
+    ) {
+      toast.error("Please fill in all required fields", { autoClose: 1500 });
+      return;
+    }
+
+    if (phoneValue && !isValidPhone(phoneValue)) {
+      toast.error("Please enter a valid phone number", { autoClose: 1500 });
+      return;
+    }
     setNewUser({
-      email:mailRef.current?.value,
-      address:addressRef.current?.value,
+      email: mailRef.current?.value,
+      address: addressRef.current?.value,
       username: userNRef.current?.value,
-      img_url: userImg??userD?.data.user.img_url,
-      phone: phoneRef.current?.value,
+      img_url: userImg ?? userD?.data.user.img_url,
+      phone: phoneValue,
       fullname: fullNRef.current?.value,
-    })
-    
-    
+    });
+
     setTimeout(() => {
-      mutation.mutate()
+      mutation.mutate();
     }, 100);
-  }
+  };
   return (
     <>
       <MainHeader />
@@ -165,7 +186,12 @@ const ProfileUser = () => {
                   {t("upload")}
                 </p>
               </div>
-              <input onChange={(e)=>handleNewImg(e)} id="user_img" type="file" className="hidden" />
+              <input
+                onChange={(e) => handleNewImg(e)}
+                id="user_img"
+                type="file"
+                className="hidden"
+              />
             </label>
           </div>
 
@@ -176,7 +202,7 @@ const ProfileUser = () => {
               </label>
               <input
                 type="text"
-                defaultValue={userD?.data.user.fullname??""}
+                defaultValue={userD?.data.user.fullname ?? ""}
                 ref={fullNRef}
                 className="py-2 px-4 bg-white dark:bg-black text-black dark:text-white rounded-[4px]"
               />
@@ -187,7 +213,7 @@ const ProfileUser = () => {
               </label>
               <input
                 type="text"
-                defaultValue={userD?.data.user.username??""}
+                defaultValue={userD?.data.user.username ?? ""}
                 ref={userNRef}
                 className="py-2 px-4 bg-white dark:bg-black text-black dark:text-white rounded-[4px]"
               />
@@ -198,7 +224,7 @@ const ProfileUser = () => {
               </label>
               <input
                 type="text"
-                defaultValue={userD?.data.user.phone??""}
+                defaultValue={userD?.data.user.phone ?? ""}
                 ref={phoneRef}
                 className="py-2 px-4 bg-white dark:bg-black text-black dark:text-white rounded-[4px]"
               />
@@ -211,7 +237,7 @@ const ProfileUser = () => {
               <input
                 type="email"
                 disabled
-                defaultValue={userD?.data.user.email??""}
+                defaultValue={userD?.data.user.email ?? ""}
                 ref={mailRef}
                 className="py-2 px-4 bg-white dark:bg-black text-black dark:text-white rounded-[4px]"
               />
@@ -222,13 +248,16 @@ const ProfileUser = () => {
               </label>
               <input
                 type="text"
-                defaultValue={userD?.data.user.address??""}
+                defaultValue={userD?.data.user.address ?? ""}
                 ref={addressRef}
                 className="py-2 px-4 bg-white dark:bg-black text-black dark:text-white rounded-[4px]"
               />
             </div>
             <div className="flex flex-col mt-8 w-10/12 md:w-5/12">
-              <button onClick={()=>handleUpdateUser()} className="capitalize py-[5px] px-4 bg-[#6FCF97] font-bold text-lg text-white dark:text-gray-900 rounded-[4px] hover:bg-[#54ff9b]  transition-all duration-500 cursor-pointer  ">
+              <button
+                onClick={() => handleUpdateUser()}
+                className="capitalize py-[5px] px-4 bg-[#6FCF97] font-bold text-lg text-white dark:text-gray-900 rounded-[4px] hover:bg-[#54ff9b]  transition-all duration-500 cursor-pointer  "
+              >
                 {t("Send")}
               </button>
             </div>
