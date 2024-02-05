@@ -25,13 +25,14 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 
 const AdminDashboard: NextPage = () => {
   const [cookie, setCookie] = useState<string|undefined>("")
+  const accessJWT = Cookies.get('accessJWT');
   useEffect(() => {
     if (Cookies.get('accessJWT')) {
       setCookie(Cookies.get('accessJWT'))
     } else {
       setCookie('notfound')
     }
-  }, [Cookies.get('accessJWT')])
+  }, [accessJWT])
 
   const { t } = useTranslation('common')
   return (
