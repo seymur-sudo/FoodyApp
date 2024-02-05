@@ -11,7 +11,7 @@ import { SidebarContextProps, orderItem } from "@/interfaces";
 import { QUERIES } from "../../../constant/Queries";
 import { useQuery } from "react-query";
 import DeleteModal from "@/components/Admin/Modals/DeleteModal";
-import { PDFDocument, rgb } from 'pdf-lib';
+import { PDFDocument,rgb} from 'pdf-lib';
 import {
   Dropdown,
   DropdownTrigger,
@@ -51,29 +51,146 @@ const UserOrders = () => {
   const handleOrderShow = (item: orderItem[]) => {
     openUserModal();
     setOrderItems(item);
+    setTimeout(() => {
+      generatePDF(item)
+      
+    }, 1000);
   };
-  // const generatePDF = async () => {
-  //   // PDF oluşturma işlemleri
-  //   const pdfDoc = await PDFDocument.create();
-  //   const page = pdfDoc.addPage([350, 250]);
+  const generatePDF = async (data:orderItem[]) => {
+    // PDF oluşturma işlemleri
+    const confirmUpload = window.confirm("Whould you like your order bill uploaded as pdf?");
+
+    if (!confirmUpload) {
+        return; // Eğer kullanıcı yükleme yapmak istemiyorsa, fonksiyondan çık
+    }
+    const pdfDoc = await PDFDocument.create();
+    const pageHeight = (data.length * 100)+370; // Örnek bir hesaplama
+    const pageWidth = 250;
+    const page = pdfDoc.addPage([pageWidth, pageHeight]); // Sayfa boyutunu ayarlayın
+    //QRCODE
+    const qrUrl = '/qrcode.png';
+    const responseQr = await fetch(qrUrl);
+    const imageQrBytes = await responseQr.arrayBuffer();
+    const pngQrImage = await pdfDoc.embedPng(imageQrBytes);
+    //LOGO
+    const logoUrl='/EAlogo.jpeg'
+    const responseLogo = await fetch(logoUrl);
+    const imageLogoBytes = await responseLogo.arrayBuffer();
+    const jpegLogoImage = await pdfDoc.embedJpg(imageLogoBytes);
+
+    let y = pageHeight-80; // Y koordinatı
+    let total:number=0;
+    let totalVat:number=0
+    page.drawText('Foody Delivery ©', {
+      x: 55,
+      y: pageHeight-40, // Sayfanın üst kısmında daha büyük bir yazı başlığı için y koordinatını ayarlayın
+      size: 18,
+      font: await pdfDoc.embedFont('Helvetica-Bold'), // Kalın yazı tipi
+      color: rgb(0, 0, 0), // Siyah renk
+  });
+    // Veri dizisindeki her bir öğe için işlem yap
+    data.map(async (item:orderItem) => {
+      
+        // Diğer verileri yazdır
+        page.drawText(`Name: ${item.name}`, {
+            x: 20,
+            y: y,
+            size: 12,
+        });
+      
+        page.drawText(`Price: ${item.price}`, {
+            x: 20,
+            y: y - 20,
+            size: 12,
+        });
+      
+        page.drawText(`Count: ${item.count}`, {
+            x: 20,
+            y: y - 40,
+            size: 12,
+        });
+      
+        page.drawText(`Amount: ${item.amount}`, {
+            x: 20,
+            y: y - 60,
+            size: 12,
+        });
+        page.drawText("-----------------------------------------------------",{
+          x: 20,
+          y: y+20,
+          size: 12,
+        })
+         // Bir sonraki satırın y koordinatını ayarlayın
+         y -= 100;
+         total +=Number(item.amount)
+         totalVat=(total*0.18)
+    });
+    page.drawText("-----------------------------------------------------",{
+      x: 20,
+      y: y+20,
+      size: 12,
+    })
+    page.drawText(`Discount: 0$`,{
+      x: 20,
+      y: y,
+      font: await pdfDoc.embedFont('Helvetica-Bold'),
+      size: 12,
+    })
+    page.drawText(`Total payment with VAT: ${total}$`,{
+      x: 20,
+      y: y-20,
+      font: await pdfDoc.embedFont('Helvetica-Bold'),
+      size: 12,
+    })
+    page.drawText(`Value Added Tax: ${totalVat.toFixed(2)}$ (18%)`,{
+      x: 20,
+      y: y-40,
+      font: await pdfDoc.embedFont('Helvetica-Bold'),
+      size: 12,
+    })
+    page.drawText("-----------------------------------------------------",{
+      x: 20,
+      y: y - 60,
+      size: 12,
+    })
+    page.drawText("Scan QR code and earn 20% discount!",{
+      x: 20,
+      y: y - 100,
+      size: 12,
+    })
+    // Resmi ekleyin
+    const qrImageWidth = 150;
+    const logoImageWidth = 30;
+
+// QR kodunun X koordinatı, sayfa genişliğinin yarısı kadar olmalı
+const qrImageX = (page.getWidth() - qrImageWidth) / 2;
+
+// Logo resminin X koordinatı, QR kodunun merkezinin solunda olmalı
+const logoImageX = qrImageX + (qrImageWidth - logoImageWidth) / 2;
+
+// Resimleri ekleyin
+page.drawImage(pngQrImage, {
+  x: qrImageX,
+  y: y - 265,
+  width: qrImageWidth,
+  height: qrImageWidth,
+});
+page.drawImage(jpegLogoImage, {
+  x: logoImageX,
+  y: y - 265 + (qrImageWidth - logoImageWidth) / 2,
+  width: logoImageWidth,
+  height: logoImageWidth,
+});
+    // PDF dosyasını Uint8Array olarak al
+    const pdfBytes = await pdfDoc.save();
   
-  //   page.drawText('Merhaba, dünya!', {
-  //     x: 50,
-  //     y: 200,
-  //     size: 30,
-  //     color: rgb(0, 0, 0),
-  //   });
-  
-  //   // PDF dosyasını Uint8Array olarak al
-  //   const pdfBytes = await pdfDoc.save();
-  
-  //   // PDF dosyasını indir
-  //   const blob = new Blob([pdfBytes], { type: 'application/pdf' });
-  //   const link = document.createElement('a');
-  //   link.href = window.URL.createObjectURL(blob);
-  //   link.download = 'example.pdf';
-  //   link.click();
-  // };
+    // PDF dosyasını indir
+    const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+    const link = document.createElement('a');
+    link.href = window.URL.createObjectURL(blob);
+    link.download = 'OrderBill.pdf';
+    link.click();
+};
   const openDeleteModal = (orderData: OrderPostDataType | null) => {
     setshowDelete(true);
     setDeletedOrder(orderData);
