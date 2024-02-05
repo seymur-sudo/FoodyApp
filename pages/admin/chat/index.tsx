@@ -1,5 +1,7 @@
 import React from "react";
 import Layout from "@/components/Admin/Layout";
+import { GetServerSideProps } from "next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { IoSend } from "react-icons/io5";
 import { MdEmojiEmotions } from "react-icons/md";
 
@@ -15,3 +17,8 @@ const Chat: React.FC = () => {
 };
 
 export default Chat;
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => ({
+  props: {
+    ...(await serverSideTranslations(locale as string, ["common"])),
+  },
+});
