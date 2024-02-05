@@ -17,8 +17,8 @@ const Chat: React.FC = () => {
 };
 
 export default Chat;
-export const getServerSideProps: GetServerSideProps = async ({ locale }) => ({
-  props: {
-    ...(await serverSideTranslations(locale as string, ["common"])),
-  },
-});
+  export const getServerSideProps: GetServerSideProps = async ({ locale }) => ({
+    props: {
+      ...(await serverSideTranslations(locale as string, ["common"])),
+    },
+  });
