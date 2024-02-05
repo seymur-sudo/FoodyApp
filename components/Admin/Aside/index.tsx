@@ -12,13 +12,15 @@ import { useRouter } from "next/navigation";
 import { ROUTER } from "../../../shared/constant/router";
 import { useTranslation } from "next-i18next";
 import Image from "next/image";
+import Cookies from 'js-cookie'
 
 export const Aside: React.FC = () => {
   const { t } = useTranslation("common");
   const router = useRouter();
   const handleLogout=()=>{
-    localStorage.removeItem("access_token_admin")
-    localStorage.removeItem("refresh_token_admin")
+    Cookies.remove("accessJWT")
+    // localStorage.removeItem("access_token_admin")
+    // localStorage.removeItem("refresh_token_admin")
     router.push("/admin/login")
     
   }

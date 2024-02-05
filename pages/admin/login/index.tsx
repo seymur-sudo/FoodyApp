@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import Image from "next/image";
 import enImg from "../../../public/svgs/en.svg";
 import loginImg from "../../../public/svgs/LoginImg.svg";
 import { GetServerSideProps } from 'next';
+import NotFound from "@/public/svgs/405.gif"
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from "next-i18next";
 import { useMutation } from "react-query";
@@ -10,12 +11,17 @@ import axios, { AxiosResponse } from "axios";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import {FadeLoader} from "react-spinners"
+import Cookies from 'js-cookie'
 const Login: React.FC = () => {
   const router = useRouter();
   const { t } = useTranslation('common')
   const [email, setEmail] = useState<string>("");
+  const [cookie, setCookie] = useState<string|undefined|null>(null)
   const [isLoad, setIsLoad] = useState<boolean>(false)
-  const [password, setPassword] = useState<string>("");
+  const [password, setPassword] = useState<string>("");  
+  useEffect(() => {
+    setCookie(Cookies.get('accessJWT'))
+  }, [Cookies.get('accessJWT')])
   const { mutate: signinAdmin } = useMutation({
     mutationFn: async () =>
       await axios.post("/api/auth/signin", {
@@ -29,8 +35,9 @@ const Login: React.FC = () => {
           toast.success("Signin successfully!", { autoClose: 1000 });
         });
         // console.log(data?.data.user);
-        localStorage.setItem("refresh_token_admin", data?.data.user.refresh_token);
-        localStorage.setItem("access_token_admin", data?.data.user.access_token);
+        Cookies.set('accessJWT', data?.data.user.access_token)
+        // localStorage.setItem("refresh_token_admin", data?.data.user.refresh_token);
+        // localStorage.setItem("access_token_admin", data?.data.user.access_token);
         setTimeout(() => {
           router.push("/admin")
         }, 2000);
@@ -62,7 +69,9 @@ const Login: React.FC = () => {
     <>
   
       <div className="bg-bgc h-screen">
-        <h1 className="ml-9px text-24 pt-[4] sm:pt-57px sm:ml-32px font-mukta font-weight800 sm:text-28 text-logocolor">
+        {!cookie?
+        <>
+          <h1 className="ml-9px text-24 pt-[4] sm:pt-57px sm:ml-32px font-mukta font-weight800 sm:text-28 text-logocolor">
           <p
             className="text-logocolor font-mukta text-3xl font-extrabold leading-6 tracking-wider
         "
@@ -117,6 +126,7 @@ const Login: React.FC = () => {
             </div>
           </div>
         </div>
+        </>:<Image alt="" height={100} width={100} className='h-screen w-screen' src={NotFound} />}
       </div>
     </>
   );
