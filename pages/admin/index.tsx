@@ -3,22 +3,35 @@ import Head from "next/head";
 import Layout from "../../components/Admin/Layout/index";
 import { data } from "../../components/Admin/Charts/ChartDatas";
 import { data2 } from "../../components/Admin/Charts/ChartDatas";
+import NotFound from "@/public/svgs/405.gif"
 import { Doughnut } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import { GetServerSideProps } from 'next';
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import Cookies from 'js-cookie'
+import { HashLoader } from 'react-spinners'
 import {
   renderCustomizedLabel,
   COLORS,
 } from "../../components/Admin/Charts/ChartFunctions";
 import ChartMonths from "../../components/Admin/Charts/ChartMonths";
 import { ChartWeek } from "../../components/Admin/Charts/ChartDays";
+import { useEffect, useState } from "react";
+import Image from "next/image";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const AdminDashboard: NextPage = () => {
+  const [cookie, setCookie] = useState<string|undefined>("")
+  useEffect(() => {
+    if (Cookies.get('accessJWT')) {
+      setCookie(Cookies.get('accessJWT'))
+    } else {
+      setCookie('notfound')
+    }
+  }, [Cookies.get('accessJWT')])
 
   const { t } = useTranslation('common')
   return (
@@ -29,8 +42,18 @@ const AdminDashboard: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div>
+      {!cookie ?<div className='px-4 bg-[#1E1E30] min-h-screen'>
+        <div className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'>
+          <HashLoader
+            color="#C74FEB"
+            loading={true}
+            size={70}
+            aria-label="Loading Spinner"
+            data-testid="loader"
+          />
+        </div>
+      </div> : cookie === 'notfound'? <Image alt=""  className='h-screen w-screen' width={100} height={100} src={NotFound} />:
         <Layout>
-
           <div className="flex flex-wrap justify-center md:justify-evenly md:px-5 pb-4  bg-bgc">
             <div className="w-full md:w-5/12 flex flex-col justify-center p-3  py-8 pl-5  rounded-[14px] bg-bgg mb-[6%] md:mb-[3%]">
 
@@ -90,7 +113,7 @@ const AdminDashboard: NextPage = () => {
               </ResponsiveContainer>
             </div>
           </div>
-        </Layout>
+        </Layout>}
       </div>
     </div>
   );
