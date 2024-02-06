@@ -69,7 +69,6 @@ const LoginPage: React.FC = () => {
     initialValues: {
       email: "",
       password: "",
-      fullName: "",
     },
     validate,
     onSubmit: (values) => {
