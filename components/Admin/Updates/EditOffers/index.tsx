@@ -36,7 +36,7 @@ const EditOffer: React.FC = () => {
   });
 
   const handleInputChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = event.target;
     setEdtOffer((prevCategory) => ({
@@ -84,6 +84,12 @@ const EditOffer: React.FC = () => {
   };
 
   const handleEditOffer = async () => {
+    if (!edtOffer || !edtOffer.name || !edtOffer.description) {
+      toast.error("Please fill out all fields", {
+        autoClose: 1000,
+      });
+      return;
+    }
     if (edtOffer) {
       const editWithImg = {
         ...edtOffer,
@@ -168,7 +174,7 @@ const EditOffer: React.FC = () => {
               <div className="my-5 flex flex-col">
                 <label className="mb-1">Description:</label>
 
-                <input
+                <textarea
                   className="w-full pl-5 h-[125px]  rounded-[14px] bg-inputBg leading-10 resize-y"
                   name="description"
                   value={edtOffer?.description}
@@ -187,7 +193,7 @@ const EditOffer: React.FC = () => {
             onClick={handleEditOffer}
             className="capitalize rounded-[14px]  	border-color:[#970e79] border-solid  border-0 bg-[#C035A2] shadow-shadow2 hover:opacity-75 transition-all duration-500 w-5/12 py-3 md:py-4 text-[#fff] text-lg font-bold leading-5 tracking-[0.25px]"
           >
-            Edit offer
+            {editMutation.isLoading ? "offer is editing" : "edit offer"}
           </button>
         </div>
       </div>

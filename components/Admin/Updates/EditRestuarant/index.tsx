@@ -78,6 +78,19 @@ const EditRestuarant: React.FC = () => {
     }
   };
   const handleEditRestaurant = () => {
+    if (
+      !nameRef.current?.value ||
+      !categoryRef.current?.value ||
+      !cuisineRef.current?.value ||
+      !deliveryPriceRef.current?.value ||
+      !deliveryMinuteRef.current?.value ||
+      !addressRef.current?.value
+    ) {
+      toast.error("Please fill out all fields", {
+        autoClose: 1000,
+      });
+      return;
+    }
     setEdtRestaurant({
       name: nameRef.current?.value,
       category_id: categoryRef.current?.value,
@@ -106,7 +119,6 @@ const EditRestuarant: React.FC = () => {
     {
       onSuccess: () => {
         queryClient.invalidateQueries(QUERIES.Restaurants);
-        // setEdtRestaurant(firstState);
         setTimeout(() => {
           closeModal();
           setLastData(null);
@@ -207,8 +219,6 @@ const EditRestuarant: React.FC = () => {
                   <input
                     defaultValue={lastData?.name}
                     ref={nameRef}
-                    // name="name"
-                    // value={edtRestaurant.name}
                     onChange={handleChange}
                     type="text"
                     className="w-full p-2 rounded-[14px] bg-inputBg"
@@ -220,8 +230,6 @@ const EditRestuarant: React.FC = () => {
                   <textarea
                     defaultValue={lastData?.cuisine}
                     ref={cuisineRef}
-                    // name="cuisine"
-                    // value={edtRestaurant.cuisine}
                     onChange={handleChange}
                     className="w-full h-[100px]  rounded-[14px] bg-inputBg leading-10 resize-y"
                     rows={4}
@@ -234,8 +242,6 @@ const EditRestuarant: React.FC = () => {
                   <input
                     defaultValue={lastData?.delivery_price}
                     ref={deliveryPriceRef}
-                    // name="delivery_price"
-                    // value={edtRestaurant.cuisine}
                     onChange={handleChange}
                     type="number"
                     className="w-full p-2 rounded-[14px] bg-inputBg"
@@ -246,8 +252,6 @@ const EditRestuarant: React.FC = () => {
                   <input
                     type="number"
                     ref={deliveryMinuteRef}
-                    // name="delivery_min"
-                    // value={edtRestaurant.delivery_min}
                     onChange={handleChange}
                     defaultValue={lastData?.delivery_min}
                     className="w-full p-2 rounded-[14px] bg-inputBg"
@@ -258,8 +262,6 @@ const EditRestuarant: React.FC = () => {
                   <input
                     type="text"
                     ref={addressRef}
-                    // name="address"
-                    // value={edtRestaurant.address}
                     onChange={handleChange}
                     defaultValue={lastData?.address}
                     className="w-full p-2 rounded-[14px] bg-inputBg"
@@ -302,7 +304,7 @@ const EditRestuarant: React.FC = () => {
               onClick={handleEditRestaurant}
               className="capitalize rounded-[14px] 	border-color:[#970e79] border-solid  border-0 bg-[#C035A2] shadow-shadow2 hover:opacity-75 transition-all duration-500 w-5/12 py-3 md:py-4 text-[#fff] text-lg font-bold leading-5 tracking-[0.25px]"
             >
-              update restaurant
+              {mutation.isLoading ? "restaurant is editing" : "edit restaurant"}
             </button>
           </div>
         </div>

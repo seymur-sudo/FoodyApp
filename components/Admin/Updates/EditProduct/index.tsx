@@ -2,7 +2,10 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import uploadImg from "../../../../public/svgs/upload.svg";
 import { useSidebarContext } from "../../../../contexts/SidebarContext";
-import { RestaurantPostDataType, SidebarContextProps } from "../../../../interfaces/index";
+import {
+  RestaurantPostDataType,
+  SidebarContextProps,
+} from "../../../../interfaces/index";
 import { useMutation, useQueryClient } from "react-query";
 import { toast } from "react-toastify";
 import { QUERIES } from "../../../../constant/Queries";
@@ -10,21 +13,11 @@ import { editProduct } from "../../../../services/index";
 import { useQuery } from "react-query";
 import { getRestaurant } from "../../../../services/index";
 import { fileStorage } from "../../../../server/configs/firebase";
-import {
-  getDownloadURL,
-  ref,
-  uploadBytes,
-} from "firebase/storage";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 const EditProduct: React.FC = () => {
-  const {
-    show,
-    closeModal,
-    editedItem,
-    setSelectedFile,
-    newImg,
-    setNewImg,
-  } = useSidebarContext() as SidebarContextProps;
+  const { show, closeModal, editedItem, setSelectedFile, newImg, setNewImg } =
+    useSidebarContext() as SidebarContextProps;
   const { data, isLoading, isError } = useQuery(
     QUERIES.Restaurants,
     getRestaurant
@@ -42,8 +35,6 @@ const EditProduct: React.FC = () => {
       setTimeout(() => {
         closeModal();
       }, 1100);
-
-
     },
     onError: (error) => {
       toast.error(`Error editing product: ${error}`, {
@@ -53,7 +44,7 @@ const EditProduct: React.FC = () => {
   });
 
   const handleInputChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = event.target;
     const parsedValue = name === "price" ? parseFloat(value) : value;
@@ -87,7 +78,10 @@ const EditProduct: React.FC = () => {
                 ...prevProduct!,
                 img_url: downloadURL,
               }));
-              console.log("Dosyanın Firebase Edit Storage URL'si: ", downloadURL);
+              console.log(
+                "Dosyanın Firebase Edit Storage URL'si: ",
+                downloadURL
+              );
             })
             .catch((error) => {
               console.error("Download URL alınırken bir hata oluştu: ", error);
@@ -101,6 +95,19 @@ const EditProduct: React.FC = () => {
     }
   };
   const handleEditProduct = async () => {
+    if (
+      !editedProduct ||
+      !editedProduct.name ||
+      !editedProduct.description ||
+      !editedProduct.price ||
+      !editedProduct.rest_id
+    ) {
+      toast.error("Please fill out all fields", {
+        autoClose: 1000,
+      });
+      return;
+    }
+    
     if (editedProduct) {
       const editedProductWithImg = {
         ...editedProduct,
@@ -188,7 +195,7 @@ const EditProduct: React.FC = () => {
               <div className="my-5 flex flex-col">
                 <label className="mb-1">Description:</label>
 
-                <input
+                <textarea
                   className="w-full h-[100px] px-2 rounded-[14px] bg-inputBg leading-10 resize-y"
                   name="description"
                   value={editedProduct?.description}
@@ -219,10 +226,13 @@ const EditProduct: React.FC = () => {
                   onChange={handleInputChange}
                 >
                   <option value="">Select...</option>
-                  {data?.data.result.data.map((restaurant: RestaurantPostDataType, index) => (
-                    <option key={index} value={`${restaurant.name}`}>{restaurant.name}</option>
-
-                  ))}
+                  {data?.data.result.data.map(
+                    (restaurant: RestaurantPostDataType, index) => (
+                      <option key={index} value={`${restaurant.name}`}>
+                        {restaurant.name}
+                      </option>
+                    )
+                  )}
                 </select>
               </div>
             </div>

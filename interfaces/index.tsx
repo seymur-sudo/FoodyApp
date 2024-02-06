@@ -261,3 +261,12 @@ export interface orderItem {
   name: string | undefined;
   count: number | undefined;
 }
+
+export interface FormValues {
+  fullName?: string;
+  userName?: string;
+  email: string;
+  password: string;
+}
+
+

@@ -10,6 +10,8 @@ import { InitialCategoryState } from "../../../interfaces/index";
 import { QUERIES } from "../../../constant/Queries";
 import { fileStorage } from "../../../server/configs/firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { isFormValid } from "@/constant/ValidRegex";
+
 
 const initialState: InitialCategoryState = {
   name: "",
@@ -43,12 +45,9 @@ const AddCategory: React.FC = () => {
     },
   });
 
-  const isFormValid = (): boolean => {
-    return Object.values(newCategory).every((value) => value !== "");
-  };
 
   const handleAddCategory = async () => {
-    if (isFormValid()) {
+    if (isFormValid(newCategory)) {
       mutation.mutate();
     } else {
       toast.error("Please fill in all fields before creating the Category", {
@@ -189,11 +188,11 @@ const AddCategory: React.FC = () => {
           </button>
           <button
             className={`capitalize rounded-[14px] border-solid border-0 shadow-shadow1 transition-all duration-500 w-5/12 py-3 md:py-4 text-lg font-bold leading-5 tracking-[0.25px] ${
-              !isFormValid()
+              !isFormValid(newCategory)
                 ? "bg-[#5a6874] cursor-not-allowed"
                 : "bg-[#C035A2] hover:opacity-75"
             }`}
-            disabled={!isFormValid()}
+            disabled={!isFormValid(newCategory)}
             onClick={handleAddCategory}
           >
             {mutation.isLoading ? "category is creating" : " create category"}

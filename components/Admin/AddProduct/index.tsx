@@ -2,7 +2,10 @@ import React, { useState } from "react";
 import Image from "next/image";
 import uploadImg from "../../../public/svgs/upload.svg";
 import { useSidebarContext } from "../../../contexts/SidebarContext";
-import { RestaurantPostDataType, SidebarContextProps } from "../../../interfaces/index";
+import {
+  RestaurantPostDataType,
+  SidebarContextProps,
+} from "../../../interfaces/index";
 import { useMutation, useQueryClient } from "react-query";
 import { toast } from "react-toastify";
 import { InitialStateType } from "../../../interfaces/index";
@@ -12,6 +15,7 @@ import { getRestaurant } from "@/services/index";
 import { QUERIES } from "../../../constant/Queries";
 import { fileStorage } from "../../../server/configs/firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { isFormValid } from "@/constant/ValidRegex";
 
 const initialState: InitialStateType = {
   name: "",
@@ -22,10 +26,7 @@ const initialState: InitialStateType = {
 };
 
 const AddProduct: React.FC = () => {
-  const { data, isLoading, isError } = useQuery(
-    QUERIES.Restaurants,
-    getRestaurant
-  );
+  const { data } = useQuery(QUERIES.Restaurants, getRestaurant);
   const { isSidebarOpen, closeSidebar, setSelectedFile, newImg, setNewImg } =
     useSidebarContext() as SidebarContextProps;
   const [newProduct, setNewProduct] = useState<InitialStateType>(initialState);
@@ -51,12 +52,8 @@ const AddProduct: React.FC = () => {
     },
   });
 
-  const isFormValid = (): boolean => {
-    return Object.values(newProduct).every((value) => value !== "");
-  };
-
   const handleAddProduct = async () => {
-    if (isFormValid()) {
+    if (isFormValid(newProduct)) {
       mutation.mutate();
     } else {
       toast.error("Please fill in all fields before creating the product", {
@@ -66,7 +63,7 @@ const AddProduct: React.FC = () => {
   };
 
   const handleInputChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = event.target;
     const numericValue = isNaN(Number(value)) ? value : Number(value);
@@ -107,8 +104,6 @@ const AddProduct: React.FC = () => {
       console.error("No file selected");
     }
   };
-
-  // console.log("newProduct", newProduct);
 
   return (
     <>
@@ -187,7 +182,7 @@ const AddProduct: React.FC = () => {
               <div className="my-5 flex flex-col">
                 <label className="mb-1">Description:</label>
 
-                <input
+                <textarea
                   className="w-full h-[100px] px-2 rounded-[14px] bg-inputBg leading-10 resize-y"
                   name="description"
                   value={newProduct.description}
@@ -217,10 +212,13 @@ const AddProduct: React.FC = () => {
                   onChange={handleInputChange}
                 >
                   <option value="">Select...</option>
-                  {data?.data.result.data.map((restaurant:RestaurantPostDataType,index) => (
-                    <option key={index} value={`${restaurant.name}`}>{restaurant.name}</option>
-
-                  ))}
+                  {data?.data.result.data.map(
+                    (restaurant: RestaurantPostDataType, index) => (
+                      <option key={index} value={`${restaurant.name}`}>
+                        {restaurant.name}
+                      </option>
+                    )
+                  )}
                 </select>
               </div>
             </div>
@@ -236,11 +234,11 @@ const AddProduct: React.FC = () => {
           </button>
           <button
             className={`capitalize rounded-[14px] border-solid border-0 shadow-shadow1 transition-all duration-500 w-5/12 py-3 md:py-4 text-lg font-bold leading-5 tracking-[0.25px] ${
-              !isFormValid()
+              !isFormValid(newProduct)
                 ? "bg-[#5a6874] cursor-not-allowed"
                 : "bg-[#C035A2] hover:opacity-75"
             }`}
-            disabled={!isFormValid()}
+            disabled={!isFormValid(newProduct)}
             onClick={handleAddProduct}
           >
             {mutation.isLoading ? "product is creating" : "create product"}

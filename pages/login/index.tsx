@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import Head from "next/head";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
@@ -9,27 +9,39 @@ import ClientHeader from "@/components/Client/ClientHeader";
 import { GetServerSideProps } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useMutation } from "react-query";
-import axios, { AxiosResponse } from "axios";
 import { FadeLoader } from "react-spinners";
 import { isValidEmail } from "@/constant/ValidRegex";
 import { ROUTER } from "../../shared/constant/router";
+import { signInUser } from "@/services";
+import { useFormik } from "formik";
+import { FormValues } from "@/interfaces";
+
+const validate = (values: FormValues) => {
+  let errors: Partial<FormValues> = {};
+
+  if (!values.email) {
+    errors.email = "Required";
+  } else if (!isValidEmail(values.email)) {
+    errors.email = "Invalid email address";
+  }
+
+  if (!values.password) {
+    errors.password = "Required";
+    // } else if (!isValidPhone(values.phone)) {
+    //   errors.password = "Invalid phone number";
+  }
+
+  return errors;
+};
 
 const LoginPage: React.FC = () => {
   const { t } = useTranslation("common");
   const { push } = useRouter();
-  const [email, setEmail] = useState<string>("");
-  const [isLoad, setIsLoad] = useState<boolean>(false);
-  const [password, setPassword] = useState<string>("");
 
-  const { mutate: signinUser } = useMutation({
-    mutationFn: async () =>
-      await axios.post("/api/auth/signin", {
-        email,
-        password,
-      }),
-    onSuccess: (data: AxiosResponse) => {
+  const { mutate: signin } = useMutation({
+    mutationFn: signInUser,
+    onSuccess: (data) => {
       if (data && data.data && data.data.user) {
-        setIsLoad(true);
         setTimeout(() => {
           toast.success("Signin successfully!", { autoClose: 1000 });
         });
@@ -53,22 +65,18 @@ const LoginPage: React.FC = () => {
     },
   });
 
-  const isFormValid = (): boolean => {
-    return email.trim() !== "" && password.trim() !== "";
-  };
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+      fullName: "",
+    },
+    validate,
+    onSubmit: (values) => {
+      signin(values);
+    },
+  });
 
-  const signClient = () => {
-    if (!isFormValid()) {
-      toast.error("Please fill in all required fields", { autoClose: 1500 });
-      return;
-    }
-    if (!isValidEmail(email)) {
-      toast.error("Please enter a valid email address", { autoClose: 1500 });
-      return;
-    }
-
-    signinUser();
-  };
   return (
     <>
       <Head>
@@ -94,7 +102,10 @@ const LoginPage: React.FC = () => {
               className="lg:w-5/6 lg:h-[740px] w-[240px] h-[150px] lg:ml-32px sm:mt-5 sm:ml-68px lg::mr-24 sm:mb-40 mx-auto"
             />
           </div>
-          <div className="lg:w-2/6 md:w-[50%] w-full mx-auto">
+          <form
+            className="lg:w-2/6 md:w-[50%] w-full mx-auto"
+            onSubmit={formik.handleSubmit}
+          >
             <div className="flex lg:ml-20 flex-row sm:gap-x-16 sm:ml-174px sm:mb-18 sm:mt-105px mt-11 gap-x-9 mb-15 justify-center">
               <p className="text-clientRed dark:text-green-300 sm:text-3xl text-xl font-medium ">
                 {t("Login")}
@@ -107,41 +118,57 @@ const LoginPage: React.FC = () => {
               </p>
             </div>
             <div className="">
-              <div className="mb-26px">
-                <p className=" font-body text-lg sm:mb-10px dark:text-white  text-grayInput sm:text-xl mb-4 font-medium">
+              <div className="">
+                <p className=" font-body text-lg dark:text-white  sm:mb-10px  text-grayInput sm:text-xl mb-4 font-medium">
                   {t("E-mail")}
                 </p>
                 <input
-                  placeholder="E-mail"
-                  className="pl-3 sm:h-68px  bg-clientInput rounded-5 w-full h-14 text-lg font-medium"
-                  onChange={(e) => setEmail(e.target.value)}
+                  id="email"
+                  name="email"
+                  type="email"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.email}
+                  placeholder={t("E-mail")}
+                  className="pl-3 sm:h-68px rounded-5 bg-clientInput w-full h-14 text-lg font-medium"
                 />
+                {formik.touched.email && formik.errors.email ? (
+                  <div className="text-red-500 dark:text-red-400 text-xl pt-3 font-bold">
+                    {formik.errors.email}
+                  </div>
+                ) : null}
               </div>
-              <div className="mb-26px">
-                <p className=" font-body sm:mb-10px dark:text-white text-lg text-grayInput sm:text-xl mb-4 font-medium">
+              <div className="my-5">
+                <p className=" font-body sm:mb-10px text-lg dark:text-white text-grayInput sm:text-xl mb-2 font-medium">
                   {t("Password")}
                 </p>
                 <input
+                  id="password"
+                  name="password"
                   type="password"
-                  placeholder="Password"
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="pl-3 sm:mb-72px sm:h-68px rounded-5 bg-clientInput w-full h-14 text-lg font-medium"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.password}
+                  placeholder={t("E-mail")}
+                  className="pl-3 sm:h-68px rounded-5 bg-clientInput w-full h-14 text-lg font-medium"
                 />
+                {formik.touched.password && formik.errors.password ? (
+                  <div className="text-red-500 dark:text-red-400 text-xl pt-3 font-bold">
+                    {formik.errors.password}
+                  </div>
+                ) : null}
               </div>
             </div>
-            <button
-              onClick={() => signClient()}
-              className="w-full rounded-5 dark:bg-green-600 text-22 text-white sm:h-68px bg-clientRed text-2xl font-semibold h-14 hover:opacity-75 transition-all duration-500"
-            >
-              {isLoad ? (
+            <button className="w-full text-2xl mt-5 font-semibold rounded-5 text-white sm:h-68px dark:bg-green-600 bg-clientRed  h-14 hover:opacity-75 transition-all  duration-500">
+              {formik.isSubmitting ? (
                 <div className="flex justify-center items-center mx-0 my-auto">
-                  <FadeLoader color="#fff" />
+                  <FadeLoader className="text-white dark:text-orange-300" />
                 </div>
               ) : (
                 t("Login")
               )}
             </button>
-          </div>
+          </form>
         </div>
       </main>
     </>

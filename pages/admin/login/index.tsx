@@ -13,6 +13,12 @@ import { useRouter } from "next/navigation";
 import { FadeLoader } from "react-spinners";
 import Cookies from "js-cookie";
 import { ROUTER } from "../../../shared/constant/router";
+import { signupIn } from "@/services";
+import { useFormik } from "formik";
+import { FormValues } from "@/interfaces";
+
+
+
 
 const Login: React.FC = () => {
   const { push } = useRouter();
@@ -39,10 +45,7 @@ const Login: React.FC = () => {
         setTimeout(() => {
           toast.success("Signin successfully!", { autoClose: 1000 });
         });
-        // console.log(data?.data.user);
         Cookies.set("accessJWT", data?.data.user.access_token);
-        // localStorage.setItem("refresh_token_admin", data?.data.user.refresh_token);
-        // localStorage.setItem("access_token_admin", data?.data.user.access_token);
         setTimeout(() => {
           push(ROUTER.ADMIN);
         }, 1500);

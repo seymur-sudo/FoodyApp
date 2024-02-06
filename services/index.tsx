@@ -17,6 +17,7 @@ import {
   BasketPostDataType,
   UserDataType,
   OrderPostDataType,
+  FormValues,
 } from "../interfaces/index";
 
 // GET_PRODUCT
@@ -312,5 +313,22 @@ export const getHistory = (): AxiosPromise => {
     headers: {
       Authorization: `Bearer ${accessToken}`,
     },
+  });
+};
+
+//SIGNUP_USER_REGISTER
+export const signupUser = (values: FormValues): AxiosPromise<any> => {
+  return instanceAxios({
+    method: "POST",
+    url: ENDPOINTS.SIGNUP, 
+    data: values,
+  });
+};
+//SIGNIN_USER_LOGIN
+export const signInUser = (values: FormValues): AxiosPromise<any> => {
+  return instanceAxios({
+    method: "POST",
+    url: ENDPOINTS.SIGNIN, 
+    data: values,
   });
 };
