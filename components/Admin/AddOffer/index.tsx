@@ -12,7 +12,7 @@ import { addOffer } from "../../../services/index";
 import { toast } from "react-toastify";
 import { QUERIES } from "../../../constant/Queries";
 import { useMutation, useQueryClient } from "react-query";
-import { FadeLoader } from "react-spinners";
+import { isFormValid } from "@/constant/ValidRegex";
 
 const firstOfferState: OfferPostDataType = {
   name: "",
@@ -48,12 +48,8 @@ const AddOffer: React.FC = () => {
     },
   });
 
-  const isValid = (): boolean => {
-    return Object.values(newOffer).every((value) => value !== "");
-  };
-
   const handleAddOffer = async () => {
-    if (isValid()) {
+    if (isFormValid(newOffer)) {
       mutation.mutate();
     } else {
       toast.error("Please fill in all fields before creating the Category", {
@@ -63,7 +59,7 @@ const AddOffer: React.FC = () => {
   };
 
   const handleInputChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = event.target;
     setNewOffer((prevCategory) => ({
@@ -145,7 +141,7 @@ const AddOffer: React.FC = () => {
             </div>
 
             <div className="flex items-center justify-center mb-4 md:mb-8 h-[20%]  w-full rounded-[14px] bg-[#43445A]">
-            <label
+              <label
                 htmlFor="add-rest-file"
                 className="flex flex-col items-center justify-center w-full rounded-[14px]  bg-[#43445A]  cursor-pointer  "
               >
@@ -180,9 +176,8 @@ const AddOffer: React.FC = () => {
               <div className="my-5 flex flex-col">
                 <label className="mb-1">Description:</label>
 
-                <input
+                <textarea
                   className="w-full pl-2 h-[125px]  rounded-[14px] bg-inputBg leading-10 resize-y"
-                  type="text"
                   name="description"
                   value={newOffer.description}
                   onChange={handleInputChange}
@@ -202,21 +197,15 @@ const AddOffer: React.FC = () => {
           <button
             className={`capitalize rounded-[14px] border-solid border-0 shadow-shadow1 transition-all duration-500 w-5/12 py-3 md:py-4 text-lg font-bold leading-5 tracking-[0.25px]
             ${
-              !isValid()
+              !isFormValid(newOffer)
                 ? "bg-[#5a6874] cursor-not-allowed"
                 : "bg-[#C035A2] hover:opacity-75"
             }
             `}
-            disabled={!isValid()}
+            disabled={!isFormValid(newOffer)}
             onClick={handleAddOffer}
           >
-            {mutation.isLoading ? (
-              <div className="flex justify-center items-center mx-0 my-auto">
-                <FadeLoader className="w-[15px] h-[15px]" color={"#fff"} />
-              </div>
-            ) : (
-              "Add Offer"
-            )}
+            {mutation.isLoading ? "offer is adding" : "add offer"}
           </button>
         </div>
       </div>

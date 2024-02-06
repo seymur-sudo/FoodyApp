@@ -7,4 +7,6 @@ export const ENDPOINTS = {
   USER: "/auth/user",
   ORDER: "/order",
   HISTORY: "/order/history",
+  SIGNUP: "/auth/signup",
+  SIGNIN: "/auth/signin",
 };

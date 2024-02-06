@@ -1,5 +1,5 @@
 import Head from "next/head";
-import React, { useState } from "react";
+import React from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { toast } from "react-toastify";
@@ -12,41 +12,53 @@ import { useMutation } from "react-query";
 import { FadeLoader } from "react-spinners";
 import { ROUTER } from "../../shared/constant/router";
 import { isValidEmail } from "@/constant/ValidRegex";
+import { useFormik } from "formik";
+import { FormValues } from "@/interfaces";
+import { signupUser } from "@/services";
+
+const validate = (values: FormValues) => {
+  let errors: Partial<FormValues> = {};
+  if (values.fullName?.length && values.fullName.length < 5) {
+    errors.fullName = "Must be 5 characters or more";
+  } else if (values.fullName?.length && values.fullName.length > 15) {
+    errors.fullName = "Must be 15 characters or less";
+  }
+  if (values.userName?.length && values.userName.length < 5) {
+    errors.userName = "Must be 5 characters or more";
+  } else if (values.userName?.length && values.userName.length > 20) {
+    errors.userName = "Must be 20 characters or less";
+  }
+
+  if (!values.email) {
+    errors.email = "Required";
+  } else if (!isValidEmail(values.email)) {
+    errors.email = "Invalid email address";
+  }
+
+  if (!values.password) {
+    errors.password = "Required";
+    // } else if (!isValidPhone(values.phone)) {
+    //   errors.password = "Invalid phone number";
+  }
+
+  return errors;
+};
 
 const RegisterPage: React.FC = () => {
   const { t } = useTranslation("common");
   const { push } = useRouter();
 
-  const [isLoad, setIsLoad] = useState<boolean>(false);
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [fullName, setFullName] = useState<string>("");
-  const [userName, setUserName] = useState<string>("");
-
-  const { mutate: signupUser } = useMutation({
-    mutationFn: async () =>
-      await axios.post("/api/auth/signup", {
-        email,
-        password,
-        fullName,
-        userName,
-      }),
+  const { mutate: signup } = useMutation({
+    mutationFn: signupUser,
     onSuccess: (data) => {
       if (data) {
-        setIsLoad(true);
-        setTimeout(() => {
-          toast.success("Registered With Successfully", {
-            autoClose: 1000,
-          });
+        toast.success("Registered With Successfully", {
+          autoClose: 1000,
         });
-        setTimeout(() => {
-          push(ROUTER.LOGIN);
-        }, 1500);
+        push(ROUTER.LOGIN);
       } else {
-        setTimeout(() => {
-          toast.error("Please, Enter Correct Email and Password!", {
-            autoClose: 1000,
-          });
+        toast.error("Please, Enter Correct Email and Password!", {
+          autoClose: 1000,
         });
       }
     },
@@ -58,27 +70,19 @@ const RegisterPage: React.FC = () => {
     },
   });
 
-  const isFormValid = (): boolean => {
-    return (
-      email.trim() !== "" &&
-      password.trim() !== "" &&
-      userName.trim() !== "" &&
-      fullName.trim() !== ""
-    );
-  };
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+      fullName: "",
+      userName: "",
+    },
+    validate,
+    onSubmit: (values) => {
+      signup(values);
+    },
+  });
 
-  const signupClient = () => {
-    if (!isFormValid()) {
-      toast.error("Please fill in all required fields", { autoClose: 1500 });
-      return;
-    }
-    if (!isValidEmail(email)) {
-      toast.error("Please enter a valid email address", { autoClose: 1500 });
-      return;
-    }
-
-    signupUser();
-  };
   return (
     <>
       <Head>
@@ -90,7 +94,7 @@ const RegisterPage: React.FC = () => {
         <ClientHeader />
         <div className="flex-col mx-3  flex lg:flex-row sm:mx-0">
           <div
-            className="bg-clientRed dark:bg-green-600 py-3 lg:w-3/6 w-full lg:h-[900px] h-[160px] sm:pt-24 sm:pl-40 sm:mr-10 sm:pb-48 sm:pr-15 px-10 rounded-4 mb-11"
+            className="bg-clientRed dark:bg-green-600 py-3 lg:w-3/6 w-full lg:h-[900px] h-[160px] sm:pt-24 sm:pl-40 sm:mr-10 sm:pb-48 sm:pr-15 px-10 rounded-4 mb-6"
             data-aos="fade-right"
           >
             <Image
@@ -101,8 +105,12 @@ const RegisterPage: React.FC = () => {
               className="lg:w-5/6 lg:h-[630px] h-[150px] w-[240px] mx-auto"
             />
           </div>
-          <div className="lg:w-2/6 mx-auto w-full" data-aos="fade-left">
-            <div className="flex lg:ml-20 mx-auto justify-center flex-row sm:gap-x-16 sm:ml-174px sm:mb-18 sm:mt-105px gap-x-9 mb-15">
+          <form
+            className="lg:w-2/6 mx-auto w-full"
+            data-aos="fade-left"
+            onSubmit={formik.handleSubmit}
+          >
+            <div className="flex lg:ml-20 mx-auto justify-center flex-row sm:gap-x-16 sm:ml-174px sm:mb-12 sm:mt-105px gap-x-9">
               <p
                 onClick={() => push(ROUTER.LOGIN)}
                 className="cursor-pointer dark:text-white text-clientGray sm:text-3xl text-xl font-normal"
@@ -113,66 +121,98 @@ const RegisterPage: React.FC = () => {
                 {t("Register")}
               </p>
             </div>
-            <div className="">
-              <div className="mb-26px">
-                <p className=" font-body dark:text-white text-lg sm:mb-10px sm:text-xl text-grayInput mb-4 font-medium">
+            <div>
+              <div>
+                <p className=" font-body dark:text-white text-lg sm:mb-10px sm:text-xl text-grayInput mb-2 font-medium">
                   {t("Full Name")}
                 </p>
                 <input
-                  onChange={(e) => setUserName(e.target.value)}
+                  id="fullName"
+                  name="fullName"
+                  type="text"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.fullName}
                   placeholder={t("Full Name")}
                   className="pl-3 sm:h-68px rounded-5 bg-clientInput w-full h-14 text-lg font-medium"
                 />
+                {formik.touched.fullName && formik.errors.fullName ? (
+                  <div className="text-red-500 dark:text-red-400 font-bold text-xl pt-1">
+                    {formik.errors.fullName}
+                  </div>
+                ) : null}
               </div>
-              <div className="mb-26px">
-                <p className=" font-body dark:text-white text-lg sm:mb-10px  text-grayInput sm:text-xl mb-4 font-medium">
+              <div className="my-5">
+                <p className=" font-body dark:text-white text-lg sm:mb-10px  text-grayInput sm:text-xl mb-2 font-medium">
                   {t("User Name")}
                 </p>
                 <input
-                  onChange={(e) => setFullName(e.target.value)}
+                  id="userName"
+                  name="userName"
+                  type="text"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.userName}
                   placeholder={t("User Name")}
-                  className="pl-3 rounded-5 sm:h-68px bg-clientInput w-full h-14 text-lg font-medium"
+                  className="pl-3 sm:h-68px rounded-5 bg-clientInput w-full h-14 text-lg font-medium"
                 />
+                {formik.touched.userName && formik.errors.userName ? (
+                  <div className="text-red-500 dark:text-red-400  font-bold text-xl pt-1">
+                    {formik.errors.userName}
+                  </div>
+                ) : null}
               </div>
-              <div className="mb-26px">
+              <div className="">
                 <p className=" font-body text-lg dark:text-white  sm:mb-10px  text-grayInput sm:text-xl mb-4 font-medium">
                   {t("E-mail")}
                 </p>
                 <input
+                  id="email"
+                  name="email"
                   type="email"
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.email}
                   placeholder={t("E-mail")}
-                  className=" pl-3 rounded-5 sm:h-68px bg-clientInput w-full h-14 text-lg font-medium"
+                  className="pl-3 sm:h-68px rounded-5 bg-clientInput w-full h-14 text-lg font-medium"
                 />
+                {formik.touched.email && formik.errors.email ? (
+                  <div className="text-red-500 dark:text-red-400 text-xl font-bold pt-2">
+                    {formik.errors.email}
+                  </div>
+                ) : null}
               </div>
-              <div className="mb-26px">
-                <p className=" font-body sm:mb-10px text-lg dark:text-white text-grayInput sm:text-xl mb-4 font-medium">
+              <div className="my-5">
+                <p className=" font-body sm:mb-10px text-lg dark:text-white text-grayInput sm:text-xl mb-2 font-medium">
                   {t("Password")}
                 </p>
                 <input
+                  id="password"
+                  name="password"
                   type="password"
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder={t("Password")}
-                  className="pl-3 sm:mb-72px rounded-5 sm:h-68px bg-clientInput w-full h-14 text-lg font-medium"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.password}
+                  placeholder={t("E-mail")}
+                  className="pl-3 sm:h-68px rounded-5 bg-clientInput w-full h-14 text-lg font-medium"
                 />
+                {formik.touched.password && formik.errors.password ? (
+                  <div className="text-red-500 dark:text-red-400 text-xl font-bold pt-1">
+                    {formik.errors.password}
+                  </div>
+                ) : null}
               </div>
             </div>
-
-            <button
-              onClick={() => {
-                signupClient();
-              }}
-              className="w-full text-2xl font-semibold rounded-5 text-white sm:h-68px dark:bg-green-600 bg-clientRed  h-14 hover:opacity-75 transition-all duration-500"
-            >
-              {isLoad ? (
+            <button className="w-full text-2xl mt-4 font-semibold rounded-5 text-white sm:h-68px dark:bg-green-600 bg-clientRed  h-14 hover:opacity-75 transition-all  duration-500">
+              {formik.isSubmitting ? (
                 <div className="flex justify-center items-center mx-0 my-auto">
-                  <FadeLoader color="#fff" />
+                  <FadeLoader className="text-white dark:text-orange-300" />
                 </div>
               ) : (
                 t("Register")
               )}
             </button>
-          </div>
+          </form>
         </div>
       </main>
     </>

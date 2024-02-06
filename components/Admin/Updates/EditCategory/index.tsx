@@ -92,6 +92,12 @@ const EditCategory: React.FC = () => {
     }
   };
   const handleEditCategory = async () => {
+    if (!updatedCategory || !updatedCategory.name) {
+      toast.error("Please fill out all fields", {
+        autoClose: 1000,
+      });
+      return;
+    }
     if (updatedCategory) {
       const editWithImg = {
         ...updatedCategory,

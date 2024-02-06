@@ -16,6 +16,7 @@ import { useMutation, useQueryClient } from "react-query";
 import { getCategory } from "../../../services/index";
 import { useQuery } from "react-query";
 import { FadeLoader } from "react-spinners";
+import { isFormValid } from "@/constant/ValidRegex";
 
 const AddRestuarant: React.FC = () => {
   const firstState: FirstStateType = {
@@ -35,9 +36,7 @@ const AddRestuarant: React.FC = () => {
   const { data } = useQuery(QUERIES.Categories, getCategory);
 
   const queryClient = useQueryClient();
-  const isValid = (): boolean => {
-    return Object.values(newRestaurant).every((value) => value !== "");
-  };
+
   const handleNewImg = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -69,7 +68,7 @@ const AddRestuarant: React.FC = () => {
     }
   };
   const handleAddRestaurant = async () => {
-    if (isValid()) {
+    if (isFormValid(newRestaurant)) {
       mutation.mutate();
     } else {
       toast.error("Please fill in all fields before creating the product", {
@@ -238,7 +237,7 @@ const AddRestuarant: React.FC = () => {
               </div>
               <div className="flex mt-2 flex-col">
                 <label htmlFor="category" className="mt-2">
-                Select Category:
+                  Select Category:
                 </label>
                 <select
                   id="category"
@@ -270,20 +269,14 @@ const AddRestuarant: React.FC = () => {
           <button
             className={`capitalize rounded-[14px] border-solid border-0 shadow-shadow1 transition-all duration-500 w-5/12 py-3 md:py-4 text-lg font-bold leading-5 tracking-[0.25px]
             ${
-              !isValid()
+              !isFormValid(newRestaurant)
                 ? "bg-[#5a6874] cursor-not-allowed"
                 : "bg-[#C035A2] hover:opacity-75"
             }`}
-            disabled={!isValid()}
+            disabled={!isFormValid(newRestaurant)}
             onClick={handleAddRestaurant}
           >
-            {mutation.isLoading ? (
-              <div className="flex justify-center items-center mx-0 my-auto">
-                <FadeLoader className="w-[15px] h-[15px]" color={"#fff"} />
-              </div>
-            ) : (
-              "Add Restaurant"
-            )}
+            {mutation.isLoading ? "restaurant is adding" : "add restaurant"}
           </button>
         </div>
       </div>
