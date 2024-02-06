@@ -7,18 +7,12 @@ import NotFound from "@/public/svgs/405.gif";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "next-i18next";
 import { useMutation } from "react-query";
-import axios, { AxiosResponse } from "axios";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { FadeLoader } from "react-spinners";
 import Cookies from "js-cookie";
 import { ROUTER } from "../../../shared/constant/router";
-import { signupIn } from "@/services";
-import { useFormik } from "formik";
-import { FormValues } from "@/interfaces";
-
-
-
+import { signInUser } from "@/services";
 
 const Login: React.FC = () => {
   const { push } = useRouter();
@@ -34,12 +28,8 @@ const Login: React.FC = () => {
   }, [accessJWT]);
 
   const { mutate: signinAdmin } = useMutation({
-    mutationFn: async () =>
-      await axios.post("/api/auth/signin", {
-        email,
-        password,
-      }),
-    onSuccess: (data: AxiosResponse) => {
+    mutationFn: async () => signInUser({ email, password }),
+    onSuccess: (data) => {
       if (data && data.data && data.data.user) {
         setIsLoad(true);
         setTimeout(() => {
