@@ -77,6 +77,7 @@ export interface SidebarContextProps {
 
   basketProducts: BasketPostDataType | null;
   basketProductsItems: BasketPostDataType[] | undefined;
+  isAdmin: boolean;
 }
 
 export interface ChartData {
@@ -153,11 +154,11 @@ export interface RestaurantPostDataType {
   address: string | undefined;
   delivery_min: number | undefined;
   delivery_price: number | undefined;
-  name?:string;
+  name?: string;
 }
 export interface RestaurantApiResponse {
   result: {
-    data: RestaurantPostDataType[] ;
+    data: RestaurantPostDataType[];
   };
   status: number;
   message: string;
@@ -237,7 +238,7 @@ export interface BasketPostDataType {
 }
 export interface OrderPostDataType {
   basket_id?: string;
-  products?:any;
+  products?: any;
   delivery_address?: string | undefined;
   contact?: string | undefined;
   payment_method?: string | undefined;
@@ -268,5 +269,3 @@ export interface FormValues {
   email: string;
   password: string;
 }
-
-

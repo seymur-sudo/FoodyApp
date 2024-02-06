@@ -51,6 +51,12 @@ export const SidebarContextProvider: React.FC<ChildrenNode> = ({
 }) => {
   const { data: basket } = useQuery(QUERIES.Basket, getBasket);
   const { data: userID } = useQuery(QUERIES.User, getUser);
+  const userEmail = userID?.data.user.email;
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
+  useEffect(() => {
+    setIsAdmin(userEmail === "admin@gmail.com");
+  }, [userID]);
+
   const basketProducts = basket?.data.result.data;
   const basketProductsItems = basket?.data.result.data.items;
 
@@ -247,6 +253,7 @@ export const SidebarContextProvider: React.FC<ChildrenNode> = ({
     setSelectedRestaurant,
     deletedBasket,
     setDeletedBasket,
+    isAdmin,
   };
 
   const Component = SidebarContext.Provider;

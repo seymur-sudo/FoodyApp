@@ -6,7 +6,6 @@ import { toast } from "react-toastify";
 import { useTranslation } from "next-i18next";
 import ClientHeader from "@/components/Client/ClientHeader";
 import { GetServerSideProps } from "next";
-import axios from "axios";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useMutation } from "react-query";
 import { FadeLoader } from "react-spinners";
