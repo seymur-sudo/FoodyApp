@@ -6,8 +6,7 @@ import editIcon from "../../../public/svgs/edit.svg";
 import deleteIcon from "../../../public/svgs/delete2.svg";
 import SearchBar from "@/components/Admin/SearchBar";
 import Head from "next/head";
-import NotFound from "@/public/svgs/405.gif";
-
+import LoadingImg from "../../../public/loadingImg.gif";
 import {
   SidebarContextProps,
   CategoryPostDataType,
@@ -202,11 +201,11 @@ const Category: React.FC = () => {
         </>
       ) : (
         <Image
-          alt="NotFound"
+          alt="LoadingImg"
           height={1000}
           width={1000}
           className="h-screen w-screen"
-          src={NotFound}
+          src={LoadingImg}
         />
       )}
     </>

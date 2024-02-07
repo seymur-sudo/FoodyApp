@@ -5,7 +5,7 @@ import editIcon from "../../../public/svgs/edit.svg";
 import deleteIcon from "../../../public/svgs/delete.svg";
 import Image from "next/image";
 import Head from "next/head";
-import NotFound from "@/public/svgs/405.gif";
+import LoadingImg from "../../../public/loadingImg.gif";
 import SearchBar from "@/components/Admin/SearchBar";
 import EditModal from "@/components/Admin/Modals/EditModal";
 import DeleteModal from "@/components/Admin/Modals/DeleteModal";
@@ -73,7 +73,7 @@ const Products: React.FC = () => {
           </Head>
           <Layout>
             <>
-              <div className="px-12 md:px-6 pb-8 bg-bgc min-h-screen md:h-screen ">
+              <div className="px-12 md:px-6 pb-8 bg-bgc min-h-screen  ">
                 <SearchBar />
 
                 <div className="grid gap-10 grid-cols-1 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
@@ -137,7 +137,7 @@ const Products: React.FC = () => {
           height={1000}
           width={1000}
           className="h-screen w-screen"
-          src={NotFound}
+          src={LoadingImg}
         />
       )}
     </>

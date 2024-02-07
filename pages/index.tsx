@@ -24,14 +24,23 @@ import { ROUTER } from "../shared/constant/router";
 import ReactPlayer from "react-player";
 import { OfferPostDataType } from "@/interfaces";
 import { QUERIES } from "../constant/Queries";
+import { SidebarContextProps } from "../interfaces/index";
+import { useSidebarContext } from "@/contexts/SidebarContext";
+import { animated } from "@react-spring/web";
+import ChatClient from "@/components/Client/ChatClient";
+import { FaRocketchat, FaTimes } from "react-icons/fa";
 
 const Home: NextPage = () => {
+  const { showUserModal, openUserModal, closeUserModal, modalSpring } =
+    useSidebarContext() as SidebarContextProps;
+
   const { t } = useTranslation("common");
   const { push } = useRouter();
 
   const { data, isLoading, isError } = useQuery(QUERIES.Offers, getOffer, {
     refetchOnWindowFocus: false,
   });
+
   useEffect(() => {
     AOS.init({
       duration: 500,
@@ -131,6 +140,36 @@ const Home: NextPage = () => {
             </div>
           </div>
         </div>
+        <button
+          onClick={showUserModal ? closeUserModal : openUserModal}
+          className="text-red-500 dark:text-cyan-400 text-6xl fixed bottom-5 right-5 z-50 "
+        >
+          {showUserModal ? <FaTimes /> : <FaRocketchat />}
+        </button>
+
+        {/* CHAT */}
+        {showUserModal && (
+          <>
+            <div className="fixed inset-0 bg-black   dark:bg-gray-700 opacity-60 z-40 "></div>
+
+            <animated.div
+              style={{
+                ...modalSpring,
+                position: "fixed",
+                top: "10vh",
+                left: "50%",
+                transform: "translateX(-50%)",
+                zIndex: 50,
+              }}
+              className="bg-white  dark:bg-gray-800  rounded-t-[20px] flex flex-col  w-10/12 md:w-5/12  items-center justify-start "
+            >
+              <div className="w-full h-ful">
+                <ChatClient />
+              </div>
+            </animated.div>
+          </>
+        )}
+        {/* CHAT_END */}
 
         <div data-aos="zoom-in" className="text-center mt-20">
           <p className="text-[40px] dark:text-white font-black">
@@ -249,7 +288,7 @@ const Home: NextPage = () => {
             )
           )}
 
-        <div className="w-8/12  mx-auto text-center pt-20"  data-aos="zoom-in">
+        <div className="w-8/12  mx-auto text-center pt-20" data-aos="zoom-in">
           <h1 className="capitalize  text-xl md:text-5xl font-body pt-5 pb-9 font-bold text-transparent bg-gradient-to-r bg-clip-text  from-gray-900  to-red-400 dark:from-green-300 dark:to-orange-400 ">
             foody delivery advertisement
           </h1>

@@ -21,7 +21,9 @@ import { animated } from "@react-spring/web";
 import PaginationControls from "@/components/Admin/Pagination/PaginationControls";
 import Image from "next/image";
 import Head from "next/head";
-import NotFound from "@/public/svgs/405.gif";
+import LoadingImg from "../../../public/loadingImg.gif";
+
+
 
 type SortingValue = "A-Z" | "Z-A" | "Low-to-High" | "High-to-Low";
 
@@ -99,18 +101,18 @@ const Orders: React.FC = () => {
               <SearchBar />
               {showUserModal && (
                 <>
-                  <div className="fixed inset-0 bg-black  dark:bg-gray-200 opacity-60 z-40 md:opacity-0"></div>
+                  <div className="fixed inset-0 bg-black  dark:bg-gray-700 opacity-60 z-40 "></div>
 
                   <animated.div
                     style={{
                       ...modalSpring,
                       position: "fixed",
-                      top: "30vh",
-                      left: "22vw",
-                      right: 0,
+                      top: "25vh",
+                      left: "50%",
+                      transform: "translateX(-50%)",
                       zIndex: 50,
                     }}
-                    className="bg-white dark:bg-gray-800 rounded-t-[20px] flex flex-col w-7/12 max-h-[45vh] overflow-y-auto items-center justify-start  asideScroll"
+                    className="bg-white dark:bg-gray-800 rounded-t-[20px] flex flex-col w-11/12 md:w-6/12 max-h-[45vh] overflow-y-auto items-center justify-start  asideScroll"
                   >
                     <div className="my-2" onClick={closeUserModal}>
                       <IoIosCloseCircleOutline
@@ -313,11 +315,11 @@ const Orders: React.FC = () => {
         </>
       ) : (
         <Image
-          alt="NotFound"
+          alt="LoadingImg"
           height={1000}
           width={1000}
           className="h-screen w-screen"
-          src={NotFound}
+          src={LoadingImg}
         />
       )}
     </>
