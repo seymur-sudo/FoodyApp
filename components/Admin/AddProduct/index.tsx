@@ -61,16 +61,17 @@ const AddProduct: React.FC = () => {
       });
     }
   };
-
   const handleInputChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
   ) => {
-    const { name, value } = event.target;
-    const numericValue = isNaN(Number(value)) ? value : Number(value);
+    const { name, value } = e.target;
+    const parsedValue = name === "price" ? parseFloat(value) : value;
 
     setNewProduct((prevProduct) => ({
       ...prevProduct,
-      [name]: numericValue,
+      [name]: parsedValue,
     }));
   };
 

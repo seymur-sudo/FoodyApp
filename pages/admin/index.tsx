@@ -3,7 +3,6 @@ import Head from "next/head";
 import Layout from "../../components/Admin/Layout/index";
 import { data } from "../../components/Admin/Charts/ChartDatas";
 import { data2 } from "../../components/Admin/Charts/ChartDatas";
-import NotFound from "@/public/svgs/405.gif";
 import { Doughnut } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";

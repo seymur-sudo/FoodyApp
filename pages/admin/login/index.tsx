@@ -3,7 +3,7 @@ import Image from "next/image";
 import enImg from "../../../public/svgs/en.svg";
 import loginImg from "../../../public/svgs/LoginImg.svg";
 import { GetServerSideProps } from "next";
-import NotFound from "@/public/svgs/405.gif";
+import LoadingImg from "../../../public/loadingImg.gif";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "next-i18next";
 import { useMutation } from "react-query";
@@ -173,11 +173,11 @@ const Login: React.FC = () => {
           </>
         ) : (
           <Image
-            alt="NotFound"
+            alt="LoadingImg"
             height={1000}
             width={1000}
             className="h-screen w-screen"
-            src={NotFound}
+            src={LoadingImg}
           />
         )}
       </div>

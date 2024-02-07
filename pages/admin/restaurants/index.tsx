@@ -10,7 +10,8 @@ import { SidebarContextProps } from "../../../interfaces/index";
 import { useSidebarContext } from "@/contexts/SidebarContext";
 import Image from "next/image";
 import Head from "next/head";
-import NotFound from "@/public/svgs/405.gif";
+import LoadingImg from "../../../public/loadingImg.gif";
+
 
 const Restaurant: React.FC = () => {
   const { selectedCategory, isAdmin } =
@@ -60,7 +61,7 @@ const Restaurant: React.FC = () => {
           height={1000}
           width={1000}
           className="h-screen w-screen"
-          src={NotFound}
+          src={LoadingImg}
         />
       )}
     </>

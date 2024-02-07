@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Layout from "@/components/Admin/Layout";
 import Image from "next/image";
 import Head from "next/head";
-import NotFound from "@/public/svgs/405.gif";
+import LoadingImg from "../../../public/loadingImg.gif";
 import SearchBar from "@/components/Admin/SearchBar";
 import { SidebarContextProps } from "../../../interfaces/index";
 import { useSidebarContext } from "@/contexts/SidebarContext";
@@ -88,7 +88,7 @@ const OrderHistory: React.FC = () => {
               <SearchBar />
               {showUserModal && (
                 <>
-                  <div className="fixed inset-0 bg-black  dark:bg-gray-700 opacity-60 z-40 md:opacity-0"></div>
+                  <div className="fixed inset-0 bg-black  dark:bg-gray-700 opacity-60 z-40 "></div>
 
                   <animated.div
                     style={{
@@ -300,11 +300,11 @@ const OrderHistory: React.FC = () => {
         </>
       ) : (
         <Image
-          alt="NotFound"
+          alt="LoadingImg"
           height={1000}
           width={1000}
           className="h-screen w-screen"
-          src={NotFound}
+          src={LoadingImg}
         />
       )}
     </>

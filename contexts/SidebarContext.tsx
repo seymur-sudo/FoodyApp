@@ -122,7 +122,11 @@ export const SidebarContextProvider: React.FC<ChildrenNode> = ({
   const closeSidebar = () => setSidebarOpen(false);
 
   const [showAdds, setShowAdds] = useState<boolean>(false);
-  const closeAddsModal = () => setShowAdds(false);
+  // const closeAddsModal = () => setShowAdds(false);
+  const closeAddsModal = () => {
+    setShowAdds(false);
+    setNewImg(null);
+  };
 
   const [editedItem, setEditedItem] = useState<PostDataType | null>(
     defaultEditedProduct
@@ -162,7 +166,9 @@ export const SidebarContextProvider: React.FC<ChildrenNode> = ({
 
   const closeUserModal = () => {
     setShowUserModal(false);
+    setNewImg(null);
   };
+
 
   const modalSpring = useSpring({
     opacity: showUserModal ? 1 : 0,

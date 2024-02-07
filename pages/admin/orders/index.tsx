@@ -21,7 +21,9 @@ import { animated } from "@react-spring/web";
 import PaginationControls from "@/components/Admin/Pagination/PaginationControls";
 import Image from "next/image";
 import Head from "next/head";
-import NotFound from "@/public/svgs/405.gif";
+import LoadingImg from "../../../public/loadingImg.gif";
+
+
 
 type SortingValue = "A-Z" | "Z-A" | "Low-to-High" | "High-to-Low";
 
@@ -99,7 +101,7 @@ const Orders: React.FC = () => {
               <SearchBar />
               {showUserModal && (
                 <>
-                  <div className="fixed inset-0 bg-black  dark:bg-gray-700 opacity-60 z-40 md:opacity-0"></div>
+                  <div className="fixed inset-0 bg-black  dark:bg-gray-700 opacity-60 z-40 "></div>
 
                   <animated.div
                     style={{
@@ -313,11 +315,11 @@ const Orders: React.FC = () => {
         </>
       ) : (
         <Image
-          alt="NotFound"
+          alt="LoadingImg"
           height={1000}
           width={1000}
           className="h-screen w-screen"
-          src={NotFound}
+          src={LoadingImg}
         />
       )}
     </>

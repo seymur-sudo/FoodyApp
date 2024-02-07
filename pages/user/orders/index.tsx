@@ -238,7 +238,7 @@ page.drawImage(jpegLogoImage, {
 
         {showUserModal && (
           <>
-            <div className="fixed inset-0 bg-black  dark:bg-gray-700 opacity-60 z-40 md:opacity-0"></div>
+            <div className="fixed inset-0 bg-black  dark:bg-gray-700 opacity-60 z-40"></div>
 
             <animated.div
               style={{
