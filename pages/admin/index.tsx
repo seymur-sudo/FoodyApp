@@ -19,6 +19,7 @@ import { ChartWeek } from "../../components/Admin/Charts/ChartDays";
 import { SidebarContextProps } from "@/interfaces";
 import { useSidebarContext } from "@/contexts/SidebarContext";
 import Image from "next/image";
+import LoadingImg from "../../public/loadingImg.gif";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -97,11 +98,11 @@ const AdminDashboard: NextPage = () => {
           </>
         ) : (
           <Image
-            alt="NotFound"
+            alt="LoadingImg"
             height={1000}
             width={1000}
             className="h-screen w-screen"
-            src={NotFound}
+            src={LoadingImg}
           />
         )}
       </div>

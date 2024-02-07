@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import enImg from "../../../public/svgs/en.svg";
 import loginImg from "../../../public/svgs/LoginImg.svg";
@@ -14,8 +14,10 @@ import { ROUTER } from "../../../shared/constant/router";
 import { isValidEmail } from "@/constant/ValidRegex";
 import { signInUser } from "@/services";
 import { useFormik } from "formik";
-import { FormValues, SidebarContextProps } from "@/interfaces";
-import { useSidebarContext } from "@/contexts/SidebarContext";
+import { FormValues } from "@/interfaces";
+import { getUser } from "@/services";
+import { QUERIES } from "../../../constant/Queries";
+import { useQuery } from "react-query";
 
 const validate = (values: FormValues) => {
   let errors: Partial<FormValues> = {};
@@ -41,7 +43,9 @@ const validate = (values: FormValues) => {
 };
 
 const Login: React.FC = () => {
-  const { isAdmin } = useSidebarContext() as SidebarContextProps;
+  const { data: userID, isLoading, isError } = useQuery(QUERIES.User, getUser);
+  let userEmail =
+    userID && userID.data && userID.data.user ? userID.data.user.email : null;
 
   const { push } = useRouter();
   const { t } = useTranslation("common");
@@ -50,12 +54,10 @@ const Login: React.FC = () => {
     mutationFn: signInUser,
     onSuccess: (data) => {
       if (data && data.data && data.data.user) {
-        setTimeout(() => {
-          toast.success("Signin successfully!", { autoClose: 1000 });
-        });
-        setTimeout(() => {
-          push(ROUTER.ADMIN);
-        }, 1500);
+        push(ROUTER.ADMIN);
+        localStorage.setItem("refresh_token", data?.data.user.refresh_token);
+        localStorage.setItem("access_token", data?.data.user.access_token);
+        toast.success("Signin successfully!", { autoClose: 1000 });
       } else {
         toast.error("Please, Enter Correct Email and Password! ", {
           autoClose: 1000,
@@ -82,10 +84,18 @@ const Login: React.FC = () => {
     },
   });
 
+  // if (isLoading) {
+  //   return <div>Loading...</div>; // Add a loading state
+  // }
+
+  // if (isError) {
+  //   return <div>Error occurred...</div>; // Add an error state
+  // }
+
   return (
     <>
       <div className="bg-bgc h-screen">
-        {isAdmin ? (
+        {!userEmail ? (
           <>
             <h1 className="ml-9px text-24 pt-[4] sm:pt-57px sm:ml-32px font-mukta font-weight800 sm:text-28 text-logocolor">
               <p
