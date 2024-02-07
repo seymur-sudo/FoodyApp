@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Image from "next/image";
 import enImg from "../../../public/svgs/en.svg";
 import loginImg from "../../../public/svgs/LoginImg.svg";
@@ -43,7 +43,7 @@ const validate = (values: FormValues) => {
 };
 
 const Login: React.FC = () => {
-  const { data: userID, isLoading, isError } = useQuery(QUERIES.User, getUser);
+  const { data: userID} = useQuery(QUERIES.User, getUser);
   let userEmail =
     userID && userID.data && userID.data.user ? userID.data.user.email : null;
 
@@ -83,14 +83,6 @@ const Login: React.FC = () => {
       signinAdmin(values);
     },
   });
-
-  // if (isLoading) {
-  //   return <div>Loading...</div>; // Add a loading state
-  // }
-
-  // if (isError) {
-  //   return <div>Error occurred...</div>; // Add an error state
-  // }
 
   return (
     <>
