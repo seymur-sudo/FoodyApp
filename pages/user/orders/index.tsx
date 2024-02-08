@@ -11,7 +11,7 @@ import { SidebarContextProps, orderItem } from "@/interfaces";
 import { QUERIES } from "../../../constant/Queries";
 import { useQuery } from "react-query";
 import DeleteModal from "@/components/Admin/Modals/DeleteModal";
-import { PDFDocument,rgb} from 'pdf-lib';
+import { PDFDocument, rgb } from "pdf-lib";
 import {
   Dropdown,
   DropdownTrigger,
@@ -52,145 +52,137 @@ const UserOrders = () => {
     openUserModal();
     setOrderItems(item);
     setTimeout(() => {
-      generatePDF(item)
-      
+      generatePDF(item);
     }, 1000);
   };
-  const generatePDF = async (data:orderItem[]) => {
-    // PDF oluşturma işlemleri
-    const confirmUpload = window.confirm("Whould you like your order bill uploaded as pdf?");
+  const generatePDF = async (data: orderItem[]) => {
+    const confirmUpload = window.confirm(
+      "Whould you like your order bill uploaded as pdf?"
+    );
 
     if (!confirmUpload) {
-        return; // Eğer kullanıcı yükleme yapmak istemiyorsa, fonksiyondan çık
+      return; 
     }
     const pdfDoc = await PDFDocument.create();
-    const pageHeight = (data.length * 100)+370; // Örnek bir hesaplama
+    const pageHeight = data.length * 100 + 370; 
     const pageWidth = 250;
-    const page = pdfDoc.addPage([pageWidth, pageHeight]); // Sayfa boyutunu ayarlayın
+    const page = pdfDoc.addPage([pageWidth, pageHeight]); 
     //QRCODE
-    const qrUrl = '/qrcode.png';
+    const qrUrl = "/qrcode.png";
     const responseQr = await fetch(qrUrl);
     const imageQrBytes = await responseQr.arrayBuffer();
     const pngQrImage = await pdfDoc.embedPng(imageQrBytes);
     //LOGO
-    const logoUrl='/EAlogo.jpeg'
+    const logoUrl = "/EAlogo.jpeg";
     const responseLogo = await fetch(logoUrl);
     const imageLogoBytes = await responseLogo.arrayBuffer();
     const jpegLogoImage = await pdfDoc.embedJpg(imageLogoBytes);
 
-    let y = pageHeight-80; // Y koordinatı
-    let total:number=0;
-    let totalVat:number=0
-    page.drawText('Foody Delivery ©', {
+    let y = pageHeight - 80; // Y koordinatı
+    let total: number = 0;
+    let totalVat: number = 0;
+    page.drawText("Foody Delivery ©", {
       x: 55,
-      y: pageHeight-40, // Sayfanın üst kısmında daha büyük bir yazı başlığı için y koordinatını ayarlayın
+      y: pageHeight - 40, // Sayfanın üst kısmında daha büyük bir yazı başlığı için y koordinatını ayarlayın
       size: 18,
-      font: await pdfDoc.embedFont('Helvetica-Bold'), // Kalın yazı tipi
+      font: await pdfDoc.embedFont("Helvetica-Bold"), // Kalın yazı tipi
       color: rgb(0, 0, 0), // Siyah renk
-  });
-    // Veri dizisindeki her bir öğe için işlem yap
-    data.map(async (item:orderItem) => {
-      
-        // Diğer verileri yazdır
-        page.drawText(`Name: ${item.name}`, {
-            x: 20,
-            y: y,
-            size: 12,
-        });
-      
-        page.drawText(`Price: ${item.price}`, {
-            x: 20,
-            y: y - 20,
-            size: 12,
-        });
-      
-        page.drawText(`Count: ${item.count}`, {
-            x: 20,
-            y: y - 40,
-            size: 12,
-        });
-      
-        page.drawText(`Amount: ${item.amount}`, {
-            x: 20,
-            y: y - 60,
-            size: 12,
-        });
-        page.drawText("-----------------------------------------------------",{
-          x: 20,
-          y: y+20,
-          size: 12,
-        })
-         // Bir sonraki satırın y koordinatını ayarlayın
-         y -= 100;
-         total +=Number(item.amount)
-         totalVat=(total*0.18)
     });
-    page.drawText("-----------------------------------------------------",{
+    // Veri dizisindeki her bir öğe için işlem yap
+    data.map(async (item: orderItem) => {
+      // Diğer verileri yazdır
+      page.drawText(`Name: ${item.name}`, {
+        x: 20,
+        y: y,
+        size: 12,
+      });
+
+      page.drawText(`Price: ${item.price}`, {
+        x: 20,
+        y: y - 20,
+        size: 12,
+      });
+
+      page.drawText(`Count: ${item.count}`, {
+        x: 20,
+        y: y - 40,
+        size: 12,
+      });
+
+      page.drawText(`Amount: ${item.amount}`, {
+        x: 20,
+        y: y - 60,
+        size: 12,
+      });
+      page.drawText("-----------------------------------------------------", {
+        x: 20,
+        y: y + 20,
+        size: 12,
+      });
+      y -= 100;
+      total += Number(item.amount);
+      totalVat = total * 0.18;
+    });
+    page.drawText("-----------------------------------------------------", {
       x: 20,
-      y: y+20,
+      y: y + 20,
       size: 12,
-    })
-    page.drawText(`Discount: 0$`,{
+    });
+    page.drawText(`Discount: 0$`, {
       x: 20,
       y: y,
-      font: await pdfDoc.embedFont('Helvetica-Bold'),
+      font: await pdfDoc.embedFont("Helvetica-Bold"),
       size: 12,
-    })
-    page.drawText(`Total payment with VAT: ${total}$`,{
+    });
+    page.drawText(`Total payment with VAT: ${total}$`, {
       x: 20,
-      y: y-20,
-      font: await pdfDoc.embedFont('Helvetica-Bold'),
+      y: y - 20,
+      font: await pdfDoc.embedFont("Helvetica-Bold"),
       size: 12,
-    })
-    page.drawText(`Value Added Tax: ${totalVat.toFixed(2)}$ (18%)`,{
+    });
+    page.drawText(`Value Added Tax: ${totalVat.toFixed(2)}$ (18%)`, {
       x: 20,
-      y: y-40,
-      font: await pdfDoc.embedFont('Helvetica-Bold'),
+      y: y - 40,
+      font: await pdfDoc.embedFont("Helvetica-Bold"),
       size: 12,
-    })
-    page.drawText("-----------------------------------------------------",{
+    });
+    page.drawText("-----------------------------------------------------", {
       x: 20,
       y: y - 60,
       size: 12,
-    })
-    page.drawText("Scan QR code and earn 20% discount!",{
+    });
+    page.drawText("Scan QR code and earn 20% discount!", {
       x: 20,
       y: y - 100,
       size: 12,
-    })
-    // Resmi ekleyin
+    });
     const qrImageWidth = 150;
     const logoImageWidth = 30;
 
-// QR kodunun X koordinatı, sayfa genişliğinin yarısı kadar olmalı
-const qrImageX = (page.getWidth() - qrImageWidth) / 2;
+    const qrImageX = (page.getWidth() - qrImageWidth) / 2;
 
-// Logo resminin X koordinatı, QR kodunun merkezinin solunda olmalı
-const logoImageX = qrImageX + (qrImageWidth - logoImageWidth) / 2;
+    const logoImageX = qrImageX + (qrImageWidth - logoImageWidth) / 2;
 
-// Resimleri ekleyin
-page.drawImage(pngQrImage, {
-  x: qrImageX,
-  y: y - 265,
-  width: qrImageWidth,
-  height: qrImageWidth,
-});
-page.drawImage(jpegLogoImage, {
-  x: logoImageX,
-  y: y - 265 + (qrImageWidth - logoImageWidth) / 2,
-  width: logoImageWidth,
-  height: logoImageWidth,
-});
-    // PDF dosyasını Uint8Array olarak al
+    page.drawImage(pngQrImage, {
+      x: qrImageX,
+      y: y - 265,
+      width: qrImageWidth,
+      height: qrImageWidth,
+    });
+    page.drawImage(jpegLogoImage, {
+      x: logoImageX,
+      y: y - 265 + (qrImageWidth - logoImageWidth) / 2,
+      width: logoImageWidth,
+      height: logoImageWidth,
+    });
     const pdfBytes = await pdfDoc.save();
-  
-    // PDF dosyasını indir
-    const blob = new Blob([pdfBytes], { type: 'application/pdf' });
-    const link = document.createElement('a');
+
+    const blob = new Blob([pdfBytes], { type: "application/pdf" });
+    const link = document.createElement("a");
     link.href = window.URL.createObjectURL(blob);
-    link.download = 'OrderBill.pdf';
+    link.download = "OrderBill.pdf";
     link.click();
-};
+  };
   const openDeleteModal = (orderData: OrderPostDataType | null) => {
     setshowDelete(true);
     setDeletedOrder(orderData);
@@ -205,8 +197,7 @@ page.drawImage(jpegLogoImage, {
     setSortingValue(event.target.value as SortingValue);
   };
 
-
-  console.log("userOrder",userOrder?.data.result.data )
+  console.log("userOrder", userOrder?.data.result.data);
   const sortedProducts: OrderPostDataType[] = [
     ...(userOrder?.data.result.data || []),
   ];
@@ -245,8 +236,6 @@ page.drawImage(jpegLogoImage, {
                 ...modalSpring,
                 position: "fixed",
                 top: "25vh",
-                left: "50%",
-                transform: "translateX(-50%)",
                 zIndex: 50,
               }}
               className="bg-white dark:bg-gray-800 rounded-t-[20px] flex flex-col w-11/12 md:w-6/12 max-h-[45vh] overflow-y-auto items-center justify-start  asideScroll"
@@ -328,8 +317,8 @@ page.drawImage(jpegLogoImage, {
           </>
         )}
 
-        <div className="w-10/12 md:w-8/12 bg-[#F3F4F6] dark:bg-gray-900 my-scrollable-component max-h-[75vh] overflow-y-auto">
-          <div className="w-full flex items-center mb-6">
+        <div className="w-10/12 md:w-8/12  bg-[#F3F4F6] dark:bg-gray-900 my-scrollable-component max-h-[75vh] overflow-y-auto">
+          <div className="w-full flex items-center pl-4 py-2">
             <select
               className="pl-4 py-3  rounded-md w-8/12  md:w-2/12 cursor-pointer bg-[#e5ecf9] dark:bg-[#27283C] dark:text-gray-200 "
               value={sortingValue}

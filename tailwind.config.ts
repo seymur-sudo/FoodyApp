@@ -17,9 +17,11 @@ const config: Config = {
       },
     },
     fontFamily:{
-      'mukta':["Mukta"],
-      'montserrat': ["Montserrat"],
-      'body': ['Roboto']
+      'mukta':["Mukta", 'sans-serif'],
+      'montserrat': ["Montserrat", 'sans-serif'],
+      'body': ['Roboto', 'sans-serif'],
+      'poppins': ['Poppins', 'sans-serif'],
+    
     },
     extend: {
       borderRadius: {

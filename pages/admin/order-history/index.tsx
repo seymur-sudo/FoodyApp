@@ -89,92 +89,78 @@ const OrderHistory: React.FC = () => {
               {showUserModal && (
                 <>
                   <div className="fixed inset-0 bg-black  dark:bg-gray-700 opacity-60 z-40 "></div>
+                  <div className="w-full md:w-10/12 flex justify-center">
+                    <animated.div
+                      style={{
+                        ...modalSpring,
+                        position: "fixed",
+                        top: "25vh",
+                        zIndex: 50,
+                      }}
+                      className="bg-white dark:bg-gray-800 rounded-t-[20px] flex flex-col w-11/12 md:w-6/12 max-h-[45vh] overflow-y-auto items-center justify-start  asideScroll"
+                    >
+                      <div className="my-2" onClick={closeUserModal}>
+                        <IoIosCloseCircleOutline
+                          size={40}
+                          className="text-[#BDBDBD] dark:text-sky-400 cursor-pointer "
+                        />
+                      </div>
+                      <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                        <thead className="text-xs text-gray-700 capitalize bg-white dark:bg-gray-700 dark:text-gray-400">
+                          <tr>
+                            <th scope="col" className="pl-14 py-3">
+                              {t("Image")}
+                            </th>
+                            <th scope="col" className="px-6 py-3">
+                              {t("Name")}
+                            </th>
+                            <th scope="col" className="px-6 py-3">
+                              {t("Price")}
+                            </th>
+                            <th scope="col" className="px-6 py-3">
+                              {t("Count")}
+                            </th>
+                            <th scope="col" className="px-6 py-3">
+                              {t("Amount")}
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {historytems &&
+                            historytems?.map((product: any, index: number) => (
+                              <tr
+                                key={index}
+                                className="bg-white border-b dark:bg-[#27283C] dark:border-gray-800 hover:bg-gray-100 dark:hover:bg-gray-900 transition-all duration-700"
+                              >
+                                <td className="pl-14 py-4 font-semibold text-gray-900 dark:text-white">
+                                  <Image
+                                    alt="soup"
+                                    width={100}
+                                    height={100}
+                                    src={product?.img_url ?? ""}
+                                    className="w-[45px] h-[45px] rounded-full cursor-pointer  hover:scale-110   transition-all duration-500"
+                                  />
+                                </td>
 
-                  <animated.div
-                    style={{
-                      ...modalSpring,
-                      position: "fixed",
-                      top: "25vh",
-                      left: "50%",
-                      transform: "translateX(-50%)",
-                      zIndex: 50,
-                    }}
-                    className="bg-white dark:bg-gray-800 rounded-t-[20px] flex flex-col w-11/12 md:w-6/12 max-h-[45vh] overflow-y-auto items-center justify-start  asideScroll"
-                  >
-                    <div className="my-2" onClick={closeUserModal}>
-                      <IoIosCloseCircleOutline
-                        size={40}
-                        className="text-[#BDBDBD] dark:text-sky-400 cursor-pointer "
-                      />
-                    </div>
-                    <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                      <thead className="text-xs text-gray-700 capitalize bg-white dark:bg-gray-700 dark:text-gray-400">
-                        <tr>
-                          <th scope="col" className="pl-14 py-3">
-                            {t("Image")}
-                          </th>
-                          <th scope="col" className="px-6 py-3">
-                            {t("Name")}
-                          </th>
-                          <th scope="col" className="px-6 py-3">
-                            {t("Price")}
-                          </th>
-                          <th scope="col" className="px-6 py-3">
-                            {t("Count")}
-                          </th>
-                          <th scope="col" className="px-6 py-3">
-                            {t("Amount")}
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {historytems &&
-                          historytems?.map((product: any, index: number) => (
-                            <tr
-                              key={index}
-                              className="bg-white border-b dark:bg-[#27283C] dark:border-gray-800 hover:bg-gray-100 dark:hover:bg-gray-900 transition-all duration-700"
-                            >
-                              <td className="pl-14 py-4 font-semibold text-gray-900 dark:text-white">
-                                <Image
-                                  alt="soup"
-                                  width={100}
-                                  height={100}
-                                  src={product?.img_url ?? ""}
-                                  className="w-[45px] h-[45px] rounded-full cursor-pointer  hover:scale-110   transition-all duration-500"
-                                />
-                              </td>
+                                <td className="px-5"> {product?.name}</td>
 
-                              <td className="px-5"> {product?.name}</td>
+                                <td className="pl-4 py-4 font-semibold text-gray-900 dark:text-white capitalize">
+                                  $ {product?.price}
+                                </td>
 
-                              <td className="pl-4 py-4 font-semibold text-gray-900 dark:text-white capitalize">
-                                $ {product?.price}
-                              </td>
+                                <td className="px-6 font-semibold text-gray-900 dark:text-white">
+                                  {product?.count}
+                                </td>
 
-                              <td className="px-6 font-semibold text-gray-900 dark:text-white">
-                                {product?.count}
-                              </td>
-
-                              <td className="p-4 pl-8 font-semibold text-gray-900 dark:text-white">
-                                {product.amount}
-                              </td>
-                            </tr>
-                          ))}
-                      </tbody>
-                    </table>
-                  </animated.div>
-                  <animated.div
-                    style={{
-                      position: "fixed",
-                      top: 0,
-                      left: 0,
-                      right: 0,
-                      bottom: 0,
-                      backgroundColor: "black",
-                      zIndex: 40,
-                      opacity: 0,
-                    }}
-                    onClick={closeUserModal}
-                  />
+                                <td className="p-4 pl-8 font-semibold text-gray-900 dark:text-white">
+                                  {product.amount}
+                                </td>
+                              </tr>
+                            ))}
+                        </tbody>
+                      </table>
+                    </animated.div>
+                  </div>
                 </>
               )}
 
