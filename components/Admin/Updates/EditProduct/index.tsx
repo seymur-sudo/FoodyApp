@@ -14,6 +14,7 @@ import { useQuery } from "react-query";
 import { getRestaurant } from "../../../../services/index";
 import { fileStorage } from "../../../../server/configs/firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { useTranslation } from "next-i18next";
 
 const EditProduct: React.FC = () => {
   const { show, closeModal, editedItem, setSelectedFile, newImg, setNewImg } =
@@ -22,6 +23,8 @@ const EditProduct: React.FC = () => {
     QUERIES.Restaurants,
     getRestaurant
   );
+  const { t } = useTranslation("common");
+
   const [editedProduct, setEditedProduct] = useState(editedItem);
 
   const queryClient = useQueryClient();
@@ -44,7 +47,9 @@ const EditProduct: React.FC = () => {
   });
 
   const handleInputChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+    event: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
   ) => {
     const { name, value } = event.target;
     const parsedValue = name === "price" ? parseFloat(value) : value;
@@ -107,7 +112,7 @@ const EditProduct: React.FC = () => {
       });
       return;
     }
-    
+
     if (editedProduct) {
       const editedProductWithImg = {
         ...editedProduct,
@@ -123,8 +128,10 @@ const EditProduct: React.FC = () => {
         <div className="flex justify-center">
           <div className="hidden md:block  w-1/3 mr-[5%] font-medium">
             <div className="flex flex-col justify-center ">
-              <h1 className="capitalize text-2xl mb-2"> Edit product</h1>
-              <p className="capitalize text-lg">upload your product image</p>
+              <h1 className="capitalize text-2xl mb-2"> {t("Edit Product")}</h1>
+              <p className="capitalize text-lg">
+                {t("Upload your product image")}
+              </p>
               <div className="h-[50vh] w-3/4  my-4">
                 <Image
                   width={300}
@@ -136,7 +143,7 @@ const EditProduct: React.FC = () => {
               </div>
 
               <p className=" text-lg">
-                Edit your Product description and necesarry information
+                {t("Edit your Product description and necesarry information")}
               </p>
             </div>
           </div>
@@ -144,8 +151,14 @@ const EditProduct: React.FC = () => {
           <div className="w-full  md:w-2/3 flex justify-center flex-col md:mt-[9.2%]">
             <div className="mb-5 flex justify-between items-center md:hidden">
               <div>
-                <h1 className="capitalize text-3xl mb-[5%]"> Edit product</h1>
-                <p className="capitalize text-xl">upload your product image</p>
+                <h1 className="capitalize text-3xl mb-[5%]">
+                  {" "}
+                  {t("Edit Product")}
+                </h1>
+                <p className="capitalize text-xl">
+                  {" "}
+                  {t("Upload your product image")}
+                </p>
               </div>
 
               <div
@@ -178,12 +191,12 @@ const EditProduct: React.FC = () => {
             </div>
 
             <p className=" block md:hidden text-md mt-[5%]">
-              Edit your Product description and necesarry information
+              {t("Edit your Product description and necesarry information")}
             </p>
 
             <div className="flex flex-col bg-[#43445A] rounded-[14px] mt-4 md:mt-12 p-6">
               <div className="flex flex-col">
-                <label className="mb-1">Name</label>
+                <label className="mb-1">{t("Name")}</label>
                 <input
                   type="text"
                   className="w-full p-2 rounded-[14px] bg-inputBg"
@@ -193,7 +206,7 @@ const EditProduct: React.FC = () => {
                 />
               </div>
               <div className="my-5 flex flex-col">
-                <label className="mb-1">Description:</label>
+                <label className="mb-1">{t("Description")}:</label>
 
                 <textarea
                   className="w-full h-[100px] px-2 rounded-[14px] bg-inputBg leading-10 resize-y"
@@ -204,7 +217,7 @@ const EditProduct: React.FC = () => {
               </div>
 
               <div className="mb-5 flex flex-col">
-                <label className="mb-1">Price</label>
+                <label className="mb-1">{t("Price")}</label>
                 <input
                   type="number"
                   className="w-full p-2 rounded-[14px] bg-inputBg"
@@ -216,7 +229,7 @@ const EditProduct: React.FC = () => {
 
               <div className="flex flex-col">
                 <label htmlFor="category" className="mb-1">
-                  Select Restaurant:
+                  {t("Select Restaurant")}:
                 </label>
                 <select
                   id="category"
@@ -225,7 +238,7 @@ const EditProduct: React.FC = () => {
                   value={editedProduct?.rest_id}
                   onChange={handleInputChange}
                 >
-                  <option value="">Select...</option>
+                  <option value="">{t("Select")}...</option>
                   {data?.data.result.data.map(
                     (restaurant: RestaurantPostDataType, index) => (
                       <option key={index} value={`${restaurant.name}`}>
@@ -244,15 +257,15 @@ const EditProduct: React.FC = () => {
             className="capitalize rounded-[14px] 	border-color: [#38394E] border-solid  border-0 bg-[#43445A] shadow-shadow1 hover:opacity-75 transition-all duration-500 w-5/12 py-3 md:py-4 text-[#fff] text-lg font-bold leading-5 tracking-[0.25px] "
             onClick={closeModal}
           >
-            cancel
+            {t("Cancel")}
           </button>
           <button
             className="capitalize rounded-[14px] 	border-color:[#970e79] border-solid  border-0 bg-[#C035A2] shadow-shadow2 hover:opacity-75 transition-all duration-500 w-5/12 py-3 md:py-4 text-[#fff] text-lg font-bold leading-5 tracking-[0.25px]"
             onClick={handleEditProduct}
           >
             {editProductMutation.isLoading
-              ? "product is editing"
-              : "edit product"}
+              ? t("product is editing")
+              : t("Edit product")}
           </button>
         </div>
       </div>

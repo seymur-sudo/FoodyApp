@@ -11,6 +11,7 @@ import { getCategory, getRestaurant } from "../../../services/index";
 import { useQuery } from "react-query";
 import { QUERIES } from "../../../constant/Queries";
 import { ROUTER } from "../../../shared/constant/router";
+import { useTranslation } from "next-i18next";
 
 const SearchBar: React.FC = () => {
   const {
@@ -22,6 +23,7 @@ const SearchBar: React.FC = () => {
     setSelectedCategory,
   } = useSidebarContext() as SidebarContextProps;
   const { pathname, push } = useRouter();
+  const { t } = useTranslation("common");
 
   const { data: categoriesData } = useQuery(QUERIES.Categories, getCategory);
   const { data: restaurantData } = useQuery(QUERIES.Restaurants, getRestaurant);
@@ -37,28 +39,28 @@ const SearchBar: React.FC = () => {
 
   const getButtonText = () => {
     if (pathname === ROUTER.ADMIN_CATEGORY) {
-      return "ADD CATEGORY";
+      return t("ADD CATEGORY");
     } else if (pathname === ROUTER.ADMIN_OFFERS) {
-      return "ADD OFFER";
+      return t("ADD OFFER");
     } else if (pathname === ROUTER.ADMIN_RESTAURANTS) {
-      return "ADD RESTUARANT";
+      return t("ADD RESTUARANT");
     }
     return "ADD";
   };
 
   const getPageName = () => {
     if (pathname === ROUTER.ADMIN_CATEGORY) {
-      return "Categories";
+      return t("Categories");
     } else if (pathname === ROUTER.ADMIN_OFFERS) {
-      return "Offers";
+      return t("Offers");
     } else if (pathname === ROUTER.ADMIN_RESTAURANTS) {
-      return "Restaurants";
+      return t("Restaurants");
     } else if (pathname === ROUTER.ADMIN_PRODUCTS) {
-      return "Products";
+      return t("Products");
     } else if (pathname === ROUTER.ADMIN_ORDERS) {
-      return "Orders";
+      return t("Orders");
     } else if (pathname === ROUTER.ADMIN_HISTORY) {
-      return "Order History";
+      return t("History");
     }
     return "Page";
   };
@@ -112,9 +114,23 @@ const SearchBar: React.FC = () => {
             </div>
           )}
 
-          {orderBtn && <button onClick={()=> push(ROUTER.ADMIN_HISTORY)} className="bg-pink font-semibold text-white py-1 px-3 rounded-lg font-mutka hover:opacity-60 transition-all duration-500 cursor-pointer">History</button>}
+          {orderBtn && (
+            <button
+              onClick={() => push(ROUTER.ADMIN_HISTORY)}
+              className="bg-pink font-semibold text-white py-1 px-3 rounded-lg font-mutka hover:opacity-60 transition-all duration-500 cursor-pointer"
+            >
+              {t("History")}
+            </button>
+          )}
 
-          {historyBtn && <button onClick={()=> push(ROUTER.ADMIN_ORDERS)} className="bg-pink font-semibold text-white py-1 px-3 rounded-lg font-mutka hover:opacity-60 transition-all duration-500 cursor-pointer">Orders</button>}
+          {historyBtn && (
+            <button
+              onClick={() => push(ROUTER.ADMIN_ORDERS)}
+              className="bg-pink font-semibold text-white py-1 px-3 rounded-lg font-mutka hover:opacity-60 transition-all duration-500 cursor-pointer"
+            >
+              {t("Orders")}
+            </button>
+          )}
 
           {!hideButton && (
             <>

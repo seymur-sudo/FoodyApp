@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Image from "next/image";
 import enImg from "../../../public/svgs/en.svg";
 import loginImg from "../../../public/svgs/LoginImg.svg";
@@ -43,7 +43,7 @@ const validate = (values: FormValues) => {
 };
 
 const Login: React.FC = () => {
-  const { data: userID} = useQuery(QUERIES.User, getUser);
+  const { data: userID } = useQuery(QUERIES.User, getUser);
   let userEmail =
     userID && userID.data && userID.data.user ? userID.data.user.email : null;
 
@@ -65,13 +65,13 @@ const Login: React.FC = () => {
       }
     },
     onError: () => {
-      setTimeout(() => {
-        toast.error("Please, Enter Correct Email and Password!", {
-          autoClose: 1000,
-        });
+      toast.error("Please, Enter Correct Email and Password!", {
+        autoClose: 1000,
       });
     },
   });
+
+
 
   const formik = useFormik({
     initialValues: {

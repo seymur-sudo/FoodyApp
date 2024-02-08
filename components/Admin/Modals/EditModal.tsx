@@ -29,7 +29,7 @@ const EditModal: React.FC = () => {
     <>
       {show && (
         <div
-          className="fixed inset-0 bg-black opacity-30 z-40"
+          className="fixed inset-0 bg-black opacity-10 z-40"
           onClick={closeModal}
         ></div>
       )}
