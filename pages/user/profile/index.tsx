@@ -19,6 +19,7 @@ import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { updateUser, getUser } from "@/services";
 import { isValidPhone } from "@/constant/ValidRegex";
+import login from "../../../public/svgs/login.svg";
 
 const ProfileUser = () => {
   const { data: userD, isLoading, isError } = useQuery(QUERIES.User, getUser);
@@ -180,12 +181,24 @@ const ProfileUser = () => {
               htmlFor="user_img"
               className="flex flex-col items-center justify-center w-full rounded-[14px]  cursor-pointer  "
             >
-              <div className="flex flex-col items-center justify-center py-2 px-7 rounded-full  bg-white dark:bg-black">
-                <Image width={75} height={75} src={uploadImg} alt="upload" />
-                <p className="text-[#929292] dark:text-[#6FCF97]  font-semibold text-lg">
-                  {t("upload")}
-                </p>
-              </div>
+              {userImg ? (
+                <div className="flex flex-col items-center justify-center py-2 px-7 rounded-full ">
+                  <Image
+                    src={userImg ? userImg : login}
+                    height={75}
+                    width={75}
+                    alt="Uploaded Image"
+                    className="rounded-full w-[110px] h-[110px]"
+                  />
+                </div>
+              ) : (
+                <div className="flex flex-col items-center justify-center py-2 px-7 rounded-full  bg-white dark:bg-black">
+                  <Image width={75} height={75} src={uploadImg} alt="upload" />
+                  <p className="text-[#929292] dark:text-[#6FCF97] font-semibold text-lg">
+                    {t("upload")}
+                  </p>
+                </div>
+              )}
               <input
                 onChange={(e) => handleNewImg(e)}
                 id="user_img"
