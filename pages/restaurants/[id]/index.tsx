@@ -26,8 +26,6 @@ import { QUERIES } from "../../../constant/Queries";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { ROUTER } from "../../../shared/constant/router";
 
-
-
 type SortingValue = "A-Z" | "Z-A" | "Low-to-High" | "High-to-Low";
 
 const ResDetail = () => {
@@ -143,7 +141,7 @@ const ResDetail = () => {
 
         <div className="py-[3%] px-[6%] flex justify-between">
           <div className="w-full md:w-7/12 bg-[#F3F4F6] dark:bg-gray-900 flex flex-col items-center my-scrollable-component max-h-[100vh] overflow-y-auto">
-            <div className="w-full flex items-center justify-center  mb-5">
+            <div className="w-full flex items-center justify-center mt-2 mb-5">
               <select
                 className="pl-3 py-2  rounded-md w-5/12  md:w-3/12 cursor-pointer bg-gray-200 text-gray-800   dark:bg-gray-800 dark:text-white  "
                 value={sortingValue}
@@ -199,17 +197,15 @@ const ResDetail = () => {
           {showUserModal && (
             <>
               <div className="fixed inset-0 bg-black dark:bg-gray-700 opacity-60 z-40 md:opacity-0"></div>
-
+              
               <animated.div
                 style={{
                   ...modalSpring,
                   position: "fixed",
                   top: "25vh",
-                  left: "50%",
-                  transform: "translateX(-50%)",
                   zIndex: 50,
                 }}
-                className="bg-white dark:bg-gray-800 rounded-t-[20px] flex flex-col w-11/12 max-h-[45vh] overflow-y-auto items-center justify-start md:hidden asideScroll"
+                className="bg-white dark:bg-gray-800 rounded-t-[20px] flex flex-col w-[88%]   max-h-[45vh] overflow-y-auto items-center justify-start md:hidden asideScroll"
               >
                 <div className="mt-4" onClick={closeUserModal}>
                   <IoIosCloseCircleOutline
@@ -221,19 +217,7 @@ const ResDetail = () => {
                   <BasketResCard />
                 </div>
               </animated.div>
-              <animated.div
-                style={{
-                  position: "fixed",
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  bottom: 0,
-                  backgroundColor: "black",
-                  zIndex: 40,
-                  opacity: 0,
-                }}
-                onClick={closeUserModal}
-              />
+      
             </>
           )}
 

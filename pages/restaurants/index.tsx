@@ -183,16 +183,7 @@ const Restaurants = () => {
                   key={restaurant.id}
                 >
                   <div className="capitalize flex flex-col items-center md:items-start  w-full ">
-              
-                    <Link
-                    className="text-white"
-                      href={{
-                        pathname: "/restaurants/[id]",
-                        query: { id: restaurant.id || '' },
-                      }}
-                    >
-                      Go to restaurant page
-                    </Link>
+                   
                     <Image
                       onClick={() =>
                         push(`${ROUTER.RESTAURANTS}/${restaurant.id}`)

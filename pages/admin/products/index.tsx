@@ -85,8 +85,8 @@ const Products: React.FC = () => {
                     filteredData.map((product: PostDataType, index: any) => (
                       <div
                         key={product.id}
-                        className="bg-indigo-100 shadow-shadow2  font-roboto font-medium rounded-md hover:scale-110 transition-all duration-700"
-                        data-aos="fade-up"
+                        className="bg-indigo-100 shadow-shadow2  font-mutka font-medium rounded-md hover:scale-110 transition-all duration-700"
+                        data-aos="fade-right"
                         data-aos-delay={(index + 1) * 150}
                       >
                         <div className="capitalize flex flex-col items-center md:items-start w-full ">
@@ -97,9 +97,10 @@ const Products: React.FC = () => {
                             height={200}
                             className="hover:scale-105 transition-all duration-500 w-full  h-[200px] object-cover"
                           />
-                          <h1 className="text-[#1E1E30] text-[24px] md:text-[18px] mt-3 mb-2 px-1">
+                          <h1 className="text-[#1E1E30]  text-[24px] md:text-[18px] mt-3 mb-2 px-1">
                             {product.name}
                           </h1>
+                       
                           <p className="text-[#6e6e7e] text-xl md:text-sm px-1">
                             {product.description}
                           </p>
