@@ -139,7 +139,7 @@ const UserCheckout = () => {
             </h1>
             <div className="flex flex-col mb-4   w-10/12">
               <label className="text-[#4F4F4F] dark:text-green-300 mb-3 font-bold">
-                Delivery Address
+                {t("Delivery Address")}
               </label>
               <input
                 type="text"
@@ -150,7 +150,7 @@ const UserCheckout = () => {
             </div>
             <div className="flex flex-col mb-5  w-10/12">
               <label className="text-[#4F4F4F] dark:text-green-300 mb-3 font-bold">
-                Contact Number
+                {t("Contact Number")}
               </label>
               <input
                 type="text"
