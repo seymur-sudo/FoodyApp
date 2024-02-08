@@ -76,14 +76,14 @@ export const LangSelect: React.FC = () => {
         >
           {currentLang === "en" ? (
             <div >
-              <Link href="" locale="az" onClick={() => changeLang("az")}>
+              <Link href="#" locale="az" onClick={() => changeLang("az")}>
                 <Image
                   className=" pb-2 scale-100 hover:scale-110 "
                   src={az}
                   alt="az"
                 />
               </Link>
-              <Link href="" locale="fr" onClick={() => changeLang("fr")}>
+              <Link href="#" locale="fr" onClick={() => changeLang("fr")}>
                 <Image
                   className="scale-100 hover:scale-110"
                   src={fr}
@@ -93,14 +93,14 @@ export const LangSelect: React.FC = () => {
             </div>
           ) : currentLang === "az" ? (
             <div>
-              <Link href="" locale="en" onClick={() => changeLang("en")}>
+              <Link href="#" locale="en" onClick={() => changeLang("en")}>
                 <Image
                   className="pb-2 scale-100 hover:scale-110 "
                   src={en}
                   alt="en"
                 />
               </Link>
-              <Link href="" locale="fr" onClick={() => changeLang("fr")}>
+              <Link href="#" locale="fr" onClick={() => changeLang("fr")}>
                 <Image
                   className=" scale-100 hover:scale-110"
                   src={fr}
@@ -110,14 +110,14 @@ export const LangSelect: React.FC = () => {
             </div>
           ) : currentLang === "fr" ? (
             <div>
-              <Link href="" locale="az" onClick={() => changeLang("az")}>
+              <Link href="#" locale="az" onClick={() => changeLang("az")}>
                 <Image
                   className="pb-2 scale-100 hover:scale-110"
                   src={az}
                   alt="az"
                 />
               </Link>
-              <Link href="" locale="en" onClick={() => changeLang("en")}>
+              <Link href="#" locale="en" onClick={() => changeLang("en")}>
                 <Image
                   className=" scale-100 hover:scale-110"
                   src={en}

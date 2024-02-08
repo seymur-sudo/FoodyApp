@@ -16,6 +16,7 @@ import { QUERIES } from "../../../constant/Queries";
 import { fileStorage } from "../../../server/configs/firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { isFormValid } from "@/constant/ValidRegex";
+import { useTranslation } from "next-i18next";
 
 const initialState: InitialStateType = {
   name: "",
@@ -29,8 +30,9 @@ const AddProduct: React.FC = () => {
   const { data } = useQuery(QUERIES.Restaurants, getRestaurant);
   const { isSidebarOpen, closeSidebar, setSelectedFile, newImg, setNewImg } =
     useSidebarContext() as SidebarContextProps;
-  const [newProduct, setNewProduct] = useState<InitialStateType>(initialState);
+  const { t } = useTranslation("common");
 
+  const [newProduct, setNewProduct] = useState<InitialStateType>(initialState);
   const queryClient = useQueryClient();
   const mutation = useMutation(() => addProduct(newProduct), {
     onSuccess: () => {
@@ -112,8 +114,10 @@ const AddProduct: React.FC = () => {
         <div className="flex justify-center">
           <div className="hidden md:block  w-1/3 mr-[5%] font-medium">
             <div className="flex flex-col justify-center ">
-              <h1 className="capitalize text-2xl mb-2"> add product</h1>
-              <p className="capitalize text-lg">upload your product image</p>
+              <h1 className="capitalize text-2xl mb-2"> {t("Add Product")}</h1>
+              <p className="capitalize text-lg">
+                {t("Upload your product image")}
+              </p>
               <div className="h-[50vh] w-3/4 my-4">
                 <Image
                   width={300}
@@ -124,7 +128,7 @@ const AddProduct: React.FC = () => {
                 />
               </div>
               <p className=" text-lg">
-                Add your Product description and necesarry information
+                {t("Add your Product description and necesarry information")}
               </p>
             </div>
           </div>
@@ -132,8 +136,13 @@ const AddProduct: React.FC = () => {
           <div className="w-full  md:w-2/3 flex justify-center flex-col md:mt-[9.2%]">
             <div className="mb-5 flex justify-between items-center md:hidden">
               <div>
-                <h1 className="capitalize text-3xl mb-[5%]"> add product</h1>
-                <p className="capitalize text-xl">upload your product image</p>
+                <h1 className="capitalize text-3xl mb-[5%]">
+                  {" "}
+                  {t("Add Product")}
+                </h1>
+                <p className="capitalize text-xl">
+                  {t("Upload your product image")}
+                </p>
               </div>
 
               <div
@@ -166,12 +175,12 @@ const AddProduct: React.FC = () => {
             </div>
 
             <p className=" block md:hidden text-xl mt-[5%]">
-              Add your Product description and necesarry information
+              {t("Add your Product description and necesarry information")}
             </p>
 
             <div className="flex flex-col bg-[#43445A] rounded-[14px] mt-4 md:mt-12 p-6">
               <div className="flex flex-col">
-                <label className="mb-1">Name</label>
+                <label className="mb-1"> {t("Name")}</label>
                 <input
                   type="text"
                   className="w-full p-2 rounded-[14px] bg-inputBg"
@@ -181,7 +190,7 @@ const AddProduct: React.FC = () => {
                 />
               </div>
               <div className="my-5 flex flex-col">
-                <label className="mb-1">Description:</label>
+                <label className="mb-1">{t("Description")}:</label>
 
                 <textarea
                   className="w-full h-[100px] px-2 rounded-[14px] bg-inputBg leading-10 resize-y"
@@ -192,7 +201,7 @@ const AddProduct: React.FC = () => {
               </div>
 
               <div className="mb-5 flex flex-col">
-                <label className="mb-1">Price</label>
+                <label className="mb-1">{t("Price")}</label>
                 <input
                   type="number"
                   className="w-full p-2 rounded-[14px] bg-inputBg"
@@ -203,7 +212,7 @@ const AddProduct: React.FC = () => {
               </div>
               <div className="flex flex-col">
                 <label htmlFor="restaurant" className="mb-1">
-                  Select Restaurant:
+                  {t("Select Restaurant")}:
                 </label>
                 <select
                   id="restaurant"
@@ -212,7 +221,7 @@ const AddProduct: React.FC = () => {
                   value={newProduct.rest_id}
                   onChange={handleInputChange}
                 >
-                  <option value="">Select...</option>
+                  <option value="">{t("Select")}...</option>
                   {data?.data.result.data.map(
                     (restaurant: RestaurantPostDataType, index) => (
                       <option key={index} value={`${restaurant.name}`}>
@@ -231,7 +240,7 @@ const AddProduct: React.FC = () => {
             className="capitalize rounded-[14px] 	border-color: [#38394E] border-solid  border-0 bg-[#43445A] shadow-shadow1 hover:opacity-75 transition-all duration-500 w-5/12 py-3 md:py-4 text-[#fff] text-lg font-bold leading-5 tracking-[0.25px] "
             onClick={closeSidebar}
           >
-            cancel
+            {t("Cancel")}:
           </button>
           <button
             className={`capitalize rounded-[14px] border-solid border-0 shadow-shadow1 transition-all duration-500 w-5/12 py-3 md:py-4 text-lg font-bold leading-5 tracking-[0.25px] ${
@@ -242,7 +251,12 @@ const AddProduct: React.FC = () => {
             disabled={!isFormValid(newProduct)}
             onClick={handleAddProduct}
           >
-            {mutation.isLoading ? "product is creating" : "create product"}
+            {mutation.isLoading
+              ? t("product is creating")
+              : t("create product")
+              
+              
+              }
           </button>
         </div>
       </div>

@@ -16,6 +16,9 @@ import { useQuery } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { QUERIES } from "../../../constant/Queries";
 import { PostDataType } from "../../../interfaces/index";
+import { GetServerSideProps } from "next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { useTranslation } from "next-i18next";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
@@ -28,6 +31,7 @@ const Products: React.FC = () => {
     setDeletedItem,
     isAdmin,
   } = useSidebarContext() as SidebarContextProps;
+  const { t } = useTranslation("common");
 
   const openModal = (product: PostDataType | null) => {
     setShow(true);
@@ -145,3 +149,8 @@ const Products: React.FC = () => {
 };
 
 export default Products;
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => ({
+  props: {
+    ...(await serverSideTranslations(locale as string, ["common"])),
+  },
+});

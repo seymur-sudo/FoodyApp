@@ -11,6 +11,9 @@ import { useSidebarContext } from "@/contexts/SidebarContext";
 import Image from "next/image";
 import Head from "next/head";
 import LoadingImg from "../../../public/loadingImg.gif";
+import { GetServerSideProps } from "next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { useTranslation } from "next-i18next";
 
 
 const Restaurant: React.FC = () => {
@@ -69,3 +72,8 @@ const Restaurant: React.FC = () => {
 };
 
 export default Restaurant;
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => ({
+  props: {
+    ...(await serverSideTranslations(locale as string, ["common"])),
+  },
+});

@@ -26,6 +26,8 @@ import { QUERIES } from "../../../constant/Queries";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { ROUTER } from "../../../shared/constant/router";
 
+
+
 type SortingValue = "A-Z" | "Z-A" | "Low-to-High" | "High-to-Low";
 
 const ResDetail = () => {
