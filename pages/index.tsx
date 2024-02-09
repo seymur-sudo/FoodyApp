@@ -291,11 +291,11 @@ const Home: NextPage = () => {
             )
           )}
 
-        <div className="w-8/12  mx-auto text-center pt-20" data-aos="zoom-in">
+        <div className=" w-10/12 md:w-[69%]  mx-auto text-center pt-20" data-aos="zoom-in">
           <h1 className="capitalize  text-xl md:text-5xl font-body pt-5 pb-9 font-bold text-transparent bg-gradient-to-r bg-clip-text  from-gray-900  to-red-400 dark:from-green-300 dark:to-orange-400 ">
             {t("foody delivery advertisement")}
           </h1>
-          <div className="border-[3px] h-[40vh] md:h-[78vh] rounded-md border-red-600 dark:border-green-300">
+          <div className="border-[3px] h-[26vh] md:h-[81vh] rounded-md border-red-600 dark:border-green-300">
             <DynamicReactPlayer
               url="https://www.youtube.com/watch?v=OZzoAw9QHXY"
               width="100%"

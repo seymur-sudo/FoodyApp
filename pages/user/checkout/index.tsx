@@ -10,7 +10,8 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useSidebarContext } from "@/contexts/SidebarContext";
 import { SidebarContextProps, BasketPostDataType } from "@/interfaces";
 import { useQuery } from "react-query";
-import { IoIosBasket } from "react-icons/io";
+import EmptyBasket from "../../../public/svgs/emptyBasket.svg";
+import Image from "next/image";
 import { addOrder, getUser } from "@/services";
 import { toast } from "react-toastify";
 import { QUERIES } from "../../../constant/Queries";
@@ -265,9 +266,15 @@ const UserCheckout = () => {
                   </ul>
                 ))
               ) : (
-                <div className=" flex items-center   flex-col  justify-center  pb-4 text-red-600 dark:text-green-400">
+                <div className=" flex items-center   flex-col  justify-center  pb-4 text-[#BDBDBD]">
                   <div>
-                    <IoIosBasket className="w-[125px] h-[100px] " />
+                    <Image
+                      src={EmptyBasket}
+                      alt="EmptyBasket"
+                      width={100}
+                      height={100}
+                      className=" object-cover w-[125px] h-[100px]"
+                    />
                   </div>
                   <p className="capitalize font-bold  flex flex-col items-center pb-3 ">
                     <span>oops !</span> <span>basket is empty</span>

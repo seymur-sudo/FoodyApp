@@ -5,10 +5,11 @@ import { LuTrash } from "react-icons/lu";
 import { useSidebarContext } from "@/contexts/SidebarContext";
 import { SidebarContextProps, BasketPostDataType } from "@/interfaces";
 import DeleteUserProduct from "../Deletes/DeleteUserProduct";
-import { IoBasketSharp } from "react-icons/io5";
-import { IoIosBasket } from "react-icons/io";
+import { IoBasketOutline } from "react-icons/io5";
 import { useRouter } from "next/router";
 import { ROUTER } from "../../../shared/constant/router";
+import { useTranslation } from "next-i18next";
+import EmptyBasket from "../../../public/svgs/emptyBasket.svg";
 
 const UserBasket = () => {
   const {
@@ -19,6 +20,7 @@ const UserBasket = () => {
     basketProducts,
     basketProductsItems,
   } = useSidebarContext() as SidebarContextProps;
+  const { t } = useTranslation("common");
 
   const { push } = useRouter();
 
@@ -34,12 +36,14 @@ const UserBasket = () => {
           <div className="flex justify-between items-center px-2 py-3 w-full">
             <div className="flex justify-center items-center">
               <h1 className="capitalize py-2 text-[#4F4F4F)] dark:text-cyan-400 font-bold text-[25px]"></h1>
-              <IoBasketSharp className="cursor-pointer text-3xl text-[#D63626] dark:text-cyan-300 hover:scale-110 transition-all duration-700 mx-2" />
+              <IoBasketOutline className="cursor-pointer text-3xl text-[#D63626] dark:text-cyan-300 hover:scale-110 transition-all duration-700 mx-2" />
 
               <p className="capitalize  text-[#D63626]  dark:text-cyan-400 font-bold text-[16px]">
-                <span className="mr-1">{basketProducts?.total_item} items</span>
                 <span className="mr-1">
-                  - {basketProducts?.total_count} count
+                  {basketProducts?.total_item} {t("items")}
+                </span>
+                <span className="mr-1">
+                  - {basketProducts?.total_count} {t("count")}
                 </span>
               </p>
             </div>
@@ -54,13 +58,13 @@ const UserBasket = () => {
             >
               <LuTrash className="text-gray-200 dark:text-gray-900 text-xl  " />
               <p className="capitalize font-semibold ml-2 text-gray-200 dark:text-gray-900 ">
-                clear all
+                {t("clear all")}
               </p>
             </div>
           </div>
         )}
-        <div className=" w-full bg-[#F3F4F6] dark:bg-gray-900 md:flex flex-col  items-center my-scrollable-component min-h-[40vh] overflow-y-auto">
-          <div className="w-full">
+        <div className=" w-full bg-[#F3F4F6] dark:bg-gray-900 md:flex flex-col  items-center my-scrollable-component  overflow-y-auto">
+          <div className="w-full min-h-[45vh] max-h-[45vh]">
             {basketProductsItems && basketProductsItems.length > 0 ? (
               basketProductsItems.map((product: BasketPostDataType) => (
                 <div
@@ -73,7 +77,7 @@ const UserBasket = () => {
                       alt="product.name"
                       width={100}
                       height={100}
-                      className=" w-[80px] h-[80px]  rounded-full  object-cover"
+                      className=" w-[80px] h-[80px]  rounded-lg  object-cover"
                     />
                     <div className=" w-5/12">
                       <div className="flex flex-col justify-center items-center ">
@@ -114,12 +118,18 @@ const UserBasket = () => {
                 </div>
               ))
             ) : (
-              <div className=" w-full flex flex-col items-center justify-center  text-red-600 dark:text-cyan-300">
+              <div className=" w-full flex flex-col items-center justify-center  text-[#BDBDBD] ">
                 <div>
-                  <IoIosBasket className="w-[275px] h-[250px] " />
+                  <Image
+                    src={EmptyBasket}
+                    alt="EmptyBasket"
+                    width={300}
+                    height={300}
+                    className="w-[276px] h-[236px] object-cover "
+                  />
                 </div>
-                <p className="capitalize font-bold text-3xl flex flex-col items-center pb-3 ">
-                  <span>oops !</span> <span>basket is empty</span>
+                <p className="capitalize font-bold text-2xl flex flex-col items-center pb-2 ">
+                  <span>oops !</span> <span>{t("basket is empty")}</span>
                 </p>
               </div>
             )}
@@ -136,7 +146,7 @@ const UserBasket = () => {
             }  flex items-center justify-between rounded-[100px]  bg-[#D63626] dark:bg-blue-500 text-white`}
           >
             <button className="capitalize mx-[3%] font-medium flex items-center">
-              checkout
+              {t("Checkout")}
             </button>
 
             <p className="text-[#D63626] flex  items-center px-8 text-lg font-medium h-full rounded-[80px] border-2 border-[#D63626] dark:border-blue-500 bg-white dark:bg-gray-900 dark:text-sky-200">
