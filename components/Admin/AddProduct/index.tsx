@@ -253,10 +253,7 @@ const AddProduct: React.FC = () => {
           >
             {mutation.isLoading
               ? t("product is creating")
-              : t("create product")
-              
-              
-              }
+              : t("create product")}
           </button>
         </div>
       </div>

@@ -214,13 +214,13 @@ const UserOrders = () => {
   } else {
     sortedProducts.sort((a, b) => (b.amount || 0) - (a.amount || 0));
   }
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
+  // if (isLoading) {
+  //   return <div>Loading...</div>;
+  // }
 
-  if (isError) {
-    return <div>Error loading products</div>;
-  }
+  // if (isError) {
+  //   return <div>Error loading products</div>;
+  // }
   return (
     <>
       <MainHeader />
@@ -324,16 +324,18 @@ const UserOrders = () => {
               value={sortingValue}
               onChange={handleSortProducts}
             >
-              <option value="A-Z">A-Z Delivery</option>
-              <option value="Z-A">Z-A Delivery</option>
-              <option value="Low-to-High">Low To High Amount</option>
-              <option value="High-to-Low">High To Low Amount</option>
+           
+              <option value="A-Z">A-Z {t("Delivery")} </option>
+              <option value="Z-A">Z-A {t("Delivery")}</option>
+              <option value="Low-to-High">{t("Low To High Amount")}</option>
+              <option value="High-to-Low">{t("High To Low Amount")}</option>
             </select>
             <button
               className="ml-4 px-4 py-[10px] w-3/12  md:w-1/12 rounded-md cursor-pointer bg-red-100 text-[#D63626] dark:bg-cyan-100 dark:text-blue-500  font-semibold hover:opacity-75 transition-all duration-500"
               onClick={resetSorting}
             >
-              Reset
+              {t("Reset")}
+
             </button>
           </div>
           <h1 className="capitalize text-[#D63626] dark:text-sky-300 text-[30px] font-semibold ml-6 ">

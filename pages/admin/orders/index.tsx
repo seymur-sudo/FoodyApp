@@ -77,13 +77,13 @@ const Orders: React.FC = () => {
     sortedProducts.sort((a, b) => (b.amount || 0) - (a.amount || 0));
   }
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
+  // if (isLoading) {
+  //   return <div>Loading...</div>;
+  // }
 
-  if (isError) {
-    return <div>Error loading products</div>;
-  }
+  // if (isError) {
+  //   return <div>Error loading products</div>;
+  // }
 
   return (
     <>
@@ -101,7 +101,7 @@ const Orders: React.FC = () => {
                 <>
                   <div className="fixed inset-0 bg-black  dark:bg-gray-700 opacity-60 z-40 "></div>
 
-                  <div  className="w-full md:w-10/12 flex justify-center" >
+                  <div className="w-full md:w-10/12 flex justify-center">
                     <animated.div
                       style={{
                         ...modalSpring,
@@ -176,23 +176,22 @@ const Orders: React.FC = () => {
                 </>
               )}
 
-              
               <div className="w-full flex items-center mb-6">
                 <select
                   className="pl-4 py-3  rounded-md w-8/12  md:w-2/12 cursor-pointer bg-[#27283C] text-gray-200 "
                   value={sortingValue}
                   onChange={handleSortProducts}
                 >
-                  <option value="A-Z">A-Z Delivery</option>
-                  <option value="Z-A">Z-A Delivery</option>
-                  <option value="Low-to-High">Low To High Amount</option>
-                  <option value="High-to-Low">High To Low Amount</option>
+                  <option value="A-Z">A-Z {t("Delivery")} </option>
+                  <option value="Z-A">Z-A {t("Delivery")}</option>
+                  <option value="Low-to-High">{t("Low To High Amount")}</option>
+                  <option value="High-to-Low">{t("High To Low Amount")}</option>
                 </select>
                 <button
                   className="ml-4 px-4 py-[10px] w-3/12  md:w-1/12 rounded-md cursor-pointer bg-[#C74FEB] text-white hover:opacity-75 transition-all duration-500"
                   onClick={resetSorting}
                 >
-                  Reset
+                  {t("Reset")}
                 </button>
               </div>
               <div className=" overflow-x-auto shadow-md sm:rounded-lg ">

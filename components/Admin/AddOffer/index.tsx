@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import uploadImg from "../../../public/svgs/upload.svg";
 import { useSidebarContext } from "../../../contexts/SidebarContext";
@@ -13,6 +13,7 @@ import { toast } from "react-toastify";
 import { QUERIES } from "../../../constant/Queries";
 import { useMutation, useQueryClient } from "react-query";
 import { isFormValid } from "@/constant/ValidRegex";
+import { useTranslation } from "next-i18next";
 
 const firstOfferState: OfferPostDataType = {
   name: "",
@@ -25,6 +26,7 @@ const AddOffer: React.FC = () => {
 
   const { showAdds, setSelectedFile, newImg, setNewImg, closeAddsModal } =
     useSidebarContext() as SidebarContextProps;
+  const { t } = useTranslation("common");
 
   const queryClient = useQueryClient();
 
@@ -59,7 +61,9 @@ const AddOffer: React.FC = () => {
   };
 
   const handleInputChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+    event: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
   ) => {
     const { name, value } = event.target;
     setNewOffer((prevCategory) => ({
@@ -107,8 +111,11 @@ const AddOffer: React.FC = () => {
         <div className="flex justify-center">
           <div className="hidden md:block  w-1/3 mr-[5%] font-medium">
             <div className="flex flex-col justify-center ">
-              <h1 className="capitalize text-2xl mb-2"> add offer</h1>
-              <p className="capitalize text-lg">upload your offer image</p>
+              <h1 className="capitalize text-2xl mb-2"> {t("ADD OFFER")}</h1>
+              <p className="capitalize text-lg">
+                {" "}
+                {t("Upload your offer image")}
+              </p>
               <div className="h-[50vh] w-3/4 my-4">
                 <Image
                   width={300}
@@ -118,15 +125,24 @@ const AddOffer: React.FC = () => {
                   className="object-cover w-full h-full rounded-[14px]"
                 />
               </div>
-              <p className=" text-lg">Add your offer information</p>
+              <p className=" text-lg">
+                {" "}
+                {t("Add your offer description and necesarry information")}
+              </p>
             </div>
           </div>
 
           <div className="w-full  md:w-2/3 flex justify-center flex-col md:mt-[9.2%]">
             <div className="mb-5 flex justify-between items-center md:hidden">
               <div>
-                <h1 className="capitalize text-3xl mb-[5%]"> add offer</h1>
-                <p className="capitalize text-xl">upload your offer image</p>
+                <h1 className="capitalize text-3xl mb-[5%]">
+                  {" "}
+                  {t("ADD OFFER")}
+                </h1>
+                <p className="capitalize text-xl">
+                  {" "}
+                  {t("Upload your offer image")}
+                </p>
               </div>
 
               <div
@@ -159,12 +175,12 @@ const AddOffer: React.FC = () => {
             </div>
 
             <p className=" block md:hidden text-xl mt-[5%]">
-              Add your offer information
+              {t("Add your offer description and necesarry information")}
             </p>
 
             <div className="flex flex-col bg-[#43445A] rounded-[14px] mt-4 md:mt-12 p-6">
               <div className="flex flex-col">
-                <label className="mb-1">Name</label>
+                <label className="mb-1">{t("Name")}</label>
                 <input
                   type="text"
                   name="name"
@@ -174,7 +190,7 @@ const AddOffer: React.FC = () => {
                 />
               </div>
               <div className="my-5 flex flex-col">
-                <label className="mb-1">Description:</label>
+                <label className="mb-1">{t("Description")}:</label>
 
                 <textarea
                   className="w-full pl-2 h-[125px]  rounded-[14px] bg-inputBg leading-10 resize-y"
@@ -192,7 +208,7 @@ const AddOffer: React.FC = () => {
             className="capitalize rounded-[14px] 	border-color: [#38394E] border-solid  border-0 bg-[#43445A] shadow-shadow1 hover:opacity-75 transition-all duration-500 w-5/12 py-3 md:py-4 text-[#fff] text-lg font-bold leading-5 tracking-[0.25px] "
             onClick={closeAddsModal}
           >
-            cancel
+            {t("Cancel")}
           </button>
           <button
             className={`capitalize rounded-[14px] border-solid border-0 shadow-shadow1 transition-all duration-500 w-5/12 py-3 md:py-4 text-lg font-bold leading-5 tracking-[0.25px]
@@ -205,7 +221,11 @@ const AddOffer: React.FC = () => {
             disabled={!isFormValid(newOffer)}
             onClick={handleAddOffer}
           >
-            {mutation.isLoading ? "offer is adding" : "add offer"}
+            {mutation.isLoading
+              ? t("offer is creating")
+              : t("create offer")
+              
+              }
           </button>
         </div>
       </div>

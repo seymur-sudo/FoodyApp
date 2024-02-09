@@ -15,6 +15,7 @@ import {
 import { SidebarContextProps } from "@/interfaces/index";
 import { getCategory } from "../../../../services/index";
 import { useQuery } from "react-query";
+import { useTranslation } from "next-i18next";
 
 const EditRestuarant: React.FC = () => {
   const {
@@ -34,6 +35,7 @@ const EditRestuarant: React.FC = () => {
   const deliveryMinuteRef = useRef<HTMLInputElement>(null);
   const addressRef = useRef<HTMLInputElement>(null);
   const categoryRef = useRef<HTMLSelectElement>(null);
+  const { t } = useTranslation("common");
 
   const editState: RestaurantPostDataType = {
     name: lastData?.name,
@@ -143,9 +145,12 @@ const EditRestuarant: React.FC = () => {
           <div className="flex justify-center">
             <div className="hidden md:block  w-1/3 mr-[5%] font-medium">
               <div className="flex flex-col justify-center ">
-                <h1 className="capitalize text-2xl mb-2"> edit restuarant</h1>
+                <h1 className="capitalize text-2xl mb-2">
+                  {" "}
+                  {t("Edit Restaurant")}
+                </h1>
                 <p className="capitalize text-lg">
-                  upload your restaurant image
+                  {t("Upload your restaurant image")}
                 </p>
                 <div className="h-[50vh] w-3/4 my-4">
                   <Image
@@ -157,7 +162,9 @@ const EditRestuarant: React.FC = () => {
                   />
                 </div>
                 <p className=" text-lg">
-                  Edit your restuarant description and necesarry information
+                  {t(
+                    "Edit your Restaurant description and necesarry information"
+                  )}
                 </p>
               </div>
             </div>
@@ -167,10 +174,10 @@ const EditRestuarant: React.FC = () => {
                 <div>
                   <h1 className="capitalize text-3xl mb-[5%]">
                     {" "}
-                    Edit Restaurant
+                    {t("Edit Restaurant")}
                   </h1>
                   <p className="capitalize text-xl">
-                    upload your restaurant image
+                    {t("Upload your restaurant image")}
                   </p>
                 </div>
 
@@ -210,12 +217,14 @@ const EditRestuarant: React.FC = () => {
               </div>
 
               <p className=" block md:hidden text-xl mt-[5%]">
-                Edit your Restaurant description and necesarry information
+                {t(
+                  "Edit your Restaurant description and necesarry information"
+                )}
               </p>
 
               <div className="flex flex-col bg-[#43445A] rounded-[14px] mt-4 md:mt-12 p-6">
                 <div className="flex flex-col">
-                  <label className="mb-1">Name</label>
+                  <label className="mb-1"> {t("Name")}</label>
                   <input
                     defaultValue={lastData?.name}
                     ref={nameRef}
@@ -225,7 +234,7 @@ const EditRestuarant: React.FC = () => {
                   />
                 </div>
                 <div className="my-5 flex flex-col">
-                  <label className="mb-1">Cuisine:</label>
+                  <label className="mb-1">{t("Cuisine")}:</label>
 
                   <textarea
                     defaultValue={lastData?.cuisine}
@@ -238,7 +247,7 @@ const EditRestuarant: React.FC = () => {
                 </div>
 
                 <div className="mb-5 flex flex-col">
-                  <label className="mb-1">Delivery Price</label>
+                  <label className="mb-1">{t("Delivery Price")}</label>
                   <input
                     defaultValue={lastData?.delivery_price}
                     ref={deliveryPriceRef}
@@ -248,7 +257,7 @@ const EditRestuarant: React.FC = () => {
                   />
                 </div>
                 <div className="mb-5 flex flex-col">
-                  <label className="mb-1">Delivery Min</label>
+                  <label className="mb-1">{t("Delivery Min")}</label>
                   <input
                     type="number"
                     ref={deliveryMinuteRef}
@@ -258,7 +267,7 @@ const EditRestuarant: React.FC = () => {
                   />
                 </div>
                 <div className="flex flex-col">
-                  <label className="mb-1">Address</label>
+                  <label className="mb-1">{t("Address")}</label>
                   <input
                     type="text"
                     ref={addressRef}
@@ -269,7 +278,7 @@ const EditRestuarant: React.FC = () => {
                 </div>
                 <div className="flex flex-col">
                   <label htmlFor="category" className="mb-1">
-                    Category:
+                  {t("Category")} :
                   </label>
                   <select
                     id="category"
@@ -278,7 +287,7 @@ const EditRestuarant: React.FC = () => {
                     defaultValue={lastData?.category_id}
                     className="w-full p-3 rounded-[14px] bg-inputBg"
                   >
-                    <option value="">Select...</option>
+                    <option value="">{t("Select Category")} ...</option>
                     {data &&
                       data.data.result.data.map(
                         (category: CategoryPostDataType) => (
@@ -298,13 +307,16 @@ const EditRestuarant: React.FC = () => {
               className="capitalize rounded-[14px] 	border-color: [#38394E] border-solid  border-0 bg-[#43445A] shadow-shadow1 hover:opacity-75 transition-all duration-500 w-5/12 py-3 md:py-4 text-[#fff] text-lg font-bold leading-5 tracking-[0.25px] "
               onClick={closeModal}
             >
-              cancel
+              {t("Cancel")}
             </button>
             <button
               onClick={handleEditRestaurant}
               className="capitalize rounded-[14px] 	border-color:[#970e79] border-solid  border-0 bg-[#C035A2] shadow-shadow2 hover:opacity-75 transition-all duration-500 w-5/12 py-3 md:py-4 text-[#fff] text-lg font-bold leading-5 tracking-[0.25px]"
             >
-              {mutation.isLoading ? "restaurant is editing" : "edit restaurant"}
+              {mutation.isLoading 
+              ? t("restaurant is editing")
+              : t("Edit Restaurant")
+              }
             </button>
           </div>
         </div>

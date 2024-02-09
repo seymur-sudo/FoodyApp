@@ -9,10 +9,12 @@ import { QUERIES } from "@/constant/Queries";
 import { useMutation, useQueryClient } from "react-query";
 import { SidebarContextProps } from "../../../../interfaces/index";
 import { updateOffer } from "@/services";
+import { useTranslation } from "next-i18next";
 
 const EditOffer: React.FC = () => {
   const { show, lastOffer, setSelectedFile, setNewImg, newImg, closeModal } =
     useSidebarContext() as SidebarContextProps;
+  const { t } = useTranslation("common");
 
   const [edtOffer, setEdtOffer] = useState(lastOffer);
 
@@ -36,7 +38,9 @@ const EditOffer: React.FC = () => {
   });
 
   const handleInputChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+    event: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
   ) => {
     const { name, value } = event.target;
     setEdtOffer((prevCategory) => ({
@@ -105,8 +109,11 @@ const EditOffer: React.FC = () => {
         <div className="flex justify-center">
           <div className="hidden md:block  w-1/3 mr-[5%] font-medium">
             <div className="flex flex-col justify-center ">
-              <h1 className="capitalize text-2xl mb-2"> Edit offer</h1>
-              <p className="capitalize text-lg">Edit your offer image</p>
+              <h1 className="capitalize text-2xl mb-2"> {t("Edit Offer")}</h1>
+              <p className="capitalize text-lg">
+                {" "}
+                {t("Upload your category image")}
+              </p>
               <div className="h-[50vh] w-3/4 my-4">
                 <Image
                   width={300}
@@ -116,15 +123,24 @@ const EditOffer: React.FC = () => {
                   className="object-cover w-full h-full rounded-[14px]"
                 />
               </div>
-              <p className=" text-lg">Edit your offer information</p>
+              <p className=" text-lg">
+                {" "}
+                {t("Edit your Offer description and necesarry information")}
+              </p>
             </div>
           </div>
 
           <div className="w-full  md:w-2/3 flex justify-center flex-col md:mt-[9.2%]">
             <div className="mb-5 flex justify-between items-center md:hidden">
               <div>
-                <h1 className="capitalize text-3xl mb-[5%]"> Edit product</h1>
-                <p className="capitalize text-xl">Edit your product image</p>
+                <h1 className="capitalize text-3xl mb-[5%]">
+                  {" "}
+                  {t("Edit Offer")}
+                </h1>
+                <p className="capitalize text-xl">
+                  {" "}
+                  {t("Edit your Offer description and necesarry information")}
+                </p>
               </div>
 
               <div
@@ -157,12 +173,13 @@ const EditOffer: React.FC = () => {
             </div>
 
             <p className=" block md:hidden text-xl mt-[5%]">
-              Edit your offer information
+            {t("Edit your Offer description and necesarry information")}
+
             </p>
 
             <div className="flex flex-col bg-[#43445A] rounded-[14px] mt-4 md:mt-12 p-6">
               <div className="flex flex-col">
-                <label className="mb-1">Name</label>
+                <label className="mb-1">{t("Name")}</label>
                 <input
                   type="text"
                   name="name"
@@ -172,7 +189,8 @@ const EditOffer: React.FC = () => {
                 />
               </div>
               <div className="my-5 flex flex-col">
-                <label className="mb-1">Description:</label>
+                  
+                <label className="mb-1">{t("Descriptionn")}:</label>
 
                 <textarea
                   className="w-full pl-5 h-[125px]  rounded-[14px] bg-inputBg leading-10 resize-y"
@@ -193,7 +211,10 @@ const EditOffer: React.FC = () => {
             onClick={handleEditOffer}
             className="capitalize rounded-[14px]  	border-color:[#970e79] border-solid  border-0 bg-[#C035A2] shadow-shadow2 hover:opacity-75 transition-all duration-500 w-5/12 py-3 md:py-4 text-[#fff] text-lg font-bold leading-5 tracking-[0.25px]"
           >
-            {editMutation.isLoading ? "offer is editing" : "edit offer"}
+            {editMutation.isLoading 
+               ? t("offer is editing")
+               : t("Edit Offer")
+            }
           </button>
         </div>
       </div>
