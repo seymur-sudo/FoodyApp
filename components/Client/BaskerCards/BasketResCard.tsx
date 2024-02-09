@@ -4,9 +4,9 @@ import Image from "next/image";
 import { LuTrash } from "react-icons/lu";
 import { useSidebarContext } from "@/contexts/SidebarContext";
 import { SidebarContextProps, BasketPostDataType } from "@/interfaces";
-import { IoIosBasket } from "react-icons/io";
 import DeleteUserProduct from "../Deletes/DeleteUserProduct";
-
+import EmptyBasket from "../../../public/svgs/Empty2.svg";
+import { useTranslation } from "next-i18next";
 
 const BasketResCard = () => {
   const {
@@ -16,15 +16,12 @@ const BasketResCard = () => {
     basketProducts,
     basketProductsItems,
   } = useSidebarContext() as SidebarContextProps;
+  const { t } = useTranslation("common");
 
   const openDeleteModal = (basketId: BasketPostDataType | null) => {
     setshowDelete(true);
     setDeletedBasket(basketId);
   };
-
-
-
-
 
   return (
     <>
@@ -38,7 +35,7 @@ const BasketResCard = () => {
       >
         <LuTrash className="text-gray-200 dark:text-gray-900 text-xl  " />
         <p className="capitalize font-semibold ml-2 text-gray-200 dark:text-gray-900 ">
-          clear all
+          {t("clear all")}
         </p>
       </div>
 
@@ -83,12 +80,18 @@ const BasketResCard = () => {
           </div>
         ))
       ) : (
-        <div className=" flex z-10 items-center w-[80vw]   flex-col  justify-center pt-7 text-red-600 dark:text-cyan-300">
+        <div className=" flex z-10 items-center w-[80vw]   flex-col  justify-center pt-7 ">
           <div>
-            <IoIosBasket className="w-[175px] h-[150px] " />
+            <Image
+              src={EmptyBasket}
+              alt="EmptyBasket"
+              width={150}
+              height={150}
+              className=" w-[175px] h-[150px] object-cover "
+            />
           </div>
-          <p className="capitalize font-bold text-xl flex flex-col items-center pb-3 ">
-            <span>oops !</span> <span>basket is empty</span>
+          <p className="capitalize font-bold text-xl flex flex-col items-center pb-3 text-[#EB5757]">
+            <span>oops !</span> <span>{t("basket is empty")}</span>
           </p>
         </div>
       )}
