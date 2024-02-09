@@ -5,9 +5,13 @@ import { ROUTER } from "../../../shared/constant/router";
 import { IoBasketSharp } from "react-icons/io5";
 import { FaBowlFood, FaSquareCheck } from "react-icons/fa6";
 import { RiLogoutBoxFill } from "react-icons/ri";
+import { useTranslation } from "next-i18next";
+
 
 const UserAsideModal = () => {
   const { push, pathname } = useRouter();
+  const { t } = useTranslation("common");
+
 
   return (
     <div className="w-full flex flex-col items-center pt-4 pb-8  bg-[#F3F4F6] dark:bg-gray-900 capitalize rounded-md ">
@@ -22,7 +26,7 @@ const UserAsideModal = () => {
           onClick={() => push(ROUTER.USER_PROFILE)}
         >
           <HiUsers className=" text-2xl hover:scale-110 transition-all duration-500 mr-2" />
-          <span className="text-xl font-semibold ">your profile</span>
+          <span className="text-xl font-semibold ">{t("Your Profile")} </span>
         </li>
 
         <li
@@ -34,7 +38,7 @@ const UserAsideModal = () => {
           onClick={() => push(ROUTER.USER_BASKET)}
         >
           <IoBasketSharp className=" text-2xl hover:scale-110 transition-all duration-500 mr-2" />
-          <span className="text-xl font-semibold ">your basket</span>
+          <span className="text-xl font-semibold ">{t("Your Basket")}</span>
         </li>
 
         <li
@@ -46,7 +50,7 @@ const UserAsideModal = () => {
           onClick={() => push(ROUTER.USER_ORDERS)}
         >
           <FaBowlFood className=" text-2xl hover:scale-110 transition-all duration-500 mr-2" />
-          <span className="text-xl font-semibold ">your orders</span>
+          <span className="text-xl font-semibold ">{t("Your Order")}</span>
         </li>
         <li
           className={`flex items-center ${
@@ -57,7 +61,7 @@ const UserAsideModal = () => {
           onClick={() => push(ROUTER.USER_CHECKOUT)}
         >
           <FaSquareCheck className=" text-2xl hover:scale-110 transition-all duration-500 mr-2" />
-          <span className="text-xl font-semibold ">checkout</span>
+          <span className="text-xl font-semibold ">{t("Checkout")}</span>
         </li>
         <li
           className={`flex items-center mt-5 ${
@@ -68,7 +72,7 @@ const UserAsideModal = () => {
           onClick={() => push(ROUTER.USER_BASKET)}
         >
           <RiLogoutBoxFill className=" text-2xl hover:scale-110 transition-all duration-500 mr-2 " />
-          <span className="text-xl font-semibold ">logout</span>
+          <span className="text-xl font-semibold ">{t("Logout")}</span>
         </li>
       </ul>
     </div>

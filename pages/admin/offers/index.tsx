@@ -57,13 +57,13 @@ const Offers: React.FC = () => {
     setLastOffer(offer);
   };
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
+  // if (isLoading) {
+  //   return <div>Loading...</div>;
+  // }
 
-  if (isError) {
-    return <div>Error loading products</div>;
-  }
+  // if (isError) {
+  //   return <div>Error loading products</div>;
+  // }
 
   return (
     <>
@@ -84,14 +84,14 @@ const Offers: React.FC = () => {
                   value={sortingValue}
                   onChange={handleSortProducts}
                 >
-                  <option value="A-Z">A-Z Name</option>
-                  <option value="Z-A">Z-A Name</option>
+                  <option value="A-Z">A-Z {t("Name")}</option>
+                  <option value="Z-A">Z-A {t("Name")}</option>
                 </select>
                 <button
                   className="ml-4 px-4 py-[10px] w-3/12  md:w-1/12 rounded-md cursor-pointer bg-[#C74FEB] text-white hover:opacity-75 transition-all duration-500"
                   onClick={resetSorting}
                 >
-                  Reset
+                  {t("Reset")}
                 </button>
               </div>
 

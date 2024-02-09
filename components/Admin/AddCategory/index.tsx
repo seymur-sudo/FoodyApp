@@ -11,7 +11,7 @@ import { QUERIES } from "../../../constant/Queries";
 import { fileStorage } from "../../../server/configs/firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { isFormValid } from "@/constant/ValidRegex";
-
+import { useTranslation } from "next-i18next";
 
 const initialState: InitialCategoryState = {
   name: "",
@@ -23,6 +23,7 @@ const AddCategory: React.FC = () => {
     useSidebarContext() as SidebarContextProps;
   const [newCategory, setNewCategory] =
     useState<InitialCategoryState>(initialState);
+  const { t } = useTranslation("common");
 
   const queryClient = useQueryClient();
   const mutation = useMutation(() => addCategory(newCategory), {
@@ -45,7 +46,6 @@ const AddCategory: React.FC = () => {
     },
   });
 
-
   const handleAddCategory = async () => {
     if (isFormValid(newCategory)) {
       mutation.mutate();
@@ -55,7 +55,6 @@ const AddCategory: React.FC = () => {
       });
     }
   };
-
 
   const handleInputChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -99,15 +98,16 @@ const AddCategory: React.FC = () => {
     }
   };
 
-
   return (
     <>
       <div className=" text-gray1 font-body  leading-6 tracking-wide py-8 md:pt-10  md:pb-6">
         <div className="flex justify-center">
           <div className="hidden md:block  w-1/3 mr-[5%] font-medium">
             <div className="flex flex-col justify-center ">
-              <h1 className="capitalize text-2xl mb-2"> add Category</h1>
-              <p className="capitalize text-lg">upload your Category image</p>
+              <h1 className="capitalize text-xl mb-2"> {t("ADD CATEGORY")}</h1>
+              <p className="capitalize text-lg">
+                {t("Upload your category image")}
+              </p>
               <div className="h-[50vh] w-3/4 my-4">
                 <Image
                   width={300}
@@ -118,7 +118,7 @@ const AddCategory: React.FC = () => {
                 />
               </div>
               <p className=" text-lg">
-                Add your Category description and necesarry information
+                {t("Add your category description and necesarry information")}
               </p>
             </div>
           </div>
@@ -126,8 +126,14 @@ const AddCategory: React.FC = () => {
           <div className="w-full  md:w-2/3 flex justify-center flex-col md:mt-[9.2%]">
             <div className="mb-5 flex justify-between items-center md:hidden">
               <div>
-                <h1 className="capitalize text-3xl mb-[5%]"> add category</h1>
-                <p className="capitalize text-xl">upload your category image</p>
+                <h1 className="capitalize text-3xl mb-[5%]">
+                  {" "}
+                  {t("ADD CATEGORY")}
+                </h1>
+                <p className="capitalize text-xl">
+                  {" "}
+                  {t("Upload your category image")}
+                </p>
               </div>
 
               <div
@@ -161,12 +167,12 @@ const AddCategory: React.FC = () => {
             </div>
 
             <p className=" block md:hidden text-xl mt-[5%]">
-              Add your Category description and necesarry information
+              {t("Add your category description and necesarry information")}
             </p>
 
             <div className="flex flex-col bg-[#43445A] rounded-[14px] mt-4 md:mt-12 p-6">
               <div className="flex flex-col">
-                <label className="mb-1">Name</label>
+                <label className="mb-1">{t("Name")} </label>
                 <input
                   type="text"
                   className="w-full p-2 py-4 rounded-[14px] bg-inputBg"
@@ -184,7 +190,7 @@ const AddCategory: React.FC = () => {
             className="capitalize rounded-[14px] 	border-color: [#38394E] border-solid  border-0 bg-[#43445A] shadow-shadow1 hover:opacity-75 transition-all duration-500 w-5/12 py-3 md:py-4 text-[#fff] text-lg font-bold leading-5 tracking-[0.25px] "
             onClick={closeAddsModal}
           >
-            cancel
+            {t("Cancel")}:
           </button>
           <button
             className={`capitalize rounded-[14px] border-solid border-0 shadow-shadow1 transition-all duration-500 w-5/12 py-3 md:py-4 text-lg font-bold leading-5 tracking-[0.25px] ${
@@ -195,11 +201,14 @@ const AddCategory: React.FC = () => {
             disabled={!isFormValid(newCategory)}
             onClick={handleAddCategory}
           >
-            {mutation.isLoading ? "category is creating" : " create category"}
+            {mutation.isLoading
+              ? t("category is creating")
+              : t("create category")
+              
+              }
           </button>
         </div>
       </div>
-
     </>
   );
 };

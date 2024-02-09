@@ -19,7 +19,6 @@ import { useQuery } from "react-query";
 import { QUERIES } from "../../constant/Queries";
 import { useRouter } from "next/router";
 import { getCategory, getRestaurant } from "../../services/index";
-import Link from "next/link";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
@@ -75,8 +74,8 @@ const Restaurants = () => {
               className="flex items-center justify-start capitalize mb-[10%] ml-[5%] cursor-pointer"
               onClick={() => handleCategoryClick(null)}
             >
-              <p className="font-semibold text-xl text-[#333] dark:text-[#fff] capitilaze  tracking-wider">
-                all categories
+              <p className="font-semibold text-xl ml-[6px] text-[#333] dark:text-cyan-200 capitilaze  tracking-wider">
+                {t("all categories")}
               </p>
             </li>
             {data &&
@@ -112,11 +111,9 @@ const Restaurants = () => {
                 ...modalSpring,
                 position: "fixed",
                 top: "25vh",
-                left: "50%",
-                transform: "translateX(-50%)",
                 zIndex: 50,
               }}
-              className="bg-white dark:bg-gray-800 rounded-t-[20px] flex flex-col w-11/12 max-h-[45vh] overflow-y-auto items-center justify-start md:hidden asideScroll"
+              className="bg-white dark:bg-gray-800 rounded-t-[20px] flex flex-col w-10/12 max-h-[45vh] overflow-y-auto items-center justify-start md:hidden asideScroll"
             >
               <div className="my-4" onClick={closeUserModal}>
                 <IoIosCloseCircleOutline
@@ -129,8 +126,8 @@ const Restaurants = () => {
                   className="flex items-center justify-start capitalize mb-[10%] ml-[5%] cursor-pointer"
                   onClick={() => handleCategoryClick(null)}
                 >
-                  <p className="font-semibold text-xl text-[#333] dark:text-[#fff] capitilaze  tracking-wider">
-                    all restaurants
+                  <p className="font-semibold text-xl ml-[6px] text-[#333] dark:text-[#fff] capitilaze  tracking-wider">
+                    {t("all categories")}
                   </p>
                 </li>
                 {data &&
@@ -183,7 +180,6 @@ const Restaurants = () => {
                   key={restaurant.id}
                 >
                   <div className="capitalize flex flex-col items-center md:items-start  w-full ">
-                   
                     <Image
                       onClick={() =>
                         push(`${ROUTER.RESTAURANTS}/${restaurant.id}`)

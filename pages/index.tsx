@@ -48,13 +48,13 @@ const Home: NextPage = () => {
     AOS.refresh();
   }, []);
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
+  // if (isLoading) {
+  //   return <div>Loading...</div>;
+  // }
 
-  if (isError) {
-    return <div>Error loading products</div>;
-  }
+  // if (isError) {
+  //   return <div>Error loading products</div>;
+  // }
 
   return (
     <>
@@ -172,7 +172,7 @@ const Home: NextPage = () => {
         {/* CHAT_END */}
 
         <div data-aos="zoom-in" className="text-center mt-20">
-          <p className="text-[40px] dark:text-white font-black">
+          <p className="text-[40px] dark:text-white font-black pb-3">
             {t("Features")}
           </p>
           <p className="text-[22px] text-[#828282] font-normal">
@@ -290,7 +290,7 @@ const Home: NextPage = () => {
 
         <div className="w-8/12  mx-auto text-center pt-20" data-aos="zoom-in">
           <h1 className="capitalize  text-xl md:text-5xl font-body pt-5 pb-9 font-bold text-transparent bg-gradient-to-r bg-clip-text  from-gray-900  to-red-400 dark:from-green-300 dark:to-orange-400 ">
-            foody delivery advertisement
+            {t("foody delivery advertisement")}
           </h1>
           <div className="border-[3px] h-[40vh] md:h-[78vh] rounded-md border-red-600 dark:border-green-300">
             <ReactPlayer
@@ -361,7 +361,7 @@ const Home: NextPage = () => {
             </p>
           </div>
         </div>
-        <div className="relative mt-[200px] sm:mt-[400px]">
+        <div className="relative mt-[200px] sm:mt-[400px] w-full flex justify-center">
           <div
             data-aos="fade-up"
             data-aos-duration={1000}
@@ -374,11 +374,11 @@ const Home: NextPage = () => {
             />
             <div className="text-center">
               <p className="text-white mt-10 sm:mt-0 font-medium text-[20px] sm:text-[50px]">
-                Discover Restaurants <br className="hidden sm:block" /> Near
-                From you
+                {t("Discover Restaurants")} <br className="hidden sm:block" />
+                {t("Near From you")}
               </p>
               <button className="bg-[#FB9300] sm:mb-18 mb-[30px] sm:mt-11 mt-5 px-11 py-2 rounded-[30px] text-white  text-[18px] sm:text-[22px] cursor-pointer hover:opacity-75 transition-all duration-500 ">
-                Explore now
+                {t("Explore now")}
               </button>
             </div>
             <Image

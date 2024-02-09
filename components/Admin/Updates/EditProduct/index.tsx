@@ -19,10 +19,7 @@ import { useTranslation } from "next-i18next";
 const EditProduct: React.FC = () => {
   const { show, closeModal, editedItem, setSelectedFile, newImg, setNewImg } =
     useSidebarContext() as SidebarContextProps;
-  const { data, isLoading, isError } = useQuery(
-    QUERIES.Restaurants,
-    getRestaurant
-  );
+  const { data } = useQuery(QUERIES.Restaurants, getRestaurant);
   const { t } = useTranslation("common");
 
   const [editedProduct, setEditedProduct] = useState(editedItem);
@@ -265,7 +262,7 @@ const EditProduct: React.FC = () => {
           >
             {editProductMutation.isLoading
               ? t("product is editing")
-              : t("Edit product")}
+              : t("Edit Product")}
           </button>
         </div>
       </div>

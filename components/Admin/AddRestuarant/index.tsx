@@ -15,7 +15,7 @@ import { QUERIES } from "../../../constant/Queries";
 import { useMutation, useQueryClient } from "react-query";
 import { getCategory } from "../../../services/index";
 import { useQuery } from "react-query";
-import { FadeLoader } from "react-spinners";
+import { useTranslation } from "next-i18next";
 import { isFormValid } from "@/constant/ValidRegex";
 
 const AddRestuarant: React.FC = () => {
@@ -32,6 +32,7 @@ const AddRestuarant: React.FC = () => {
     useSidebarContext() as SidebarContextProps;
   const [newRestaurant, setNewRestaurant] =
     useState<FirstStateType>(firstState);
+    const { t } = useTranslation("common");
 
   const { data } = useQuery(QUERIES.Categories, getCategory);
 
@@ -123,8 +124,8 @@ const AddRestuarant: React.FC = () => {
         <div className="flex justify-center">
           <div className="hidden md:block  w-1/3 mr-[5%] font-medium">
             <div className="flex flex-col justify-center ">
-              <h1 className="capitalize text-2xl mb-2"> add restuarant</h1>
-              <p className="capitalize text-lg">upload your restaurant image</p>
+              <h1 className="capitalize text-2xl mb-2">{t("ADD RESTUARANT")}</h1>
+              <p className="capitalize text-lg">{t("Upload your restaurant image")}</p>
               <div className="h-[50vh] w-3/4 my-4">
                 <Image
                   width={300}
@@ -135,7 +136,7 @@ const AddRestuarant: React.FC = () => {
                 />
               </div>
               <p className=" text-lg">
-                Add your restuarant description and necesarry information
+              {t("Add your restuarant description and necesarry information")}
               </p>
             </div>
           </div>
@@ -143,9 +144,9 @@ const AddRestuarant: React.FC = () => {
           <div className="w-full  md:w-2/3 flex justify-center flex-col md:mt-[9.2%]">
             <div className="mb-5 flex justify-between items-center md:hidden">
               <div>
-                <h1 className="capitalize text-3xl mb-[5%]"> add Restaurant</h1>
+                <h1 className="capitalize text-3xl mb-[5%]"> {t("ADD RESTUARANT")}</h1>
                 <p className="capitalize text-xl">
-                  upload your restaurant image
+                {t("Upload your restaurant image")}
                 </p>
               </div>
 
@@ -180,12 +181,13 @@ const AddRestuarant: React.FC = () => {
             </div>
 
             <p className=" block md:hidden text-xl mt-[5%]">
-              Add your Restaurant description and necesarry information
+            {t("Add your restuarant description and necesarry information")}
+
             </p>
 
             <div className="flex flex-col bg-[#43445A] rounded-[14px] mt-4 md:mt-12 p-6">
               <div className="flex flex-col">
-                <label className="mb-1">Name</label>
+                <label className="mb-1">{t("Name")}</label>
                 <input
                   type="text"
                   name="name"
@@ -195,7 +197,7 @@ const AddRestuarant: React.FC = () => {
                 />
               </div>
               <div className="my-5 flex flex-col">
-                <label className="mb-1">Cuisine:</label>
+                <label className="mb-1">{t("Cuisine")}:</label>
 
                 <textarea
                   className="w-full h-[100px]  rounded-[14px] bg-inputBg leading-10 resize-y"
@@ -206,7 +208,7 @@ const AddRestuarant: React.FC = () => {
               </div>
 
               <div className="mb-5 flex flex-col">
-                <label className="mb-1">Delivery Price</label>
+                <label className="mb-1">{t("Delivery Price")}</label>
                 <input
                   type="number"
                   name="delivery_price"
@@ -216,7 +218,7 @@ const AddRestuarant: React.FC = () => {
                 />
               </div>
               <div className="mb-5 flex flex-col">
-                <label className="mb-1">Delivery Min</label>
+                <label className="mb-1">{t("Delivery Min")}</label>
                 <input
                   type="number"
                   name="delivery_min"
@@ -226,7 +228,7 @@ const AddRestuarant: React.FC = () => {
                 />
               </div>
               <div className="flex flex-col">
-                <label className="mb-1">Address</label>
+                <label className="mb-1"> {t("Address")}</label>
                 <input
                   type="text"
                   name="address"
@@ -237,14 +239,14 @@ const AddRestuarant: React.FC = () => {
               </div>
               <div className="flex mt-2 flex-col">
                 <label htmlFor="category" className="mt-2">
-                  Select Category:
+                {t("Select Category")}:
                 </label>
                 <select
                   id="category"
                   onChange={handleCategoryChange}
                   className=" my-3 px-2 py-[14px] cursor-pointer rounded-[14px] bg-inputBg text-[#dddcdc]  font-medium font-roboto"
                 >
-                  <option>Category Type</option>
+                  <option>{t("Category Type")}</option>
                   {data &&
                     data.data.result.data.map(
                       (category: CategoryPostDataType) => (
@@ -264,7 +266,8 @@ const AddRestuarant: React.FC = () => {
             className="capitalize rounded-[14px] 	border-color: [#38394E] border-solid  border-0 bg-[#43445A] shadow-shadow1 hover:opacity-75 transition-all duration-500 w-5/12 py-3 md:py-4 text-[#fff] text-lg font-bold leading-5 tracking-[0.25px] "
             onClick={closeAddsModal}
           >
-            cancel
+            
+            {t("Cancel")}
           </button>
           <button
             className={`capitalize rounded-[14px] border-solid border-0 shadow-shadow1 transition-all duration-500 w-5/12 py-3 md:py-4 text-lg font-bold leading-5 tracking-[0.25px]
@@ -276,7 +279,11 @@ const AddRestuarant: React.FC = () => {
             disabled={!isFormValid(newRestaurant)}
             onClick={handleAddRestaurant}
           >
-            {mutation.isLoading ? "restaurant is adding" : "add restaurant"}
+            {mutation.isLoading
+        
+             ? t("restaurant is creating")
+             : t("create restaurant")
+             }
           </button>
         </div>
       </div>

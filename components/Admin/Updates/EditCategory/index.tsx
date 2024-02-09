@@ -9,6 +9,7 @@ import { QUERIES } from "../../../../constant/Queries";
 import { editCategory } from "../../../../services/index";
 import { fileStorage } from "../../../../server/configs/firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { useTranslation } from "next-i18next";
 
 const EditCategory: React.FC = () => {
   const {
@@ -21,6 +22,7 @@ const EditCategory: React.FC = () => {
   } = useSidebarContext() as SidebarContextProps;
 
   const [updatedCategory, setUpdatedCategory] = useState(editedCategory);
+  const { t } = useTranslation("common");
 
   const queryClient = useQueryClient();
 
@@ -113,8 +115,14 @@ const EditCategory: React.FC = () => {
         <div className="flex justify-center">
           <div className="hidden md:block  w-1/3 mr-[5%] font-medium">
             <div className="flex flex-col justify-center ">
-              <h1 className="capitalize text-2xl mb-2"> Edit category</h1>
-              <p className="capitalize text-lg">Edit your product image</p>
+              <h1 className="capitalize text-2xl mb-2">
+                {" "}
+                {t("Edit Category")}
+              </h1>
+              <p className="capitalize text-lg">
+                {" "}
+                {t("Upload your offer image")}
+              </p>
               <div className="h-[50vh] w-3/4 my-4">
                 <Image
                   width={300}
@@ -124,15 +132,24 @@ const EditCategory: React.FC = () => {
                   className="object-cover w-full h-full rounded-[14px]"
                 />
               </div>
-              <p className=" text-lg">Edit your Category information</p>
+              <p className=" text-lg">
+                {" "}
+                {t("Edit your Category description and necesarry information")}
+              </p>
             </div>
           </div>
 
           <div className="w-full  md:w-2/3 flex justify-center flex-col md:mt-[9.2%]">
             <div className="mb-5 flex justify-between items-center md:hidden">
               <div>
-                <h1 className="capitalize text-3xl mb-[5%]"> Edit product</h1>
-                <p className="capitalize text-xl">Edit your product image</p>
+                <h1 className="capitalize text-3xl mb-[5%]">
+                  {" "}
+                  {t("Edit Category")}
+                </h1>
+                <p className="capitalize text-xl">
+                  {" "}
+                  {t("Upload your category image")}
+                </p>
               </div>
 
               <div
@@ -166,12 +183,12 @@ const EditCategory: React.FC = () => {
             </div>
 
             <p className=" block md:hidden text-xl mt-[5%]">
-              Edit your Product description and necesarry information
+              {t("Edit your Category description and necesarry information")}
             </p>
 
             <div className="flex flex-col bg-[#43445A] rounded-[14px] mt-4 md:mt-12 p-6">
               <div className="flex flex-col">
-                <label className="mb-1">Name</label>
+                <label className="mb-1"> {t("Name")}</label>
                 <input
                   type="text"
                   className="w-full p-2 py-6 rounded-[14px] bg-inputBg"
@@ -189,15 +206,15 @@ const EditCategory: React.FC = () => {
             className="capitalize rounded-[14px] 	border-color: [#38394E] border-solid  border-0 bg-[#43445A] shadow-shadow1 hover:opacity-75 transition-all duration-500 w-5/12 py-3 md:py-4 text-[#fff] text-lg font-bold leading-5 tracking-[0.25px] "
             onClick={closeModal}
           >
-            cancel
+            {t("Cancel")}
           </button>
           <button
             onClick={handleEditCategory}
             className="capitalize rounded-[14px]  	border-color:[#970e79] border-solid  border-0 bg-[#C035A2] shadow-shadow2 hover:opacity-75 transition-all duration-500 w-5/12 py-3 md:py-4 text-[#fff] text-lg font-bold leading-5 tracking-[0.25px]"
           >
             {editCategoryMutation.isLoading
-              ? "category is editing"
-              : "edit category"}
+              ? t("category is editing")
+              : t("Edit Category")}
           </button>
         </div>
       </div>

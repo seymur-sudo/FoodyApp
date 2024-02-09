@@ -92,8 +92,8 @@ const ResDetail = () => {
 
   return (
     <>
-      {isLoading && <p>Loading...</p>}
-      {isError && <p>Error loading restaurant data</p>}
+      {/* {isLoading && <p>Loading...</p>}
+      {isError && <p>Error loading restaurant data</p>} */}
       <div className="bg-white dark:bg-black ">
         <MainHeader />
 
@@ -147,16 +147,17 @@ const ResDetail = () => {
                 value={sortingValue}
                 onChange={handleSortProducts}
               >
-                <option value="A-Z">A-Z Product</option>
-                <option value="Z-A">Z-A Product</option>
-                <option value="Low-to-High">Low To High Price</option>
-                <option value="High-to-Low">High To Low Price</option>
+             
+                <option value="A-Z">A-Z {t("Products")} </option>
+                <option value="Z-A">Z-A {t("Products")}</option>
+                <option value="Low-to-High">{t("Low To High Price")}</option>
+                <option value="High-to-Low">{t("High To Low Price")}</option>
               </select>
               <button
                 className="ml-4 px-4 py-[6px] w-2/12  md:w-2/12 rounded-md cursor-pointer bg-red-600 dark:bg-sky-500 text-gray-100 hover:opacity-75 transition-all duration-500"
                 onClick={resetSorting}
               >
-                Reset
+                {t("Reset")}
               </button>
             </div>
             <h1 className="capitalize pb-5 text-[#4F4F4F)] dark:text-cyan-400 font-bold text-[25px]">
@@ -250,7 +251,9 @@ const ResDetail = () => {
                   >
                     <LuTrash className="text-gray-200 dark:text-gray-900 text-xl  " />
                     <p className="capitalize font-semibold ml-2 text-gray-200 dark:text-gray-900 ">
-                      clear all
+                      
+                      {t("clear all")}
+
                     </p>
                   </div>
                 </div>
@@ -309,7 +312,7 @@ const ResDetail = () => {
                     <IoIosBasket className="w-[175px] h-[150px] " />
                   </div>
                   <p className="capitalize font-bold text-xl flex flex-col items-center pb-3 ">
-                    <span>oops !</span> <span>basket is empty</span>
+                    <span>oops !</span> <span> {t("basket is empty")}</span>
                   </p>
                 </div>
               )}
@@ -325,7 +328,8 @@ const ResDetail = () => {
                 }  flex items-center justify-between rounded-[100px]  bg-[#D63626] dark:bg-blue-500 text-white`}
               >
                 <button className="capitalize mx-[3%] font-medium flex items-center">
-                  checkout
+                  
+                  {t("Checkout")}
                 </button>
 
                 <p className="text-[#D63626] flex  items-center px-8 text-lg font-medium h-full rounded-[80px] border-2 border-[#D63626] dark:border-blue-500 bg-white dark:bg-gray-900 dark:text-sky-200">
