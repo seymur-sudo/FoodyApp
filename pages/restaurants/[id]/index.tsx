@@ -259,11 +259,8 @@ const ResDetail = () => {
               <div className="max-h-[45vh] min-h-[45vh]  overflow-y-auto my-scrollable-component  ">
                 {basketProductsItems && basketProductsItems.length > 0 ? (
                   basketProductsItems.map((product: BasketPostDataType) => (
-                    <div className="w-full  ">
-                      <div
-                        className="w-full border-t-2 py-2 dark:border-sky-300  "
-                        key={product.id}
-                      >
+                    <div className="w-full " key={product.id}>
+                      <div className="w-full border-t-2 py-2 dark:border-sky-300  ">
                         <div className="flex items-center justify-around  w-full pt-1 pb-2 ">
                           <Image
                             src={product.img_url ?? pizza}
