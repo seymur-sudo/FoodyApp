@@ -1,5 +1,5 @@
 import type { NextPage } from "next";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Head from "next/head";
 import PizzaH from "../public/svgs/hoveredPizza.svg";
 import card1 from "../public/svgs/card1.svg";
@@ -17,11 +17,9 @@ import { useRouter } from "next/router";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { getOffer } from "@/services/index";
-import { useQuery, QueryClient } from "react-query";
-import { dehydrate } from "react-query/hydration";
+import { useQuery } from "react-query";
 import MainFooter from "@/components/Client/MainFooter";
 import { ROUTER } from "../shared/constant/router";
-import ReactPlayer from "react-player";
 import { OfferPostDataType } from "@/interfaces";
 import { QUERIES } from "../constant/Queries";
 import { SidebarContextProps } from "../interfaces/index";
@@ -29,10 +27,14 @@ import { useSidebarContext } from "@/contexts/SidebarContext";
 import { animated } from "@react-spring/web";
 import ChatClient from "@/components/Client/ChatClient";
 import { FaRocketchat, FaTimes } from "react-icons/fa";
+import dynamic from "next/dynamic";
 
 const Home: NextPage = () => {
   const { showUserModal, openUserModal, closeUserModal, modalSpring } =
     useSidebarContext() as SidebarContextProps;
+  const DynamicReactPlayer = dynamic(() => import("react-player"), {
+    ssr: false,
+  });
 
   const { t } = useTranslation("common");
   const { push } = useRouter();
@@ -48,13 +50,13 @@ const Home: NextPage = () => {
     AOS.refresh();
   }, []);
 
-  // if (isLoading) {
-  //   return <div>Loading...</div>;
-  // }
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
-  // if (isError) {
-  //   return <div>Error loading products</div>;
-  // }
+  if (isError) {
+    return <div>Error loading products</div>;
+  }
 
   return (
     <>
@@ -181,6 +183,7 @@ const Home: NextPage = () => {
             previewing layouts and visual mockups.
           </p>
         </div>
+
         <div
           data-aos="zoom-in"
           className="flex flex-row mt-10 flex-wrap gap-16 justify-center"
@@ -293,7 +296,7 @@ const Home: NextPage = () => {
             {t("foody delivery advertisement")}
           </h1>
           <div className="border-[3px] h-[40vh] md:h-[78vh] rounded-md border-red-600 dark:border-green-300">
-            <ReactPlayer
+            <DynamicReactPlayer
               url="https://www.youtube.com/watch?v=OZzoAw9QHXY"
               width="100%"
               height="100%"
@@ -302,21 +305,24 @@ const Home: NextPage = () => {
           </div>
         </div>
 
-        <p
+        <div
           data-aos="zoom-in"
-          className="text-center mt-32 dark:text-white sm:text-[40px] text-[25px] font-black font-[Roboto]"
+          className="text-center mt-20 dark:text-white sm:text-[40px] text-[25px] font-black font-[Roboto]"
         >
-          {t("Our Popular Update New Foods")}
+          <p>{t("Our Popular Update New Foods")}</p>
           <br className="hidden sm:block" />
-        </p>
-        <p
+        </div>
+        <div
           data-aos="zoom-in"
           className="text-[#828282] text-center sm:text-[22px] text-[16px] font-normal font-[Roboto]"
         >
-          Lorem ipsum is placeholder text commonly used in the graphic, print,
-          and <br className="hidden sm:block" /> publishing industries for
-          previewing layouts and visual mockups.
-        </p>
+          <p>
+            Lorem ipsum is placeholder text commonly used in the graphic, print,
+            and <br className="hidden sm:block" /> publishing industries for
+            previewing layouts and visual mockups.
+          </p>
+        </div>
+
         <div className="flex flex-row mt-10 flex-wrap gap-16 justify-center">
           <div
             data-aos="zoom-in"
@@ -361,6 +367,7 @@ const Home: NextPage = () => {
             </p>
           </div>
         </div>
+
         <div className="relative mt-[200px] sm:mt-[400px] w-full flex justify-center">
           <div
             data-aos="fade-up"
@@ -393,16 +400,10 @@ const Home: NextPage = () => {
     </>
   );
 };
-export const getServerSideProps: GetServerSideProps = async ({ locale }) => {
-  const queryClient = new QueryClient();
 
-  await queryClient.prefetchQuery("offers", getOffer);
-
-  return {
-    props: {
-      ...(await serverSideTranslations(locale as string, ["common"])),
-      dehydratedState: dehydrate(queryClient),
-    },
-  };
-};
 export default Home;
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => ({
+  props: {
+    ...(await serverSideTranslations(locale as string, ["common"])),
+  },
+});
