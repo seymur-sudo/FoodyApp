@@ -68,9 +68,9 @@ const Home: NextPage = () => {
       <div className="rounded-4">
         <MainHeader />
 
-        <div className="bg-[#F3F4F6] flex sm:flex-row flex-col-reverse justify-between dark:bg-gray-900 sm:mx-[30px]">
+        <div className="bg-[#F3F4F6] flex sm:flex-row flex-col-reverse justify-between dark:bg-gray-900 sm:mx-[30px] font-body tracking-wide">
           <div className="sm:ml-14 w-fit">
-            <p className=" sm:text-6xl text-[20px] sm:pt-[120px] pt-[300px] sm:px-0 px-10 py-4 text-center sm:text-start font-[Roboto] font-bold text-transparent bg-gradient-to-r bg-clip-text  from-gray-900  to-red-400 dark:from-green-300 dark:to-orange-400">
+            <p className=" sm:text-7xl text-[20px] sm:pt-[120px] pt-[300px] sm:px-0 px-10 py-4 text-center sm:text-start  font-bold text-transparent bg-gradient-to-r bg-clip-text  from-gray-900  to-red-400 dark:from-green-300 dark:to-orange-400">
               {t("Our Food site makes it easy to find local food")}
             </p>
             <p className="sm:text-[22px] text-[#828282] text-[16px] text-center sm:text-start font-normal">
@@ -290,7 +290,7 @@ const Home: NextPage = () => {
               </div>
             )
           )}
-{/* 
+
         <div className=" w-10/12 md:w-[69%]  mx-auto text-center pt-20" data-aos="zoom-in">
           <h1 className="capitalize  text-xl md:text-5xl font-body pt-5 pb-9 font-bold text-transparent bg-gradient-to-r bg-clip-text  from-gray-900  to-red-400 dark:from-green-300 dark:to-orange-400 ">
             {t("foody delivery advertisement")}
@@ -303,18 +303,18 @@ const Home: NextPage = () => {
               controls
             />
           </div>
-        </div> */}
+        </div>
 
         <div
           data-aos="zoom-in"
-          className="text-center mt-20 dark:text-white sm:text-[40px] text-[25px] font-black font-[Roboto]"
+          className="text-center mt-20 dark:text-white sm:text-[40px] text-[25px] font-black "
         >
           <p>{t("Our Popular Update New Foods")}</p>
           <br className="hidden sm:block" />
         </div>
         <div
           data-aos="zoom-in"
-          className="text-[#828282] text-center sm:text-[22px] text-[16px] font-normal font-[Roboto]"
+          className="text-[#828282] text-center sm:text-[22px] text-[16px] font-normal "
         >
           <p>
             Lorem ipsum is placeholder text commonly used in the graphic, print,
