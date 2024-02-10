@@ -13,18 +13,19 @@ import { ROUTER } from "../../../shared/constant/router";
 import { useTranslation } from "next-i18next";
 import Image from "next/image";
 import { IoLogoWechat } from "react-icons/io5";
-import Cookies from 'js-cookie'
 
 export const Aside: React.FC = () => {
   const { t } = useTranslation("common");
   const router = useRouter();
-  const handleLogout=()=>{
-    Cookies.remove("accessJWT")
-    // localStorage.removeItem("access_token_admin")
-    // localStorage.removeItem("refresh_token_admin")
-    router.push("/admin/login")
-    
-  }
+  const handleLogout = () => {
+    localStorage.removeItem("access_token");
+    setTimeout(() => {
+      router.push(ROUTER.ADMIN_LOGIN);
+    }, 1000);
+    setTimeout(() => {
+      window.location.reload();
+    }, 1500);
+  };
   return (
     <div className="h-full flex flex-col bg-bgc">
       <aside className=" sm:block hidden h-2/5 w-fit  pt-8 pl-6 pr-4 rounded-xl bg-[#C74FEB]">
@@ -93,7 +94,8 @@ export const Aside: React.FC = () => {
         </Link>
         <Link
           className="flex h-10 cursor-pointer mb-2 pl-4 hover:bg-[#CD61ED] rounded-xl items-center flex-row"
-          href="" onClick={()=>handleLogout()}
+          href=""
+          onClick={() => handleLogout()}
         >
           <Image className="mr-4" alt="icon" src={LogoutIcon} />
           <p className="text-[#FCDDEC] text-nowrap mr-20 font-medium font-body text-[14px]">
