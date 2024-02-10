@@ -9,6 +9,7 @@ import { IoIosCloseCircleOutline } from "react-icons/io";
 import { animated } from "@react-spring/web";
 import ProductCard from "@/components/Client/BaskerCards/BasketCard";
 import BasketResCard from "@/components/Client/BaskerCards/BasketResCard";
+import MainFooter from "@/components/Client/MainFooter";
 import { useSidebarContext } from "@/contexts/SidebarContext";
 import {
   SidebarContextProps,
@@ -94,7 +95,7 @@ const ResDetail = () => {
     <>
       {/* {isLoading && <p>Loading...</p>}
       {isError && <p>Error loading restaurant data</p>} */}
-      <div className="bg-white dark:bg-black ">
+      <div className="bg-white dark:bg-black pb-32">
         <MainHeader />
 
         {restaurantData && singleRestaurant && (
@@ -106,7 +107,7 @@ const ResDetail = () => {
               height={1000}
               className=" w-full object-cover h-[60vh]"
             />
-            <div className="bg-white dark:bg-black pt-2 md:pt-0 flex flex-col md:flex-row md:items-center md:justify-between px-4 pb-2">
+            <div className="bg-white dark:bg-black font-body tracking-wider pt-2 md:pt-0 flex flex-col md:flex-row md:items-center md:justify-between px-4 pb-2">
               <div>
                 <h1 className="capitalize  text-[#4F4F4F] dark:text-sky-400 py-2 text-[22px] font-bold">
                   {singleRestaurant?.name}
@@ -352,7 +353,7 @@ const ResDetail = () => {
           </div>
         </div>
       </div>
-
+      <MainFooter/>
       <DeleteModal />
       <ReactQueryDevtools />
     </>

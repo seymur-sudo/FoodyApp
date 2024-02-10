@@ -84,7 +84,7 @@ const LoginPage: React.FC = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main
-        className="bg-white dark:bg-black sm:mr-32px sm:ml-32px"
+        className="bg-white dark:bg-black sm:mr-32px sm:ml-32px font-body "
         style={{ zoom: "0.66" }}
       >
         <ClientHeader />

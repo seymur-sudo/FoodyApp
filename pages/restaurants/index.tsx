@@ -9,6 +9,7 @@ import { animated } from "@react-spring/web";
 import MainHeader from "@/components/Client/MainHeader";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import { useSidebarContext } from "@/contexts/SidebarContext";
+import MainFooter from "@/components/Client/MainFooter";
 import {
   SidebarContextProps,
   CategoryPostDataType,
@@ -57,7 +58,7 @@ const Restaurants = () => {
   return (
     <>
       <MainHeader />
-      <div className="p-6 px-10 flex flex-col justify-between md:flex-row font-mutka bg-white dark:bg-black">
+      <div className="pt-5  px-8 pb-32 flex flex-col justify-between md:flex-row font-mutka bg-white dark:bg-black">
         <div
           className="sm:hidden bg-white dark:bg-gray-900 cursor-pointer text-white p-6 rounded shadow-shadow4 flex justify-center mb-[12%]"
           onClick={openUserModal}
@@ -68,13 +69,13 @@ const Restaurants = () => {
           </p>
         </div>
 
-        <aside className="bg-[#F3F4F6] dark:bg-gray-900 w-2/12 font-mukta asideScroll max-h-[80vh] overflow-y-auto hidden md:block">
-          <ul className="px-4 py-8">
+        <aside className="bg-[#F3F4F6] dark:bg-gray-900 w-2/12 font-mukta tracking-wide md:tracking-wider asideScroll min-h-[100vh]  max-h-[100vh] overflow-y-auto hidden md:block">
+          <ul className="px-4 py-8 ">
             <li
               className="flex items-center justify-start capitalize mb-[10%] ml-[5%] cursor-pointer"
               onClick={() => handleCategoryClick(null)}
             >
-              <p className="font-semibold text-xl ml-[6px] text-[#333] dark:text-cyan-200 capitilaze  tracking-wider">
+              <p className="font-bold text-xl ml-[6px] text-[#333] dark:text-cyan-200 capitilaze  tracking-widest">
                 {t("all categories")}
               </p>
             </li>
@@ -93,7 +94,7 @@ const Restaurants = () => {
                       height={50}
                       className="hover:scale-105 transition-all duration-500  w-[50px]  h-[50px] rounded-full object-cover"
                     />
-                    <p className="font-semibold text-xl text-[#333] dark:text-[#fff] ml-4">
+                    <p className="font-semibold text-xl text-[#333] dark:text-[#fff] tracking-wider ml-4">
                       {category.name}
                     </p>
                   </li>
@@ -169,7 +170,7 @@ const Restaurants = () => {
           </>
         )}
 
-        <div className="w-full md:w-9/12">
+        <div className="w-full md:w-[80%]">
           <div className="grid gap-12 grid-cols-1 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
             {filteredRestaurants &&
               filteredRestaurants.map((restaurant: RestaurantPostDataType) => (
@@ -212,6 +213,7 @@ const Restaurants = () => {
           </div>
         </div>
       </div>
+      <MainFooter/>
     </>
   );
 };

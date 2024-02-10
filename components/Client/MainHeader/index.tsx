@@ -23,6 +23,7 @@ import {
 import ClientNavbar from "../ResNavbar";
 import { getUser, getBasket } from "@/services";
 import SearchFilter from "../SearchFilter";
+import { ROUTER } from "../../../shared/constant/router";
 
 const MainHeader: React.FC = () => {
   const [imageURL, setImageURL] = useState<string>("");
@@ -38,7 +39,10 @@ const MainHeader: React.FC = () => {
 
   const logout = () => {
     localStorage.removeItem("access_token");
-    router.push("/login");
+    router.push(ROUTER.LOGIN);
+    setTimeout(() => {
+      window.location.reload();
+    }, 100);
   };
   useEffect(() => {
     const acc_token = localStorage.getItem("access_token");
@@ -57,7 +61,7 @@ const MainHeader: React.FC = () => {
     }
   }, [userID, userImg]);
   return (
-    <div className="sm:h-[120px] h-[52px] sm:mt-[30px] sm:mx-[30px] flex items-center rounded-t-5 justify-between flex-row bg-[#F3F4F6]  dark:bg-gray-900">
+    <div className="sm:h-[120px] h-[52px] sm:mt-[30px] sm:mx-[30px] flex items-center rounded-t-5 justify-between flex-row bg-[#F3F4F6]  dark:bg-gray-900 font-body tracking-wide">
       <div className="flex items-center">
         <LuMenu
           size={"30px"}
@@ -65,7 +69,7 @@ const MainHeader: React.FC = () => {
           className="text-black sm:hidden block ml-4 mr-3 dark:text-white"
         />
         <p
-          onClick={() => router.push("/admin")}
+          onClick={() => router.push(ROUTER.ADMIN)}
           className=" flex py-auto sm:ml-14 flex-row items-center text-center font-mukta sm:text-[36px] text-[25px] font-extrabold text-[#000000] dark:text-gray-100"
         >
           Foody<span className="text-[#EAAB00] dark:text-sky-400 ">.</span>
@@ -73,52 +77,52 @@ const MainHeader: React.FC = () => {
       </div>
       <div className="hidden sm:flex">
         <Link
-          className={`text-[18px] sm:mr-8  text-[Roboto] font-medium ${
+          className={`text-[18px] sm:mr-8   font-semibold ${
             router.pathname === "/"
               ? "text-[#D63626] dark:text-cyan-400"
               : "text-[#828282] dark:text-gray-100"
           }`}
-          href={"/"}
+          href={ROUTER.HOME}
         >
           {t("Home")}
         </Link>
         <Link
-          className={`text-[18px] sm:mr-8  text-[Roboto] font-medium ${
+          className={`text-[18px] sm:mr-8   font-semibold ${
             router.pathname === "/restaurants"
               ? "text-[#D63626] dark:text-cyan-400"
               : "text-[#828282] dark:text-gray-100"
           }`}
-          href={"/restaurants"}
+          href={ROUTER.RESTAURANTS}
         >
           {t("Restaurants")}
         </Link>
         <Link
-          className={`text-[18px] sm:mr-8  text-[Roboto] font-medium ${
+          className={`text-[18px] sm:mr-8   font-semibold ${
             router.pathname === "/about-us"
               ? "text-[#D63626] dark:text-cyan-400"
               : "text-[#828282] dark:text-gray-100"
           }`}
-          href={"/about-us"}
+          href={ROUTER.ABOUT_US}
         >
           {t("About us")}
         </Link>
         <Link
-          className={`text-[18px] sm:mr-8  text-[Roboto] font-medium ${
+          className={`text-[18px] sm:mr-8  font-semibold  ${
             router.pathname === "/how-it-works"
               ? "text-[#D63626] dark:text-cyan-400"
               : "text-[#828282] dark:text-gray-100"
           }`}
-          href={"/how-it-works"}
+          href={ROUTER.HOW_IT_WORKS}
         >
           {t("How it works")}
         </Link>
         <Link
-          className={`text-[18px] sm:mr-8  text-[Roboto] font-medium ${
+          className={`text-[18px] sm:mr-8  font-semibold  ${
             router.pathname === "/faqs"
               ? "text-[#D63626] dark:text-cyan-400 "
               : "text-[#828282] dark:text-gray-100"
           }`}
-          href={"/faqs"}
+          href={ROUTER.FAQS}
         >
           {t("FAQs")}
         </Link>
@@ -141,7 +145,7 @@ const MainHeader: React.FC = () => {
           {!userID ? (
             <>
               <button
-                onClick={() => router.push("/register")}
+                onClick={() => router.push(ROUTER.REGISTER)}
                 className="text-[16px] py-[7px] px-5 sm:ml-7 sm:mr-20 bg-[#D63626] font-medium rounded-[30px] text-white"
               >
                 {t("Sign Up")}
@@ -154,7 +158,7 @@ const MainHeader: React.FC = () => {
                   className="ml-3 cursor-pointer scale-100 duration-500 hover:scale-110"
                   src={basketIcon}
                   onClick={() => {
-                    router.push("/user/basket");
+                    router.push(ROUTER.USER_BASKET);
                   }}
                   alt="basketIcon"
                 />
@@ -182,39 +186,39 @@ const MainHeader: React.FC = () => {
                   variant="flat"
                 >
                   <DropdownItem
-                    onClick={() => router.push("/user/profile")}
+                    onClick={() => router.push(ROUTER.USER_PROFILE)}
                     className="h-10  dark:hover:bg-[rgb(17,24,39)] flex"
                     key="profile"
                   >
                     <p className="text-nowrap dark:text-white font-normal text-base">
-                      Profile
+                      {t("Your Profile")}
                     </p>
                   </DropdownItem>
                   <DropdownItem
-                    onClick={() => router.push("/user/basket")}
+                    onClick={() => router.push(ROUTER.USER_BASKET)}
                     className="h-10  dark:hover:bg-[rgb(17,24,39)] flex"
                     key="your_basket"
                   >
                     <p className="text-nowrap dark:text-white font-normal text-base">
-                      Your Basket
+                      {t("Your Basket")}
                     </p>
                   </DropdownItem>
                   <DropdownItem
                     className="h-10  dark:hover:bg-[rgb(17,24,39)] flex"
-                    onClick={() => router.push("/user/orders")}
+                    onClick={() => router.push(ROUTER.USER_ORDERS)}
                     key="your_order"
                   >
                     <p className="text-nowrap dark:text-white font-normal text-base">
-                      Your Orders
+                      {t("Your Orders")}
                     </p>
                   </DropdownItem>
                   <DropdownItem
                     className="h-10  dark:hover:bg-[rgb(17,24,39)] flex"
-                    onClick={() => router.push("/user/checkout")}
+                    onClick={() => router.push(ROUTER.USER_CHECKOUT)}
                     key="checkout"
                   >
                     <p className="text-nowrap dark:text-white font-normal text-base">
-                      Checkout
+                      {t("Checkout")}
                     </p>
                   </DropdownItem>
                   <DropdownItem
@@ -224,7 +228,7 @@ const MainHeader: React.FC = () => {
                     color="danger"
                   >
                     <p className="text-nowrap dark:text-white font-normal text-base">
-                      Log Out
+                      {t("Logout")}
                     </p>
                   </DropdownItem>
                 </DropdownMenu>

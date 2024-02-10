@@ -10,11 +10,11 @@ const About_Us = () => {
     <>
       <MainHeader />
       <div className=" flex flex-col items-center md:items-start md:flex-row md:justify-evenly py-[5vh]">
-        <div className="w-8/12 md:w-4/12">
-          <h1 className="capitalize font-semibold text-black dark:text-cyan-300 text-5xl mb-[5%]">
+        <div className="w-8/12 md:w-4/12 font-body tracking-wider">
+          <h1 className="capitalize font-semibold text-black dark:text-cyan-300 text-[45px] mb-[5%]">
             about us
           </h1>
-          <p className="text-[#828282] dark:text-cyan-300 text-xl font-medium text-justify">
+          <p className="text-[#828282] dark:text-cyan-300  text-xl font-medium text-justify">
             Lorem ipsum dolor sit amet consectetur, adipisicing elit.
             Necessitatibus quis adipisci quam atque, consequuntur illum dolorem
             soluta a repudiandae quidem id velit architecto, nesciunt

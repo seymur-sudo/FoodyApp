@@ -91,7 +91,7 @@ const RegisterPage: React.FC = () => {
       </Head>
       <main className="sm:mr-32px sm:ml-32px" style={{ zoom: "0.66" }}>
         <ClientHeader />
-        <div className="flex-col mx-3  flex lg:flex-row sm:mx-0">
+        <div className="flex-col mx-3  flex lg:flex-row sm:mx-0 font-body">
           <div
             className="bg-clientRed dark:bg-green-600 py-3 lg:w-3/6 w-full lg:h-[900px] h-[160px] sm:pt-24 sm:pl-40 sm:mr-10 sm:pb-48 sm:pr-15 px-10 rounded-4 mb-6"
             data-aos="fade-right"
