@@ -17,6 +17,7 @@ import { toast } from "react-toastify";
 import { QUERIES } from "../../../constant/Queries";
 import { FaCheck } from "react-icons/fa6";
 import { isValidPhone } from "@/constant/ValidRegex";
+import MainFooter from "@/components/Client/MainFooter";
 
 const UserCheckout = () => {
   const { data: userD, isLoading, isError } = useQuery(QUERIES.User, getUser);
@@ -130,39 +131,41 @@ const UserCheckout = () => {
   return (
     <div>
       <MainHeader />
-      <div className="flex flex-col items-center  md:flex-row md:items-start  md:justify-evenly py-8">
+      <div className="flex flex-col items-center  md:flex-row md:items-start  md:justify-evenly pt-8 pb-32">
         <UserAside />
 
         {!orderAdded ? (
-          <div className="w-10/12 md:w-5/12 py-3 bg-[#F3F4F6] dark:bg-gray-900 flex flex-wrap justify-evenly pt-2 pb-3 ">
-            <h1 className="capitalize text-[#4F4F4F] dark:text-green-300 text-[30px] font-bold my-3 text-left">
+          <div className="w-10/12 md:w-5/12 py-3 rounded-md bg-[#F3F4F6] dark:bg-gray-900 flex flex-wrap justify-evenly pt-2 pb-3 ">
+            <h1 className="capitalize text-[#4F4F4F] dark:text-green-300 text-[30px] font-bold my-3 w-10/12 justify-self-start ">
               {t("Checkout")}
             </h1>
-            <div className="flex flex-col mb-4   w-10/12">
-              <label className="text-[#4F4F4F] dark:text-green-300 mb-3 font-bold">
+            <div className="flex flex-col    w-10/12">
+              <label className="text-[#4F4F4F] dark:text-green-300 text-lg font-mukta mb-[6px] font-semibold">
                 {t("Delivery Address")}
               </label>
               <input
                 type="text"
                 defaultValue={userD ? userD.data.user.address : ""}
                 ref={addressRef}
-                className="py-2 px-4 bg-white dark:bg-black text-black dark:text-white rounded-[4px]"
+                placeholder={t("Delivery Address")}
+                className="py-3 px-4 text-xl font-mukta font-semibold tracking-wide text-[#828282] bg-white dark:bg-black  dark:text-white rounded-[4px]"
               />
             </div>
-            <div className="flex flex-col mb-5  w-10/12">
-              <label className="text-[#4F4F4F] dark:text-green-300 mb-3 font-bold">
+            <div className="flex flex-col my-5  w-10/12">
+              <label className="text-[#4F4F4F] dark:text-green-300 mb-[6px] text-lg font-mukta font-semibold">
                 {t("Contact Number")}
               </label>
               <input
                 type="text"
                 ref={phoneRef}
+                placeholder="+994"
                 defaultValue={userD ? userD.data.user.phone : ""}
-                className="py-2 px-4 bg-white dark:bg-black text-black dark:text-white rounded-[4px]"
+                className="py-3 px-4 text-xl font-semibold font-mukta tracking-wide text-[#828282] bg-white dark:bg-black  dark:text-white rounded-[4px]"
               />
             </div>
 
             <div className="flex flex-col my-2 mr-5 w-10/12">
-              <label className="capitalize text-xl text-[#4F4F4F] dark:text-green-300 font-bold m-4 ">
+              <label className="capitalize text-xl text-[#4F4F4F] dark:text-green-300 font-bold mx-4 mb-1 ">
                 {t("Payment Method")}
               </label>
               <div className="flex flex-col md:flex-row gap-8 md:gap-12">
@@ -187,7 +190,7 @@ const UserCheckout = () => {
                   </label>
                   <label
                     htmlFor="1"
-                    className="mt-px  text-green-600 dark:text-green-300 font-semibold cursor-pointer select-none"
+                    className="  text-green-600 dark:text-green-300 font-semibold cursor-pointer select-none"
                   >
                     {t("Pay at the door")}
                   </label>
@@ -222,14 +225,14 @@ const UserCheckout = () => {
             <div className="flex flex-col py-5 w-10/12">
               <button
                 onClick={handleAddOrder}
-                className="capitalize py-[5px] px-4 bg-[#6FCF97] font-bold text-lg text-white dark:text-gray-900 rounded-[4px] hover:bg-[#54ff9b]  transition-all duration-500 cursor-pointer  "
+                className="capitalize py-2 px-4 bg-[#6FCF97] font-bold text-lg text-white dark:text-gray-900 rounded-[4px] hover:bg-[#54ff9b]  transition-all duration-500 cursor-pointer  "
               >
                 {t("Send")}
               </button>
             </div>
           </div>
         ) : (
-          <div className="w-10/12 md:w-8/12 py-3 bg-[#F3F4F6] dark:bg-gray-900 flex flex-col justify-center items-center min-h-[65vh]">
+          <div className="w-10/12 md:w-8/12 py-3 rounded-md bg-[#F3F4F6] dark:bg-gray-900 flex flex-col justify-center items-center min-h-[65vh]">
             <div className="flex  justify-center items-center bg-green-600 dark:bg-green-300 text-white dark:text-gray-800 rounded-full h-[200px] w-[200px]">
               <FaCheck className="text-[150px]" />
             </div>
@@ -241,51 +244,58 @@ const UserCheckout = () => {
         )}
 
         {!orderAdded ? (
-          <div className="w-10/12 md:w-3/12 mt-[5%] md:mt-[0%] capitalize text-[#828282)] px-6 py-3 dark:text-green-300 bg-[#F3F4F6] dark:bg-gray-900  asideScroll max-h-[45vh] overflow-y-auto">
+          <div className="w-10/12 md:w-[28%] mt-[5%] md:mt-[0%] rounded-md capitalize text-[#828282)] px-6 py-3 dark:text-green-300 bg-[#F3F4F6] dark:bg-gray-900  asideScroll max-h-[45vh] overflow-y-auto">
             <div>
-              <h1 className=" font-body font-bold  text-xl text-center py-3">
+              <h1 className=" font-body font-semibold text-[#828282]  text-xl text-center py-3">
                 {t("Your Order")}
               </h1>
 
-              {basketProductsItems && basketProductsItems.length > 0 ? (
-                basketProductsItems.map((product: BasketPostDataType) => (
-                  <ul className="py-2 w-full " key={product.id}>
-                    <li className="text-[14px] my-1">
-                      <span className="text-lg font-medium">
-                        <span>{product.count}</span>
-                        <span>
-                          <span className="mx-[6px]">x</span>
-                          {product.name}
-                        </span>
-                        <span>
-                          <span className="mx-[6px] text-[18px]">$</span>
-                          <span className="ml-[2px]">{product.amount}</span>
-                        </span>
-                      </span>
-                    </li>
-                  </ul>
-                ))
-              ) : (
-                <div className=" flex items-center   flex-col  justify-center  pb-4 text-[#BDBDBD]">
-                  <div>
-                    <Image
-                      src={EmptyBasket}
-                      alt="EmptyBasket"
-                      width={100}
-                      height={100}
-                      className=" object-cover w-[125px] h-[100px]"
-                    />
-                  </div>
-                  <p className="capitalize font-bold  flex flex-col items-center pb-3 ">
-                    <span>oops !</span> <span>basket is empty</span>
-                  </p>
-                </div>
-              )}
+              <div className="max-h-[25vh] min-h-[25vh] my-scrollable-component  overflow-y-auto">
+                {basketProductsItems && basketProductsItems.length > 0 ? (
+                  basketProductsItems.map((product: BasketPostDataType) => (
+                    <ul className="py-2 w-full text-[#828282]" key={product.id}>
+                      <li className="text-[14px] my-1">
+                        <span className="text-lg font-medium font-poppins flex justify-between items-center w-full">
+                          <span className="w-[90%]">
+                            <span>{product.count}</span>
+                            <span >
+                              <span className="mx-[6px]">x</span>
+                              {product.name}
+                            </span>
+                          </span>
 
-              <div className="border-t-2 border-t-gray-400 dark:border-t-green-400 py-5 px-2 flex justify-between">
-                <p className="font-medium text-[18px]"> {t("Total")} </p>
+                          <span className="flex items-center w-[10%]">
+                            <span className="mr-[3px] text-[18px]">$</span>
+                            <span >{product.amount}</span>
+                          </span>
+                        </span>
+                      </li>
+                    </ul>
+                  ))
+                ) : (
+                  <div className=" flex items-center   flex-col  justify-center  pb-4 text-[#BDBDBD] dark:text-green-300">
+                    <div>
+                      <Image
+                        src={EmptyBasket}
+                        alt="EmptyBasket"
+                        width={100}
+                        height={100}
+                        className=" object-cover w-[125px] h-[100px]"
+                      />
+                    </div>
+                    <p className="capitalize font-bold  flex flex-col text-[#828282] dark:text-green-300 items-center pb-3 ">
+                      <span>oops !</span> <span>{t("basket is empty")}</span>
+                    </p>
+                  </div>
+                )}
+              </div>
+
+              <div className="border-t-2  font-poppins border-t-gray-400 dark:border-t-green-400 py-5 px-2 flex justify-between">
+                <p className="font-medium text-[#828282]  dark:text-green-300 text-[18px]">
+                  {t("Total")}
+                </p>
                 {basketProducts && (
-                  <p className="font-semibold">
+                  <p className="font-semibold ml-12 text-[#828282] dark:text-green-300 ">
                     $ {basketProducts?.total_amount}
                   </p>
                 )}
@@ -296,7 +306,10 @@ const UserCheckout = () => {
           ""
         )}
       </div>
+      <MainFooter />
+
     </div>
+
   );
 };
 

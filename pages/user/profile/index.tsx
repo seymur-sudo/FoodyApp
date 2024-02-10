@@ -17,6 +17,7 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { updateUser, getUser } from "@/services";
 import { isValidPhone } from "@/constant/ValidRegex";
 import login from "../../../public/svgs/login.svg";
+import MainFooter from "@/components/Client/MainFooter";
 
 const ProfileUser = () => {
   const { data: userD, isLoading, isError } = useQuery(QUERIES.User, getUser);
@@ -126,39 +127,39 @@ const ProfileUser = () => {
   return (
     <>
       <MainHeader />
-      <div className="flex flex-col items-center  md:flex-row md:items-start  md:justify-evenly py-8">
+      <div className="flex flex-col items-center  md:flex-row md:items-start  md:justify-evenly pt-8 pb-32">
         <UserAside />
 
-        <div className="w-10/12 md:w-8/12 bg-[#F3F4F6] dark:bg-gray-900 asideScroll max-h-[75vh] overflow-y-auto">
-          <h1 className="capitalize text-[#4F4F4F] dark:text-green-300 text-[30px] font-semibold ml-7 mt-4">
+        <div className="w-10/12 md:w-[72%] bg-[#F3F4F6] dark:bg-gray-900  ">
+          <h1 className="capitalize text-[#4F4F4F] dark:text-green-300 text-[30px] font-semibold ml-7 mt-4 py-4 md:py-0">
             {t("Your Profile")}
           </h1>
 
-          <div className="flex items-center justify-center mb-3  w-full ">
+          <div className="flex items-center justify-center mb-5  w-full ">
             <label
               htmlFor="user_img"
               className="flex flex-col items-center justify-center w-full rounded-[14px]  cursor-pointer  "
             >
               {userImg ? (
-                <div className="flex flex-col items-center justify-center py-2 px-7 rounded-full ">
+                <div className="flex flex-col items-center justify-center w-[140px] h-[140px] rounded-full ">
                   <Image
                     src={userImg ? userImg : login}
                     height={100}
                     width={100}
                     alt="Uploaded Image"
-                    className="rounded-full w-[100px] h-[100px]"
+                    className="rounded-full w-[70px] h-[70px]"
                   />
                 </div>
               ) : (
-                <div className="flex flex-col items-center justify-center py-2 px-7 rounded-full  bg-white dark:bg-black">
+                <div className="flex flex-col items-center justify-center w-[140px] h-[140px] rounded-full  bg-white dark:bg-black">
                   <Image
                     width={100}
                     height={100}
                     src={uploadImg}
                     alt="upload"
-                    className="w-[100px] h-[100px]"
+                    className="w-[70px] h-[70px]"
                   />
-                  <p className="text-[#929292] dark:text-[#6FCF97] font-semibold text-lg">
+                  <p className="text-[#929292] dark:text-[#6FCF97] font-body font-semibold text-lg">
                     {t("upload")}
                   </p>
                 </div>
@@ -172,43 +173,48 @@ const ProfileUser = () => {
             </label>
           </div>
 
-          <div className="flex flex-wrap justify-evenly w-full pt-2 pb-5">
-            <div className="flex flex-col mb-5 w-10/12 md:w-5/12">
-              <label className="text-[#4F4F4F] dark:text-green-300 mb-1 font-semibold">
+          <div className="flex flex-wrap justify-evenly w-full pt-2 pb-5 font-poppins">
+            <div className="flex flex-col mb-4 w-10/12 md:w-5/12">
+              <label className="text-[#4F4F4F] dark:text-green-300 mb-2 text-lg  font-semibold">
                 {t("Full Name")}
               </label>
               <input
                 type="text"
                 defaultValue={userD?.data.user.fullname ?? ""}
                 ref={fullNRef}
-                className="py-2 px-4 bg-white dark:bg-black text-black dark:text-white rounded-[4px]"
-              />
+                placeholder="Full Name"
+                className="h-[53px] px-4 text-xl font-medium tracking-wide text-[#828282] bg-white dark:bg-black  rounded-[4px]"
+              /> 
             </div>
-            <div className="flex flex-col mb-5 w-10/12 md:w-5/12">
-              <label className="text-[#4F4F4F] dark:text-green-300 mb-1 font-semibold">
+            <div className="flex flex-col mb-4 w-10/12 md:w-5/12">
+              <label className="text-[#4F4F4F] dark:text-green-300 mb-2 text-lg  font-semibold ">
                 {t("User Name")}
               </label>
               <input
                 type="text"
                 defaultValue={userD?.data.user.username ?? ""}
                 ref={userNRef}
-                className="py-2 px-4 bg-white dark:bg-black text-black dark:text-white rounded-[4px]"
+                placeholder="User Name"
+
+                className="h-[53px] px-4 text-xl font-medium tracking-wide text-[#828282] rounded-[4px]  bg-white dark:bg-black "
               />
             </div>
-            <div className="flex flex-col mb-5 w-10/12 md:w-5/12">
-              <label className="text-[#4F4F4F] dark:text-green-300  mb-1 font-semibold">
+            <div className="flex flex-col mb-4 w-10/12 md:w-5/12">
+              <label className="text-[#4F4F4F] dark:text-green-300  mb-2 text-lg  font-semibold  ">
                 {t("Contact")}
               </label>
               <input
                 type="text"
                 defaultValue={userD?.data.user.phone ?? ""}
                 ref={phoneRef}
-                className="py-2 px-4 bg-white dark:bg-black text-black dark:text-white rounded-[4px]"
+                placeholder="Contact"
+
+                className=" h-[53px] px-4 text-xl font-medium tracking-wide text-[#828282] rounded-[4px]  bg-white dark:bg-black "
               />
             </div>
 
-            <div className="flex flex-col mb-5 w-10/12 md:w-5/12">
-              <label className="text-[#4F4F4F] dark:text-green-300 mb-1 font-semibold">
+            <div className="flex flex-col mb-4 w-10/12 md:w-5/12">
+              <label className="text-[#4F4F4F] dark:text-green-300 mb-2 text-lg font-semibold">
                 {t("Email")}
               </label>
               <input
@@ -216,24 +222,28 @@ const ProfileUser = () => {
                 disabled
                 defaultValue={userD?.data.user.email ?? ""}
                 ref={mailRef}
-                className="py-2 px-4 bg-white dark:bg-black text-black dark:text-white rounded-[4px]"
+                placeholder="Email"
+
+                className="h-[53px]  px-4 text-xl  font-medium tracking-wide text-[#828282] rounded-[4px]  bg-white dark:bg-black "
               />
             </div>
             <div className="flex flex-col mb-3 w-10/12 md:w-5/12">
-              <label className="text-[#4F4F4F] dark:text-green-300 mb-2 font-semibold">
+              <label className="text-[#4F4F4F] dark:text-green-300 mb-2 text-lg  font-semibold  ">
                 {t("Address")}
               </label>
               <input
                 type="text"
                 defaultValue={userD?.data.user.address ?? ""}
                 ref={addressRef}
-                className="py-2 px-4 bg-white dark:bg-black text-black dark:text-white rounded-[4px]"
+                placeholder="Address"
+
+                className="h-[53px] px-4 text-xl font-medium tracking-wide text-[#828282] rounded-[4px]  bg-white dark:bg-black "
               />
             </div>
-            <div className="flex flex-col mt-8 w-10/12 md:w-5/12">
+            <div className="flex flex-col mt-9 w-10/12 md:w-5/12">
               <button
                 onClick={() => handleUpdateUser()}
-                className="capitalize py-[5px] px-4 bg-[#6FCF97] font-bold text-lg text-white dark:text-gray-900 rounded-[4px] hover:bg-[#54ff9b]  transition-all duration-500 cursor-pointer  "
+                className="capitalize h-[53px] px-4 bg-[#6FCF97] font-bold text-lg text-white dark:text-gray-900 rounded-[4px] hover:bg-[#54ff9b]  transition-all duration-500 cursor-pointer  "
               >
                 {t("Send")}
               </button>
@@ -241,6 +251,7 @@ const ProfileUser = () => {
           </div>
         </div>
       </div>
+      <MainFooter/>
     </>
   );
 };

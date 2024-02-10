@@ -42,9 +42,7 @@ const UserBasket = () => {
                 <span className="mr-1">
                   {basketProducts?.total_item} {t("items")}
                 </span>
-                <span className="mr-1">
-                  - {basketProducts?.total_count} {t("count")}
-                </span>
+              
               </p>
             </div>
 
@@ -63,8 +61,8 @@ const UserBasket = () => {
             </div>
           </div>
         )}
-        <div className=" w-full bg-[#F3F4F6] dark:bg-gray-900 md:flex flex-col  items-center my-scrollable-component  overflow-y-auto">
-          <div className="w-full min-h-[45vh] max-h-[45vh]">
+        <div className=" w-full bg-[#F3F4F6] dark:bg-gray-900 md:flex flex-col  items-center ">
+          <div className="w-full min-h-[50vh] max-h-[50vh] my-scrollable-component  overflow-y-auto">
             {basketProductsItems && basketProductsItems.length > 0 ? (
               basketProductsItems.map((product: BasketPostDataType) => (
                 <div
@@ -77,20 +75,17 @@ const UserBasket = () => {
                       alt="product.name"
                       width={100}
                       height={100}
-                      className=" w-[80px] h-[80px]  rounded-lg  object-cover"
+                      className=" w-[96px] h-[90px]  rounded-md  object-cover"
                     />
-                    <div className=" w-5/12">
-                      <div className="flex flex-col justify-center items-center ">
-                        <h1 className="capitalize pt-2  text-[#4F4F4F] dark:text-cyan-400 text-[18px] font-medium">
+                    <div className=" w-9/12 font-body font-semibold tracking-wide">
+                      <div className="flex flex-col items-start  w-full">
+                        <h1 className="capitalize   text-[#787878] dark:text-cyan-400 text-[22px] ">
                           {product.name}
                         </h1>
-                        <span className="capitalize  text-[#4F4F4F] dark:text-cyan-400 text-[18px] font-medium">
-                          <span className="mr-2">Price:</span> $ {product.price}
+                        <span className="capitalize py-3 text-[#787878] dark:text-cyan-400 text-[18px] ">
+                          <span className="mr-2">$ {product.price}</span> 
                         </span>
-                        <span className="capitalize ml-2 text-[#4F4F4F] dark:text-cyan-400 text-[18px] font-medium">
-                          <span className="mr-2">Price Total:</span> ${" "}
-                          {product.amount}
-                        </span>
+                     
                       </div>
                     </div>
 
@@ -139,9 +134,9 @@ const UserBasket = () => {
         {basketProducts && (
           <div
             onClick={() => push(ROUTER.USER_CHECKOUT)}
-            className={`h-12 w-11/12  md:w-10/12 ml-5 md:ml-0 my-3 cursor-pointer flex justify-center ${
+            className={`h-12 w-11/12  md:w-10/12 ml-5 md:ml-0 mt-4 mb-7 cursor-pointer flex justify-center ${
               isBasketEmpty
-                ? "opacity-20 pointer-events-none"
+                ? "opacity-10 pointer-events-none"
                 : "hover:opacity-90 transition-all duration-500"
             }  flex items-center justify-between rounded-[100px]  bg-[#D63626] dark:bg-blue-500 text-white`}
           >

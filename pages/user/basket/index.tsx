@@ -6,6 +6,7 @@ import DeleteModal from "@/components/Admin/Modals/DeleteModal";
 import { useTranslation } from "next-i18next";
 import { GetServerSideProps } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import MainFooter from "@/components/Client/MainFooter";
 
 const BasketUser = () => {
   const { t } = useTranslation("common");
@@ -13,10 +14,10 @@ const BasketUser = () => {
   return (
     <>
       <MainHeader />
-      <div className="flex flex-col items-center  md:flex-row md:items-start  md:justify-evenly py-8">
+      <div className="flex flex-col items-center  md:flex-row md:items-start  md:justify-evenly pt-8 pb-32">
         <UserAside />
    
-        <div className="w-10/12 md:w-8/12 bg-[#F3F4F6] dark:bg-gray-900  ">
+        <div className="w-10/12 md:w-[72%] bg-[#F3F4F6] dark:bg-gray-900  ">
           <div>
             <div className="capitalize py-2 px-4">
               <span className="text-[30px] text-[#4F4F4F] dark:text-blue-400 font-bold">
@@ -30,6 +31,9 @@ const BasketUser = () => {
       </div>
 
       <DeleteModal />
+
+      <MainFooter />
+
     </>
   );
 };
