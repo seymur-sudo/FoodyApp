@@ -23,6 +23,9 @@ import { GetServerSideProps } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { getUserOrder } from "@/services";
 import { OrderPostDataType } from "@/interfaces";
+import usePagination from "@/components/Admin/Pagination";
+import PaginationControls from "@/components/Admin/Pagination/PaginationControls";
+import MainFooter from "@/components/Client/MainFooter";
 
 type SortingValue = "A-Z" | "Z-A" | "Low-to-High" | "High-to-Low";
 
@@ -61,12 +64,12 @@ const UserOrders = () => {
     );
 
     if (!confirmUpload) {
-      return; 
+      return;
     }
     const pdfDoc = await PDFDocument.create();
-    const pageHeight = data.length * 100 + 370; 
+    const pageHeight = data.length * 100 + 370;
     const pageWidth = 250;
-    const page = pdfDoc.addPage([pageWidth, pageHeight]); 
+    const page = pdfDoc.addPage([pageWidth, pageHeight]);
     //QRCODE
     const qrUrl = "/qrcode.png";
     const responseQr = await fetch(qrUrl);
@@ -197,10 +200,9 @@ const UserOrders = () => {
     setSortingValue(event.target.value as SortingValue);
   };
 
-  console.log("userOrder", userOrder?.data.result.data);
-  const sortedProducts: OrderPostDataType[] = [
-    ...(userOrder?.data.result.data || []),
-  ];
+  const { currentPage, currentData, totalPages, nextPage, prevPage, goToPage } =
+    usePagination(userOrder?.data?.result.data, 3);
+  const sortedProducts: OrderPostDataType[] = [...(currentData || [])];
   if (sortingValue === "A-Z") {
     sortedProducts.sort((a, b) =>
       (a.delivery_address ?? "").localeCompare(b.delivery_address ?? "")
@@ -224,7 +226,7 @@ const UserOrders = () => {
   return (
     <>
       <MainHeader />
-      <div className="flex flex-col items-center  md:flex-row md:items-start  md:justify-evenly py-8">
+      <div className="flex flex-col items-center  md:flex-row md:items-start  md:justify-evenly pt-8 pb-32">
         <UserAside />
 
         {showUserModal && (
@@ -317,14 +319,13 @@ const UserOrders = () => {
           </>
         )}
 
-        <div className="w-10/12 md:w-8/12  bg-[#F3F4F6] dark:bg-gray-900 my-scrollable-component max-h-[75vh] overflow-y-auto">
+        <div className="w-10/12 md:w-[72%]  font-poppins bg-[#F3F4F6] dark:bg-gray-900 my-scrollable-component max-h-[75vh] overflow-y-auto">
           <div className="w-full flex items-center pl-4 py-2">
             <select
               className="pl-4 py-3  rounded-md w-8/12  md:w-2/12 cursor-pointer bg-[#e5ecf9] dark:bg-[#27283C] dark:text-gray-200 "
               value={sortingValue}
               onChange={handleSortProducts}
             >
-           
               <option value="A-Z">A-Z {t("Delivery")} </option>
               <option value="Z-A">Z-A {t("Delivery")}</option>
               <option value="Low-to-High">{t("Low To High Amount")}</option>
@@ -335,16 +336,15 @@ const UserOrders = () => {
               onClick={resetSorting}
             >
               {t("Reset")}
-
             </button>
           </div>
-          <h1 className="capitalize text-[#D63626] dark:text-sky-300 text-[30px] font-semibold ml-6 ">
+          <h1 className="capitalize text-[#4F4F4F] font-mukta dark:text-sky-300 text-[30px] font-semibold ml-6 pt-3">
             {t("Your Orders")}
           </h1>
 
-          <div className=" overflow-x-auto shadow-md sm:rounded-lg p-6">
-            <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-              <thead className="text-xs text-gray-700 capitalize bg-white dark:bg-gray-700 dark:text-gray-400">
+          <div className=" overflow-x-auto shadow-md sm:rounded-lg p-6  min-h-[40vh] ">
+            <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 ">
+              <thead className="font-semibold text-gray-700 capitalize bg-white dark:bg-gray-700 dark:text-gray-400">
                 <tr>
                   <th scope="col" className="px-16 py-3">
                     Id
@@ -372,35 +372,35 @@ const UserOrders = () => {
                   </th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody className="font-normal">
                 {sortedProducts &&
                   sortedProducts?.map((order: any, index: number) => (
                     <tr
                       key={index}
                       className="bg-white border-b cursor-pointer dark:bg-[#27283C] dark:border-gray-800 hover:bg-gray-100  dark:hover:bg-gray-900 transition-all duration-700"
                     >
-                      <td className="pl-14 py-4 font-semibold text-gray-900 dark:text-white">
+                      <td className="pl-14 py-4  text-gray-900 dark:text-white">
                         {order.id.slice(0, 5)}
                       </td>
 
                       <td className="px-5">{order.customer_id.slice(0, 5)}</td>
 
-                      <td className="pl-4 py-4 font-semibold text-gray-900 dark:text-white capitalize">
+                      <td className="pl-4 py-4  text-gray-900 dark:text-white capitalize">
                         {editedTime[index]}
                       </td>
 
-                      <td className="px-6 font-semibold text-gray-900 dark:text-white">
+                      <td className="px-8  text-gray-900 dark:text-white">
                         {order.delivery_address}
                       </td>
 
-                      <td className="p-4 pl-8 font-semibold text-gray-900 dark:text-white">
+                      <td className="p-4 pl-8  text-gray-900 dark:text-white">
                         {order.amount}
                       </td>
-                      <td className="p-4 px-6 font-semibold text-gray-900 dark:text-white">
+                      <td className="p-4 px-6  text-gray-900 dark:text-white">
                         {order.payment_method}
                       </td>
 
-                      <td className="py-4 font-semibold text-gray-900 dark:text-white">
+                      <td className="py-4 px-7  text-gray-900 dark:text-white">
                         {order.contact}
                       </td>
 
@@ -444,10 +444,18 @@ const UserOrders = () => {
                   ))}
               </tbody>
             </table>
-            <DeleteModal />
           </div>
+          <PaginationControls
+            currentPage={currentPage}
+            totalPages={totalPages}
+            nextPage={nextPage}
+            prevPage={prevPage}
+            goToPage={goToPage}
+          />
+          <DeleteModal />
         </div>
       </div>
+      <MainFooter/>
     </>
   );
 };

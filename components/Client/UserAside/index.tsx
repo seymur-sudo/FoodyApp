@@ -13,10 +13,10 @@ const UserAside = () => {
   const { t } = useTranslation("common");
 
   return (
-    <div className="w-3/12 hidden h-[50vh] md:flex flex-col items-center pt-4 pb-6  bg-[#F3F4F6] dark:bg-gray-900 capitalize rounded-md ">
-      <ul className="cursor-pointer py-5 pb-7 w-6/12 text-[#828282)] dark:text-cyan-300 font-poppins ">
+    <div className="w-[22%] hidden h-[66.3vh] md:flex flex-col items-center pt-4 pb-6  bg-[#F3F4F6] dark:bg-gray-900 capitalize rounded-md ">
+      <ul className="cursor-pointer py-5 pb-7 w-7/12 text-[#828282)] dark:text-cyan-300 font-poppins ">
         <li
-          className={`flex items-center  py-3 pl-2  mb-2  rounded-[4px] ${
+          className={`flex items-center  py-[14px] pl-2  mb-[14px]  rounded-[4px] ${
             pathname === ROUTER.USER_PROFILE
             ? "text-[#D63626] dark:text-green-800 bg-red-100 dark:bg-green-300"
             : "text-[#828282] dark:text-gray-400"
@@ -27,7 +27,7 @@ const UserAside = () => {
           <span className="text-lg font-semibold "> {t("Your Profile")} </span>
         </li>
         <li
-          className={`flex items-center py-3 pl-2  my-2  rounded-[4px] ${
+          className={`flex items-center py-[14px] pl-2  my-[14px]  rounded-[4px] ${
             pathname === ROUTER.USER_BASKET
               ? "text-[#D63626] dark:text-blue-500 bg-red-100 dark:bg-cyan-100"
               : "text-[#828282] dark:text-gray-400"
@@ -39,7 +39,7 @@ const UserAside = () => {
         </li>
 
         <li
-          className={`flex items-center py-3 pl-2  my-2  rounded-[4px] ${
+          className={`flex items-center py-[14px] pl-2  my-[14px] rounded-[4px] ${
             pathname === ROUTER.USER_ORDERS
               ? "text-[#D63626] dark:text-blue-500 bg-red-100 dark:bg-cyan-100"
               : "text-[#828282] dark:text-gray-400"
@@ -50,7 +50,7 @@ const UserAside = () => {
           <span className="text-lg font-semibold ">{t("Your Order")}</span>
         </li>
         <li
-          className={`flex items-center py-3 pl-2  my-2   rounded-[4px] ${
+          className={`flex items-center py-[14px] pl-2  my-[14px]   rounded-[4px] ${
             pathname === ROUTER.USER_CHECKOUT
               ? "text-[#D63626] dark:text-green-800 bg-red-100 dark:bg-green-300"
               : "text-[#828282] dark:text-gray-400"
@@ -61,7 +61,7 @@ const UserAside = () => {
           <span className="text-lg font-semibold ">{t("Checkout")}</span>
         </li>
         <li
-         className="flex items-center py-3 pl-2  my-2  rounded-[4px] text-[#828282] dark:text-gray-400"
+         className="flex items-center py-[14px] pl-2  my-[14px]  rounded-[4px] text-[#828282] dark:text-gray-400"
         >
           <RiLogoutBoxFill className=" text-2xl hover:scale-110 transition-all duration-500 mr-2 " />
           <span className="text-lg font-semibold ">{t("Logout")}</span>

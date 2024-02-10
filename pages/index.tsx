@@ -290,7 +290,7 @@ const Home: NextPage = () => {
               </div>
             )
           )}
-
+{/* 
         <div className=" w-10/12 md:w-[69%]  mx-auto text-center pt-20" data-aos="zoom-in">
           <h1 className="capitalize  text-xl md:text-5xl font-body pt-5 pb-9 font-bold text-transparent bg-gradient-to-r bg-clip-text  from-gray-900  to-red-400 dark:from-green-300 dark:to-orange-400 ">
             {t("foody delivery advertisement")}
@@ -303,7 +303,7 @@ const Home: NextPage = () => {
               controls
             />
           </div>
-        </div>
+        </div> */}
 
         <div
           data-aos="zoom-in"
