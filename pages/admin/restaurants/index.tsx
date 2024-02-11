@@ -41,7 +41,7 @@ const Restaurant: React.FC = () => {
           <Layout>
             <div className="px-12 pb-8 md:pr-1 min-h-screen md:h-screen">
               <SearchBar />
-              <div className="flex gap-x-[68px]  gap-y-[34px]  justify-around sm:justify-start mx-auto flex-wrap pl-1">
+              <div className="grid gap-y-8 gap-x-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-4 ">
                 {filteredData &&
                   filteredData.map((restaurant: RestaurantPostDataType) => (
                     <RestaurantCard

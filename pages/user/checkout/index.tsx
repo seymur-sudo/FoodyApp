@@ -178,12 +178,13 @@ const UserCheckout = () => {
                       name="type"
                       type="radio"
                       ref={radioRef1}
+                      defaultChecked 
                       className="before:content[''] peer relative h-8 w-8 cursor-pointer appearance-none rounded-full border-2 border-green-500 text-green-600 duration-500  transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-green-500 before:opacity-0 before:transition-opacity checked:border-green-500 checked:before:bg-green-500 hover:before:opacity-10"
                       id="1"
                     />
                     <span className="absolute text-green-600 transition-opacity opacity-0 pointer-events-none top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 peer-checked:opacity-100">
                       <BsDot
-                        size={100}
+                        size={80}
                         className="text-green-600 daek:text-green-300"
                       />
                     </span>
@@ -207,7 +208,7 @@ const UserCheckout = () => {
                     />
                     <span className="absolute text-green-700 transition-opacity opacity-0 pointer-events-none top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 peer-checked:opacity-100">
                       <BsDot
-                        size={100}
+                        size={80}
                         className="text-green-600 daek:text-green-300"
                       />
                     </span>

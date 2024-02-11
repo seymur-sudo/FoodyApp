@@ -53,7 +53,7 @@ const ProductCard: React.FC<ProductCardType> = ({ product }) => {
             alt="pizza"
             width={100}
             height={100}
-            className=" w-[57px] h-[53px] hidden md:block rounded-md mr-3 object-cover"
+            className=" w-[57px] h-[53px] hidden md:block rounded-sm mr-3 object-cover"
           />
 
           <div className="ml-3">
@@ -66,12 +66,12 @@ const ProductCard: React.FC<ProductCardType> = ({ product }) => {
           </div>
         </div>
 
-        <div className="w-4/12 flex items-center justify-end">
-          <p className=" flex items-center mr-10">
+        <div className="w-5/12 flex items-center justify-end">
+          <p className=" flex items-center mr-10 w-4/12">
             <span className="capitalize mr-2 hidden md:block text-[#828282] dark:text-cyan-300 text-[14px] font-semibold">
               from
             </span>
-            <span className="capitalize mr-5 md:mr-0  text-[#4F4F4F] dark:text-cyan-400 md:text-[18px] font-semibold">
+            <span className="capitalize  md:mr-0 w-8/12  text-[#4F4F4F] dark:text-cyan-400 md:text-[18px] font-semibold">
               $ {product.price}
             </span>
           </p>
