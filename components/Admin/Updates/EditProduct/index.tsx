@@ -129,13 +129,13 @@ const EditProduct: React.FC = () => {
               <p className="capitalize text-lg">
                 {t("Upload your product image")}
               </p>
-              <div className="h-[50vh] w-3/4  my-4">
+              <div className="h-[25vh] w-3/4  my-4">
                 <Image
-                  width={300}
-                  height={300}
+                  width={500}
+                  height={500}
                   src={newImg || uploadImg}
                   alt="uploaded"
-                  className="object-cover w-full h-full rounded-2xl"
+                  className="object-cover w-full h-full rounded-sm"
                 />
               </div>
 

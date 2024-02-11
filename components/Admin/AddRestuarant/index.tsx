@@ -126,14 +126,18 @@ const AddRestuarant: React.FC = () => {
             <div className="flex flex-col justify-center ">
               <h1 className="capitalize text-2xl mb-2">{t("ADD RESTUARANT")}</h1>
               <p className="capitalize text-lg">{t("Upload your restaurant image")}</p>
-              <div className="h-[50vh] w-3/4 my-4">
-                <Image
-                  width={300}
-                  height={300}
-                  src={newImg || uploadImg}
-                  alt="uploaded"
-                  className="object-cover w-full h-full rounded-[14px]"
-                />
+              <div className="h-[25vh] w-3/4 my-4">
+                {newImg ? (
+                  <Image
+                    width={500}
+                    height={500}
+                    src={newImg || uploadImg}
+                    alt="newImg"
+                    className="object-cover w-full h-full rounded-sm"
+                  />
+                ) : (
+                  ""
+                )}
               </div>
               <p className=" text-lg">
               {t("Add your restuarant description and necesarry information")}
@@ -200,7 +204,7 @@ const AddRestuarant: React.FC = () => {
                 <label className="mb-1">{t("Cuisine")}:</label>
 
                 <textarea
-                  className="w-full h-[100px]  rounded-[14px] bg-inputBg leading-10 resize-y"
+                  className="w-full h-[100px] px-2 rounded-[14px] bg-inputBg leading-10 resize-y"
                   name="cuisine"
                   value={newRestaurant.cuisine}
                   onChange={handleChange}

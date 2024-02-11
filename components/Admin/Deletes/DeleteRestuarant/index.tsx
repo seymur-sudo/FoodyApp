@@ -16,13 +16,12 @@ const DeleteRestuarant = () => {
   const mutation = useMutation(() => deleteRestaurant(id), {
     onSuccess: () => {
       queryClient.invalidateQueries(QUERIES.Restaurants);
-      // setEdtRestaurant(firstState);
       setTimeout(() => {
         setLastData(null);
       }, 1000);
-      // toast.success("Restaurant deleted successfully!", {
-      //   autoClose: 1000,
-      // });
+      toast.success("Restaurant deleted successfully!", {
+        autoClose: 1000,
+      });
     },
     onError: (error) => {
       console.error("Error deleted Restaurant:", error);

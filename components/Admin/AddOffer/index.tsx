@@ -116,14 +116,18 @@ const AddOffer: React.FC = () => {
                 {" "}
                 {t("Upload your offer image")}
               </p>
-              <div className="h-[50vh] w-3/4 my-4">
-                <Image
-                  width={300}
-                  height={300}
-                  src={newImg || uploadImg}
-                  alt="uploaded"
-                  className="object-cover w-full h-full rounded-[14px]"
-                />
+              <div className="h-[25vh] w-3/4 my-4">
+                {newImg ? (
+                  <Image
+                    width={500}
+                    height={500}
+                    src={newImg || uploadImg}
+                    alt="newImg"
+                    className="object-cover w-full h-full rounded-sm"
+                  />
+                ) : (
+                  ""
+                )}
               </div>
               <p className=" text-lg">
                 {" "}
@@ -193,7 +197,7 @@ const AddOffer: React.FC = () => {
                 <label className="mb-1">{t("Description")}:</label>
 
                 <textarea
-                  className="w-full pl-2 h-[125px]  rounded-[14px] bg-inputBg leading-10 resize-y"
+                  className="w-full pl-2 h-[125px] px-2 rounded-[14px] bg-inputBg leading-10 resize-y"
                   name="description"
                   value={newOffer.description}
                   onChange={handleInputChange}

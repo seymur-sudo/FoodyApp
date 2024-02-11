@@ -28,7 +28,7 @@ export const Aside: React.FC = () => {
   };
   return (
     <div className="h-full flex flex-col bg-bgc">
-      <aside className=" sm:block hidden h-2/5 w-fit  pt-8 pl-6 pr-4 rounded-xl bg-[#C74FEB]">
+      <aside className="ml-1 sm:block hidden h-2/5 w-min	font-body  pt-4 pb-12 px-4  rounded-xl bg-[#C74FEB]">
         <Link
           className="flex h-10 cursor-pointer mb-2 pl-4 hover:bg-[#CD61ED] rounded-xl items-center flex-row"
           href={ROUTER.ADMIN}

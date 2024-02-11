@@ -108,14 +108,18 @@ const AddCategory: React.FC = () => {
               <p className="capitalize text-lg">
                 {t("Upload your category image")}
               </p>
-              <div className="h-[50vh] w-3/4 my-4">
-                <Image
-                  width={300}
-                  height={300}
-                  src={newImg || uploadImg}
-                  alt="uploaded"
-                  className="object-cover w-full h-full rounded-[14px]"
-                />
+              <div className="h-[25vh] w-3/4 my-4">
+                {newImg ? (
+                  <Image
+                    width={500}
+                    height={500}
+                    src={newImg || uploadImg}
+                    alt="newImg"
+                    className="object-cover w-full h-full rounded-sm"
+                  />
+                ) : (
+                  ""
+                )}
               </div>
               <p className=" text-lg">
                 {t("Add your category description and necesarry information")}
@@ -203,9 +207,7 @@ const AddCategory: React.FC = () => {
           >
             {mutation.isLoading
               ? t("category is creating")
-              : t("create category")
-              
-              }
+              : t("create category")}
           </button>
         </div>
       </div>
