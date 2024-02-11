@@ -12,12 +12,11 @@ import EditModal from "@/components/Admin/Modals/EditModal";
 import defaultRes from "../../../public/svgs/default.png";
 import { useTranslation } from "next-i18next";
 
-
-
-interface RestaurantCardProps {
+type RestaurantCardProps = {
   id: string | number;
   restaurant: RestaurantPostDataType;
-}
+};
+
 const RestaurantCard: React.FC<RestaurantCardProps> = ({ id, restaurant }) => {
   const {
     setShow,
@@ -37,7 +36,6 @@ const RestaurantCard: React.FC<RestaurantCardProps> = ({ id, restaurant }) => {
     AOS.refresh();
   }, []);
 
-  
   const handleEdit = (item: RestaurantPostDataType) => {
     setLastData(item);
     setNewImg(item.img_url ?? null);
@@ -57,7 +55,7 @@ const RestaurantCard: React.FC<RestaurantCardProps> = ({ id, restaurant }) => {
         key={id}
         data-aos="fade-right "
         data-aos-delay={150}
-        className="bg-white  rounded-[5px] flex flex-row items-center justify-between min-w-[252px] max-w-[252px]"
+        className="bg-white  rounded-[5px] flex flex-row items-center justify-between "
       >
         <Image
           className="w-[55px] ml-4 my-4 mr-6 h-[55px] rounded-md"

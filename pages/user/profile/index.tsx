@@ -141,15 +141,15 @@ const ProfileUser = () => {
               className="flex flex-col items-center justify-center w-full rounded-[14px]  cursor-pointer  "
             >
               {userImg ? (
-                <div className="flex flex-col items-center justify-center w-[140px] h-[140px] rounded-full ">
+            
                   <Image
                     src={userImg ? userImg : login}
                     height={100}
                     width={100}
                     alt="Uploaded Image"
-                    className="rounded-full w-[70px] h-[70px]"
+                    className="rounded-full w-[140px] h-[140px] object-cover"
                   />
-                </div>
+              
               ) : (
                 <div className="flex flex-col items-center justify-center w-[140px] h-[140px] rounded-full  bg-white dark:bg-black">
                   <Image
@@ -243,7 +243,7 @@ const ProfileUser = () => {
             <div className="flex flex-col mt-9 w-10/12 md:w-5/12">
               <button
                 onClick={() => handleUpdateUser()}
-                className="capitalize h-[53px] px-4 bg-[#6FCF97] font-bold text-lg text-white dark:text-gray-900 rounded-[4px] hover:bg-[#54ff9b]  transition-all duration-500 cursor-pointer  "
+                className="capitalize h-[50px] px-4 bg-[#6FCF97] font-bold text-lg text-white dark:text-gray-900 rounded-[4px] hover:bg-[#54ff9b]  transition-all duration-500 cursor-pointer  "
               >
                 {t("Send")}
               </button>
