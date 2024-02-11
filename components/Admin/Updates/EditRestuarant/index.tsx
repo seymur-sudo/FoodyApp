@@ -152,13 +152,13 @@ const EditRestuarant: React.FC = () => {
                 <p className="capitalize text-lg">
                   {t("Upload your restaurant image")}
                 </p>
-                <div className="h-[50vh] w-3/4 my-4">
+                <div className="h-[25vh] w-3/4 my-4">
                   <Image
-                    width={300}
-                    height={300}
+                    width={500}
+                    height={500}
                     src={newImg || uploadImg}
                     alt="uploaded"
-                    className="object-cover w-full h-full rounded-[14px]"
+                    className="object-cover w-full h-full rounded-sm"
                   />
                 </div>
                 <p className=" text-lg">
@@ -240,7 +240,7 @@ const EditRestuarant: React.FC = () => {
                     defaultValue={lastData?.cuisine}
                     ref={cuisineRef}
                     onChange={handleChange}
-                    className="w-full h-[100px]  rounded-[14px] bg-inputBg leading-10 resize-y"
+                    className="w-full h-[100px] px-2 rounded-[14px] bg-inputBg leading-10 resize-y"
                     rows={4}
                     cols={50}
                   />
@@ -278,7 +278,7 @@ const EditRestuarant: React.FC = () => {
                 </div>
                 <div className="flex flex-col">
                   <label htmlFor="category" className="mb-1">
-                  {t("Category")} :
+                    {t("Category")} :
                   </label>
                   <select
                     id="category"
@@ -313,10 +313,9 @@ const EditRestuarant: React.FC = () => {
               onClick={handleEditRestaurant}
               className="capitalize rounded-[14px] 	border-color:[#970e79] border-solid  border-0 bg-[#C035A2] shadow-shadow2 hover:opacity-75 transition-all duration-500 w-5/12 py-3 md:py-4 text-[#fff] text-lg font-bold leading-5 tracking-[0.25px]"
             >
-              {mutation.isLoading 
-              ? t("restaurant is editing")
-              : t("Edit Restaurant")
-              }
+              {mutation.isLoading
+                ? t("restaurant is editing")
+                : t("Edit Restaurant")}
             </button>
           </div>
         </div>

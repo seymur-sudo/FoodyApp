@@ -71,8 +71,6 @@ const Login: React.FC = () => {
     },
   });
 
-
-
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -103,7 +101,7 @@ const Login: React.FC = () => {
             <div className="flex justify-center mt-75px sm:mt-110px">
               <div className="flex flex-col-reverse sm:flex-row">
                 <form
-                  className="sm:bg-loginBgc flex flex-col"
+                  className="sm:bg-loginBgc flex flex-col "
                   onSubmit={formik.handleSubmit}
                 >
                   <h1 className="sm:mt-58px mt-18px mb-23px font-montserrat text-center text-24 sm:text-35 text-gray1 font-weight700 sm:ml-40px sm:mr-48px sm:mb-40px">
@@ -121,12 +119,12 @@ const Login: React.FC = () => {
                       className="sm:pl-40px pl-19px inline mx-auto h-resinput w-207 text-14 sm:text-18 items-center text-gray1 font-weight400 sm:rounded-4 sm:ml-47px sm:mr-58px sm:w-318 bg-inputBg sm:h-input "
                     />
                     {formik.touched.email && formik.errors.email ? (
-                      <div className="text-red-500 dark:text-red-400 text-lg ml-12 mt-2 font-bold">
+                      <div className="text-red-500 dark:text-red-400 text-sm ml-0 md:ml-12 mt-2 md:-mb-7  font-bold">
                         {formik.errors.email}
                       </div>
                     ) : null}
                   </div>
-                  <div className="my-5 md:my-10">
+                  <div className="my-6 md:my-10">
                     <input
                       id="password"
                       name="password"
@@ -138,18 +136,18 @@ const Login: React.FC = () => {
                       className="sm:pl-40px pl-19px inline mx-auto h-resinput w-207 text-14 sm:text-18 items-center text-gray1 font-weight400 sm:rounded-4 sm:ml-47px sm:mr-58px sm:w-318 bg-inputBg sm:h-input "
                     />
                     {formik.touched.password && formik.errors.password ? (
-                      <div className="text-red-500 dark:text-red-400 text-lg ml-12 mt-2  font-bold">
+                      <div className="text-red-500 dark:text-red-400 text-sm ml-0 md:ml-12 mt-2 md:-mb-7 font-bold">
                         {formik.errors.password}
                       </div>
                     ) : null}
                   </div>
                   <button
                     type="submit"
-                    className="text-white rounded-5 sm:rounded-4 sm:mb-58px sm:ml-47px sm:mr-58px font-medium text-14 sm:text-xl hover:bg-pink00 bg-loginBtn py-6px sm:py-10px hover:opacity-75 transition-all duration-500 "
+                    className="text-white rounded-5 sm:rounded-4 sm:mb-58px sm:ml-47px sm:mr-58px font-medium text-14 sm:text-xl hover:bg-pink00 bg-loginBtn max-h-[50px] min-h-[50px] hover:opacity-75 transition-all duration-500 "
                   >
                     {formik.isSubmitting ? (
-                      <div className="flex justify-center items-center mx-0 my-auto">
-                        <FadeLoader color="#fff" />
+                      <div className="flex justify-center items-center mx-0 my-auto ">
+                        <FadeLoader color="#fff" height={5} width={15} />
                       </div>
                     ) : (
                       t("Login")

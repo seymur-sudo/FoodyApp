@@ -119,10 +119,12 @@ export const SidebarContextProvider: React.FC<ChildrenNode> = ({
   const closeNavbar = () => setNavbarOpen(false);
 
   const [isSidebarOpen, setSidebarOpen] = useState<boolean>(false);
-  const closeSidebar = () => setSidebarOpen(false);
+  const closeSidebar = () => {
+    setSidebarOpen(false);
+    setNewImg(null);
+  };
 
   const [showAdds, setShowAdds] = useState<boolean>(false);
-  // const closeAddsModal = () => setShowAdds(false);
   const closeAddsModal = () => {
     setShowAdds(false);
     setNewImg(null);
@@ -168,7 +170,6 @@ export const SidebarContextProvider: React.FC<ChildrenNode> = ({
     setShowUserModal(false);
     setNewImg(null);
   };
-
 
   const modalSpring = useSpring({
     opacity: showUserModal ? 1 : 0,

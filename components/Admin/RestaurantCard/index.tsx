@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import Image from "next/image";
 import del from "../../../public/svgs/delete.svg";
 import edt from "../../../public/svgs/edit.svg";
@@ -10,6 +10,10 @@ import "aos/dist/aos.css";
 import DeleteModal from "@/components/Admin/Modals/DeleteModal";
 import EditModal from "@/components/Admin/Modals/EditModal";
 import defaultRes from "../../../public/svgs/default.png";
+import { useTranslation } from "next-i18next";
+
+
+
 interface RestaurantCardProps {
   id: string | number;
   restaurant: RestaurantPostDataType;
@@ -24,6 +28,7 @@ const RestaurantCard: React.FC<RestaurantCardProps> = ({ id, restaurant }) => {
     showDelete,
     setshowDelete,
   } = useSidebarContext() as SidebarContextProps;
+  const { t } = useTranslation("common");
 
   useEffect(() => {
     AOS.init({
@@ -50,19 +55,19 @@ const RestaurantCard: React.FC<RestaurantCardProps> = ({ id, restaurant }) => {
     <>
       <div
         key={id}
-        data-aos="fade-up"
+        data-aos="fade-right "
         data-aos-delay={150}
-        className="bg-white  rounded-[5px] flex flex-row items-center justify-between"
+        className="bg-white  rounded-[5px] flex flex-row items-center justify-between min-w-[252px] max-w-[252px]"
       >
         <Image
-          className="w-[50px] ml-4 my-4 mr-6 h-[55px]"
+          className="w-[55px] ml-4 my-4 mr-6 h-[55px] rounded-md"
           src={restaurant.img_url || defaultRes}
           alt="resimg"
           width={100}
           height={100}
         />
-        <div className="flex flex-col">
-          <p className="text-[18px] font-medium text-[#1E1E30]">
+        <div className="flex flex-col font-body tracking-wide">
+          <p className="text-[18px] font-semibold text-[#28283f]">
             {restaurant.name}
           </p>
           <p className="text-[14px] line-height-6 font-medium text-[#828282]">

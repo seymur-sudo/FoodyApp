@@ -118,14 +118,18 @@ const AddProduct: React.FC = () => {
               <p className="capitalize text-lg">
                 {t("Upload your product image")}
               </p>
-              <div className="h-[50vh] w-3/4 my-4">
-                <Image
-                  width={300}
-                  height={300}
-                  src={newImg || uploadImg}
-                  alt="uploaded"
-                  className="object-cover w-full h-full rounded-[14px]"
-                />
+              <div className="h-[25vh] w-3/4 my-4">
+                {newImg ? (
+                  <Image
+                    width={500}
+                    height={500}
+                    src={newImg || uploadImg}
+                    alt="newImg"
+                    className="object-cover w-full h-full rounded-sm"
+                  />
+                ) : (
+                  ""
+                )}
               </div>
               <p className=" text-lg">
                 {t("Add your Product description and necesarry information")}

@@ -77,10 +77,10 @@ const Products: React.FC = () => {
           </Head>
           <Layout>
             <>
-              <div className="px-12 md:px-6 pb-8 bg-bgc min-h-screen  ">
+              <div className="px-12 pb-8 md:pr-1  bg-bgc min-h-screen  ">
                 <SearchBar />
 
-                <div className="grid gap-10 grid-cols-1 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
+                <div className="grid gap-8 grid-cols-1 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 px-1 font-body tracking-wide">
                   {filteredData &&
                     filteredData.map((product: PostDataType, index: any) => (
                       <div
@@ -97,16 +97,16 @@ const Products: React.FC = () => {
                             height={200}
                             className="hover:scale-105 transition-all duration-500 w-full  h-[200px] object-cover"
                           />
-                          <h1 className="text-[#1E1E30]  text-[24px] md:text-[18px] mt-3 mb-2 px-1">
+                          <h1 className="text-[#1E1E30] font-semibold text-[24px] md:text-[18px] mt-3 mb-2 px-3">
                             {product.name}
                           </h1>
                        
-                          <p className="text-[#6e6e7e] text-xl md:text-sm px-1">
+                          <p className="text-[#6e6e7e] text-xl md:text-sm px-3">
                             {product.description}
                           </p>
                         </div>
 
-                        <div className="flex justify-between items-center px-1 py-5">
+                        <div className="flex justify-between items-center px-3 py-5">
                           <p className="text-[#00B2A9] text-lg">
                             ${product.price}
                           </p>
