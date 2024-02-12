@@ -61,7 +61,7 @@ const ChatClient:React.FC<ChatClientProps> = ({user}) => {
         setMyMessage(meMessages)
       }
     });
-  },[])
+  },[user.user_id])
   const handleKeyPress = (event:React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
       // Call the same function when Enter key is pressed
