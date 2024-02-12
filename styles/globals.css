@@ -5,6 +5,16 @@
 @tailwind components;
 @tailwind utilities;
 
+.chat::-webkit-scrollbar {
+  width: 6px;
+}
+.chat::-webkit-scrollbar-thumb {
+  background: #7fffab;
+  border-radius: 4px; 
+}
+.chat::-webkit-scrollbar-track {
+  background:#202020
+}
 body::-webkit-scrollbar {
   width: 8px;
 }

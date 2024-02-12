@@ -2,6 +2,7 @@
 import { initializeApp } from "firebase/app";
 import { getStorage } from "firebase/storage";
 //email
+import { getDatabase } from "firebase/database";
 import {getAuth} from 'firebase/auth';
 
 
@@ -33,5 +34,6 @@ const app = initializeApp(firebaseConfig);
 export const fileStorage = getStorage(app);
 
 //email
+export const db = getDatabase(app);
 const auth = getAuth(app);
 export {auth}

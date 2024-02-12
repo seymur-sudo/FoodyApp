@@ -164,6 +164,16 @@ export interface RestaurantApiResponse {
   message: string;
 }
 
+export interface messageObj{
+  recieve:string,
+  send:string,
+  content:string|undefined,
+  time:number|null
+}
+export interface chatUser{
+  user_id:string,
+  email:string
+}
 export interface RestaurantSingleApiResponse {
   result: {
     data: {

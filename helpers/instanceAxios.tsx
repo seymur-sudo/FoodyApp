@@ -12,3 +12,17 @@ instanceAxios.interceptors.request.use(
     return Promise.reject(err);
   }
 );
+
+
+instanceAxios.interceptors.response.use(
+  (config) => {
+    return config;
+  },
+  (err: AxiosError) => {
+
+
+
+    
+    return Promise.reject(err);
+  }
+);
