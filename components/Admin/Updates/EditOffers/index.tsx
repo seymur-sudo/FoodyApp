@@ -67,7 +67,6 @@ const EditOffer: React.FC = () => {
       const imageRef = ref(fileStorage, `images/${file.name + offerId}`);
       uploadBytes(imageRef, file)
         .then((snapshot) => {
-          
           getDownloadURL(snapshot.ref)
             .then((downloadURL) => {
               setNewImg(downloadURL);
@@ -104,6 +103,12 @@ const EditOffer: React.FC = () => {
       await editMutation.mutateAsync(editWithImg);
     }
   };
+
+  useEffect(() => {
+    if (!show) {
+      setEdtOffer(lastOffer);
+    }
+  }, [show]);
 
   return (
     <>
@@ -175,8 +180,7 @@ const EditOffer: React.FC = () => {
             </div>
 
             <p className=" block md:hidden text-xl mt-[5%]">
-            {t("Edit your Offer description and necesarry information")}
-
+              {t("Edit your Offer description and necesarry information")}
             </p>
 
             <div className="flex flex-col bg-[#43445A] rounded-[14px] mt-4 md:mt-12 p-6">
@@ -191,7 +195,6 @@ const EditOffer: React.FC = () => {
                 />
               </div>
               <div className="my-5 flex flex-col">
-                  
                 <label className="mb-1">{t("Descriptionn")}:</label>
 
                 <textarea
@@ -213,10 +216,7 @@ const EditOffer: React.FC = () => {
             onClick={handleEditOffer}
             className="capitalize rounded-[14px]  	border-color:[#970e79] border-solid  border-0 bg-[#C035A2] shadow-shadow2 hover:opacity-75 transition-all duration-500 w-5/12 py-3 md:py-4 text-[#fff] text-lg font-bold leading-5 tracking-[0.25px]"
           >
-            {editMutation.isLoading 
-               ? t("offer is editing")
-               : t("Edit Offer")
-            }
+            {editMutation.isLoading ? t("offer is editing") : t("Edit Offer")}
           </button>
         </div>
       </div>

@@ -38,21 +38,21 @@ const AdminDashboard: NextPage = () => {
             </Head>
             <Layout>
               <div className="flex flex-wrap  justify-center md:justify-center  pb-5  bg-bgc font-body tracking-wide">
-                <div className="w-full   md:w-4/12 md:mx-[4%]  flex flex-col justify-center p-3  py-8 pl-5  rounded-[14px] bg-bgg mb-[6%] md:mb-[3%]">
+                <div className="w-full h-[50vh] md:h-[58vh]  md:w-4/12 md:mx-[4%]  flex flex-col justify-center p-3  py-8 pl-5  rounded-[14px] bg-bgg mb-[6%] md:mb-[3%]">
                   <h1 className="text-gray1 text-xl font-medium capitalize mb-2 md:mb-0">
                     {t("Orders")}
                   </h1>
                   <Doughnut data={data} />
                 </div>
 
-                <div className="w-full  md:w-7/12 mb-[6%] md:mb-[3%] p-3  md:p-5   flex flex-col rounded-[14px] bg-bgg">
+                <div className="w-full h-[50vh] md:h-[58vh]   md:w-7/12 mb-[6%] md:mb-[3%] p-3  md:p-5   flex flex-col rounded-[14px] bg-bgg">
                   <h1 className="text-gray1 text-xl font-medium capitalize">
                     {t("Total Salary")}
                   </h1>
                   <ChartMonths />
                 </div>
 
-                <div className="w-full   md:w-7/12 mb-[6%] md:mx-[4%]  md:mb-[3%] p-3  md:p-5 flex flex-col   rounded-[14px] bg-bgg">
+                <div className="w-full h-[50vh]  md:h-[63vh]   md:w-7/12 mb-[6%] md:mx-[4%]  md:mb-[3%] p-3  md:p-5 flex flex-col   rounded-[14px] bg-bgg">
                   <h1 className="text-gray1 text-xl font-medium capitalize pb-4">
                     {t("Weekly Sales Rate")}
                   </h1>
@@ -60,7 +60,7 @@ const AdminDashboard: NextPage = () => {
                   <ChartWeek />
                 </div>
 
-                <div className="w-full  md:w-4/12  mb-[6%] md:mb-[3%] p-3  md:p-5 flex flex-col rounded-[14px] bg-bgg ">
+                <div className="w-full h-[50vh] md:h-[63vh]   md:w-4/12  mb-[6%] md:mb-[3%] p-3  md:p-5 flex flex-col rounded-[14px] bg-bgg ">
                   <h1 className="text-gray1 text-xl font-medium capitalize ">
                     {t("Users Rate")}
                   </h1>

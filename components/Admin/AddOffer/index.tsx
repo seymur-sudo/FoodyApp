@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import uploadImg from "../../../public/svgs/upload.svg";
 import { useSidebarContext } from "../../../contexts/SidebarContext";
@@ -105,6 +105,12 @@ const AddOffer: React.FC = () => {
     }
   };
 
+  useEffect(() => {
+    if (!showAdds) {
+      setNewOffer(firstOfferState);
+    }
+  }, [showAdds]);
+
   return (
     <>
       <div className=" text-gray1 font-body  leading-6 tracking-wide py-8 md:pt-10  md:pb-6">
@@ -153,12 +159,14 @@ const AddOffer: React.FC = () => {
                 className={`flex  mb-8  justify-center z-50 items-center bg-[#EC5CF8] w-10 h-10 rounded-full transition-all duration-500 ${
                   showAdds ? "" : "opacity-0 pointer-events-none "
                 }`}
+                onClick={closeAddsModal}
               >
                 <span className="text-[#F2F2F2] text-3xl cursor-pointer z-50 mb-[6px]">
                   x
                 </span>
               </div>
             </div>
+
 
             <div className="flex items-center justify-center mb-4 md:mb-8 h-[20%]  w-full rounded-[14px] bg-[#43445A]">
               <label
@@ -225,11 +233,7 @@ const AddOffer: React.FC = () => {
             disabled={!isFormValid(newOffer)}
             onClick={handleAddOffer}
           >
-            {mutation.isLoading
-              ? t("offer is creating")
-              : t("create offer")
-              
-              }
+            {mutation.isLoading ? t("offer is creating") : t("create offer")}
           </button>
         </div>
       </div>

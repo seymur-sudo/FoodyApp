@@ -1,6 +1,5 @@
 import React from "react";
 import Image from "next/image";
-import en from "../../../public/svgs/en.svg";
 import AdminProfile from "../../../public/svgs/AdminProfile.svg";
 import NavBtn from "../../../public/svgs/NavBtnAdmin.svg";
 import { useSidebarContext } from "../../../contexts/SidebarContext";

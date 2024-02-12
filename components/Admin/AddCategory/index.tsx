@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import uploadImg from "../../../public/svgs/upload.svg";
 import { useSidebarContext } from "../../../contexts/SidebarContext";
@@ -98,6 +98,12 @@ const AddCategory: React.FC = () => {
     }
   };
 
+  useEffect(() => {
+    if (!showAdds) {
+      setNewCategory(initialState);
+    }
+  }, [showAdds]);
+
   return (
     <>
       <div className=" text-gray1 font-body  leading-6 tracking-wide py-8 md:pt-10  md:pb-6">
@@ -151,6 +157,7 @@ const AddCategory: React.FC = () => {
                 </span>
               </div>
             </div>
+
 
             <div className="flex items-center justify-center mb-4 md:mb-8 h-[20%]  w-full rounded-[14px] bg-[#43445A]">
               <label

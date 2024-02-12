@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import Image from "next/image";
 import { toast } from "react-toastify";
 import { updateRestaurant } from "@/services/index";
@@ -139,6 +139,12 @@ const EditRestuarant: React.FC = () => {
       },
     }
   );
+
+  useEffect(() => {
+    if (!show) {
+      setEdtRestaurant(editState);
+    }
+  }, [show]);
   return (
     <>
       {show && (

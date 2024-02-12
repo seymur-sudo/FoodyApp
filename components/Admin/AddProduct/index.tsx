@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import uploadImg from "../../../public/svgs/upload.svg";
 import { useSidebarContext } from "../../../contexts/SidebarContext";
@@ -53,6 +53,12 @@ const AddProduct: React.FC = () => {
       });
     },
   });
+
+  useEffect(() => {
+    if (!isSidebarOpen) {
+      setNewProduct(initialState);
+    }
+  }, [isSidebarOpen]);
 
   const handleAddProduct = async () => {
     if (isFormValid(newProduct)) {
@@ -161,8 +167,44 @@ const AddProduct: React.FC = () => {
                 </span>
               </div>
             </div>
+{/* 
+           <div className="flex md:hidden h-[17vh]  items-center justify-center mb-4 md:mb-8   w-full rounded-[14px] bg-[#43445A]">
+              <label
+                htmlFor="dropzone-file"
+                className="flex flex-col items-center justify-center  rounded-[14px] w-full h-full bg-[#43445A]  cursor-pointer  "
+              >
+                {newImg ? (
+                  <div className="flex  items-center justify-center  w-full h-full">
+                    <Image
+                      width={200}
+                      height={200}
+                      src={newImg ?? uploadImg}
+                      alt="upload"
+                      className="w-full h-[17vh]  object-cover  rounded-sm"
+                    />
+                  </div>
+                ) : (
+                  <div className="flex flex-col items-center justify-center pt-5 pb-6 ">
+                    <Image
+                      width={75}
+                      height={75}
+                      src={uploadImg}
+                      alt="upload"
+                      className="object-cover"
+                    />
+                  </div>
+                )}
 
-            <div className="flex items-center justify-center mb-4 md:mb-8 h-[20%]  w-full rounded-[14px] bg-[#43445A]">
+                <input
+                  id="dropzone-file"
+                  type="file"
+                  className="hidden"
+                  onChange={handleNewImg}
+                />
+              </label>
+            </div>  */}
+
+            <div className="hidden md:flex items-center justify-center mb-4 md:mb-8 h-[20%]  w-full rounded-[14px] bg-[#43445A]">
               <label
                 htmlFor="dropzone-file"
                 className="flex flex-col items-center justify-center w-full rounded-[14px]  bg-[#43445A]  cursor-pointer  "
