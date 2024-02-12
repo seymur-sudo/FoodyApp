@@ -66,6 +66,13 @@ const EditProduct: React.FC = () => {
     }
   }, [editedItem]);
 
+  useEffect(() => {
+    if (!show) {
+      setEditedProduct(editedItem);
+    }
+  }, [show]);
+  
+
   const handleNewImg = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -176,7 +183,9 @@ const EditProduct: React.FC = () => {
               </div>
             </div>
 
-            <div className="flex items-center justify-center mb-4 md:mb-8 h-[20%]  w-full rounded-[14px] bg-[#43445A]">
+            
+
+            <div className="hidden md:flex items-center justify-center mb-4 md:mb-8 h-[20%]  w-full rounded-[14px] bg-[#43445A]">
               <label
                 htmlFor="dropzone-file"
                 className="flex flex-col items-center justify-center w-full rounded-[14px]  bg-[#43445A]  cursor-pointer  "

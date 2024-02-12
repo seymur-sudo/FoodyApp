@@ -110,6 +110,12 @@ const EditCategory: React.FC = () => {
     }
   };
 
+  useEffect(() => {
+    if (!show) {
+      setUpdatedCategory(editedCategory);
+    }
+  }, [show]);
+
   return (
     <>
       <div className=" text-gray1 font-body  leading-6 tracking-wide py-8 md:pt-10  md:pb-6">

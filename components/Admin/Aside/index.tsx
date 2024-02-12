@@ -21,10 +21,10 @@ export const Aside: React.FC = () => {
     localStorage.removeItem("access_token");
     setTimeout(() => {
       router.push(ROUTER.ADMIN_LOGIN);
-    }, 1000);
+    }, 1500);
     setTimeout(() => {
       window.location.reload();
-    }, 1500);
+    }, 2500);
   };
   return (
     <div className="h-full flex flex-col bg-bgc">

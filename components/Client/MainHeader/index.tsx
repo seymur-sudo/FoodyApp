@@ -39,10 +39,12 @@ const MainHeader: React.FC = () => {
 
   const logout = () => {
     localStorage.removeItem("access_token");
-    router.push(ROUTER.LOGIN);
+    setTimeout(() => {
+      router.push(ROUTER.LOGIN);
+    }, 1500);
     setTimeout(() => {
       window.location.reload();
-    }, 100);
+    }, 2500);
   };
   useEffect(() => {
     const acc_token = localStorage.getItem("access_token");
@@ -145,7 +147,7 @@ const MainHeader: React.FC = () => {
           {!userID ? (
             <>
               <button
-                onClick={() => router.push(ROUTER.REGISTER)}
+                onClick={() => router.push(ROUTER.LOGIN)}
                 className="text-[16px] py-[7px] px-5 sm:ml-7 sm:mr-20 bg-[#D63626] font-medium rounded-[30px] text-white"
               >
                 {t("Sign Up")}

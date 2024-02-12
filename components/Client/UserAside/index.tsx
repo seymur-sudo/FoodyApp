@@ -13,10 +13,12 @@ const UserAside = () => {
 
   const logout = () => {
     localStorage.removeItem("access_token");
-    push(ROUTER.LOGIN);
+    setTimeout(() => {
+      push(ROUTER.LOGIN);
+    }, 1500);
     setTimeout(() => {
       window.location.reload();
-    }, 100);
+    }, 2500);
   };
 
   return (
