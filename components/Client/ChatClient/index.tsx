@@ -50,6 +50,7 @@ const ChatClient:React.FC<ChatClientProps> = ({user}) => {
     // console.log(adminMessages);
     
     }
+    console.log(user.user_id);
     
     });
     const mechat = ref(db, 'messages/user-to-admin');
