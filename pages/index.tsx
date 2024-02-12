@@ -30,7 +30,7 @@ import { FaRocketchat, FaTimes } from "react-icons/fa";
 import dynamic from "next/dynamic";
 import { chatUser} from "@/interfaces";
 import { db } from "@/server/configs/firebase"
-import { ref, set,onValue, push} from "firebase/database";
+import { ref, set} from "firebase/database";
 
 const Home: NextPage = () => {
   const { showUserModal, openUserModal, closeUserModal, modalSpring } =

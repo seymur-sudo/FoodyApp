@@ -4,6 +4,8 @@ import { GoDotFill } from "react-icons/go";
 import { FaTelegramPlane } from "react-icons/fa";
 import { db } from "@/server/configs/firebase"
 import { chatUser, messageObj} from "@/interfaces";
+import { SidebarContextProps } from "@/interfaces/index";
+import { useSidebarContext } from "@/contexts/SidebarContext";
 import { ref, set,onValue, push} from "firebase/database";
 interface ChatClientProps {
   user: chatUser;
@@ -15,37 +17,50 @@ const ChatClient:React.FC<ChatClientProps> = ({user}) => {
     content:"",
     time:null
   }
+  const { closeUserModal } =
+  useSidebarContext() as SidebarContextProps;
   const [message, setMessage] = useState<messageObj>(messageClient);
-  const [usrMessage,setUsrMessage]=useState<any>()
+  const [admnMessage,setAdmnMessage]=useState<any>()
+  const [myMessage,setMyMessage]=useState<any>()
+  const allMsg=myMessage && admnMessage ? [...myMessage, ...admnMessage] : (myMessage || admnMessage);
+  const sortedMsg=allMsg?.sort((a:any, b:any) => a.time - b.time);
+
   const msgListRef=ref(db, 'messages/user-to-admin')
   const newMessageRef = push(msgListRef);
   const handleChange=(e: React.ChangeEvent<HTMLInputElement>)=>{
-    const { name, value } = e.target;
     const timeNow = new Date().getTime();
-    setMessage((prevMessag) => ({
-      ...prevMessag,
-      [name]: value,
+    setMessage({
+      content:e.target.value,
       recieve:"admin",
-      send:user?.user_id,
+      send:user.user_id,
       time:timeNow
-    }));
-  }
-  useEffect(()=>{},)
-  const handleGetMessages=(usr:string,mail:chatUser)=>{
-    const adminchat = ref(db, 'messages/admin-to-user');
-    const userChat=ref(db,'messages/user-to-admin')
-    onValue(userChat, (snapshot) => {
-      const data = snapshot?.val();
-      const dataArr=Object.values(data)
-      const userMessages = dataArr.filter((item:any) =>item.hasOwnProperty('content')&& item.send === usr);
-      console.log(dataArr);
-      });
-    onValue(adminchat, (snapshot) => {
-    const data = snapshot?.val();
-    const dataArr=Object.values(data)
-    const adminMessages = dataArr.filter((item:any) =>item.hasOwnProperty('content')&& item.recieve === usr);
     });
   }
+  useEffect(()=>{
+    const adminchat = ref(db, 'messages/admin-to-user');
+    onValue(adminchat, (snapshot) => {
+    const data = snapshot?.val();
+    if(data){
+      const dataArr=Object?.values(data)
+      const adminMessages = dataArr.filter((item:any) =>item.hasOwnProperty('content')&& item.send ==='admin');
+    console.log(dataArr);
+    setAdmnMessage(adminMessages)
+    // console.log(adminMessages);
+    
+    }
+    
+    });
+    const mechat = ref(db, 'messages/user-to-admin');
+    onValue(mechat, (snapshot) => {
+      const data = snapshot?.val();
+      if(data){
+        const dataArr=Object?.values(data)
+        const meMessages = dataArr.filter((item:any) =>item.hasOwnProperty('content')&& item.send === user.user_id);
+        setMyMessage(meMessages)
+      }
+    });
+  },[])
+  
   const handleSend=()=>{
     if(message.content!==''){
       set(newMessageRef,message)
@@ -63,7 +78,7 @@ const ChatClient:React.FC<ChatClientProps> = ({user}) => {
 
           <div className="flex flex-col items-center justify-center ">
             <h1 className="text-lg font-semibold ml-4 text-white dark:text-blue-950">
-              ChatBot
+              Admin
             </h1>
             <div className="flex  items-center">
               <p>
@@ -75,23 +90,21 @@ const ChatClient:React.FC<ChatClientProps> = ({user}) => {
         </div>
 
         <div>
-          <button className="bg-[#b83ace] dark:bg-blue-600 px-3 py-1 rounded-[6px] text-white">
-            Logout
+          <button onClick={()=>closeUserModal()} className="bg-[#b83ace] dark:bg-blue-600 px-3 py-1 rounded-[6px] text-white">
+            close
           </button>
         </div>
       </nav>
 
       <main className="min-h-[55vh] relative max-h-[55vh] overflow-y-auto my-scrollable-component bg-white dark:bg-blue-200 ">
-        <div id="messageMe"  className="flex mr-2 justify-end">
-          <div className="min-h-8 text-[12px] max-w-[60%] py-3 px-5 items-center text-white mt-4 flex  rounded-[10px] rounded-tr-none bg-green-800">
-            salam
-          </div>
-        </div>
-        <div id="messageAdmin"  className="flex ml-2 justify-start">
-          <div className="min-h-8 text-[12px] max-w-[60%] py-3 px-5 items-center text-white mt-4 flex  rounded-[10px] rounded-tl-none bg-green-800">
-            necesen
-          </div>
-        </div>
+        {sortedMsg&&
+              sortedMsg?.map((message:any,index:number) => (
+              <div key={index}  className={`flex m${message.send==="admin"?"l":"r"}-2 justify-${message.send==="admin"?"start":"end"}`}>
+                <div className={`min-h-8 text-[12px] max-w-[60%] py-3 px-5 items-center text-white mt-4 flex  rounded-[10px] rounded-${message.send==="admin"?"tl":"tr"}-none bg-green-800`}>
+                {message.content}
+                </div>
+              </div>
+        ))}
       </main>
 
       <footer className="p-3 rounded-b-md flex justify-between items-center cursor-pointer border-t-2 border-gray-200 dark:border-blue-600 bg-white dark:bg-blue-200">
