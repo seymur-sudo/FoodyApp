@@ -21,8 +21,8 @@ const Chat: React.FC = () => {
   const [message, setMessage] = useState<messageObj>(messageDef);
   const [admnMessage,setAdmnMessage]=useState<any>()
   const [usrMessage,setUsrMessage]=useState<any>()
-  const [allMsg,setAllMsg]=useState<any>([])
-  const [filteredAllMsg,setFilteredAllMsg]=useState<any>([])
+  const allMsg=usrMessage && admnMessage ? [...usrMessage, ...admnMessage] : (usrMessage || admnMessage);
+  const sortedMsg=allMsg?.sort((a:any, b:any) => a.time - b.time);
   const [chatHeader,setChatHeader]=useState<string>("")
   const [userID,setUserID]=useState<string>("")
   const [users,setUsers]=useState<any>()
@@ -58,7 +58,7 @@ const Chat: React.FC = () => {
     const data = snapshot?.val();
     if(data){
       const dataArr=Object?.values(data)
-    const adminMessages = dataArr.filter((item:any) =>item.hasOwnProperty('content')&& item.recieve === usr);
+      const adminMessages = dataArr.filter((item:any) =>item.hasOwnProperty('content')&& item.recieve === usr);
     // console.log(dataArr);
     setAdmnMessage(adminMessages)
     
@@ -75,12 +75,9 @@ const Chat: React.FC = () => {
       }
     });
     console.log(admnMessage);
+    console.log(usrMessage);
     
-      // const all=[...admnMessage,...usrMessage]
-      // setAllMsg(all)
-      // console.log(allMsg);
-      setFilteredAllMsg(allMsg?.sort((a:any, b:any) => a.time - b.time))
-      console.log(filteredAllMsg);
+      const all=admnMessage?.concat(usrMessage??admnMessage)
       
       setChatHeader(convertData(mail))
   }
@@ -111,7 +108,7 @@ const Chat: React.FC = () => {
                 <div className="relative  "><Image className="w-11 ml-2" alt="" src={ProfileUser}/><p className="flex absolute top-[-15px] left-[-10px] items-center justify-center text-[16px] font-semibold rounded-full w-7 h-7 bg-[#99ffaf]">12</p></div>
                 <div className="flex-col ml-3 flex">
                   <p className="text-[20px] font-medium text-[#99ffaf]">{convertData(user)}</p>
-                  <p className="text-[14px] font-normal text-[white]">Salam ejdaha necesen?</p>
+                  <p className="text-[14px] font-normal text-[white]">Last message</p>
                 </div>
               </div>
               ))
@@ -128,41 +125,14 @@ const Chat: React.FC = () => {
                 </div>
             </div>
             <div id="mesageArea" className="relative w-[96%] chat overflow-auto pb-[35px] pr-6 min-h-[80vh] max-h-[80vh] flex flex-col ml-[4%]">
-              {/* <div id="messageClient"  className="flex justify-start">
-                <div className="min-h-8 max-w-[60%] text-[12px] py-3 px-5 items-center text-white mt-4 flex  rounded-[10px] rounded-tl-none bg-[#191919]">
-                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to m
-                </div>
-              </div> */}
-              {filteredAllMsg&&
-              filteredAllMsg?.map((message:any,index:number) => (
-              <div id="messageMe" key={index}  className={`flex justify-${message.send==="admin"?"end":"start"}`}>
+              {sortedMsg&&
+              sortedMsg?.map((message:any,index:number) => (
+              <div key={index}  className={`flex justify-${message.send==="admin"?"end":"start"}`}>
                 <div className={`min-h-8 text-[12px] max-w-[60%] py-3 px-5 items-center text-white mt-4 flex  rounded-[10px] rounded-${message.send==="admin"?"tr":"tl"}-none bg-green-800`}>
                 {message.content}
                 </div>
               </div>
               ))}
-              {/* <div id="messageMe"  className="flex justify-end">
-                <div className="min-h-8 w-3/5 text-[12px] py-3 px-5 items-center text-white mt-4 flex  rounded-[10px] rounded-tr-none bg-green-800">
-                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to m
-                </div>
-              </div> */}
-              {/* <div id="messageMe"  className="flex justify-end">
-                <div className="min-h-8 w-3/5 text-[12px] py-3 px-5 items-center text-white mt-4 flex  rounded-[10px] rounded-tr-none bg-green-800">
-                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to m
-                </div>
-              </div><div id="messageMe"  className="flex justify-end">
-                <div className="min-h-8 w-3/5 text-[12px] py-3 px-5 items-center text-white mt-4 flex  rounded-[10px] rounded-tr-none bg-green-800">
-                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to m
-                </div>
-              </div><div id="messageMe"  className="flex justify-end">
-                <div className="min-h-8 w-3/5 text-[12px] py-3 px-5 items-center text-white mt-4 flex  rounded-[10px] rounded-tr-none bg-green-800">
-                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to m
-                </div>
-              </div><div id="messageMe"  className="flex justify-end">
-                <div className="min-h-8 w-3/5 text-[12px] py-3 px-5 items-center text-white mt-4 flex  rounded-[10px] rounded-tr-none bg-green-800">
-                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to m
-                </div>
-              </div> */}
             </div>
             {chatHeader!==""?
             <div className="absolute bottom-1 flex items-center flex-row h-14 w-[90%] mx-[5%] rounded-[10px] bg-[#282828]">
