@@ -29,12 +29,14 @@ const ChatClient:React.FC<ChatClientProps> = ({user}) => {
   const newMessageRef = push(msgListRef);
   const handleChange=(e: React.ChangeEvent<HTMLInputElement>)=>{
     const timeNow = new Date().getTime();
-    setMessage({
-      content:e.target.value,
+    const {name,value}=e.target
+    setMessage((prevMsg)=>({
+      ...prevMsg,
+      [name]: value,
       recieve:"admin",
       send:user.user_id,
       time:timeNow
-    });
+    }));
   }
   useEffect(()=>{
     const adminchat = ref(db, 'messages/admin-to-user');
@@ -42,7 +44,7 @@ const ChatClient:React.FC<ChatClientProps> = ({user}) => {
     const data = snapshot?.val();
     if(data){
       const dataArr=Object?.values(data)
-      const adminMessages = dataArr.filter((item:any) =>item.hasOwnProperty('content')&& item.send ==='admin');
+      const adminMessages = dataArr.filter((item:any) =>item.hasOwnProperty('content')&& item.recieve ===user.user_id);
     console.log(dataArr);
     setAdmnMessage(adminMessages)
     // console.log(adminMessages);
@@ -59,8 +61,13 @@ const ChatClient:React.FC<ChatClientProps> = ({user}) => {
         setMyMessage(meMessages)
       }
     });
-  },[])
-  
+  },[user.user_id])
+  const handleKeyPress = (event:React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      // Call the same function when Enter key is pressed
+      handleSend();
+    }
+  };
   const handleSend=()=>{
     if(message.content!==''){
       set(newMessageRef,message)
@@ -112,11 +119,12 @@ const ChatClient:React.FC<ChatClientProps> = ({user}) => {
           type="text"
           name="content" 
           onChange={(e)=>handleChange(e)} 
+          onKeyUp={handleKeyPress}
           value={message.content}
           placeholder=" ask your question..."
           className="capitalize py-1 outline-none w-11/12 text-gray-600 dark:text-blue-700 font-bold text-xl bg-white dark:bg-blue-200"
         />
-        <FaTelegramPlane onClick={handleSend} className="text-gray-300  dark:text-blue-600 text-3xl" />
+        <FaTelegramPlane onClick={handleSend} className="text-[#ba68c8] dark:text-blue-600 text-3xl" />
       </footer>
     </>
   );

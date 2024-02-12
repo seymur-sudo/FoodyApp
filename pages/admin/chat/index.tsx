@@ -8,7 +8,7 @@ import { IoSend } from "react-icons/io5";
 import { IoRestaurant } from "react-icons/io5";
 import { MdEmojiEmotions } from "react-icons/md";
 import { db } from "@/server/configs/firebase"
-import { ref, set,onValue,orderByChild,equalTo, push} from "firebase/database";
+import { ref, set,onValue, push} from "firebase/database";
 import { chatUser, messageObj } from "@/interfaces";
 
 const Chat: React.FC = () => {
@@ -19,8 +19,12 @@ const Chat: React.FC = () => {
     time:null
   }
   const [message, setMessage] = useState<messageObj>(messageDef);
+  const [adminLast,setAdminLast]=useState<any>()
+  const [userLast,setUserLast]=useState<any>()
   const [admnMessage,setAdmnMessage]=useState<any>()
   const [usrMessage,setUsrMessage]=useState<any>()
+  const [lastMessage,setLastMessage]=useState<any>()
+
   const allMsg=usrMessage && admnMessage ? [...usrMessage, ...admnMessage] : (usrMessage || admnMessage);
   const sortedMsg=allMsg?.sort((a:any, b:any) => a.time - b.time);
   const [chatHeader,setChatHeader]=useState<string>("")
@@ -59,7 +63,6 @@ const Chat: React.FC = () => {
     if(data){
       const dataArr=Object?.values(data)
       const adminMessages = dataArr.filter((item:any) =>item.hasOwnProperty('content')&& item.recieve === usr);
-    // console.log(dataArr);
     setAdmnMessage(adminMessages)
     
     }
@@ -74,10 +77,6 @@ const Chat: React.FC = () => {
         setUsrMessage(userMessages)
       }
     });
-    console.log(admnMessage);
-    console.log(usrMessage);
-    
-      const all=admnMessage?.concat(usrMessage??admnMessage)
       
       setChatHeader(convertData(mail))
   }
@@ -90,6 +89,7 @@ const Chat: React.FC = () => {
     };
     
   }
+
   return (
     <Layout>
       <div className="w-[98%] mx-[2%] pt-4 mb-1 flex rounded-[10px] h-screen bg-[#090909]">
@@ -105,10 +105,10 @@ const Chat: React.FC = () => {
               {users&&
               users?.map((user:any,index:number) => (
               <div id="contactCard" key={index} onClick={()=>handleGetMessages(user.userID,user)} className={`h-16 cursor-pointer w-full ${convertData(user)===chatHeader?'bg-[#2e2e2e]':''} items-center mt-4 flex flex-row hover:bg-[#2e2e2e] rounded-[10px] bg-[#191919]`}>
-                <div className="relative  "><Image className="w-11 ml-2" alt="" src={ProfileUser}/><p className="flex absolute top-[-15px] left-[-10px] items-center justify-center text-[16px] font-semibold rounded-full w-7 h-7 bg-[#99ffaf]">12</p></div>
+                <Image className="w-11 ml-2" alt="" src={ProfileUser}/>
                 <div className="flex-col ml-3 flex">
                   <p className="text-[20px] font-medium text-[#99ffaf]">{convertData(user)}</p>
-                  <p className="text-[14px] font-normal text-[white]">Last message</p>
+                  <p className="text-[14px] font-normal text-[white]">Online</p>
                 </div>
               </div>
               ))
@@ -118,10 +118,11 @@ const Chat: React.FC = () => {
           </div>
           <div className=" relative w-[60%]">
             <div className="h-16 flex items-center rounded-r-[10px] justify-start w-[95%] bg-black mr-[5%]">
-                <Image alt="" width={100} height={100} className="w-11 ml-7" src={ProfileUser}/>
+                
+                {chatHeader?<Image alt="" width={100} height={100} className="w-11 ml-7" src={ProfileUser}/>:""}
                 <div className="flex ml-3 flex-col">
-                  <p className="text-white text-[18px] font-medium">{chatHeader?chatHeader:"User"}</p>
-                  <p className="text-white text-[12px]">Online</p>
+                  <p className="text-white text-[18px] font-medium">{chatHeader?chatHeader:"Select the user"}</p>
+                  {/* <p className="text-white text-[12px]">Online</p> */}
                 </div>
             </div>
             <div id="mesageArea" className="relative w-[96%] chat overflow-auto pb-[35px] pr-6 min-h-[80vh] max-h-[80vh] flex flex-col ml-[4%]">
