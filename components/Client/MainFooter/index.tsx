@@ -1,4 +1,3 @@
-
 import { useTranslation } from "next-i18next";
 import { FaFacebook } from "react-icons/fa";
 import { FaInstagram } from "react-icons/fa";
@@ -16,7 +15,7 @@ const MainFooter: React.FC = () => {
           </p>
           <p className="text-[#828282] text-center sm:mx-0 mx-7 sm:text-start text-[22px] font-normal">
             Lorem ipsum is placeholder text <br className="hidden sm:block" />{" "}
-            commonly used in the graphic,{" "}
+            commonly used in the graphic,
           </p>
           <div className="mt-4 flex flex-row">
             <FaFacebook
@@ -36,46 +35,48 @@ const MainFooter: React.FC = () => {
         <div className="sm:block hidden">
           <p className="text-[20px] mb-1 font-black text-white">Popular</p>
           <p className="text-[13px] mb-1 font-normal text-[#BDBDBD]">
-            Programming
+            {t("Programming")}
           </p>
           <p className="text-[13px] mb-1 font-normal text-[#BDBDBD]">
-            Books for children
+            {t("Books for children")}
           </p>
           <p className="text-[13px] mb-1 font-normal text-[#BDBDBD]">
-            Psychology
+            {t("Psychology")}
           </p>
           <p className="text-[13px] mb-1 font-normal text-[#BDBDBD]">
-            Business
+            {t("Business")}
           </p>
         </div>
         <div className="sm:block hidden">
           <p className="text-[20px] mb-1 font-black text-white">Cash</p>
           <p className="text-[13px] mb-1 font-normal text-[#BDBDBD]">
-            Delivery
+            {t("Delivery")}
           </p>
           <p className="text-[13px] mb-1 font-normal text-[#BDBDBD]">Payment</p>
           <p className="text-[13px] mb-1 font-normal text-[#BDBDBD]">
-            About the store
+            {t("About the store")}
           </p>
         </div>
         <div className="sm:block hidden">
           <p className="text-[20px] mb-1 font-black text-white">Help</p>
           <p className="text-[13px] mb-1 font-normal text-[#BDBDBD]">
-            Contacts
+            {t("Contact")}
           </p>
           <p className="text-[13px] mb-1 font-normal text-[#BDBDBD]">
-            Purchase returns
+            {t("Purchase returns")}
           </p>
           <p className="text-[13px] mb-1 font-normal text-[#BDBDBD]">
-            Psychology
+            {t("Targets")}
           </p>
           <p className="text-[13px] mb-1 font-normal text-[#BDBDBD]">
-            Buyer Help
+            {t("Buyer Help")}
           </p>
         </div>
       </div>
       <p className="text-[14px] mt-10 font-normal text-center pb-2 text-white">
-        All rights reserved © 2003-2023 Foody TERMS OF USE | Privacy Policy
+        {t(
+          "All rights reserved © 2003-2024 Foody TERMS OF USE | Privacy Policy"
+        )}
       </p>
     </div>
   );

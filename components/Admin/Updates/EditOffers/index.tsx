@@ -67,8 +67,10 @@ const EditOffer: React.FC = () => {
       const imageRef = ref(fileStorage, `images/${file.name + offerId}`);
       uploadBytes(imageRef, file)
         .then((snapshot) => {
+          
           getDownloadURL(snapshot.ref)
             .then((downloadURL) => {
+              setNewImg(downloadURL);
               setEdtOffer((prevOffer) => ({
                 ...prevOffer!,
                 img_url: downloadURL,

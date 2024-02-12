@@ -89,7 +89,7 @@ const AddOffer: React.FC = () => {
           return getDownloadURL(snapshot.ref);
         })
         .then((downloadURL) => {
-          console.log("Download URL:", downloadURL);
+          setNewImg(downloadURL);
           setNewOffer((prevProduct) => ({
             ...prevProduct,
             img_url: downloadURL,

@@ -51,6 +51,7 @@ const AddRestuarant: React.FC = () => {
         .then((snapshot) => {
           getDownloadURL(snapshot.ref)
             .then((downloadURL) => {
+              setNewImg(downloadURL);
               setNewRestaurant((prevProduct) => ({
                 ...prevProduct,
                 img_url: downloadURL,

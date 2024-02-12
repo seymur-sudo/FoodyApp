@@ -73,6 +73,7 @@ const EditCategory: React.FC = () => {
         .then((snapshot) => {
           getDownloadURL(snapshot.ref)
             .then((downloadURL) => {
+              setNewImg(downloadURL);
               setUpdatedCategory((prevCategory) => ({
                 ...prevCategory!,
                 img_url: downloadURL,

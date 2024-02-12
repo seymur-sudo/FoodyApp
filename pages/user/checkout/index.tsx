@@ -158,7 +158,7 @@ const UserCheckout = () => {
               <input
                 type="text"
                 ref={phoneRef}
-                placeholder="+994"
+                placeholder={t("Contact Number")}
                 defaultValue={userD ? userD.data.user.phone : ""}
                 className="py-3 px-4 text-xl font-semibold font-mukta tracking-wide text-[#828282] bg-white dark:bg-black  dark:text-white rounded-[4px]"
               />

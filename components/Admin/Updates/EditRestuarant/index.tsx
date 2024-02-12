@@ -62,6 +62,7 @@ const EditRestuarant: React.FC = () => {
         .then((snapshot) => {
           getDownloadURL(snapshot.ref)
             .then((downloadURL) => {
+              setNewImg(downloadURL);
               setEdtRestaurant((prevRest) => ({
                 ...prevRest,
                 img_url: downloadURL,

@@ -90,6 +90,7 @@ const AddProduct: React.FC = () => {
         .then((snapshot) => {
           getDownloadURL(snapshot.ref)
             .then((downloadURL) => {
+              setNewImg(downloadURL);
               setNewProduct((prevProduct) => ({
                 ...prevProduct,
                 img_url: downloadURL,

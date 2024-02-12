@@ -82,7 +82,7 @@ const AddCategory: React.FC = () => {
           return getDownloadURL(snapshot.ref);
         })
         .then((downloadURL) => {
-          console.log("Download URL:", downloadURL);
+          setNewImg(downloadURL);
           setNewCategory((prevProduct) => ({
             ...prevProduct,
             img_url: downloadURL,
