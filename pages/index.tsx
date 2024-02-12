@@ -46,20 +46,15 @@ const Home: NextPage = () => {
   }
   const [userData,setUserData]=useState<chatUser>(userProps)
 
-  const { data: userD,isSuccess } = useQuery(QUERIES.User, getUser,{
+  const { data:userD,isSuccess } = useQuery(QUERIES.User, getUser,{
     refetchOnWindowFocus: false,
   });
+
  const toggleChat=()=>{
-    
-    if(isSuccess){
-      const mainData=userD?.data.user
-      setUserData({user_id:mainData?.id,email:mainData?.email})
-      userData.user_id?set(ref(db, 'users/' + userData.user_id), {userID:userData.user_id,email:userData.email}):''
-      if(showUserModal){
-        closeUserModal()
-      }else{
-        openUserModal()
-      }
+    if(showUserModal){
+      closeUserModal()
+    }else{
+      openUserModal()
     }
 
   }
@@ -69,11 +64,16 @@ const Home: NextPage = () => {
   });
 
   useEffect(() => {
+    if(isSuccess){
+      const mainData=userD?.data.user
+      setUserData({user_id:mainData?.id,email:mainData?.email})
+      userData.user_id?set(ref(db, 'users/' + userData.user_id), {userID:userData.user_id,email:userData.email}):''
+    }
     AOS.init({
       duration: 500,
     });
     AOS.refresh();
-  }, [isSuccess]);
+  }, []);
 
   if (isLoading) {
     return <div>Loading...</div>;
