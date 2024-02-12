@@ -21,10 +21,13 @@ const SearchBar: React.FC = () => {
     setSelectedRestaurant,
     selectedCategory,
     setSelectedCategory,
+    setNewImg,
   } = useSidebarContext() as SidebarContextProps;
   const { pathname, push } = useRouter();
   const { t } = useTranslation("common");
-
+  const handleOpenModal = () => {
+    setNewImg(null);
+  };
   const { data: categoriesData } = useQuery(QUERIES.Categories, getCategory);
   const { data: restaurantData } = useQuery(QUERIES.Restaurants, getRestaurant);
   const hideButton =
@@ -80,7 +83,7 @@ const SearchBar: React.FC = () => {
                 onChange={(e) => setSelectedCategory(e.target.value)}
                 className=" w-[225px] sm:[325px] md:w-[150px] my-3  p-2  rounded-[14px] bg-inputBg text-[#dddcdc] text-sm  font-medium font-body"
               >
-                <option >{t("Category Type")}</option>
+                <option>{t("Category Type")}</option>
                 {categoriesData &&
                   categoriesData.data.result.data.map(
                     (category: CategoryPostDataType) => (
@@ -136,9 +139,12 @@ const SearchBar: React.FC = () => {
             <>
               <button
                 className="bg-loginBtn text-[#FFF]  font-bold  w-[225px] sm:[325px] md:w-[150px] py-3 mb-4 md:my-0 shadow-shadow3 rounded-[18px] text-[14px] hover:opacity-75 transition-all duration-500"
-                onClick={() => setShowAdds(!showAdds)}
+                onClick={() => {
+                  setShowAdds(!showAdds);
+                  handleOpenModal();
+                }}
               >
-               + {getButtonText()}
+                + {getButtonText()}
               </button>
               <SideForElements />
             </>

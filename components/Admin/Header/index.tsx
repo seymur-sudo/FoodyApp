@@ -12,8 +12,17 @@ import { useTranslation } from "next-i18next";
 
 export const Header: React.FC = () => {
   const { t } = useTranslation("common");
-  const { setSidebarOpen, setNavbarOpen, isNavbarOpen, isSidebarOpen } =
-    useSidebarContext() as SidebarContextProps;
+  const {
+    setSidebarOpen,
+    setNavbarOpen,
+    isNavbarOpen,
+    isSidebarOpen,
+    setNewImg,
+  } = useSidebarContext() as SidebarContextProps;
+
+  const handleOpenModal = () => {
+    setNewImg(null);
+  };
 
   return (
     <>
@@ -32,7 +41,7 @@ export const Header: React.FC = () => {
         <div className="flex gap-5 flex-row items-center ">
           <button
             className=" flex-row flex font-bold text-[10px] font-body px-2 py-1  sm:p-2 rounded-2xl hover:bg-[#f15cd1] text-[#F5F5F5] bg-[#C035A2] hover:opacity-90 transition-all duration-500"
-            onClick={() => setSidebarOpen(!isSidebarOpen)}
+            onClick={() => { setSidebarOpen(!isSidebarOpen); handleOpenModal(); }}
           >
             + <span className="hidden  sm:flex ">{t("Add Product")}</span>
           </button>

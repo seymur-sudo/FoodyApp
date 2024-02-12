@@ -21,7 +21,6 @@ const EditProduct: React.FC = () => {
     useSidebarContext() as SidebarContextProps;
   const { data } = useQuery(QUERIES.Restaurants, getRestaurant);
   const { t } = useTranslation("common");
-
   const [editedProduct, setEditedProduct] = useState(editedItem);
 
   const queryClient = useQueryClient();
@@ -50,6 +49,10 @@ const EditProduct: React.FC = () => {
   ) => {
     const { name, value } = event.target;
     const parsedValue = name === "price" ? parseFloat(value) : value;
+    if (name === "img_url") {
+      console.log(name, value)
+      return;
+    }
     setEditedProduct((prevProduct) => ({
       ...prevProduct!,
       [name]: parsedValue,
@@ -76,6 +79,7 @@ const EditProduct: React.FC = () => {
         .then((snapshot) => {
           getDownloadURL(snapshot.ref)
             .then((downloadURL) => {
+              setNewImg(downloadURL);
               setEditedProduct((prevProduct) => ({
                 ...prevProduct!,
                 img_url: downloadURL,
@@ -118,6 +122,8 @@ const EditProduct: React.FC = () => {
       await editProductMutation.mutateAsync(editedProductWithImg);
     }
   };
+
+  // console.log("editimg", newImg);
 
   return (
     <>

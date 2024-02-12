@@ -21,7 +21,6 @@ import MainFooter from "@/components/Client/MainFooter";
 
 const ProfileUser = () => {
   const { data: userD, isLoading, isError } = useQuery(QUERIES.User, getUser);
-  console.log(userD);
   const fullNRef = useRef<HTMLInputElement>(null);
   const addressRef = useRef<HTMLInputElement>(null);
   const userNRef = useRef<HTMLInputElement>(null);
@@ -80,7 +79,6 @@ const ProfileUser = () => {
     onSuccess: () => {
       queryClient.invalidateQueries(QUERIES.User);
       setNewUser(lastUser);
-      setUserImg(null);
       setSelectedFile(null);
       setTimeout(() => {}, 1000);
       toast.success("Profile Updated successfully!", {
@@ -194,20 +192,20 @@ const ProfileUser = () => {
                 type="text"
                 defaultValue={userD?.data.user.username ?? ""}
                 ref={userNRef}
-                placeholder="User Name"
+                placeholder={t("User Name")}
 
                 className="h-[53px] px-4 text-xl font-medium tracking-wide text-[#828282] rounded-[4px]  bg-white dark:bg-black "
               />
             </div>
             <div className="flex flex-col mb-4 w-10/12 md:w-5/12">
               <label className="text-[#4F4F4F] dark:text-green-300  mb-2 text-lg  font-semibold  ">
-                {t("Contact")}
+                {t("Contact Number")}
               </label>
               <input
                 type="text"
                 defaultValue={userD?.data.user.phone ?? ""}
                 ref={phoneRef}
-                placeholder="Contact"
+                placeholder={t("Contact Number")}
 
                 className=" h-[53px] px-4 text-xl font-medium tracking-wide text-[#828282] rounded-[4px]  bg-white dark:bg-black "
               />
@@ -222,7 +220,7 @@ const ProfileUser = () => {
                 disabled
                 defaultValue={userD?.data.user.email ?? ""}
                 ref={mailRef}
-                placeholder="Email"
+                placeholder={t("Email")}
 
                 className="h-[53px]  px-4 text-xl  font-medium tracking-wide text-[#828282] rounded-[4px]  bg-white dark:bg-black "
               />
@@ -235,7 +233,7 @@ const ProfileUser = () => {
                 type="text"
                 defaultValue={userD?.data.user.address ?? ""}
                 ref={addressRef}
-                placeholder="Address"
+                placeholder={t("Address")}
 
                 className="h-[53px] px-4 text-xl font-medium tracking-wide text-[#828282] rounded-[4px]  bg-white dark:bg-black "
               />
