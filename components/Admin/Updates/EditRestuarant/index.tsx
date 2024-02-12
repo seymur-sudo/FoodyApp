@@ -3,8 +3,6 @@ import Image from "next/image";
 import { toast } from "react-toastify";
 import { updateRestaurant } from "@/services/index";
 import uploadImg from "@/public/svgs/upload.svg";
-import { fileStorage } from "@/server/configs/firebase";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { useSidebarContext } from "@/contexts/SidebarContext";
 import { QUERIES } from "@/constant/Queries";
 import { useMutation, useQueryClient } from "react-query";
@@ -16,17 +14,11 @@ import { SidebarContextProps } from "@/interfaces/index";
 import { getCategory } from "../../../../services/index";
 import { useQuery } from "react-query";
 import { useTranslation } from "next-i18next";
+import useImageUpload from "@/helpers/uploadImage";
 
 const EditRestuarant: React.FC = () => {
-  const {
-    setLastData,
-    newImg,
-    setNewImg,
-    setSelectedFile,
-    lastData,
-    show,
-    closeModal,
-  } = useSidebarContext() as SidebarContextProps;
+  const { setLastData, newImg, lastData, show, closeModal } =
+    useSidebarContext() as SidebarContextProps;
 
   const { data } = useQuery(QUERIES.Categories, getCategory);
   const nameRef = useRef<HTMLInputElement>(null);
@@ -49,37 +41,7 @@ const EditRestuarant: React.FC = () => {
 
   const [edtRestaurant, setEdtRestaurant] =
     useState<RestaurantPostDataType>(editState);
-  const handleNewImg = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setSelectedFile(file);
-      setNewImg(URL.createObjectURL(file));
-      const restaurantId = `${new Date().getTime()}_${Math.floor(
-        Math.random() * 1000
-      )}`;
-      const imageRef = ref(fileStorage, `images/${file.name + restaurantId}`);
-      uploadBytes(imageRef, file)
-        .then((snapshot) => {
-          getDownloadURL(snapshot.ref)
-            .then((downloadURL) => {
-              setNewImg(downloadURL);
-              setEdtRestaurant((prevRest) => ({
-                ...prevRest,
-                img_url: downloadURL,
-              }));
-              console.log("Dosyanın Firebase Storage URL'si: ", downloadURL);
-            })
-            .catch((error) => {
-              console.error("Download URL alınırken bir hata oluştu: ", error);
-            });
-        })
-        .catch((error) => {
-          console.error("Dosya yüklenirken bir hata oluştu: ", error);
-        });
-    } else {
-      console.error("No file selected");
-    }
-  };
+
   const handleEditRestaurant = () => {
     if (
       !nameRef.current?.value ||
@@ -125,7 +87,6 @@ const EditRestuarant: React.FC = () => {
         setTimeout(() => {
           closeModal();
           setLastData(null);
-          setNewImg(null);
         }, 1000);
         toast.success("Restaurant edited successfully!", {
           autoClose: 1000,
@@ -139,6 +100,21 @@ const EditRestuarant: React.FC = () => {
       },
     }
   );
+
+  const { handleImageUpload } = useImageUpload();
+
+  const handleNewImg = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const downloadURL = await handleImageUpload(file);
+      setEdtRestaurant((previous) => ({
+        ...previous!,
+        img_url: downloadURL,
+      }));
+    } else {
+      console.error("No file selected");
+    }
+  };
 
   useEffect(() => {
     if (!show) {

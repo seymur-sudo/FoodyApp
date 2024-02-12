@@ -12,12 +12,11 @@ import { QUERIES } from "../../../../constant/Queries";
 import { editProduct } from "../../../../services/index";
 import { useQuery } from "react-query";
 import { getRestaurant } from "../../../../services/index";
-import { fileStorage } from "../../../../server/configs/firebase";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { useTranslation } from "next-i18next";
+import useImageUpload from "@/helpers/uploadImage";
 
 const EditProduct: React.FC = () => {
-  const { show, closeModal, editedItem, setSelectedFile, newImg, setNewImg } =
+  const { show, closeModal, editedItem, newImg, setNewImg } =
     useSidebarContext() as SidebarContextProps;
   const { data } = useQuery(QUERIES.Restaurants, getRestaurant);
   const { t } = useTranslation("common");
@@ -50,7 +49,7 @@ const EditProduct: React.FC = () => {
     const { name, value } = event.target;
     const parsedValue = name === "price" ? parseFloat(value) : value;
     if (name === "img_url") {
-      console.log(name, value)
+      console.log(name, value);
       return;
     }
     setEditedProduct((prevProduct) => ({
@@ -71,42 +70,7 @@ const EditProduct: React.FC = () => {
       setEditedProduct(editedItem);
     }
   }, [show]);
-  
 
-  const handleNewImg = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setSelectedFile(file);
-      setNewImg(URL.createObjectURL(file));
-      const randomId = `${new Date().getTime()}_${Math.floor(
-        Math.random() * 1000
-      )}`;
-      const imageRef = ref(fileStorage, `images/${file.name + randomId}`);
-      uploadBytes(imageRef, file)
-        .then((snapshot) => {
-          getDownloadURL(snapshot.ref)
-            .then((downloadURL) => {
-              setNewImg(downloadURL);
-              setEditedProduct((prevProduct) => ({
-                ...prevProduct!,
-                img_url: downloadURL,
-              }));
-              console.log(
-                "Dosyanın Firebase Edit Storage URL'si: ",
-                downloadURL
-              );
-            })
-            .catch((error) => {
-              console.error("Download URL alınırken bir hata oluştu: ", error);
-            });
-        })
-        .catch((error) => {
-          console.error("Dosya yüklenirken bir hata oluştu: ", error);
-        });
-    } else {
-      console.error("No file selected");
-    }
-  };
   const handleEditProduct = async () => {
     if (
       !editedProduct ||
@@ -130,7 +94,20 @@ const EditProduct: React.FC = () => {
     }
   };
 
-  // console.log("editimg", newImg);
+  const { handleImageUpload } = useImageUpload();
+
+  const handleNewImg = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const downloadURL = await handleImageUpload(file);
+      setEditedProduct((previous) => ({
+        ...previous!,
+        img_url: downloadURL,
+      }));
+    } else {
+      console.error("No file selected");
+    }
+  };
 
   return (
     <>
@@ -182,8 +159,6 @@ const EditProduct: React.FC = () => {
                 </span>
               </div>
             </div>
-
-            
 
             <div className="hidden md:flex items-center justify-center mb-4 md:mb-8 h-[20%]  w-full rounded-[14px] bg-[#43445A]">
               <label

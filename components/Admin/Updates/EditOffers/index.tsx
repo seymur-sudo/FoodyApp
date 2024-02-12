@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import uploadImg from "../../../../public/svgs/upload.svg";
-import { fileStorage } from "@/server/configs/firebase";
 import { toast } from "react-toastify";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { useSidebarContext } from "@/contexts/SidebarContext";
 import { QUERIES } from "@/constant/Queries";
 import { useMutation, useQueryClient } from "react-query";
 import { SidebarContextProps } from "../../../../interfaces/index";
 import { updateOffer } from "@/services";
 import { useTranslation } from "next-i18next";
+import useImageUpload from "@/helpers/uploadImage";
 
 const EditOffer: React.FC = () => {
-  const { show, lastOffer, setSelectedFile, setNewImg, newImg, closeModal } =
+  const { show, lastOffer, setNewImg, newImg, closeModal } =
     useSidebarContext() as SidebarContextProps;
   const { t } = useTranslation("common");
 
@@ -56,33 +55,16 @@ const EditOffer: React.FC = () => {
     }
   }, [lastOffer]);
 
-  const handleNewImg = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const { handleImageUpload } = useImageUpload();
+
+  const handleNewImg = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      setSelectedFile(file);
-      setNewImg(URL.createObjectURL(file));
-      const offerId = `${new Date().getTime()}_${Math.floor(
-        Math.random() * 1000
-      )}`;
-      const imageRef = ref(fileStorage, `images/${file.name + offerId}`);
-      uploadBytes(imageRef, file)
-        .then((snapshot) => {
-          getDownloadURL(snapshot.ref)
-            .then((downloadURL) => {
-              setNewImg(downloadURL);
-              setEdtOffer((prevOffer) => ({
-                ...prevOffer!,
-                img_url: downloadURL,
-              }));
-              console.log("Dosyanın Firebase Storage URL'si: ", downloadURL);
-            })
-            .catch((error) => {
-              console.error("Download URL alınırken bir hata oluştu: ", error);
-            });
-        })
-        .catch((error) => {
-          console.error("Dosya yüklenirken bir hata oluştu: ", error);
-        });
+      const downloadURL = await handleImageUpload(file);
+      setEdtOffer((previous) => ({
+        ...previous!,
+        img_url: downloadURL,
+      }));
     } else {
       console.error("No file selected");
     }

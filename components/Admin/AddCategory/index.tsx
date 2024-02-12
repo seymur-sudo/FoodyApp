@@ -8,10 +8,9 @@ import { useMutation, useQueryClient } from "react-query";
 import { toast } from "react-toastify";
 import { InitialCategoryState } from "../../../interfaces/index";
 import { QUERIES } from "../../../constant/Queries";
-import { fileStorage } from "../../../server/configs/firebase";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { isFormValid } from "@/constant/ValidRegex";
 import { useTranslation } from "next-i18next";
+import useImageUpload from "@/helpers/uploadImage";
 
 const initialState: InitialCategoryState = {
   name: "",
@@ -19,7 +18,7 @@ const initialState: InitialCategoryState = {
 };
 
 const AddCategory: React.FC = () => {
-  const { showAdds, closeAddsModal, newImg, setNewImg, setSelectedFile } =
+  const { showAdds, closeAddsModal, newImg } =
     useSidebarContext() as SidebarContextProps;
   const [newCategory, setNewCategory] =
     useState<InitialCategoryState>(initialState);
@@ -33,7 +32,6 @@ const AddCategory: React.FC = () => {
       setTimeout(() => {
         closeAddsModal();
       }, 1100);
-      setSelectedFile(null);
       toast.success("Category added successfully!", {
         autoClose: 1000,
       });
@@ -65,38 +63,22 @@ const AddCategory: React.FC = () => {
       [name]: value,
     }));
   };
-  const handleNewImg = (e: React.ChangeEvent<HTMLInputElement>) => {
+
+  const { handleImageUpload } = useImageUpload();
+
+  const handleNewImg = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      setSelectedFile(file);
-      setNewImg(URL.createObjectURL(file));
-      const categorytId = `${new Date().getTime()}_${Math.floor(
-        Math.random() * 10000
-      )}`;
-      const storagePath = `images/${file.name + categorytId}`;
-      const imageRef = ref(fileStorage, storagePath);
-
-      uploadBytes(imageRef, file)
-        .then((snapshot) => {
-          console.log("File uploaded successfully:", snapshot);
-          return getDownloadURL(snapshot.ref);
-        })
-        .then((downloadURL) => {
-          setNewImg(downloadURL);
-          setNewCategory((prevProduct) => ({
-            ...prevProduct,
-            img_url: downloadURL,
-          }));
-          console.log("Dosyanın Firebase Storage URL'si: ", downloadURL);
-        })
-        .catch((error) => {
-          console.error("Error during file upload:", error);
-          console.error("Dosya yüklenirken bir hata oluştu: ", error);
-        });
+      const downloadURL = await handleImageUpload(file);
+      setNewCategory((prevCategory) => ({
+        ...prevCategory!,
+        img_url: downloadURL,
+      }));
     } else {
       console.error("No file selected");
     }
   };
+
 
   useEffect(() => {
     if (!showAdds) {
@@ -157,7 +139,6 @@ const AddCategory: React.FC = () => {
                 </span>
               </div>
             </div>
-
 
             <div className="flex items-center justify-center mb-4 md:mb-8 h-[20%]  w-full rounded-[14px] bg-[#43445A]">
               <label

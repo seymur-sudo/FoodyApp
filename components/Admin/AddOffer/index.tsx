@@ -6,14 +6,13 @@ import {
   OfferPostDataType,
   SidebarContextProps,
 } from "../../../interfaces/index";
-import { fileStorage } from "../../../server/configs/firebase";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { addOffer } from "../../../services/index";
 import { toast } from "react-toastify";
 import { QUERIES } from "../../../constant/Queries";
 import { useMutation, useQueryClient } from "react-query";
 import { isFormValid } from "@/constant/ValidRegex";
 import { useTranslation } from "next-i18next";
+import useImageUpload from "@/helpers/uploadImage";
 
 const firstOfferState: OfferPostDataType = {
   name: "",
@@ -24,7 +23,7 @@ const firstOfferState: OfferPostDataType = {
 const AddOffer: React.FC = () => {
   const [newOffer, setNewOffer] = useState<OfferPostDataType>(firstOfferState);
 
-  const { showAdds, setSelectedFile, newImg, setNewImg, closeAddsModal } =
+  const { showAdds, newImg, closeAddsModal } =
     useSidebarContext() as SidebarContextProps;
   const { t } = useTranslation("common");
 
@@ -37,7 +36,6 @@ const AddOffer: React.FC = () => {
       setTimeout(() => {
         closeAddsModal();
       }, 1100);
-      setSelectedFile(null);
       toast.success("Category added successfully!", {
         autoClose: 1000,
       });
@@ -72,34 +70,16 @@ const AddOffer: React.FC = () => {
     }));
   };
 
-  const handleNewImg = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const { handleImageUpload } = useImageUpload();
+
+  const handleNewImg = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      setSelectedFile(file);
-      setNewImg(URL.createObjectURL(file));
-      const categorytId = `${new Date().getTime()}_${Math.floor(
-        Math.random() * 10000
-      )}`;
-      const storagePath = `images/${file.name + categorytId}`;
-      const imageRef = ref(fileStorage, storagePath);
-
-      uploadBytes(imageRef, file)
-        .then((snapshot) => {
-          console.log("File uploaded successfully:", snapshot);
-          return getDownloadURL(snapshot.ref);
-        })
-        .then((downloadURL) => {
-          setNewImg(downloadURL);
-          setNewOffer((prevProduct) => ({
-            ...prevProduct,
-            img_url: downloadURL,
-          }));
-          console.log("Dosyanın Firebase Storage URL'si: ", downloadURL);
-        })
-        .catch((error) => {
-          console.error("Error during file upload:", error);
-          console.error("Dosya yüklenirken bir hata oluştu: ", error);
-        });
+      const downloadURL = await handleImageUpload(file);
+      setNewOffer((previous) => ({
+        ...previous!,
+        img_url: downloadURL,
+      }));
     } else {
       console.error("No file selected");
     }
@@ -166,7 +146,6 @@ const AddOffer: React.FC = () => {
                 </span>
               </div>
             </div>
-
 
             <div className="flex items-center justify-center mb-4 md:mb-8 h-[20%]  w-full rounded-[14px] bg-[#43445A]">
               <label

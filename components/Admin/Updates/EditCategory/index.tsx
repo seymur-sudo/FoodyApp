@@ -7,16 +7,14 @@ import { useMutation, useQueryClient } from "react-query";
 import { toast } from "react-toastify";
 import { QUERIES } from "../../../../constant/Queries";
 import { editCategory } from "../../../../services/index";
-import { fileStorage } from "../../../../server/configs/firebase";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { useTranslation } from "next-i18next";
+import useImageUpload from "@/helpers/uploadImage";
 
 const EditCategory: React.FC = () => {
   const {
     show,
     closeModal,
     editedCategory,
-    setSelectedFile,
     newImg,
     setNewImg,
   } = useSidebarContext() as SidebarContextProps;
@@ -60,36 +58,16 @@ const EditCategory: React.FC = () => {
     }
   }, [editedCategory]);
 
-  const handleNewImg = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const { handleImageUpload } = useImageUpload();
+
+  const handleNewImg = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      setSelectedFile(file);
-      setNewImg(URL.createObjectURL(file));
-      const randomId = `${new Date().getTime()}_${Math.floor(
-        Math.random() * 1000
-      )}`;
-      const imageRef = ref(fileStorage, `images/${file.name + randomId}`);
-      uploadBytes(imageRef, file)
-        .then((snapshot) => {
-          getDownloadURL(snapshot.ref)
-            .then((downloadURL) => {
-              setNewImg(downloadURL);
-              setUpdatedCategory((prevCategory) => ({
-                ...prevCategory!,
-                img_url: downloadURL,
-              }));
-              console.log(
-                "Dosyanın Firebase Edit Storage URL'si: ",
-                downloadURL
-              );
-            })
-            .catch((error) => {
-              console.error("Download URL alınırken bir hata oluştu: ", error);
-            });
-        })
-        .catch((error) => {
-          console.error("Dosya yüklenirken bir hata oluştu: ", error);
-        });
+      const downloadURL = await handleImageUpload(file);
+      setUpdatedCategory((prevCategory) => ({
+        ...prevCategory!,
+        img_url: downloadURL,
+      }));
     } else {
       console.error("No file selected");
     }
