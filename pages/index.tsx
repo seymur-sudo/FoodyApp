@@ -1,5 +1,5 @@
 import type { NextPage } from "next";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Head from "next/head";
 import PizzaH from "../public/svgs/hoveredPizza.svg";
 import card1 from "../public/svgs/card1.svg";
@@ -16,7 +16,7 @@ import { useTranslation } from "next-i18next";
 import { useRouter } from "next/router";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import { getOffer } from "@/services/index";
+import { getOffer,getUser } from "@/services/index";
 import { useQuery } from "react-query";
 import MainFooter from "@/components/Client/MainFooter";
 import { ROUTER } from "../shared/constant/router";
@@ -28,6 +28,9 @@ import { animated } from "@react-spring/web";
 import ChatClient from "@/components/Client/ChatClient";
 import { FaRocketchat, FaTimes } from "react-icons/fa";
 import dynamic from "next/dynamic";
+import { chatUser} from "@/interfaces";
+import { db } from "@/server/configs/firebase"
+import { ref, set,onValue, push} from "firebase/database";
 
 const Home: NextPage = () => {
   const { showUserModal, openUserModal, closeUserModal, modalSpring } =
@@ -35,11 +38,33 @@ const Home: NextPage = () => {
   const DynamicReactPlayer = dynamic(() => import("react-player"), {
     ssr: false,
   });
-
   const { t } = useTranslation("common");
   const { push } = useRouter();
+  const userProps:chatUser={
+    user_id:"",
+    email:""
+  }
+  const [userData,setUserData]=useState<chatUser>(userProps)
 
-  const { data, isLoading, isError } = useQuery(QUERIES.Offers, getOffer, {
+  const { data: userD,isSuccess } = useQuery(QUERIES.User, getUser,{
+    refetchOnWindowFocus: false,
+  });
+ const toggleChat=()=>{
+    
+    if(isSuccess){
+      const mainData=userD?.data.user
+      setUserData({user_id:mainData?.id,email:mainData?.email})
+      userData.user_id?set(ref(db, 'users/' + userData.user_id), {userID:userData.user_id,email:userData.email}):''
+      if(showUserModal){
+        closeUserModal()
+      }else{
+        openUserModal()
+      }
+    }
+
+  }
+
+  const { data:offerD, isLoading, isError } = useQuery(QUERIES.Offers, getOffer, {
     refetchOnWindowFocus: false,
   });
 
@@ -48,7 +73,7 @@ const Home: NextPage = () => {
       duration: 500,
     });
     AOS.refresh();
-  }, []);
+  }, [isSuccess]);
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -142,8 +167,11 @@ const Home: NextPage = () => {
             </div>
           </div>
         </div>
+        {isSuccess&&
+        <>
         <button
-          onClick={showUserModal ? closeUserModal : openUserModal}
+          onClick={()=>toggleChat()}
+          // 
           className="text-red-500 dark:text-cyan-400 text-6xl fixed bottom-5 right-5 z-50 "
         >
           {showUserModal ? <FaTimes /> : <FaRocketchat />}
@@ -166,12 +194,13 @@ const Home: NextPage = () => {
               className="bg-white  dark:bg-gray-800  rounded-t-[20px] flex flex-col  w-10/12 md:w-5/12  items-center justify-start "
             >
               <div className="w-full h-ful">
-                <ChatClient />
+                <ChatClient user={userData} />
               </div>
             </animated.div>
+            {/* CHAT_END */}
           </>
         )}
-        {/* CHAT_END */}
+        </>}
 
         <div data-aos="zoom-in" className="text-center mt-20">
           <p className="text-[40px] dark:text-white font-black pb-3">
@@ -233,8 +262,8 @@ const Home: NextPage = () => {
             </p>
           </div>
         </div>
-        {data &&
-          data.data.result.data.map((offer: OfferPostDataType, index) =>
+        {offerD &&
+          offerD.data.result.data.map((offer: OfferPostDataType, index) =>
             index % 2 === 0 ? (
               <div
                 key={index}
