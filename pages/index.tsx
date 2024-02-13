@@ -92,7 +92,7 @@ const Home: NextPage = () => {
 
         <div className="bg-[#F3F4F6] flex sm:flex-row flex-col-reverse justify-between dark:bg-gray-900 sm:mx-[30px] font-body tracking-wide">
           <div className="sm:ml-14 w-fit">
-            <p className=" sm:text-7xl text-[20px] sm:pt-[120px] pt-[300px] sm:px-0 px-10 py-4 text-center sm:text-start  font-bold text-transparent bg-gradient-to-r bg-clip-text  from-gray-900  to-red-400 dark:from-green-300 dark:to-orange-400">
+            <p className=" sm:text-[66px] text-[20px] sm:pt-[120px] pt-[300px] sm:px-0 px-10 py-4 text-center sm:text-start  font-bold text-transparent bg-gradient-to-r bg-clip-text  from-gray-900  to-red-400 dark:from-green-300 dark:to-orange-400">
               {t("Our Food site makes it easy to find local food")}
             </p>
             <p className="sm:text-[22px] text-[#828282] text-[16px] text-center sm:text-start font-normal">
@@ -321,14 +321,14 @@ const Home: NextPage = () => {
           <h1 className="capitalize  text-xl md:text-5xl font-body pt-5 pb-9 font-bold text-transparent bg-gradient-to-r bg-clip-text  from-gray-900  to-red-400 dark:from-green-300 dark:to-orange-400 ">
             {t("foody delivery advertisement")}
           </h1>
-          <div className="border-[3px] h-[26vh] md:h-[81vh] rounded-md border-red-600 dark:border-green-300">
+          {/* <div className="border-[3px] h-[26vh] md:h-[81vh] rounded-md border-red-600 dark:border-green-300">
             <DynamicReactPlayer
               url="https://www.youtube.com/watch?v=OZzoAw9QHXY"
               width="100%"
               height="100%"
               controls
             />
-          </div>
+          </div> */}
         </div>
 
         <div

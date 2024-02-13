@@ -18,7 +18,6 @@ const ClientNavbar: React.FC = () => {
     useSidebarContext() as SidebarContextProps;
   const router = useRouter();
   const { data: userD } = useQuery(QUERIES.User, getUser);
-  const [imageURL, setImageURL] = useState<string>("");
 
   const logout = () => {
     localStorage.removeItem("access_token");
@@ -30,15 +29,7 @@ const ClientNavbar: React.FC = () => {
     }, 1500);
   };
 
-  useEffect(() => {
-    if (userD?.data.user.img_url) {
-      setImageURL(userD?.data.user.img_url);
-    } else if (newImg) {
-      setImageURL(newImg);
-    } else {
-      setImageURL(profileImg);
-    }
-  }, [userD, newImg]);
+
 
   return (
     <div
@@ -67,10 +58,10 @@ const ClientNavbar: React.FC = () => {
         ) : (
           <div className="sm:hidden items-center flex justify-start">
             <Image
-              alt=""
+              alt="newImg"
               width={100}
               height={100}
-              src={imageURL}
+              src={newImg ? newImg : profileImg}
               className=" ml-6 rounded-full mr-2 w-10 h-10 cursor-pointer scale-100 hover:scale-11 text-[20px] font-medium text-white"
             />
             <p className="text-16px text-black mr-12 font-medium dark:text-sky-400">
