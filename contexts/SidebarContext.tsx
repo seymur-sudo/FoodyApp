@@ -66,9 +66,6 @@ export const SidebarContextProvider: React.FC<ChildrenNode> = ({
     {
       onSuccess: () => {
         queryClient.invalidateQueries(QUERIES.Basket);
-        toast.success("Product added to the basket successfully!", {
-          autoClose: 1000,
-        });
       },
       onError: (error) => {
         console.error("Error adding product to the basket:", error);
@@ -84,9 +81,6 @@ export const SidebarContextProvider: React.FC<ChildrenNode> = ({
     {
       onSuccess: () => {
         queryClient.invalidateQueries(QUERIES.Basket);
-        toast.success("Product count decremented successfully!", {
-          autoClose: 1000,
-        });
       },
       onError: (error) => {
         console.error("Error decrementing product count:", error);
@@ -157,7 +151,6 @@ export const SidebarContextProvider: React.FC<ChildrenNode> = ({
     setshowDelete(false);
   };
 
-
   const [newImg, setNewImg] = useState<string | null>(null);
   const [showUserModal, setShowUserModal] = useState<boolean>(false);
 
@@ -196,7 +189,6 @@ export const SidebarContextProvider: React.FC<ChildrenNode> = ({
   );
   const [lastData, setLastData] = useState<RestaurantPostDataType | null>(null);
   const [lastOffer, setLastOffer] = useState<OfferPostDataType | null>(null);
-
 
   const [selectedOrder, setSelectedOrder] = useState<OrderPostDataType | null>(
     defaultOrder
