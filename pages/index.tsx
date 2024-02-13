@@ -334,12 +334,12 @@ const Home: NextPage = () => {
             {t("foody delivery advertisement")}
           </h1>
           <div className="border-[3px] h-[26vh] md:h-[81vh] rounded-md border-red-600 dark:border-green-300">
-            {/* <DynamicReactPlayer
+            <DynamicReactPlayer
               url="https://www.youtube.com/watch?v=OZzoAw9QHXY"
               width="100%"
               height="100%"
               controls
-            /> */}
+            />
           </div>
         </div>
 
