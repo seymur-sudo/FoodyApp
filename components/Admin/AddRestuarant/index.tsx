@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import uploadImg from "../../../public/svgs/upload.svg";
 import { useSidebarContext } from "../../../contexts/SidebarContext";
@@ -17,6 +17,7 @@ import { getCategory } from "../../../services/index";
 import { useQuery } from "react-query";
 import { useTranslation } from "next-i18next";
 import { isFormValid } from "@/constant/ValidRegex";
+import useImageUpload from "@/helpers/uploadImage";
 
 const AddRestuarant: React.FC = () => {
   const firstState: FirstStateType = {
@@ -28,47 +29,16 @@ const AddRestuarant: React.FC = () => {
     delivery_min: 0,
     delivery_price: 0,
   };
-  const { showAdds, closeAddsModal, newImg, setNewImg, setSelectedFile } =
+  const { showAdds, closeAddsModal, newImg } =
     useSidebarContext() as SidebarContextProps;
   const [newRestaurant, setNewRestaurant] =
     useState<FirstStateType>(firstState);
-    const { t } = useTranslation("common");
+  const { t } = useTranslation("common");
 
   const { data } = useQuery(QUERIES.Categories, getCategory);
 
   const queryClient = useQueryClient();
 
-  const handleNewImg = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setSelectedFile(file);
-      setNewImg(URL.createObjectURL(file));
-      const restaurantId = `${new Date().getTime()}_${Math.floor(
-        Math.random() * 1000
-      )}`;
-      const imageRef = ref(fileStorage, `images/${file.name + restaurantId}`);
-      uploadBytes(imageRef, file)
-        .then((snapshot) => {
-          getDownloadURL(snapshot.ref)
-            .then((downloadURL) => {
-              setNewImg(downloadURL);
-              setNewRestaurant((prevProduct) => ({
-                ...prevProduct,
-                img_url: downloadURL,
-              }));
-              console.log("Dosyanın Firebase Storage URL'si: ", downloadURL);
-            })
-            .catch((error) => {
-              console.error("Download URL alınırken bir hata oluştu: ", error);
-            });
-        })
-        .catch((error) => {
-          console.error("Dosya yüklenirken bir hata oluştu: ", error);
-        });
-    } else {
-      console.error("No file selected");
-    }
-  };
   const handleAddRestaurant = async () => {
     if (isFormValid(newRestaurant)) {
       mutation.mutate();
@@ -104,7 +74,6 @@ const AddRestuarant: React.FC = () => {
     onSuccess: () => {
       queryClient.invalidateQueries(QUERIES.Restaurants);
       setNewRestaurant(firstState);
-      setSelectedFile(null);
       setTimeout(() => {
         closeAddsModal();
       }, 1000);
@@ -126,6 +95,20 @@ const AddRestuarant: React.FC = () => {
     }
   }, [showAdds]);
 
+  const { handleImageUpload } = useImageUpload();
+
+  const handleNewImg = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const downloadURL = await handleImageUpload(file);
+      setNewRestaurant((previous) => ({
+        ...previous!,
+        img_url: downloadURL,
+      }));
+    } else {
+      console.error("No file selected");
+    }
+  };
 
   return (
     <>
@@ -133,8 +116,12 @@ const AddRestuarant: React.FC = () => {
         <div className="flex justify-center">
           <div className="hidden md:block  w-1/3 mr-[5%] font-medium">
             <div className="flex flex-col justify-center ">
-              <h1 className="capitalize text-2xl mb-2">{t("ADD RESTUARANT")}</h1>
-              <p className="capitalize text-lg">{t("Upload your restaurant image")}</p>
+              <h1 className="capitalize text-2xl mb-2">
+                {t("ADD RESTUARANT")}
+              </h1>
+              <p className="capitalize text-lg">
+                {t("Upload your restaurant image")}
+              </p>
               <div className="h-[25vh] w-3/4 my-4">
                 {newImg ? (
                   <Image
@@ -149,7 +136,7 @@ const AddRestuarant: React.FC = () => {
                 )}
               </div>
               <p className=" text-lg">
-              {t("Add your restuarant description and necesarry information")}
+                {t("Add your restuarant description and necesarry information")}
               </p>
             </div>
           </div>
@@ -157,9 +144,12 @@ const AddRestuarant: React.FC = () => {
           <div className="w-full  md:w-2/3 flex justify-center flex-col md:mt-[9.2%]">
             <div className="mb-5 flex justify-between items-center md:hidden">
               <div>
-                <h1 className="capitalize text-3xl mb-[5%]"> {t("ADD RESTUARANT")}</h1>
+                <h1 className="capitalize text-3xl mb-[5%]">
+                  {" "}
+                  {t("ADD RESTUARANT")}
+                </h1>
                 <p className="capitalize text-xl">
-                {t("Upload your restaurant image")}
+                  {t("Upload your restaurant image")}
                 </p>
               </div>
 
@@ -174,8 +164,6 @@ const AddRestuarant: React.FC = () => {
                 </span>
               </div>
             </div>
-
-
 
             <div className="flex items-center justify-center mb-4 md:mb-8 h-[20%]  w-full rounded-[14px] bg-[#43445A]">
               <label
@@ -196,8 +184,7 @@ const AddRestuarant: React.FC = () => {
             </div>
 
             <p className=" block md:hidden text-xl mt-[5%]">
-            {t("Add your restuarant description and necesarry information")}
-
+              {t("Add your restuarant description and necesarry information")}
             </p>
 
             <div className="flex flex-col bg-[#43445A] rounded-[14px] mt-4 md:mt-12 p-6">
@@ -254,7 +241,7 @@ const AddRestuarant: React.FC = () => {
               </div>
               <div className="flex mt-2 flex-col">
                 <label htmlFor="category" className="mt-2">
-                {t("Select Category")}:
+                  {t("Select Category")}:
                 </label>
                 <select
                   id="category"
@@ -281,7 +268,6 @@ const AddRestuarant: React.FC = () => {
             className="capitalize rounded-[14px] 	border-color: [#38394E] border-solid  border-0 bg-[#43445A] shadow-shadow1 hover:opacity-75 transition-all duration-500 w-5/12 py-3 md:py-4 text-[#fff] text-lg font-bold leading-5 tracking-[0.25px] "
             onClick={closeAddsModal}
           >
-            
             {t("Cancel")}
           </button>
           <button
@@ -295,10 +281,8 @@ const AddRestuarant: React.FC = () => {
             onClick={handleAddRestaurant}
           >
             {mutation.isLoading
-        
-             ? t("restaurant is creating")
-             : t("create restaurant")
-             }
+              ? t("restaurant is creating")
+              : t("create restaurant")}
           </button>
         </div>
       </div>

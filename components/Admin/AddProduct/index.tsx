@@ -13,10 +13,10 @@ import { addProduct } from "../../../services/index";
 import { useQuery } from "react-query";
 import { getRestaurant } from "@/services/index";
 import { QUERIES } from "../../../constant/Queries";
-import { fileStorage } from "../../../server/configs/firebase";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { isFormValid } from "@/constant/ValidRegex";
 import { useTranslation } from "next-i18next";
+import useImageUpload from "@/helpers/uploadImage";
+
 
 const initialState: InitialStateType = {
   name: "",
@@ -28,7 +28,7 @@ const initialState: InitialStateType = {
 
 const AddProduct: React.FC = () => {
   const { data } = useQuery(QUERIES.Restaurants, getRestaurant);
-  const { isSidebarOpen, closeSidebar, setSelectedFile, newImg, setNewImg } =
+  const { isSidebarOpen, closeSidebar, newImg } =
     useSidebarContext() as SidebarContextProps;
   const { t } = useTranslation("common");
 
@@ -41,7 +41,6 @@ const AddProduct: React.FC = () => {
       setTimeout(() => {
         closeSidebar();
       }, 1100);
-      setSelectedFile(null);
       toast.success("Product added successfully!", {
         autoClose: 1000,
       });
@@ -83,33 +82,16 @@ const AddProduct: React.FC = () => {
     }));
   };
 
-  const handleNewImg = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const { handleImageUpload } = useImageUpload();
+
+  const handleNewImg = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      setSelectedFile(file);
-      setNewImg(URL.createObjectURL(file));
-      const randomId = `${new Date().getTime()}_${Math.floor(
-        Math.random() * 1000
-      )}`;
-      const imageRef = ref(fileStorage, `images/${file.name + randomId}`);
-      uploadBytes(imageRef, file)
-        .then((snapshot) => {
-          getDownloadURL(snapshot.ref)
-            .then((downloadURL) => {
-              setNewImg(downloadURL);
-              setNewProduct((prevProduct) => ({
-                ...prevProduct,
-                img_url: downloadURL,
-              }));
-              console.log("Dosyanın Firebase Storage URL'si: ", downloadURL);
-            })
-            .catch((error) => {
-              console.error("Download URL alınırken bir hata oluştu: ", error);
-            });
-        })
-        .catch((error) => {
-          console.error("Dosya yüklenirken bir hata oluştu: ", error);
-        });
+      const downloadURL = await handleImageUpload(file);
+      setNewProduct((previous) => ({
+        ...previous!,
+        img_url: downloadURL,
+      }));
     } else {
       console.error("No file selected");
     }
@@ -167,7 +149,7 @@ const AddProduct: React.FC = () => {
                 </span>
               </div>
             </div>
-{/* 
+            {/* 
            <div className="flex md:hidden h-[17vh]  items-center justify-center mb-4 md:mb-8   w-full rounded-[14px] bg-[#43445A]">
               <label
                 htmlFor="dropzone-file"
