@@ -27,7 +27,7 @@ import { ROUTER } from "../../../shared/constant/router";
 
 const MainHeader: React.FC = () => {
   const [imageURL, setImageURL] = useState<string>("");
-  const { setNavbarOpen, userImg, isNavbarOpen } =
+  const { setNavbarOpen, isNavbarOpen, newImg } =
     useSidebarContext() as SidebarContextProps;
   const { toggleTheme } = useThemeContext() as ThemeContextProps;
   const { t } = useTranslation("common");
@@ -56,12 +56,13 @@ const MainHeader: React.FC = () => {
     }
     if (userID?.data.user.img_url) {
       setImageURL(userID?.data.user.img_url);
-    } else if (userImg) {
-      setImageURL(userImg);
+    } else if (newImg) {
+      setImageURL(newImg);
     } else {
       setImageURL(profileImg);
     }
-  }, [userID, userImg]);
+  }, [userID, newImg]);
+
   return (
     <div className="sm:h-[120px] h-[52px] sm:mt-[30px] sm:mx-[30px] flex items-center rounded-t-5 justify-between flex-row bg-[#F3F4F6]  dark:bg-gray-900 font-body tracking-wide">
       <div className="flex items-center">
@@ -80,7 +81,7 @@ const MainHeader: React.FC = () => {
       <div className="hidden sm:flex">
         <Link
           className={`text-[18px] sm:mr-8   font-semibold ${
-            router.pathname === "/"
+            router.pathname === ROUTER.HOME
               ? "text-[#D63626] dark:text-cyan-400"
               : "text-[#828282] dark:text-gray-100"
           }`}
@@ -90,7 +91,7 @@ const MainHeader: React.FC = () => {
         </Link>
         <Link
           className={`text-[18px] sm:mr-8   font-semibold ${
-            router.pathname === "/restaurants"
+            router.pathname === ROUTER.RESTAURANTS
               ? "text-[#D63626] dark:text-cyan-400"
               : "text-[#828282] dark:text-gray-100"
           }`}
@@ -100,7 +101,7 @@ const MainHeader: React.FC = () => {
         </Link>
         <Link
           className={`text-[18px] sm:mr-8   font-semibold ${
-            router.pathname === "/about-us"
+            router.pathname === ROUTER.ABOUT_US
               ? "text-[#D63626] dark:text-cyan-400"
               : "text-[#828282] dark:text-gray-100"
           }`}
@@ -110,7 +111,7 @@ const MainHeader: React.FC = () => {
         </Link>
         <Link
           className={`text-[18px] sm:mr-8  font-semibold  ${
-            router.pathname === "/how-it-works"
+            router.pathname === ROUTER.HOW_IT_WORKS
               ? "text-[#D63626] dark:text-cyan-400"
               : "text-[#828282] dark:text-gray-100"
           }`}
@@ -120,7 +121,7 @@ const MainHeader: React.FC = () => {
         </Link>
         <Link
           className={`text-[18px] sm:mr-8  font-semibold  ${
-            router.pathname === "/faqs"
+            router.pathname === ROUTER.FAQS
               ? "text-[#D63626] dark:text-cyan-400 "
               : "text-[#828282] dark:text-gray-100"
           }`}
@@ -178,7 +179,7 @@ const MainHeader: React.FC = () => {
                     alt=""
                     width={100}
                     height={100}
-                    src={imageURL}
+                    src={imageURL ? imageURL : profileImg}
                     className=" ml-5 w-10 rounded-full h-10 cursor-pointer mr-6 scale-100 hover:scale-11 text-[20px] font-medium text-white"
                   />
                 </DropdownTrigger>

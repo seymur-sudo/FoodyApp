@@ -16,7 +16,7 @@ import { useTranslation } from "next-i18next";
 import { useRouter } from "next/router";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import { getOffer,getUser } from "@/services/index";
+import { getOffer, getUser } from "@/services/index";
 import { useQuery } from "react-query";
 import MainFooter from "@/components/Client/MainFooter";
 import { ROUTER } from "../shared/constant/router";
@@ -28,9 +28,9 @@ import { animated } from "@react-spring/web";
 import ChatClient from "@/components/Client/ChatClient";
 import { FaRocketchat, FaTimes } from "react-icons/fa";
 import dynamic from "next/dynamic";
-import { chatUser} from "@/interfaces";
-import { db } from "@/server/configs/firebase"
-import { ref, set} from "firebase/database";
+import { chatUser } from "@/interfaces";
+import { db } from "@/server/configs/firebase";
+import { ref, set } from "firebase/database";
 
 const Home: NextPage = () => {
   const { showUserModal, openUserModal, closeUserModal, modalSpring } =
@@ -40,31 +40,39 @@ const Home: NextPage = () => {
   });
   const { t } = useTranslation("common");
   const { push } = useRouter();
-  const userProps:chatUser={
-    user_id:"",
-    email:""
-  }
-  const [userData,setUserData]=useState<chatUser>(userProps)
+  const userProps: chatUser = {
+    user_id: "",
+    email: "",
+  };
+  const [userData, setUserData] = useState<chatUser>(userProps);
 
-  const { data:userD,isSuccess } = useQuery(QUERIES.User, getUser);
+  const { data: userD, isSuccess } = useQuery(QUERIES.User, getUser);
 
- const toggleChat=()=>{
-    if(showUserModal){
-      closeUserModal()
-    }else{
-      openUserModal()
+  const toggleChat = () => {
+    if (showUserModal) {
+      closeUserModal();
+    } else {
+      openUserModal();
     }
+  };
 
-  }
-
-  const { data:offerD, isLoading, isError } = useQuery(QUERIES.Offers, getOffer, {
+  const {
+    data: offerD,
+    isLoading,
+    isError,
+  } = useQuery(QUERIES.Offers, getOffer, {
     refetchOnWindowFocus: false,
   });
-  const mainData=userD?.data.user
+  const mainData = userD?.data.user;
   useEffect(() => {
-    if(isSuccess){
-      setUserData({user_id:mainData?.id,email:mainData?.email})
-      userData.user_id?set(ref(db, 'users/' + userData.user_id), {userID:userData.user_id,email:userData.email}):''
+    if (isSuccess) {
+      setUserData({ user_id: mainData?.id, email: mainData?.email });
+      userData.user_id
+        ? set(ref(db, "users/" + userData.user_id), {
+            userID: userData.user_id,
+            email: userData.email,
+          })
+        : "";
     }
     AOS.init({
       duration: 500,
@@ -164,40 +172,41 @@ const Home: NextPage = () => {
             </div>
           </div>
         </div>
-        {isSuccess&&
-        <>
-        <button
-          onClick={()=>toggleChat()}
-          // 
-          className="text-red-500 dark:text-cyan-400 text-6xl fixed bottom-5 right-5 z-50 "
-        >
-          {showUserModal ? <FaTimes /> : <FaRocketchat />}
-        </button>
-
-        {/* CHAT */}
-        {showUserModal && (
+        {isSuccess && (
           <>
-            <div className="fixed inset-0 bg-black   dark:bg-gray-700 opacity-60 z-40 "></div>
-
-            <animated.div
-              style={{
-                ...modalSpring,
-                position: "fixed",
-                top: "10vh",
-                left: "50%",
-                transform: "translateX(-50%)",
-                zIndex: 50,
-              }}
-              className="bg-white  dark:bg-gray-800  rounded-t-[20px] flex flex-col  w-10/12 md:w-5/12  items-center justify-start "
+            <button
+              onClick={() => toggleChat()}
+              //
+              className="text-red-500 dark:text-cyan-400 text-6xl fixed bottom-5 right-5 z-50 "
             >
-              <div className="w-full h-ful">
-                <ChatClient user={userData} />
-              </div>
-            </animated.div>
-            {/* CHAT_END */}
+              {showUserModal ? <FaTimes /> : <FaRocketchat />}
+            </button>
+
+            {/* CHAT */}
+            {showUserModal && (
+              <>
+                <div className="fixed inset-0 bg-black   dark:bg-gray-700 opacity-60 z-40 "></div>
+
+                <animated.div
+                  style={{
+                    ...modalSpring,
+                    position: "fixed",
+                    top: "10vh",
+                    left: "50%",
+                    transform: "translateX(-50%)",
+                    zIndex: 50,
+                  }}
+                  className="bg-white  dark:bg-gray-800  rounded-t-[20px] flex flex-col  w-10/12 md:w-5/12  items-center justify-start "
+                >
+                  <div className="w-full h-ful">
+                    <ChatClient user={userData} />
+                  </div>
+                </animated.div>
+                {/* CHAT_END */}
+              </>
+            )}
           </>
         )}
-        </>}
 
         <div data-aos="zoom-in" className="text-center mt-20">
           <p className="text-[40px] dark:text-white font-black pb-3">
@@ -317,18 +326,21 @@ const Home: NextPage = () => {
             )
           )}
 
-        <div className=" w-10/12 md:w-[69%]  mx-auto text-center pt-20" data-aos="zoom-in">
+        <div
+          className=" w-10/12 md:w-[69%]  mx-auto text-center pt-20"
+          data-aos="zoom-in"
+        >
           <h1 className="capitalize  text-xl md:text-5xl font-body pt-5 pb-9 font-bold text-transparent bg-gradient-to-r bg-clip-text  from-gray-900  to-red-400 dark:from-green-300 dark:to-orange-400 ">
             {t("foody delivery advertisement")}
           </h1>
-          {/* <div className="border-[3px] h-[26vh] md:h-[81vh] rounded-md border-red-600 dark:border-green-300">
-            <DynamicReactPlayer
+          <div className="border-[3px] h-[26vh] md:h-[81vh] rounded-md border-red-600 dark:border-green-300">
+            {/* <DynamicReactPlayer
               url="https://www.youtube.com/watch?v=OZzoAw9QHXY"
               width="100%"
               height="100%"
               controls
-            />
-          </div> */}
+            /> */}
+          </div>
         </div>
 
         <div
