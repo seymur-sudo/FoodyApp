@@ -25,7 +25,7 @@ const useImageUpload = () => {
       console.log("File uploaded successfully:", snapshot);
 
       const downloadURL = await getDownloadURL(snapshot.ref);
-      console.log("Dosyanın Firebase Storage URL'si: ", downloadURL);
+      console.log("Firebase Storage URL: ", downloadURL);
       setNewImg(downloadURL);
 
       return downloadURL;
