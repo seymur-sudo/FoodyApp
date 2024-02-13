@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import UserAside from "../../../components/Client/UserAside/index";
 import MainHeader from "../../../components/Client/MainHeader/index";
+import LoadingImg from "../../../public/loadingImg.gif"
 import Image from "next/image";
 import threePoint from "../../../public/svgs/threePoint.svg";
 import moment from "moment";
@@ -280,7 +281,7 @@ const UserOrders = () => {
                             alt="soup"
                             width={100}
                             height={100}
-                            src={product?.img_url ?? ""}
+                            src={product?.img_url ? product?.img_url : LoadingImg}
                             className="w-[45px] h-[45px] rounded-full cursor-pointer  hover:scale-110   transition-all duration-500"
                           />
                         </td>

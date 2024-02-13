@@ -33,7 +33,7 @@ const MainFooter: React.FC = () => {
           </div>
         </div>
         <div className="sm:block hidden">
-          <p className="text-[20px] mb-1 font-black text-white">Popular</p>
+          <p className="text-[20px] mb-1 font-black text-white">{t("Popular")}</p>
           <p className="text-[13px] mb-1 font-normal text-[#BDBDBD]">
             {t("Programming")}
           </p>
@@ -48,17 +48,17 @@ const MainFooter: React.FC = () => {
           </p>
         </div>
         <div className="sm:block hidden">
-          <p className="text-[20px] mb-1 font-black text-white">Cash</p>
+          <p className="text-[20px] mb-1 font-black text-white">{t("Cash")}</p>
           <p className="text-[13px] mb-1 font-normal text-[#BDBDBD]">
             {t("Delivery")}
           </p>
-          <p className="text-[13px] mb-1 font-normal text-[#BDBDBD]">Payment</p>
+          <p className="text-[13px] mb-1 font-normal text-[#BDBDBD]">{t("Payment")}</p>
           <p className="text-[13px] mb-1 font-normal text-[#BDBDBD]">
             {t("About the store")}
           </p>
         </div>
         <div className="sm:block hidden">
-          <p className="text-[20px] mb-1 font-black text-white">Help</p>
+          <p className="text-[20px] mb-1 font-black text-white">{t("Help")}</p>
           <p className="text-[13px] mb-1 font-normal text-[#BDBDBD]">
             {t("Contact")}
           </p>

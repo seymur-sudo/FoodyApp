@@ -25,8 +25,9 @@ export const Header: React.FC = () => {
 
   return (
     <>
-      <div className="bg-[#27283C] sm:mx-5 flex justify-between mb-4 flex-row items-center h-16 rounded-b-xl font-body tracking-wide">
-        <div className="flex flex-row">
+     <div className="pb-[1.5%]" >
+      <div className="bg-[#27283C] sm:mx-5 flex items-center justify-between  h-16 rounded-b-xl font-body tracking-wide ">
+        <div className="flex ">
           <Image
             onClick={() => setNavbarOpen(!isNavbarOpen)}
             alt="navbtn"
@@ -37,15 +38,17 @@ export const Header: React.FC = () => {
             Foody<span className="text-[#EAAB00]">.</span>
           </p>
         </div>
-        <div className="flex gap-5 flex-row items-center ">
+        <div className="flex gap-5 items-center ">
           <button
-            className=" flex-row flex font-bold text-[10px] font-body px-2 py-1  sm:p-2 rounded-2xl hover:bg-[#f15cd1] text-[#F5F5F5] bg-[#C035A2] hover:opacity-90 transition-all duration-500"
+            className="flex justify-center items-center font-bold  font-body w-[42px] h-[42px] md:w-[107px] md:h-[28px] py-2 rounded-full  md:rounded-2xl hover:bg-[#f15cd1] text-[#F5F5F5] bg-[#C035A2] hover:opacity-90 transition-all duration-500"
             onClick={() => { setSidebarOpen(!isSidebarOpen); handleOpenModal(); }}
           >
-            + <span className="hidden  sm:flex ">{t("Add Product")}</span>
+            <span className="text-2xl md:text-base">+</span>
+            <span className="hidden tracking-wider font-bold font-poppins text-[10px] md:flex px-1">{t("btnProduct")}</span>
           </button>
-          <LangSelect />
-          <div className="flex flex-row items-center mr-3">
+          <div className="mb-2 md:mb-0"><LangSelect /></div>
+          
+          <div className="flex items-center mr-3">
             <Image className="sm:mr-4" alt="adminProfile" src={AdminProfile} />
             <p className="text-[16px] hidden sm:block font-medium font-body text-[#F5F5F5DE] mt-1">
               Admin
@@ -54,6 +57,7 @@ export const Header: React.FC = () => {
         </div>
         <Sidebar />
         <ResNavbar />
+      </div>
       </div>
     </>
   );

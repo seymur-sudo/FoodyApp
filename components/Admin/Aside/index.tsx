@@ -13,6 +13,7 @@ import { ROUTER } from "../../../shared/constant/router";
 import { useTranslation } from "next-i18next";
 import Image from "next/image";
 import { IoLogoWechat } from "react-icons/io5";
+import { MdWorkHistory } from "react-icons/md";
 
 export const Aside: React.FC = () => {
   const { t } = useTranslation("common");
@@ -81,6 +82,15 @@ export const Aside: React.FC = () => {
           <Image className="mr-4" alt="icon" src={OrderIcon} />
           <p className="text-[#FCDDEC] text-nowrap mr-20 font-medium font-body text-[14px]">
             {t("Orders")}
+          </p>
+        </Link>
+        <Link
+          className="flex h-10 cursor-pointer mb-2 pl-4 hover:bg-[#CD61ED] rounded-xl items-center flex-row"
+          href={ROUTER.ADMIN_HISTORY}
+        >
+          <MdWorkHistory className="mr-4 text-2xl text-white" />
+          <p className="text-[#FCDDEC] text-nowrap mr-20 font-medium font-body text-[14px]">
+            {t("History")}
           </p>
         </Link>
         <Link

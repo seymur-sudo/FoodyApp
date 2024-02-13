@@ -24,13 +24,13 @@ const DeleteUserProduct = () => {
     {
       onSuccess: () => {
         queryClient.invalidateQueries(QUERIES.Basket);
-        toast.success("Product count decremented successfully!", {
+        toast.success("Product deleted successfully!", {
           autoClose: 1000,
         });
       },
       onError: (error) => {
-        console.error("Error decrementing product count:", error);
-        toast.error("Error decrementing product count", {
+        console.error("Error deleteing product :", error);
+        toast.error("Error deleteing product count", {
           autoClose: 1000,
         });
       },

@@ -11,13 +11,8 @@ import { useTranslation } from "next-i18next";
 import useImageUpload from "@/helpers/uploadImage";
 
 const EditCategory: React.FC = () => {
-  const {
-    show,
-    closeModal,
-    editedCategory,
-    newImg,
-    setNewImg,
-  } = useSidebarContext() as SidebarContextProps;
+  const { show, closeModal, editedCategory, newImg, setNewImg } =
+    useSidebarContext() as SidebarContextProps;
 
   const [updatedCategory, setUpdatedCategory] = useState(editedCategory);
   const { t } = useTranslation("common");
@@ -149,7 +144,43 @@ const EditCategory: React.FC = () => {
               </div>
             </div>
 
-            <div className="flex items-center justify-center mb-4 md:mb-8 h-[20%]  w-full rounded-[14px] bg-[#43445A]">
+            <div className="flex md:hidden h-[16vh]  items-center justify-center mb-4 md:mb-8   w-full rounded-[14px] bg-[#43445A]">
+              <label
+                htmlFor="add-rest-file"
+                className="flex flex-col items-center justify-center  rounded-[14px] w-full h-full bg-[#43445A]  cursor-pointer  "
+              >
+                {newImg ? (
+                  <div className="flex  items-center justify-center  w-full h-full">
+                    <Image
+                      width={200}
+                      height={200}
+                      src={newImg ?? uploadImg}
+                      alt="upload"
+                      className="w-full h-[16vh]  object-cover  rounded-sm"
+                    />
+                  </div>
+                ) : (
+                  <div className="flex flex-col items-center justify-center pt-5 pb-6 ">
+                    <Image
+                      width={75}
+                      height={75}
+                      src={uploadImg}
+                      alt="upload"
+                      className="object-cover"
+                    />
+                  </div>
+                )}
+
+                <input
+                  id="add-rest-file"
+                  type="file"
+                  className="hidden"
+                  onChange={handleNewImg}
+                />
+              </label>
+            </div>
+
+            <div className="hidden md:flex items-center justify-center mb-4 md:mb-8 h-[20%]  w-full rounded-[14px] bg-[#43445A]">
               <label
                 htmlFor="add-rest-file"
                 className="flex flex-col items-center justify-center w-full rounded-[14px]  bg-[#43445A]  cursor-pointer  "

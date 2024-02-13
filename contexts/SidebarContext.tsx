@@ -157,7 +157,6 @@ export const SidebarContextProvider: React.FC<ChildrenNode> = ({
     setshowDelete(false);
   };
 
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   const [newImg, setNewImg] = useState<string | null>(null);
   const [showUserModal, setShowUserModal] = useState<boolean>(false);
@@ -198,7 +197,6 @@ export const SidebarContextProvider: React.FC<ChildrenNode> = ({
   const [lastData, setLastData] = useState<RestaurantPostDataType | null>(null);
   const [lastOffer, setLastOffer] = useState<OfferPostDataType | null>(null);
 
-  const [userImg, setUserImg] = useState<string | null>(null);
 
   const [selectedOrder, setSelectedOrder] = useState<OrderPostDataType | null>(
     defaultOrder
@@ -238,13 +236,9 @@ export const SidebarContextProvider: React.FC<ChildrenNode> = ({
     setshowDelete,
     closeDeleteModal,
     editedItem,
-    userImg,
-    setUserImg,
     setEditedItem,
     deletedItem,
     setDeletedItem,
-    selectedFile,
-    setSelectedFile,
     showUserModal,
     setShowUserModal,
     openUserModal,

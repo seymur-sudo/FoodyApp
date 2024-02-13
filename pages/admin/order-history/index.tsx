@@ -137,7 +137,7 @@ const OrderHistory: React.FC = () => {
                                     alt="soup"
                                     width={100}
                                     height={100}
-                                    src={product?.img_url ?? ""}
+                                    src={product?.img_url ? product?.img_url : LoadingImg}
                                     className="w-[45px] h-[45px] rounded-full cursor-pointer  hover:scale-110   transition-all duration-500"
                                   />
                                 </td>
@@ -170,16 +170,16 @@ const OrderHistory: React.FC = () => {
                   value={sortingValue}
                   onChange={handleSortProducts}
                 >
-                  <option value="A-Z">A-Z Delivery</option>
-                  <option value="Z-A">Z-A Delivery</option>
-                  <option value="Low-to-High">Low To High Amount</option>
-                  <option value="High-to-Low">High To Low Amount</option>
+                  <option value="A-Z">A-Z {t("Delivery")} </option>
+                  <option value="Z-A">Z-A {t("Delivery")}</option>
+                  <option value="Low-to-High">{t("Low To High Amount")}</option>
+                  <option value="High-to-Low">{t("High To Low Amount")}</option>
                 </select>
                 <button
                   className="ml-4 px-4 py-[10px] w-3/12  md:w-1/12 rounded-md cursor-pointer bg-[#C74FEB] text-white hover:opacity-75 transition-all duration-500"
                   onClick={resetSorting}
                 >
-                  Reset
+                  {t("Reset")}
                 </button>
               </div>
 

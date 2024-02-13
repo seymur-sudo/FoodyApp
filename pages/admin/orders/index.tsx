@@ -149,7 +149,7 @@ const Orders: React.FC = () => {
                                     alt="soup"
                                     width={100}
                                     height={100}
-                                    src={product?.img_url ?? ""}
+                                    src={product?.img_url ? product?.img_url : LoadingImg}
                                     className="w-[45px] h-[45px] rounded-full cursor-pointer  hover:scale-110   transition-all duration-500"
                                   />
                                 </td>

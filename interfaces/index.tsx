@@ -20,8 +20,6 @@ export interface SidebarContextProps {
   setLastOffer: React.Dispatch<React.SetStateAction<OfferPostDataType | null>>;
   newImg: string | null;
   setNewImg: React.Dispatch<React.SetStateAction<string | null>>;
-  userImg: string | null;
-  setUserImg: React.Dispatch<React.SetStateAction<string | null>>;
   showAdds: boolean;
   setShow: React.Dispatch<React.SetStateAction<boolean>>;
   setShowAdds: React.Dispatch<React.SetStateAction<boolean>>;
@@ -46,8 +44,6 @@ export interface SidebarContextProps {
   setDeletedBasket: React.Dispatch<
     React.SetStateAction<BasketPostDataType | null>
   >;
-  selectedFile: File | null;
-  setSelectedFile: React.Dispatch<React.SetStateAction<File | null>>;
   openUserModal: () => void;
   closeUserModal: () => void;
   showUserModal: boolean;

@@ -138,7 +138,7 @@ const Offers: React.FC = () => {
                               width={100}
                               height={100}
                               alt="title"
-                              className="hover:scale-105 transition-all duration-500 w-[50px] h-[50px] rounded-md"
+                              className="hover:scale-105 transition-all duration-500 w-[50px] h-[50px] rounded-sm object-cover "
                             />
                           </td>
 

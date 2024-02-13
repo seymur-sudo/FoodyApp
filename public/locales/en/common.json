@@ -157,16 +157,28 @@
     "High To Low Amount": "High To Low Amount",
     "Discover Restaurants": "Discover Restaurants",
     "Near From you": "Near From you",
+    "Programming": "Programming",
+    "Books for children": "Books for children",
+    "Psychology": "Psychology",
+    "Business": "Business",
+    "About the store": "About the store",
+    "Purchase returns": "Purchase returns",
+    "Buyer Help": "Buyer Help",
+    "Targets": "Targets",
+    "All rights reserved © 2003-2024 Foody TERMS OF USE | Privacy Policy": "All rights reserved © 2003-2023 Foody TERMS OF USE | Privacy Policy",
+    "Save": "Save",
+    "btnProduct": "ADD PRODUCT",
+    "btnOffer": "ADD OFFER",
+    "btnCategory": "ADD CATEGORY",
+    "btnRes": "ADD RESTAURANT",
+    "User":"User",
+    
+    "Popular":"Popular",
+    "Cash":"Cash",
+    "Payment":"Payment",
+    "Help":"Help",
 
-    "Programming":"Programming",
-    "Books for children":"Books for children",
-    "Psychology":"Psychology",
-    "Business":"Business",
-    "About the store":"About the store",
-    "Purchase returns":"Purchase returns",
-    "Buyer Help":"Buyer Help",
-    "Targets":"Targets",
-    "All rights reserved © 2003-2024 Foody TERMS OF USE | Privacy Policy":"All rights reserved © 2003-2023 Foody TERMS OF USE | Privacy Policy",
+
 
     "Delivery may be extended during sale periods. Please refer to the checkout page for an updated estimate for your location. Kindly note that once you have placed an order, it is no longer possible to modify your order. Taxes and duties are included in all product prices.It is possible to place an order with shipment to a different address than your home or billing address when paying with a credit card. Please note that Klarna payments require that your order is shipped to your registered home address.": "Delivery may be extended during sale periods. Please refer to the checkout page for an updated estimate for your location. Kindly note that once you have placed an order, it is no longer possible to modify your order. Taxes and duties are included in all product prices.It is possible to place an order with shipment to a different address than your home or billing address when paying with a credit card. Please note that Klarna payments require that your order is shipped to your registered home address."
 }
