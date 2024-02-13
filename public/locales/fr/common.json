@@ -171,5 +171,7 @@
   "btnOffer": "AJO OFFRE",
   "btnCategory": "AJO CATÉGORIE",
   "btnRes": "AJO RESTAURANT",
+  "User":"Utilisateur",
+
   "Delivery may be extended during sale periods. Please refer to the checkout page for an updated estimate for your location. Kindly note that once you have placed an order, it is no longer possible to modify your order. Taxes and duties are included in all product prices.It is possible to place an order with shipment to a different address than your home or billing address when paying with a credit card. Please note that Klarna payments require that your order is shipped to your registered home address.": "La livraison peut être prolongée pendant les périodes de vente. Veuillez vous référer à la page de paiement pour une estimation mise à jour de votre emplacement. Veuillez noter qu'une fois que vous avez passé une commande, il n'est plus possible de la modifier. Les taxes et droits sont inclus dans tous les prix des produits. Il est possible de passer une commande avec une livraison à une adresse différente de votre domicile ou de votre adresse de facturation lors du paiement par carte de crédit. Veuillez noter que les paiements Klarna nécessitent que votre commande soit expédiée à votre adresse domiciliaire enregistrée."
 }
