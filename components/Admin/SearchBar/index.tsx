@@ -78,10 +78,16 @@ const SearchBar: React.FC = () => {
               <select
                 id="category"
                 value={selectedCategory || ""}
-                onChange={(e) => setSelectedCategory(e.target.value)}
+                onChange={(e) => {
+                  const selectedValue = e.target.value;
+                  setSelectedCategory(selectedValue);
+                  if (selectedValue === "") {
+                    getCategory();
+                  }
+                }}
                 className=" w-[225px] sm:[325px] md:w-[150px] my-3 tracking-wide py-2 px-1  rounded-[14px] bg-inputBg text-[#dddcdc] text-sm  font-medium font-poppins"
               >
-                <option>{t("Category Type")}</option>
+                <option value="">{t("Category Type")}</option>
                 {categoriesData &&
                   categoriesData.data.result.data.map(
                     (category: CategoryPostDataType) => (
@@ -99,10 +105,16 @@ const SearchBar: React.FC = () => {
               <select
                 id="category"
                 value={selectedRestaurant || ""}
-                onChange={(e) => setSelectedRestaurant(e.target.value)}
+                onChange={(e) => {
+                  const selectedValue = e.target.value;
+                  setSelectedRestaurant(selectedValue);
+                  if (selectedValue === "") {
+                    getRestaurant();
+                  }
+                }}
                 className=" w-[225px] sm:[325px] md:w-[150px] my-3 px-1 py-2 font-poppins tracking-wider rounded-[14px] bg-inputBg text-[#dddcdc] text-sm  font-medium "
               >
-                <option>{t("Restaurants")}</option>
+                <option value="">{t("Restaurants")}</option>
                 {restaurantData &&
                   restaurantData.data.result.data.map(
                     (restaurant: RestaurantPostDataType) => (
