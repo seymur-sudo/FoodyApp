@@ -8,7 +8,12 @@ const useImageUpload = () => {
 
   const handleImageUpload = async (file: File) => {
     try {
-      //   setNewImg(URL.createObjectURL(file));
+      //setNewImg(URL.createObjectURL(file));
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        setNewImg(reader.result as string);
+      };
 
       const categorytId = `${new Date().getTime()}_${Math.floor(
         Math.random() * 10000
@@ -22,7 +27,7 @@ const useImageUpload = () => {
       const downloadURL = await getDownloadURL(snapshot.ref);
       console.log("Dosyanın Firebase Storage URL'si: ", downloadURL);
       setNewImg(downloadURL);
-      
+
       return downloadURL;
     } catch (error) {
       console.error("Error during file upload:", error);

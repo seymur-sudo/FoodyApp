@@ -11,16 +11,16 @@ import { useSidebarContext } from "@/contexts/SidebarContext";
 import { SidebarContextProps, UserDataType } from "@/interfaces";
 import { useTranslation } from "next-i18next";
 import { GetServerSideProps } from "next";
-import { fileStorage } from "../../../server/configs/firebase";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { updateUser, getUser } from "@/services";
 import { isValidPhone } from "@/constant/ValidRegex";
 import login from "../../../public/svgs/login.svg";
 import MainFooter from "@/components/Client/MainFooter";
+import useImageUpload from "@/helpers/uploadImage";
+import { FadeLoader } from "react-spinners";
 
 const ProfileUser = () => {
-  const { data: userD, isLoading, isError } = useQuery(QUERIES.User, getUser);
+  const { data: userD } = useQuery(QUERIES.User, getUser);
   const fullNRef = useRef<HTMLInputElement>(null);
   const addressRef = useRef<HTMLInputElement>(null);
   const userNRef = useRef<HTMLInputElement>(null);
@@ -35,52 +35,29 @@ const ProfileUser = () => {
     fullname: "",
   };
   const [newUser, setNewUser] = useState<UserDataType>(lastUser);
-  const {
-    showUserModal,
-    setSelectedFile,
-    setUserImg,
-    userImg,
-    closeUserModal,
-    modalSpring,
-  } = useSidebarContext() as SidebarContextProps;
+  const { newImg } = useSidebarContext() as SidebarContextProps;
   const { t } = useTranslation("common");
-  const handleNewImg = (e: React.ChangeEvent<HTMLInputElement>) => {
+
+  const { handleImageUpload } = useImageUpload();
+
+  const handleNewImg = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      setSelectedFile(file);
-      setUserImg(URL.createObjectURL(file));
-      const restaurantId = `${new Date().getTime()}_${Math.floor(
-        Math.random() * 1000
-      )}`;
-      const imageRef = ref(fileStorage, `images/${file.name + restaurantId}`);
-      uploadBytes(imageRef, file)
-        .then((snapshot) => {
-          getDownloadURL(snapshot.ref)
-            .then((downloadURL) => {
-              setNewUser((prevUser) => ({
-                ...prevUser,
-                img_url: downloadURL,
-              }));
-              console.log("Dosyanın Firebase Storage URL'si: ", downloadURL);
-            })
-            .catch((error) => {
-              console.error("Download URL alınırken bir hata oluştu: ", error);
-            });
-        })
-        .catch((error) => {
-          console.error("Dosya yüklenirken bir hata oluştu: ", error);
-        });
+      const downloadURL = await handleImageUpload(file);
+      setNewUser((previous) => ({
+        ...previous!,
+        img_url: downloadURL,
+      }));
     } else {
       console.error("No file selected");
     }
   };
+
   const queryClient = useQueryClient();
   const mutation = useMutation(() => updateUser(newUser), {
     onSuccess: () => {
       queryClient.invalidateQueries(QUERIES.User);
       setNewUser(lastUser);
-      setSelectedFile(null);
-      setTimeout(() => {}, 1000);
       toast.success("Profile Updated successfully!", {
         autoClose: 1000,
       });
@@ -113,7 +90,7 @@ const ProfileUser = () => {
       email: mailRef.current?.value,
       address: addressRef.current?.value,
       username: userNRef.current?.value,
-      img_url: userImg ?? userD?.data.user.img_url,
+      img_url: newImg ?? userD?.data.user.img_url,
       phone: phoneValue,
       fullname: fullNRef.current?.value,
     });
@@ -138,21 +115,19 @@ const ProfileUser = () => {
               htmlFor="user_img"
               className="flex flex-col items-center justify-center w-full rounded-[14px]  cursor-pointer  "
             >
-              {userImg ? (
-            
-                  <Image
-                    src={userImg ? userImg : login}
-                    height={100}
-                    width={100}
-                    alt="Uploaded Image"
-                    className="rounded-full w-[140px] h-[140px] object-cover"
-                  />
-              
+              {newImg ? (
+                <Image
+                  src={newImg ? newImg : login}
+                  height={150}
+                  width={150}
+                  alt="Uploaded Image"
+                  className="rounded-full w-[146px] h-[146px] object-cover"
+                />
               ) : (
-                <div className="flex flex-col items-center justify-center w-[140px] h-[140px] rounded-full  bg-white dark:bg-black">
+                <div className="flex flex-col items-center justify-center w-[146px] h-[146px] rounded-full  bg-white dark:bg-black">
                   <Image
-                    width={100}
-                    height={100}
+                    width={150}
+                    height={150}
                     src={uploadImg}
                     alt="upload"
                     className="w-[70px] h-[70px]"
@@ -182,7 +157,7 @@ const ProfileUser = () => {
                 ref={fullNRef}
                 placeholder="Full Name"
                 className="h-[53px] px-4 text-xl font-medium tracking-wide text-[#828282] bg-white dark:bg-black  rounded-[4px]"
-              /> 
+              />
             </div>
             <div className="flex flex-col mb-4 w-10/12 md:w-5/12">
               <label className="text-[#4F4F4F] dark:text-green-300 mb-2 text-lg  font-semibold ">
@@ -193,7 +168,6 @@ const ProfileUser = () => {
                 defaultValue={userD?.data.user.username ?? ""}
                 ref={userNRef}
                 placeholder={t("User Name")}
-
                 className="h-[53px] px-4 text-xl font-medium tracking-wide text-[#828282] rounded-[4px]  bg-white dark:bg-black "
               />
             </div>
@@ -206,7 +180,6 @@ const ProfileUser = () => {
                 defaultValue={userD?.data.user.phone ?? ""}
                 ref={phoneRef}
                 placeholder={t("Contact Number")}
-
                 className=" h-[53px] px-4 text-xl font-medium tracking-wide text-[#828282] rounded-[4px]  bg-white dark:bg-black "
               />
             </div>
@@ -221,7 +194,6 @@ const ProfileUser = () => {
                 defaultValue={userD?.data.user.email ?? ""}
                 ref={mailRef}
                 placeholder={t("Email")}
-
                 className="h-[53px]  px-4 text-xl  font-medium tracking-wide text-[#828282] rounded-[4px]  bg-white dark:bg-black "
               />
             </div>
@@ -234,22 +206,27 @@ const ProfileUser = () => {
                 defaultValue={userD?.data.user.address ?? ""}
                 ref={addressRef}
                 placeholder={t("Address")}
-
                 className="h-[53px] px-4 text-xl font-medium tracking-wide text-[#828282] rounded-[4px]  bg-white dark:bg-black "
               />
             </div>
             <div className="flex flex-col mt-9 w-10/12 md:w-5/12">
               <button
                 onClick={() => handleUpdateUser()}
-                className="capitalize h-[50px] px-4 bg-[#6FCF97] font-bold text-lg text-white dark:text-gray-900 rounded-[4px] hover:bg-[#54ff9b]  transition-all duration-500 cursor-pointer  "
+                className="capitalize min-h-[50px] max-h-[50px] px-4 bg-[#6FCF97] font-bold text-lg text-white dark:text-gray-900 rounded-[4px] hover:bg-[#54ff9b]  transition-all duration-500 cursor-pointer  "
               >
-                {t("Send")}
+                {mutation.isLoading ? (
+                  <div className="h-full flex justify-center items-center mt-1">
+                    <FadeLoader color="#fff" height={5} width={15} />
+                  </div>
+                ) : (
+                  t("Save")
+                )}
               </button>
             </div>
           </div>
         </div>
       </div>
-      <MainFooter/>
+      <MainFooter />
     </>
   );
 };

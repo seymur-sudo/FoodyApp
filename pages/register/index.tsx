@@ -205,7 +205,7 @@ const RegisterPage: React.FC = () => {
             <button className="w-full text-2xl mt-4 font-semibold rounded-5 text-white sm:h-68px dark:bg-green-600 bg-clientRed  h-14 hover:opacity-75 transition-all  duration-500">
               {formik.isSubmitting ? (
                 <div className="flex justify-center items-center mx-0 my-auto">
-                  <FadeLoader className="text-white dark:text-orange-300" />
+                  <FadeLoader color="#fff" />
                 </div>
               ) : (
                 t("Register")

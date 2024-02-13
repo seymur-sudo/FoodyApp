@@ -23,7 +23,7 @@ const SearchBar: React.FC = () => {
     setSelectedCategory,
     setNewImg,
   } = useSidebarContext() as SidebarContextProps;
-  const { pathname, push } = useRouter();
+  const { pathname } = useRouter();
   const { t } = useTranslation("common");
   const handleOpenModal = () => {
     setNewImg(null);
@@ -37,16 +37,14 @@ const SearchBar: React.FC = () => {
 
   const categorySelect = pathname === ROUTER.ADMIN_RESTAURANTS;
   const restaurantSelect = pathname === ROUTER.ADMIN_PRODUCTS;
-  const orderBtn = pathname === ROUTER.ADMIN_ORDERS;
-  const historyBtn = pathname === ROUTER.ADMIN_ORDER_HISTORY;
 
   const getButtonText = () => {
     if (pathname === ROUTER.ADMIN_CATEGORY) {
-      return t("ADD CATEGORY");
+      return t("btnCategory");
     } else if (pathname === ROUTER.ADMIN_OFFERS) {
-      return t("ADD OFFER");
+      return t("btnOffer");
     } else if (pathname === ROUTER.ADMIN_RESTAURANTS) {
-      return t("ADD RESTUARANT");
+      return t("btnRes");
     }
     return "ADD";
   };
@@ -81,7 +79,7 @@ const SearchBar: React.FC = () => {
                 id="category"
                 value={selectedCategory || ""}
                 onChange={(e) => setSelectedCategory(e.target.value)}
-                className=" w-[225px] sm:[325px] md:w-[150px] my-3  p-2  rounded-[14px] bg-inputBg text-[#dddcdc] text-sm  font-medium font-body"
+                className=" w-[225px] sm:[325px] md:w-[150px] my-3 tracking-wide py-2 px-1  rounded-[14px] bg-inputBg text-[#dddcdc] text-sm  font-medium font-poppins"
               >
                 <option>{t("Category Type")}</option>
                 {categoriesData &&
@@ -102,9 +100,9 @@ const SearchBar: React.FC = () => {
                 id="category"
                 value={selectedRestaurant || ""}
                 onChange={(e) => setSelectedRestaurant(e.target.value)}
-                className=" w-[225px] sm:[325px] md:w-[150px] my-3 p-2 rounded-[14px] bg-inputBg text-[#dddcdc] text-sm  font-medium font-body"
+                className=" w-[225px] sm:[325px] md:w-[150px] my-3 px-1 py-2 font-poppins tracking-wider rounded-[14px] bg-inputBg text-[#dddcdc] text-sm  font-medium "
               >
-                <option>{t("Restaurant")}</option>
+                <option>{t("Restaurants")}</option>
                 {restaurantData &&
                   restaurantData.data.result.data.map(
                     (restaurant: RestaurantPostDataType) => (
@@ -117,34 +115,17 @@ const SearchBar: React.FC = () => {
             </div>
           )}
 
-          {orderBtn && (
-            <button
-              onClick={() => push(ROUTER.ADMIN_HISTORY)}
-              className="bg-pink font-semibold text-white py-1 px-3 rounded-lg font-mukta hover:opacity-60 transition-all duration-500 cursor-pointer"
-            >
-              {t("History")}
-            </button>
-          )}
-
-          {historyBtn && (
-            <button
-              onClick={() => push(ROUTER.ADMIN_ORDERS)}
-              className="bg-pink font-semibold text-white py-1 px-3 rounded-lg font-mukta hover:opacity-60 transition-all duration-500 cursor-pointer"
-            >
-              {t("Orders")}
-            </button>
-          )}
-
           {!hideButton && (
             <>
               <button
-                className="bg-loginBtn text-[#FFF]  font-bold  w-[225px] sm:[325px] md:w-[150px] py-3 mb-4 md:my-0 shadow-shadow3 rounded-[18px] text-[14px] hover:opacity-75 transition-all duration-500"
+                className="bg-loginBtn text-[#FFF]  flex justify-center items-center  font-bold  w-[270px] sm:[325px] md:w-[168px] py-[6px] mb-4 md:my-0 shadow-shadow3 rounded-[4px] md:rounded-[18px] text-[14px] hover:opacity-75 transition-all duration-500"
                 onClick={() => {
                   setShowAdds(!showAdds);
                   handleOpenModal();
                 }}
               >
-                + {getButtonText()}
+                <span className="text-xl mt-[1px] mr-2 md:mr-1">+</span>{" "}
+                <span className="tracking-wide">{getButtonText()}</span>
               </button>
               <SideForElements />
             </>
