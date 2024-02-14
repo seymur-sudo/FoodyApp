@@ -85,9 +85,9 @@ const SearchBar: React.FC = () => {
                     getCategory();
                   }
                 }}
-                className=" w-[225px] sm:[325px] md:w-[150px] my-3 tracking-wide py-2 px-1  rounded-[14px] bg-inputBg text-[#dddcdc] text-sm  font-medium font-poppins"
+                className=" w-[225px] sm:[325px] md:w-[150px] my-3 tracking-wider py-2 px-1  rounded-[14px] bg-inputBg text-[#dddcdc] text-sm  font-medium font-poppins"
               >
-                <option value="">{t("Category Type")}</option>
+                <option value="">{t("Categories")}</option>
                 {categoriesData &&
                   categoriesData.data.result.data.map(
                     (category: CategoryPostDataType) => (
@@ -130,7 +130,7 @@ const SearchBar: React.FC = () => {
           {!hideButton && (
             <>
               <button
-                className="bg-loginBtn text-[#FFF]  flex justify-center items-center  font-bold  w-[270px] sm:[325px] md:w-[168px] py-[6px] mb-4 md:my-0 shadow-shadow3 rounded-[4px] md:rounded-[18px] text-[14px] hover:opacity-75 transition-all duration-500"
+                className="bg-loginBtn text-[#FFF]  flex justify-center items-center  font-bold  w-[270px] sm:[325px] md:w-[183px] py-[6px] mb-4 md:my-0 shadow-shadow3 rounded-[4px] md:rounded-[18px] text-[14px] hover:opacity-75 transition-all duration-500"
                 onClick={() => {
                   setShowAdds(!showAdds);
                   handleOpenModal();

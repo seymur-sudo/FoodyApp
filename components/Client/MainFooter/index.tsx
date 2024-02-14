@@ -19,15 +19,15 @@ const MainFooter: React.FC = () => {
           </p>
           <div className="mt-4 flex flex-row">
             <FaFacebook
-              className="mr-4 hover:scale-125 dark:hover:text-[#4064AC] hover:text-[#4064AC] duration-500 dark:text-white text-[#FB9300]"
+              className="cursor-pointer transition-all duration-700 hover:scale-125 dark:hover:text-[#4064AC] hover:text-[#4064AC]  dark:text-white text-[#FB9300]"
               size={"50px"}
             />
             <FaInstagram
-              className="mr-4 hover:scale-125 dark:hover:text-[#EA4669] hover:text-[#EA4669] duration-500 dark:text-white text-[#FB9300]"
+              className="mx-5 cursor-pointer transition-all duration-700 hover:scale-125 dark:hover:text-[#EA4669] hover:text-[#EA4669]  dark:text-white text-[#FB9300]"
               size={"50px"}
             />
             <FaTwitter
-              className="mr-4 hover:scale-125 dark:hover:text-[#1C9CEA] hover:text-[#1C9CEA] duration-500 dark:text-white text-[#FB9300]"
+              className="cursor-pointer transition-all duration-700 hover:scale-125 dark:hover:text-[#1C9CEA] hover:text-[#1C9CEA]  dark:text-white text-[#FB9300]"
               size={"50px"}
             />
           </div>
