@@ -10,41 +10,40 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useMutation } from "react-query";
 import { FadeLoader } from "react-spinners";
 import { ROUTER } from "../../shared/constant/router";
-import { isValidEmail } from "@/constant/ValidRegex";
+import { isValidEmail, isValidPassword } from "@/constant/ValidRegex";
 import { useFormik } from "formik";
 import { FormValues } from "@/interfaces";
 import { signupUser } from "@/services";
 
-const validate = (values: FormValues) => {
-  let errors: Partial<FormValues> = {};
-  if (values.fullName?.length && values.fullName.length < 5) {
-    errors.fullName = "Must be 5 characters or more";
-  } else if (values.fullName?.length && values.fullName.length > 15) {
-    errors.fullName = "Must be 15 characters or less";
-  }
-  if (values.userName?.length && values.userName.length < 5) {
-    errors.userName = "Must be 5 characters or more";
-  } else if (values.userName?.length && values.userName.length > 20) {
-    errors.userName = "Must be 20 characters or less";
-  }
-
-  if (!values.email) {
-    errors.email = "Required";
-  } else if (!isValidEmail(values.email)) {
-    errors.email = "Invalid email address";
-  }
-
-  if (!values.password) {
-    errors.password = "Required";
-    // } else if (!isValidPhone(values.phone)) {
-    //   errors.password = "Invalid phone number";
-  }
-
-  return errors;
-};
-
 const RegisterPage: React.FC = () => {
   const { t } = useTranslation("common");
+  const validate = (values: FormValues) => {
+    let errors: Partial<FormValues> = {};
+    if (values.fullName?.length && values.fullName.length < 5) {
+      errors.fullName = t("Must be 5 characters or more");
+    } else if (values.fullName?.length && values.fullName.length > 15) {
+      errors.fullName = t("Must be 15 characters or less");
+    }
+    if (values.userName?.length && values.userName.length < 5) {
+      errors.userName = t("Must be 5 characters or more");
+    } else if (values.userName?.length && values.userName.length > 15) {
+      errors.userName = t("Must be 15 characters or less");
+    }
+
+    if (!values.email) {
+      errors.email = t("Required");
+    } else if (!isValidEmail(values.email)) {
+      errors.email = t("Invalid email address");
+    }
+
+    if (!values.password) {
+      errors.password = t("Required");
+    } else if (!isValidPassword(values.password)) {
+      errors.password = t("passwordFormik");
+    }
+
+    return errors;
+  };
   const { push } = useRouter();
 
   const { mutate: signup } = useMutation({
@@ -105,7 +104,7 @@ const RegisterPage: React.FC = () => {
             />
           </div>
           <form
-            className="lg:w-2/6 mx-auto w-full"
+            className="lg:w-2/6 mx-auto w-full tracking-wider"
             data-aos="fade-left"
             onSubmit={formik.handleSubmit}
           >
@@ -121,7 +120,7 @@ const RegisterPage: React.FC = () => {
               </p>
             </div>
             <div>
-              <div>
+              <div className="relative">
                 <p className=" font-body dark:text-white text-lg sm:mb-10px sm:text-xl text-grayInput mb-2 font-medium">
                   {t("Full Name")}
                 </p>
@@ -136,12 +135,12 @@ const RegisterPage: React.FC = () => {
                   className="pl-3 sm:h-68px rounded-5 bg-clientInput w-full h-14 text-lg font-medium"
                 />
                 {formik.touched.fullName && formik.errors.fullName ? (
-                  <div className="text-red-500 dark:text-red-400 font-bold text-xl pt-1">
+                  <div className="text-red-500 dark:text-red-400 font-bold  pt-1 absolute">
                     {formik.errors.fullName}
                   </div>
                 ) : null}
               </div>
-              <div className="my-5">
+              <div className="my-8 relative">
                 <p className=" font-body dark:text-white text-lg sm:mb-10px  text-grayInput sm:text-xl mb-2 font-medium">
                   {t("User Name")}
                 </p>
@@ -156,12 +155,12 @@ const RegisterPage: React.FC = () => {
                   className="pl-3 sm:h-68px rounded-5 bg-clientInput w-full h-14 text-lg font-medium"
                 />
                 {formik.touched.userName && formik.errors.userName ? (
-                  <div className="text-red-500 dark:text-red-400  font-bold text-xl pt-1">
+                  <div className="text-red-500 dark:text-red-400  font-bold  pt-1 absolute">
                     {formik.errors.userName}
                   </div>
                 ) : null}
               </div>
-              <div className="">
+              <div className="relative">
                 <p className=" font-body text-lg dark:text-white  sm:mb-10px  text-grayInput sm:text-xl mb-4 font-medium">
                   {t("E-mail")}
                 </p>
@@ -176,12 +175,12 @@ const RegisterPage: React.FC = () => {
                   className="pl-3 sm:h-68px rounded-5 bg-clientInput w-full h-14 text-lg font-medium"
                 />
                 {formik.touched.email && formik.errors.email ? (
-                  <div className="text-red-500 dark:text-red-400 text-xl font-bold pt-2">
+                  <div className="text-red-500 dark:text-red-400  font-bold pt-2 absolute">
                     {formik.errors.email}
                   </div>
                 ) : null}
               </div>
-              <div className="my-5">
+              <div className="my-8 relative">
                 <p className=" font-body sm:mb-10px text-lg dark:text-white text-grayInput sm:text-xl mb-2 font-medium">
                   {t("Password")}
                 </p>
@@ -196,13 +195,13 @@ const RegisterPage: React.FC = () => {
                   className="pl-3 sm:h-68px rounded-5 bg-clientInput w-full h-14 text-lg font-medium"
                 />
                 {formik.touched.password && formik.errors.password ? (
-                  <div className="text-red-500 dark:text-red-400 text-xl font-bold pt-1">
+                  <div className="text-red-500 dark:text-red-400  font-bold pt-1 absolute">
                     {formik.errors.password}
                   </div>
                 ) : null}
               </div>
             </div>
-            <button className="w-full text-2xl mt-4 font-semibold rounded-5 text-white sm:h-68px dark:bg-green-600 bg-clientRed  h-14 hover:opacity-75 transition-all  duration-500">
+            <button className="w-full text-2xl mt-8 font-semibold rounded-5 text-white sm:h-68px dark:bg-green-600 bg-clientRed  h-14 hover:opacity-75 transition-all  duration-500">
               {formik.isSubmitting ? (
                 <div className="flex justify-center items-center mx-0 my-auto">
                   <FadeLoader color="#fff" />

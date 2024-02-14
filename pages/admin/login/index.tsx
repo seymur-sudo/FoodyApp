@@ -20,36 +20,35 @@ import { QUERIES } from "../../../constant/Queries";
 import { useQuery } from "react-query";
 import Head from "next/head";
 
-const validate = (values: FormValues) => {
-  let errors: Partial<FormValues> = {};
-
-  if (!values.email) {
-    errors.email = "Required";
-  } else if (!isValidEmail(values.email)) {
-    errors.email = "Invalid email address";
-  }
-
-  if (values.email !== "admin@gmail.com") {
-    errors.email = "This is not Admin email";
-  }
-  if (values.password !== "1234567") {
-    errors.password = "This is not Admin password";
-  }
-
-  if (!values.password) {
-    errors.password = "Required";
-  }
-
-  return errors;
-};
-
 const Login: React.FC = () => {
+  const { t } = useTranslation("common");
+  const validate = (values: FormValues) => {
+    let errors: Partial<FormValues> = {};
+
+    if (!values.email) {
+      errors.email = t("Required");
+    } else if (!isValidEmail(values.email)) {
+      errors.email = t("Invalid email address");
+    }
+
+    if (values.email !== "admin@gmail.com") {
+      errors.email = t("This is not Admin email");
+    }
+    if (values.password !== "1234567") {
+      errors.password = t("This is not Admin password");
+    }
+
+    if (!values.password) {
+      errors.password = t("Required");
+    }
+
+    return errors;
+  };
   const { data: userID } = useQuery(QUERIES.User, getUser);
   let userEmail =
     userID && userID.data && userID.data.user ? userID.data.user.email : null;
 
   const { push } = useRouter();
-  const { t } = useTranslation("common");
 
   const { mutate: signinAdmin } = useMutation({
     mutationFn: signInUser,
@@ -125,12 +124,12 @@ const Login: React.FC = () => {
                       className="sm:pl-40px pl-19px inline mx-auto h-resinput w-207 text-14 sm:text-18 items-center text-gray1 font-weight400 sm:rounded-4 sm:ml-47px sm:mr-58px sm:w-318 bg-inputBg sm:h-input "
                     />
                     {formik.touched.email && formik.errors.email ? (
-                      <div className="text-red-500 dark:text-red-400 text-sm ml-0 md:ml-12 mt-2 md:-mb-7  font-bold">
+                      <div className="text-red-500 dark:text-red-400 text-sm ml-0 md:ml-12 mt-1 md:-mb-6  font-bold tracking-wider">
                         {formik.errors.email}
                       </div>
                     ) : null}
                   </div>
-                  <div className="my-6 md:my-10">
+                  <div className="my-6 md:my-9">
                     <input
                       id="password"
                       name="password"
@@ -142,7 +141,7 @@ const Login: React.FC = () => {
                       className="sm:pl-40px pl-19px inline mx-auto h-resinput w-207 text-14 sm:text-18 items-center text-gray1 font-weight400 sm:rounded-4 sm:ml-47px sm:mr-58px sm:w-318 bg-inputBg sm:h-input "
                     />
                     {formik.touched.password && formik.errors.password ? (
-                      <div className="text-red-500 dark:text-red-400 text-sm ml-0 md:ml-12 mt-2 md:-mb-7 font-bold">
+                      <div className="text-red-500 dark:text-red-400 text-sm ml-0 md:ml-12 mt-1 md:-mb-6 font-bold tracking-wider">
                         {formik.errors.password}
                       </div>
                     ) : null}
