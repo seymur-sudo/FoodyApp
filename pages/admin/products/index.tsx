@@ -138,10 +138,9 @@ const Products: React.FC = () => {
                 {filteredData?.length && filteredData?.length > showCount && (
                   <div className="text-center pt-10 md:pt-20 pb-5 ">
                     <button
-                      className="text-stone-400 text-3xl md:text-2xl font-poppins font-medium tracking-widest rounded hover:text-stone-500 transition-all duration-700 hover:scale-105 "
+                      className="text-stone-300 text-3xl md:text-2xl font-poppins font-medium tracking-widest rounded hover:text-stone-400 transition-all duration-700 hover:scale-105 "
                       onClick={handleShowMore}
                     >
-                      
                       {t("Show More")}...
                     </button>
                   </div>

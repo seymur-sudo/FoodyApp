@@ -40,10 +40,10 @@ export const Header: React.FC = () => {
         </div>
         <div className="flex gap-5 items-center ">
           <button
-            className="flex justify-center items-center font-bold  font-body w-[42px] h-[42px] md:w-[107px] md:h-[28px] py-2 rounded-full  md:rounded-2xl hover:bg-[#f15cd1] text-[#F5F5F5] bg-[#C035A2] hover:opacity-90 transition-all duration-500"
+            className="flex justify-center items-center font-bold  font-body w-[42px] h-[42px] md:w-[122px] md:h-[28px] py-2 rounded-full  md:rounded-2xl hover:bg-[#f15cd1] text-[#F5F5F5] bg-[#C035A2] hover:opacity-90 transition-all duration-500"
             onClick={() => { setSidebarOpen(!isSidebarOpen); handleOpenModal(); }}
           >
-            <span className="text-2xl md:text-base">+</span>
+            <span className="text-2xl md:text-base mt-[1px]">+</span>
             <span className="hidden tracking-wider font-bold font-poppins text-[10px] md:flex px-1">{t("btnProduct")}</span>
           </button>
           <div className="mb-2 md:mb-0"><LangSelect /></div>

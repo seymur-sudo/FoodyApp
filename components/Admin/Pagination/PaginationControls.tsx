@@ -9,9 +9,14 @@ const PaginationControls: React.FC<PaginationControlsProps> = ({
   prevPage,
   goToPage,
 }) => {
-  const visiblePages = Math.min(totalPages, 3);
-  const startPage = Math.max(1, currentPage - 1);
-  const endPage = Math.min(totalPages, startPage + visiblePages - 1);
+  let visiblePages: number[] = [];
+  if (totalPages <= 3) {
+    visiblePages = Array.from({ length: totalPages }, (_, i) => i + 1);
+  } else {
+    const start = Math.max(1, currentPage - 1);
+    const end = Math.min(totalPages, currentPage + 1);
+    visiblePages = Array.from({ length: end - start + 1 }, (_, i) => start + i);
+  }
 
   return (
     <div className="flex justify-center items-center pt-12 pb-6 text-3xl">
@@ -24,22 +29,19 @@ const PaginationControls: React.FC<PaginationControlsProps> = ({
           <FaAngleLeft size={20} />
         </div>
       </button>
-      {Array.from({ length: visiblePages }).map((_, index) => {
-        const pageNumber = startPage + index;
-        return (
-          <button
-            key={pageNumber}
-            onClick={() => goToPage(pageNumber)}
-            className={
-              currentPage === pageNumber
-                ? " bg-[#C74FEB] hover:bg-[#CD61ED] mx-2 rounded-full h-12 w-12 flex items-center justify-center text-[#FCDDEC] "
-                : "text-[#C74FEB] mx-2 hidden md:block"
-            }
-          >
-            {pageNumber}
-          </button>
-        );
-      })}
+      {visiblePages.map((pageNumber) => (
+        <button
+          key={pageNumber}
+          onClick={() => goToPage(pageNumber)}
+          className={
+            currentPage === pageNumber
+              ? " bg-[#C74FEB] hover:bg-[#CD61ED] mx-2 rounded-full h-12 w-12 flex items-center justify-center text-[#FCDDEC] "
+              : "text-[#C74FEB] mx-2 hidden md:block"
+          }
+        >
+          {pageNumber}
+        </button>
+      ))}
       <button
         onClick={nextPage}
         disabled={currentPage === totalPages}
