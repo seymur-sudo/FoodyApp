@@ -10,89 +10,88 @@ import { GetServerSideProps } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useMutation } from "react-query";
 import { FadeLoader } from "react-spinners";
-import { isValidEmail } from "@/constant/ValidRegex";
+import { isValidEmail, isValidPassword } from "@/constant/ValidRegex";
 import { ROUTER } from "../../shared/constant/router";
 import { signInUser } from "@/services";
 import { useFormik } from "formik";
 import { FormValues } from "@/interfaces";
 
-const validate = (values: FormValues) => {
-  let errors: Partial<FormValues> = {};
-
-  if (!values.email) {
-    errors.email = "Required";
-  } else if (!isValidEmail(values.email)) {
-    errors.email = "Invalid email address";
-  }
-
-  if (!values.password) {
-    errors.password = "Required";
-    // } else if (!isValidPhone(values.phone)) {
-    //   errors.password = "Invalid phone number";
-  }
-
-  return errors;
-};
-
 const LoginPage: React.FC = () => {
   const { t } = useTranslation("common");
+  const validate = (values: FormValues) => {
+    let errors: Partial<FormValues> = {};
+
+    if (!values.email) {
+      errors.email = t("Required");
+    } else if (!isValidEmail(values.email)) {
+      errors.email = t("Invalid email address");
+    }
+
+    if (!values.password) {
+      errors.password = t("Required");
+    } else if (!isValidPassword(values.password)) {
+      errors.password = t("passwordFormik");
+    }
+
+    return errors;
+  };
   const { push } = useRouter();
 
-  // const { mutate: signin } = useMutation({
-  //   mutationFn: signInUser,
-  //   onSuccess: (data) => {
-  //     if (data && data.data && data.data.user) {
-  //       setTimeout(() => {
-  //         toast.success("Signin successfully!", { autoClose: 1000 });
-  //       });
-  //       localStorage.setItem("refresh_token", data?.data.user.refresh_token);
-  //       localStorage.setItem("access_token", data?.data.user.access_token);
-  //       setTimeout(() => {
-  //         push(ROUTER.HOME);
-  //       }, 1500);
-  //     } else {
-  //       toast.error("Please, Enter Correct Email and Password! ", {
-  //         autoClose: 1000,
-  //       });
-  //     }
-  //   },
-  //   onError: () => {
-  //     setTimeout(() => {
-  //       toast.error("Please, Enter Correct Email and Password!", {
-  //         autoClose: 1000,
-  //       });
-  //     });
-  //   },
-  // });
   const { mutate: signin } = useMutation({
     mutationFn: signInUser,
     onSuccess: (data) => {
       if (data && data.data && data.data.user) {
-        const userEmail = data.data.user.email;
-        if (userEmail !== "admin@gmail.com") {
-          localStorage.setItem("refresh_token", data?.data.user.refresh_token);
-          localStorage.setItem("access_token", data?.data.user.access_token);
-          setTimeout(() => {
-            push(ROUTER.HOME);
-          }, 1500);
+        setTimeout(() => {
           toast.success("Signin successfully!", { autoClose: 1000 });
-        } else {
-          toast.error("Please, Enter Correct Email and Password!", {
-            autoClose: 1000,
-          });
-        }
+        });
+        localStorage.setItem("refresh_token", data?.data.user.refresh_token);
+        localStorage.setItem("access_token", data?.data.user.access_token);
+        setTimeout(() => {
+          push(ROUTER.HOME);
+        }, 1500);
       } else {
-        toast.error("Please, Enter Correct Email and Password!", {
+        toast.error("Please, Enter Correct Email and Password! ", {
           autoClose: 1000,
         });
       }
     },
     onError: () => {
-      toast.error("Please, Enter Correct Email and Password!", {
-        autoClose: 1000,
+      setTimeout(() => {
+        toast.error("Please, Enter Correct Email and Password!", {
+          autoClose: 1000,
+        });
       });
     },
   });
+  // const { mutate: signin } = useMutation({
+  //   mutationFn: signInUser,
+  //   onSuccess: (data) => {
+  //     if (data && data.data && data.data.user) {
+  //       const userEmail = data.data.user.email;
+  //       if (userEmail !== "admin@gmail.com") {
+  //         localStorage.setItem("refresh_token", data?.data.user.refresh_token);
+  //         localStorage.setItem("access_token", data?.data.user.access_token);
+  //         setTimeout(() => {
+  //           push(ROUTER.HOME);
+  //         }, 1500);
+  //         toast.success("Signin successfully!", { autoClose: 1000 });
+  //       } else {
+  //         toast.error("Please, Enter Correct Email and Password!", {
+  //           autoClose: 1000,
+  //         });
+  //       }
+  //     } else {
+  //       toast.error("Please, Enter Correct Email and Password!", {
+  //         autoClose: 1000,
+  //       });
+  //     }
+  //   },
+  //   onError: () => {
+  //     toast.error("Please, Enter Correct Email and Password!", {
+  //       autoClose: 1000,
+  //     });
+  //   },
+  // });
 
   const formik = useFormik({
     initialValues: {
@@ -131,7 +130,7 @@ const LoginPage: React.FC = () => {
             />
           </div>
           <form
-            className="lg:w-2/6 md:w-[50%] w-full mx-auto"
+            className="lg:w-2/6 md:w-[50%] w-full mx-auto tracking-wider"
             onSubmit={formik.handleSubmit}
           >
             <div className="flex lg:ml-20 flex-row sm:gap-x-16 sm:ml-174px sm:mb-18 sm:mt-105px mt-11 gap-x-9 mb-15 justify-center">
@@ -145,8 +144,8 @@ const LoginPage: React.FC = () => {
                 {t("Register")}
               </p>
             </div>
-            <div className="">
-              <div className="">
+            <div>
+              <div className="relative">
                 <p className=" font-body text-lg dark:text-white  sm:mb-10px  text-grayInput sm:text-xl mb-4 font-medium">
                   {t("E-mail")}
                 </p>
@@ -161,12 +160,12 @@ const LoginPage: React.FC = () => {
                   className="pl-3 sm:h-68px rounded-5 bg-clientInput w-full h-14 text-lg font-medium"
                 />
                 {formik.touched.email && formik.errors.email ? (
-                  <div className="text-red-500 dark:text-red-400 text-xl pt-3 font-bold">
+                  <div className="text-red-500 dark:text-red-400 absolute pt-3 font-bold">
                     {formik.errors.email}
                   </div>
                 ) : null}
               </div>
-              <div className="my-5">
+              <div className="my-10 relative">
                 <p className=" font-body sm:mb-10px text-lg dark:text-white text-grayInput sm:text-xl mb-2 font-medium">
                   {t("Password")}
                 </p>
@@ -181,13 +180,14 @@ const LoginPage: React.FC = () => {
                   className="pl-3 sm:h-68px rounded-5 bg-clientInput w-full h-14 text-lg font-medium"
                 />
                 {formik.touched.password && formik.errors.password ? (
-                  <div className="text-red-500 dark:text-red-400 text-xl pt-3 font-bold">
+                  <div className="text-red-500 dark:text-red-400 absolute  pt-3 font-bold">
                     {formik.errors.password}
                   </div>
                 ) : null}
               </div>
             </div>
-            <button className="w-full text-2xl mt-5 font-semibold rounded-5 text-white sm:h-68px dark:bg-green-600 bg-clientRed  h-14 hover:opacity-75 transition-all  duration-500">
+
+            <button className="w-full text-2xl mt-7 font-semibold rounded-5 text-white sm:h-68px dark:bg-green-600 bg-clientRed  h-14 hover:opacity-75 transition-all  duration-500">
               {formik.isSubmitting ? (
                 <div className="flex justify-center items-center mx-0 my-auto">
                   <FadeLoader color="#fff" />
