@@ -69,11 +69,11 @@ const MainHeader: React.FC = () => {
         <LuMenu
           size={"30px"}
           onClick={() => setNavbarOpen(!isNavbarOpen)}
-          className="text-black sm:hidden block ml-4 mr-3 dark:text-white"
+          className="text-black sm:hidden block ml-4 mr-3 cursor-pointer dark:text-white"
         />
         <p
-          onClick={() => router.push(ROUTER.ADMIN)}
-          className=" flex py-auto sm:ml-14 flex-row items-center text-center font-mukta sm:text-[36px] text-[25px] font-extrabold text-[#000000] dark:text-gray-100"
+          onClick={() => router.push(ROUTER.HOME)}
+          className=" flex py-auto sm:ml-14 cursor-pointer flex-row items-center text-center font-mukta sm:text-[36px] text-[25px] font-extrabold text-[#000000] dark:text-gray-100"
         >
           Foody<span className="text-[#EAAB00] dark:text-sky-400 ">.</span>
         </p>
@@ -180,7 +180,7 @@ const MainHeader: React.FC = () => {
                     width={100}
                     height={100}
                     src={imageURL ? imageURL : profileImg}
-                    className=" ml-5 w-10 rounded-full h-10 cursor-pointer mr-6 scale-100 hover:scale-11 text-[20px] font-medium text-white"
+                    className=" ml-5 w-10 object-cover rounded-full h-10 cursor-pointer mr-6 scale-100 hover:scale-11 text-[20px] font-medium text-white"
                   />
                 </DropdownTrigger>
                 <DropdownMenu

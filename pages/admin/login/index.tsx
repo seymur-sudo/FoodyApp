@@ -1,6 +1,5 @@
 import React from "react";
 import Image from "next/image";
-import enImg from "../../../public/svgs/en.svg";
 import loginImg from "../../../public/svgs/LoginImg.svg";
 import { GetServerSideProps } from "next";
 import LoadingImg from "../../../public/loadingImg.gif";
@@ -19,6 +18,7 @@ import { getUser } from "@/services";
 import { QUERIES } from "../../../constant/Queries";
 import { useQuery } from "react-query";
 import Head from "next/head";
+import { LangSelect } from "@/components/Admin/Langs";
 
 const Login: React.FC = () => {
   const { t } = useTranslation("common");
@@ -31,16 +31,16 @@ const Login: React.FC = () => {
       errors.email = t("Invalid email address");
     }
 
-    if (values.email !== "admin@gmail.com") {
+    if (values.email !== "coder@gmail.com") {
       errors.email = t("This is not Admin email");
     }
-    if (values.password !== "1234567") {
+    if (values.password !== "parol123") {
       errors.password = t("This is not Admin password");
     }
 
     if (!values.password) {
       errors.password = t("Required");
-    }
+    } 
 
     return errors;
   };
@@ -54,9 +54,14 @@ const Login: React.FC = () => {
     mutationFn: signInUser,
     onSuccess: (data) => {
       if (data && data.data && data.data.user) {
-        push(ROUTER.ADMIN);
         localStorage.setItem("refresh_token", data?.data.user.refresh_token);
         localStorage.setItem("access_token", data?.data.user.access_token);
+        setTimeout(() => {
+          push(ROUTER.ADMIN);
+        }, 1000);
+        setTimeout(() => {
+          window.location.reload();
+        }, 3000);
         toast.success("Signin successfully!", { autoClose: 1000 });
       } else {
         toast.error("Please, Enter Correct Email and Password! ", {
@@ -109,8 +114,8 @@ const Login: React.FC = () => {
                   className="sm:bg-loginBgc flex flex-col "
                   onSubmit={formik.handleSubmit}
                 >
-                  <h1 className="sm:mt-58px mt-18px mb-23px font-montserrat text-center text-24 sm:text-35 text-gray1 font-weight700 sm:ml-40px sm:mr-48px sm:mb-40px">
-                    Welcome Admin
+                  <h1 className="sm:mt-58px mt-18px mb-23px font-montserrat text-center text-24 sm:text-35 text-gray1 font-bold sm:ml-40px sm:mr-48px sm:mb-40px tracking-wider">
+                    {t("Welcome Admin")}
                   </h1>
                   <div className="">
                     <input
@@ -160,11 +165,9 @@ const Login: React.FC = () => {
                   </button>
                 </form>
                 <div className="flex sm:w-405 sm:bg-white justify-center relative ">
-                  <Image
-                    src={enImg}
-                    className="absolute right-2 top-2 hidden md:block"
-                    alt="LoginImg"
-                  />
+                  <div className="absolute top-[-40px] right-[-10px]  md:right-[10px] md:top-2">
+                    <LangSelect />
+                  </div>
                   <Image
                     src={loginImg}
                     className="w-174 sm:w-346  sm:mt-55 sm:ml-30 sm:mb-52 sm:mr-30"

@@ -21,19 +21,24 @@ const MainFooter: React.FC = () => {
             <FaFacebook
               className="cursor-pointer transition-all duration-700 hover:scale-125 dark:hover:text-[#4064AC] hover:text-[#4064AC]  dark:text-white text-[#FB9300]"
               size={"50px"}
+              onClick={() => window.open("https://www.facebook.com/", "_blank")}
             />
             <FaInstagram
               className="mx-5 cursor-pointer transition-all duration-700 hover:scale-125 dark:hover:text-[#EA4669] hover:text-[#EA4669]  dark:text-white text-[#FB9300]"
               size={"50px"}
+              onClick={() => window.open("https://www.instagram.com/", "_blank")}
             />
             <FaTwitter
               className="cursor-pointer transition-all duration-700 hover:scale-125 dark:hover:text-[#1C9CEA] hover:text-[#1C9CEA]  dark:text-white text-[#FB9300]"
               size={"50px"}
+              onClick={() => window.open("https://twitter.com/?lang=en", "_blank")}
             />
           </div>
         </div>
         <div className="sm:block hidden">
-          <p className="text-[20px] mb-1 font-black text-white">{t("Popular")}</p>
+          <p className="text-[20px] mb-1 font-black text-white">
+            {t("Popular")}
+          </p>
           <p className="text-[13px] mb-1 font-normal text-[#BDBDBD]">
             {t("Programming")}
           </p>
@@ -52,7 +57,9 @@ const MainFooter: React.FC = () => {
           <p className="text-[13px] mb-1 font-normal text-[#BDBDBD]">
             {t("Delivery")}
           </p>
-          <p className="text-[13px] mb-1 font-normal text-[#BDBDBD]">{t("Payment")}</p>
+          <p className="text-[13px] mb-1 font-normal text-[#BDBDBD]">
+            {t("Payment")}
+          </p>
           <p className="text-[13px] mb-1 font-normal text-[#BDBDBD]">
             {t("About the store")}
           </p>

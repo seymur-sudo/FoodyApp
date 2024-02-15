@@ -38,7 +38,8 @@ const RegisterPage: React.FC = () => {
 
     if (!values.password) {
       errors.password = t("Required");
-    } else if (!isValidPassword(values.password)) {
+    } 
+    else if (!isValidPassword(values.password)) {
       errors.password = t("passwordFormik");
     }
 
