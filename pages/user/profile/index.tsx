@@ -14,14 +14,14 @@ import { GetServerSideProps } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { updateUser, getUser } from "@/services";
 import { isValidPhone } from "@/constant/ValidRegex";
-import login from "../../../public/svgs/login.svg";
+import LoadingImg from "../../../public/loadingImg.gif";
 import MainFooter from "@/components/Client/MainFooter";
 import useImageUpload from "@/helpers/uploadImage";
 import { FadeLoader } from "react-spinners";
 import Head from "next/head";
 
 const ProfileUser = () => {
-  const { data: userD } = useQuery(QUERIES.User, getUser);
+  const { data: userD, isLoading, isError } = useQuery(QUERIES.User, getUser);
   const fullNRef = useRef<HTMLInputElement>(null);
   const addressRef = useRef<HTMLInputElement>(null);
   const userNRef = useRef<HTMLInputElement>(null);
@@ -100,6 +100,22 @@ const ProfileUser = () => {
       mutation.mutate();
     }, 100);
   };
+
+  if (isLoading) {
+    return (
+      <Image
+        alt="LoadingImg"
+        height={1000}
+        width={1000}
+        className="h-screen w-screen"
+        src={LoadingImg}
+      />
+    );
+  }
+
+  if (isError) {
+    return <div>Error loading products</div>;
+  }
   return (
     <>
       <Head>
@@ -121,9 +137,9 @@ const ProfileUser = () => {
               htmlFor="user_img"
               className="flex flex-col items-center justify-center w-full rounded-[14px]  cursor-pointer  "
             >
-              {newImg ? (
+              {userD?.data.user.img_url ? (
                 <Image
-                  src={newImg ? newImg : login}
+                  src={newImg ?? userD?.data.user.img_url}
                   height={150}
                   width={150}
                   alt="Uploaded Image"
@@ -132,8 +148,8 @@ const ProfileUser = () => {
               ) : (
                 <div className="flex flex-col items-center justify-center w-[146px] h-[146px] rounded-full  bg-white dark:bg-black">
                   <Image
-                    width={150}
-                    height={150}
+                    width={70}
+                    height={70}
                     src={uploadImg}
                     alt="upload"
                     className="w-[70px] h-[70px]"

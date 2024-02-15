@@ -19,6 +19,7 @@ import { FaCheck } from "react-icons/fa6";
 import { isValidPhone } from "@/constant/ValidRegex";
 import MainFooter from "@/components/Client/MainFooter";
 import Head from "next/head";
+import LoadingImg from "../../../public/loadingImg.gif";
 
 const UserCheckout = () => {
   const { data: userD, isLoading, isError } = useQuery(QUERIES.User, getUser);
@@ -122,13 +123,20 @@ const UserCheckout = () => {
   };
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <Image
+        alt="LoadingImg"
+        height={1000}
+        width={1000}
+        className="h-screen w-screen"
+        src={LoadingImg}
+      />
+    );
   }
 
   if (isError) {
     return <div>Error loading products</div>;
   }
-
   return (
     <>
       <Head>

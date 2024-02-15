@@ -31,6 +31,7 @@ import dynamic from "next/dynamic";
 import { chatUser } from "@/interfaces";
 import { db } from "@/server/configs/firebase";
 import { ref, set } from "firebase/database";
+import LoadingImg from "../public/loadingImg.gif";
 
 const Home: NextPage = () => {
   const { showUserModal, openUserModal, closeUserModal, modalSpring } =
@@ -81,7 +82,15 @@ const Home: NextPage = () => {
   }, [userD]);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <Image
+        alt="LoadingImg"
+        height={1000}
+        width={1000}
+        className="h-screen w-screen"
+        src={LoadingImg}
+      />
+    );
   }
 
   if (isError) {

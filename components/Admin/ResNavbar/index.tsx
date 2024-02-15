@@ -24,7 +24,7 @@ const ResNavbar: React.FC = () => {
       onClick={closeNavbar}
       className={`${
         isNavbarOpen ? "right-0 sm:hidden z-50" : "right-full z-50"
-      } fixed duration-300 top-0 w-full h-full bg-[#00000066]`}
+      } fixed duration-500 top-0 w-full h-full bg-[#00000066]`}
     >
       <div className="h-full z-50 duration-500 w-fit bg-[#C74FEB] ">
         <div className="flex pt-4 mb-8 flex-row">

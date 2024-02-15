@@ -23,12 +23,17 @@ import { getCategory, getRestaurant } from "../../services/index";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import Head from "next/head";
+import LoadingImg from "../../public/loadingImg.gif";
 
 const Restaurants = () => {
   const { showUserModal, openUserModal, closeUserModal, modalSpring } =
     useSidebarContext() as SidebarContextProps;
   const { data } = useQuery(QUERIES.Categories, getCategory);
-  const { data: restaurants } = useQuery(QUERIES.Restaurants, getRestaurant);
+  const {
+    data: restaurants,
+    isLoading,
+    isError,
+  } = useQuery(QUERIES.Restaurants, getRestaurant);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const { push } = useRouter();
 
@@ -55,6 +60,22 @@ const Restaurants = () => {
     });
     AOS.refresh();
   }, []);
+
+  if (isLoading) {
+    return (
+      <Image
+        alt="LoadingImg"
+        height={1000}
+        width={1000}
+        className="h-screen w-screen"
+        src={LoadingImg}
+      />
+    );
+  }
+
+  if (isError) {
+    return <div>Error loading products</div>;
+  }
 
   return (
     <>

@@ -218,13 +218,22 @@ const UserOrders = () => {
   } else {
     sortedProducts.sort((a, b) => (b.amount || 0) - (a.amount || 0));
   }
-  // if (isLoading) {
-  //   return <div>Loading...</div>;
-  // }
 
-  // if (isError) {
-  //   return <div>Error loading products</div>;
-  // }
+  if (isLoading) {
+    return (
+      <Image
+        alt="LoadingImg"
+        height={1000}
+        width={1000}
+        className="h-screen w-screen"
+        src={LoadingImg}
+      />
+    );
+  }
+
+  if (isError) {
+    return <div>Error loading products</div>;
+  }
   return (
     <>
       <Head>

@@ -9,6 +9,7 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import MainFooter from "@/components/Client/MainFooter";
 import Head from "next/head";
 
+
 const BasketUser = () => {
   const { t } = useTranslation("common");
 

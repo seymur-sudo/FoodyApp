@@ -24,11 +24,6 @@ const About_Us = () => {
           </p>
         </div>
 
-        {/* <div className="w-8/12 md:w-5/12 bg-[#FFB64F] mt-[12%] rounded-[100px] h-[45vh] rotate-[-90deg] md:rotate-[-67.934deg] ">
-        <div className="rotate-0"> <AboutCard/></div>
-
-        </div> */}
-
         <div className="hidden md:block md:w-4/12 relative">
           <Image
             src={AboutUs}

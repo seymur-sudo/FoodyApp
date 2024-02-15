@@ -45,7 +45,7 @@ const ClientNavbar: React.FC = () => {
       onClick={closeNavbar}
       className={`${
         isNavbarOpen ? "right-0 sm:hidden" : "right-full"
-      } fixed duration-300 top-0 z-50 w-full h-full bg-[#00000066]`}
+      } fixed duration-700 top-0 z-50 w-full h-full bg-[#00000066]`}
     >
       <div className="h-full z-50 duration-500 w-fit dark:bg-[#272727] bg-white font-poppins">
         <div className="flex pt-4 mb-8 flex-row">
