@@ -41,10 +41,10 @@ const MainHeader: React.FC = () => {
     localStorage.removeItem("access_token");
     setTimeout(() => {
       router.push(ROUTER.LOGIN);
-    }, 1500);
+    }, 1000);
     setTimeout(() => {
       window.location.reload();
-    }, 2500);
+    }, 4000);
   };
   useEffect(() => {
     const acc_token = localStorage.getItem("access_token");

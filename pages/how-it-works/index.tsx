@@ -5,6 +5,8 @@ import hiw from "../../public/svgs/howitworks.svg";
 import MainFooter from "@/components/Client/MainFooter";
 import Head from "next/head";
 import { useTranslation } from "next-i18next";
+import { GetServerSideProps } from "next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 const How_It_Works = () => {
   const { t } = useTranslation("common");
@@ -45,3 +47,8 @@ const How_It_Works = () => {
   );
 };
 export default How_It_Works;
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => ({
+  props: {
+    ...(await serverSideTranslations(locale as string, ["common"])),
+  },
+});
