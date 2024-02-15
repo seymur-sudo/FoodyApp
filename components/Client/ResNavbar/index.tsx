@@ -27,7 +27,10 @@ const ClientNavbar: React.FC = () => {
     }, 500);
     setTimeout(() => {
       router.push(ROUTER.LOGIN);
-    }, 1500);
+    }, 1000);
+    setTimeout(() => {
+      window.location.reload();
+    }, 4000);
   };
 
   useEffect(() => {

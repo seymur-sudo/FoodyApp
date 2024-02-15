@@ -40,7 +40,7 @@ const Login: React.FC = () => {
 
     if (!values.password) {
       errors.password = t("Required");
-    } 
+    }
 
     return errors;
   };
@@ -56,12 +56,10 @@ const Login: React.FC = () => {
       if (data && data.data && data.data.user) {
         localStorage.setItem("refresh_token", data?.data.user.refresh_token);
         localStorage.setItem("access_token", data?.data.user.access_token);
-        setTimeout(() => {
-          push(ROUTER.ADMIN);
-        }, 1000);
+        push(ROUTER.ADMIN);
         setTimeout(() => {
           window.location.reload();
-        }, 3000);
+        }, 5000);
         toast.success("Signin successfully!", { autoClose: 1000 });
       } else {
         toast.error("Please, Enter Correct Email and Password! ", {

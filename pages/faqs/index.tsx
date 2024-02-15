@@ -4,6 +4,8 @@ import MainFooter from "@/components/Client/MainFooter";
 import { Accordion, AccordionItem } from "@nextui-org/react";
 import Head from "next/head";
 import { useTranslation } from "next-i18next";
+import { GetServerSideProps } from "next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 const Faqs = () => {
   const { t } = useTranslation("common");
@@ -136,3 +138,8 @@ const Faqs = () => {
   );
 };
 export default Faqs;
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => ({
+  props: {
+    ...(await serverSideTranslations(locale as string, ["common"])),
+  },
+});

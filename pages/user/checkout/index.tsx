@@ -20,6 +20,7 @@ import { isValidPhone } from "@/constant/ValidRegex";
 import MainFooter from "@/components/Client/MainFooter";
 import Head from "next/head";
 import LoadingImg from "../../../public/loadingImg.gif";
+import { FadeLoader } from "react-spinners";
 
 const UserCheckout = () => {
   const { data: userD, isLoading, isError } = useQuery(QUERIES.User, getUser);
@@ -117,7 +118,9 @@ const UserCheckout = () => {
         }
       } else {
         mutation.mutate();
-        setOrderAdded(true);
+        setTimeout(() => {
+          setOrderAdded(true);
+        }, 2100);
       }
     }, 100);
   };
@@ -243,9 +246,15 @@ const UserCheckout = () => {
               <div className="flex flex-col py-5 w-10/12">
                 <button
                   onClick={handleAddOrder}
-                  className="capitalize py-2 px-4 bg-[#6FCF97] font-bold text-lg text-white dark:text-gray-900 rounded-[4px] hover:bg-[#54ff9b]  transition-all duration-500 cursor-pointer  "
+                  className="capitalize py-2 px-4 min-h-[50px] max-h-[50px] bg-[#6FCF97] font-bold text-lg text-white dark:text-gray-900 rounded-[4px] hover:bg-[#54ff9b]  transition-all duration-500 cursor-pointer  "
                 >
-                  {t("Send")}
+                  {mutation.isLoading ? (
+                    <div className="h-full flex justify-center items-center mt-1">
+                      <FadeLoader color="#fff" height={5} width={15} />
+                    </div>
+                  ) : (
+                    t("Send")
+                  )}
                 </button>
               </div>
             </div>
