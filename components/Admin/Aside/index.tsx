@@ -28,8 +28,8 @@ export const Aside: React.FC = () => {
     }, 4000);
   };
   return (
-    <div className="h-full  flex flex-col  bg-bgc">
-      <aside className="ml-1  sm:block hidden h-[64vh] w-min	font-body  pt-4 pb-12 px-4  rounded-xl bg-[#C74FEB]">
+    <div className=" flex flex-col  bg-bgc">
+      <aside className="ml-1  sm:block hidden  w-min	font-body  pt-4    xl:pb-12 px-4  rounded-xl bg-[#C74FEB]">
         <Link
           className="flex h-10 cursor-pointer mb-2 pl-4 hover:bg-[#CD61ED] rounded-xl items-center flex-row"
           href={ROUTER.ADMIN}
@@ -114,7 +114,7 @@ export const Aside: React.FC = () => {
         </Link>
       </aside>
 
-      <div className="fixed top-[87.5vh] w-[14.5%]">
+      <div className="sticky top-[87%] ">
         <BottomLogo />
       </div>
     </div>

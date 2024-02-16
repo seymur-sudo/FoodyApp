@@ -29,6 +29,8 @@ const UserBasket = () => {
     setDeletedBasket(basketId);
   };
 
+  console.log("basketProducts", basketProducts);
+
   return (
     <>
       <div className="w-full  flex flex-col items-center">
@@ -36,13 +38,15 @@ const UserBasket = () => {
           <div className="flex justify-between items-center px-2 py-3 w-full">
             <div className="flex justify-center items-center">
               <h1 className="capitalize py-2 text-[#4F4F4F)] dark:text-cyan-400 font-bold text-[25px]"></h1>
-              <IoBasketOutline className="cursor-pointer text-3xl text-[#D63626] dark:text-cyan-300 hover:scale-110 transition-all duration-700 mx-2" />
+              <IoBasketOutline className="cursor-pointer text-[33px] text-[#D63626] dark:text-cyan-300 hover:scale-110 transition-all duration-700 mx-2" />
 
-              <p className="capitalize  text-[#D63626]  dark:text-cyan-400 font-bold text-[16px]">
-                <span className="mr-1">
-                  {basketProducts?.total_item} {t("items")}
+              <p className="capitalize flex flex-col md:flex-row justify-center  text-[#D63626]  dark:text-cyan-400 font-bold text-[16px]">
+                <span className="mr-2">
+                  {basketProducts?.total_item} {t("items")}  ,
                 </span>
-              
+                <span>
+                  {basketProducts?.total_count} {t("Products")}
+                </span>
               </p>
             </div>
 
@@ -75,21 +79,20 @@ const UserBasket = () => {
                       alt="product.name"
                       width={100}
                       height={100}
-                      className=" w-[96px] h-[90px]  rounded-md  object-cover"
+                      className="w-[86px] h-[80px] md:w-[96px] md:h-[90px] mx-5 md:mx-0 rounded-sm  object-cover"
                     />
-                    <div className=" w-9/12 font-body font-semibold tracking-wide">
-                      <div className="flex flex-col items-start  w-full">
+                    <div className=" w-9/12 font-body font-semibold tracking-wide ">
+                      <div className="flex flex-col items-start  w-full ">
                         <h1 className="capitalize   text-[#787878] dark:text-cyan-400 text-[22px] ">
                           {product.name}
                         </h1>
                         <span className="capitalize py-3 text-[#787878] dark:text-cyan-400 text-[18px] ">
-                          <span className="mr-2">$ {product.price}</span> 
+                          <span className="mr-2">$ {product.price}</span>
                         </span>
-                     
                       </div>
                     </div>
 
-                    <div className="bg-white dark:bg-gray-800 text-xl text-black dark:text-cyan-300 font-medium flex flex-col items-center px-3 py-2 rounded-3xl">
+                    <div className="bg-white dark:bg-gray-800 text-xl mr-5 md:mr-0  text-black dark:text-cyan-300 font-medium flex flex-col items-center px-3 py-2 rounded-3xl">
                       <span
                         className="cursor-pointer"
                         onClick={() =>
@@ -140,7 +143,7 @@ const UserBasket = () => {
                 : "hover:opacity-90 transition-all duration-500"
             }  flex items-center justify-between rounded-[100px]  bg-[#D63626] dark:bg-blue-500 text-white`}
           >
-            <button className="capitalize mx-[3%] font-medium flex items-center">
+            <button className="capitalize mx-[3%] font-medium flex items-center  tracking-wider">
               {t("Checkout")}
             </button>
 

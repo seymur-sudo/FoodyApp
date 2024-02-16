@@ -144,7 +144,7 @@ export interface ApiResponse {
 }
 export interface RestaurantPostDataType {
   id?: number | string | any;
-  category_id: number | string | undefined;
+  category_id:  string | undefined;
   img_url: string | null | undefined;
   cuisine: string | undefined;
   address: string | undefined;

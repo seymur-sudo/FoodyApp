@@ -22,7 +22,7 @@ const UserAside = () => {
   };
 
   return (
-    <div className="w-[22%] hidden h-[66.3vh] md:flex flex-col items-center pt-4 pb-6  bg-[#F3F4F6] dark:bg-gray-900 capitalize rounded-md ">
+    <div className="w-[22%] hidden h-[67vh] md:flex flex-col items-center pt-4 pb-6  bg-[#F3F4F6] dark:bg-gray-900 capitalize rounded-md ">
       <ul className="cursor-pointer py-5 pb-7 w-7/12 text-[#828282)] dark:text-cyan-300 text-xl font-mutka tracking-wide font-bold ">
         <li
           className={`flex items-center  py-[14px] pl-2  mb-[14px]  rounded-[4px] ${
