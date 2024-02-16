@@ -30,6 +30,7 @@ const SearchFilter = () => {
     const filteredRestaurants = (restaurants || []).filter(
       (restaurant: RestaurantPostDataType) =>
         restaurant.name?.toLowerCase().includes(term.toLowerCase()) ||
+        // restaurant.category_id?.toLowerCase().includes(term.toLowerCase()) ||
         restaurant.cuisine?.toLowerCase().includes(term.toLowerCase())
     );
 

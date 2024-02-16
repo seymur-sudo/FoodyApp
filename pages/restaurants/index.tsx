@@ -228,11 +228,11 @@ const Restaurants = () => {
                   </div>
 
                   <div className="flex flex-col md:flex-row justify-between items-center px-2 py-5">
-                    <p className="text-[#4F4F4F] dark:text-[#979797]  text-2xl md:text-lg font-bold">
-                      $ {restaurant.delivery_min}
+                    <p className="text-[#4F4F4F] dark:text-[#979797]  text-xl md:text-base font-bold">
+                      ${restaurant.delivery_min} {t("Delivery")}
                     </p>
                     <div className="flex items-center text-xl md:text-base bg-[#D63626] text-white rounded-full py-2 px-[25%]  md:px-[5%] md:py-1 my-[4%] md:my-[0%]">
-                      {restaurant.delivery_price} min
+                      {restaurant.delivery_price} {t("Min")}
                     </div>
                   </div>
                 </div>

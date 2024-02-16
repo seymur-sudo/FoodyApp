@@ -181,6 +181,7 @@
     "Categories": "Categories",
     "Welcome Admin": "Welcome Admin",
     "Required": "Required",
+    "Min":"Min",
     "Invalid email address": "Invalid email address",
     "passwordFormik": "Must be at least one letter or number. Length between 5 - 10",
     "This is not Admin email": "This is not Admin email",

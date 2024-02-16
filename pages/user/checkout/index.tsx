@@ -21,6 +21,8 @@ import MainFooter from "@/components/Client/MainFooter";
 import Head from "next/head";
 import LoadingImg from "../../../public/loadingImg.gif";
 import { FadeLoader } from "react-spinners";
+import { useRouter } from "next/navigation";
+import { ROUTER } from "../../../shared/constant/router";
 
 const UserCheckout = () => {
   const { data: userD, isLoading, isError } = useQuery(QUERIES.User, getUser);
@@ -28,6 +30,7 @@ const UserCheckout = () => {
     useSidebarContext() as SidebarContextProps;
   const [orderAdded, setOrderAdded] = useState<boolean>(false);
   const { t } = useTranslation("common");
+  const { push } = useRouter();
   const orderBill: OrderPostDataType = {
     basket_id: "",
     delivery_address: "",
@@ -118,9 +121,13 @@ const UserCheckout = () => {
         }
       } else {
         mutation.mutate();
+
         setTimeout(() => {
           setOrderAdded(true);
-        }, 2100);
+        }, 2000);
+        setTimeout(() => {
+          push(ROUTER.HOME);
+        }, 4000);
       }
     }, 100);
   };
@@ -259,7 +266,7 @@ const UserCheckout = () => {
               </div>
             </div>
           ) : (
-            <div className="w-10/12 md:w-8/12 py-3 rounded-md bg-[#F3F4F6] dark:bg-gray-900 flex flex-col justify-center items-center min-h-[65vh]">
+            <div className="w-10/12 md:w-8/12 py-3 rounded-md bg-[#F3F4F6] dark:bg-gray-900 flex flex-col justify-center items-center min-h-[67vh]">
               <div className="flex  justify-center items-center bg-green-600 dark:bg-green-300 text-white dark:text-gray-800 rounded-full h-[200px] w-[200px]">
                 <FaCheck className="text-[150px]" />
               </div>

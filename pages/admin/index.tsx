@@ -37,22 +37,23 @@ const AdminDashboard: NextPage = () => {
               <link rel="icon" href="/favicon.ico" />
             </Head>
             <Layout>
-              <div className="flex flex-wrap  justify-center md:justify-center  pb-5  bg-bgc font-body tracking-wide">
-                <div className="w-full h-[50vh] md:h-[64vh]  md:w-4/12 md:mx-[4%]  flex flex-col justify-center p-3  py-8 pl-5  rounded-[14px] bg-bgg mb-[6%] md:mb-[3%]">
-                  <h1 className="text-gray1 text-xl font-medium capitalize mb-2 md:mb-0">
+              <div className="flex flex-wrap   justify-center md:justify-center  pb-5  bg-bgc font-body tracking-wide">
+                <div className="w-full   md:w-4/12 md:mx-[4%]  flex flex-col justify-center     rounded-[14px] bg-bgg mb-[6%] md:mb-[3%]">
+                  <h1 className="text-gray1 text-xl font-medium capitalize   m-4">
                     {t("Orders")}
                   </h1>
-                  <Doughnut data={data} />
+                  <div className="flex justify-center  pb-3" ><Doughnut data={data} /></div>
+                  
                 </div>
 
-                <div className="w-full h-[50vh] md:h-[64vh]   md:w-7/12 mb-[6%] md:mb-[3%] p-3  md:p-5   flex flex-col rounded-[14px] bg-bgg">
+                <div className="w-full    md:w-7/12 mb-[6%] md:mb-[3%] p-3  md:p-5   flex flex-col rounded-[14px] bg-bgg">
                   <h1 className="text-gray1 text-xl font-medium capitalize">
                     {t("Total Salary")}
                   </h1>
                   <ChartMonths />
                 </div>
 
-                <div className="w-full h-[50vh]  md:h-[64vh]   md:w-7/12 mb-[6%] md:mx-[4%]  md:mb-[3%] p-3  md:p-5 flex flex-col   rounded-[14px] bg-bgg">
+                <div className="w-full   md:w-7/12 mb-[6%] md:mx-[4%]  md:mb-[3%] p-3  md:p-5 flex flex-col   rounded-[14px] bg-bgg">
                   <h1 className="text-gray1 text-xl font-medium capitalize pb-4">
                     {t("Weekly Sales Rate")}
                   </h1>
@@ -60,7 +61,7 @@ const AdminDashboard: NextPage = () => {
                   <ChartWeek />
                 </div>
 
-                <div className="w-full h-[50vh] md:h-[64vh]   md:w-4/12  mb-[6%] md:mb-[3%] p-3  md:p-5 flex flex-col rounded-[14px] bg-bgg ">
+                <div className="w-full    md:w-4/12  mb-[6%] md:mb-[3%] p-3  md:p-5 flex flex-col rounded-[14px] bg-bgg ">
                   <h1 className="text-gray1 text-xl font-medium capitalize ">
                     {t("Users Rate")}
                   </h1>
@@ -78,7 +79,7 @@ const AdminDashboard: NextPage = () => {
                         cy="50%"
                         labelLine={false}
                         label={renderCustomizedLabel}
-                        outerRadius={120}
+                        outerRadius={100}
                         fill="#8884d8"
                         dataKey="value"
                       >
