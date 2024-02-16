@@ -117,14 +117,14 @@ const Home: NextPage = () => {
               print, and publishing industries for previewing layouts and visual
               mockups.
             </p>
-            <div className="flex mt-11 flex-col sm:flex-row">
+            <div className="flex flex-col md:flex-row mt-12 ">
               <button
                 onClick={() => push(ROUTER.LOGIN)}
-                className="text-white font-medium text-[25px] px-[43px] mb-4 sm:w-full w-fit mx-auto sm:mr-10 py-[12px] dark:hover:bg-green-700 dark:bg-green-600 rounded-[30px] bg-[#D63626] cursor-pointer  transition-all duration-500"
+                className="text-white font-medium text-[25px] px-[43px] mb-4 w-3/6 md:w-full  mx-auto sm:mr-10 py-[12px] dark:hover:bg-green-700 dark:bg-green-600 rounded-[30px] bg-[#D63626] cursor-pointer  transition-all duration-500"
               >
                 {t("Register")}
               </button>
-              <button className="font-medium text-[25px] px-[43px] py-[12px] sm:w-full mb-5 w-fit mx-auto text-[#828282] border-[2px] border-solid rounded-[30px] border-[#828282] cursor-pointer  transition-all duration-500">
+              <button className="font-medium text-[25px] px-[43px] py-[12px] w-3/6 md:w-full  mb-5  mx-auto text-[#828282] border-[2px] border-solid rounded-[30px] border-[#828282] cursor-pointer  transition-all duration-500">
                 {t("Order now")}
               </button>
             </div>
@@ -186,7 +186,7 @@ const Home: NextPage = () => {
             <button
               onClick={() => toggleChat()}
               //
-              className="text-red-500 dark:text-cyan-400 text-6xl fixed bottom-5 right-5 z-50 "
+              className="text-red-500 dark:text-cyan-400 text-6xl fixed bottom-[2%] right-[2%] z-50 "
             >
               {showUserModal ? <FaTimes /> : <FaRocketchat />}
             </button>
@@ -230,12 +230,12 @@ const Home: NextPage = () => {
 
         <div
           data-aos="zoom-in"
-          className="flex flex-row mt-10 flex-wrap gap-16 justify-center"
+          className="flex mt-10 flex-wrap gap-10 md:gap-20 justify-center"
         >
           <div
             data-aos="zoom-in"
             data-aos-delay={300}
-            className="text-center sm:mx-0 mx-5 dark:bg-gray-900 rounded-4 flex items-center flex-col shadow-2xl"
+            className="text-center w-full md:w-[23%]  sm:mx-0 mx-5 dark:bg-gray-900 rounded-4 flex items-center flex-col shadow-2xl"
           >
             <Image className="" alt="" src={card1} />
             <p className="text-[30px] sm:px-6 dark:text-white py-2 text-[#4F4F4F] font-bold">
@@ -247,12 +247,13 @@ const Home: NextPage = () => {
               commonly used in the graphic{" "}
             </p>
           </div>
+
           <div
             data-aos="zoom-in"
             data-aos-delay={600}
-            className="text-center sm:mx-0 mx-5 dark:bg-gray-900 flex rounded-4 items-center flex-col  shadow-2xl"
+            className="text-center w-full md:w-[23%] sm:mx-0 mx-5 dark:bg-gray-900 flex rounded-4 items-center flex-col  shadow-2xl"
           >
-            <Image className="" alt="" src={card2} />
+            <Image className="" alt="card2" src={card2} />
             <p className="text-[30px] sm:px-6 dark:text-white text-[#4F4F4F] py-2 font-bold">
               {t("Fresh healthy Food")}
             </p>
@@ -261,14 +262,15 @@ const Home: NextPage = () => {
               commonly used in the graphic{" "}
             </p>
           </div>
+
           <div
             data-aos="zoom-in"
             data-aos-delay={900}
-            className="text-center sm:mx-0 mx-5 dark:bg-gray-900 rounded-4 flex items-center flex-col shadow-2xl"
+            className="text-center w-full md:w-[23%]  sm:mx-0 mx-5 dark:bg-gray-900 rounded-4 flex items-center flex-col shadow-2xl"
           >
             <Image className="" alt="" src={card1} />
             <p className="text-[30px] sm:px-6 dark:text-white py-2 text-[#4F4F4F] font-bold">
-              {" "}
+           
               {t("Fast Home Delivery")}
             </p>
             <p className="text-[18px] mx-5 mb-15 text-[#4F4F4F] font-normal">
@@ -437,7 +439,7 @@ const Home: NextPage = () => {
             </div>
             <Image
               className="w-[200px] sm:flex hidden h-[200px]"
-              alt=""
+              alt="HomeImg"
               src={HomeImg}
             />
           </div>

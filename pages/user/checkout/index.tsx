@@ -21,6 +21,8 @@ import MainFooter from "@/components/Client/MainFooter";
 import Head from "next/head";
 import LoadingImg from "../../../public/loadingImg.gif";
 import { FadeLoader } from "react-spinners";
+import { useRouter } from "next/navigation";
+import { ROUTER } from "../../../shared/constant/router";
 
 const UserCheckout = () => {
   const { data: userD, isLoading, isError } = useQuery(QUERIES.User, getUser);
@@ -28,6 +30,7 @@ const UserCheckout = () => {
     useSidebarContext() as SidebarContextProps;
   const [orderAdded, setOrderAdded] = useState<boolean>(false);
   const { t } = useTranslation("common");
+  const { push } = useRouter();
   const orderBill: OrderPostDataType = {
     basket_id: "",
     delivery_address: "",
@@ -118,10 +121,13 @@ const UserCheckout = () => {
         }
       } else {
         mutation.mutate();
-      
+
         setTimeout(() => {
           setOrderAdded(true);
-        }, 2100);
+        }, 2000);
+        setTimeout(() => {
+          push(ROUTER.HOME);
+        }, 4000);
       }
     }, 100);
   };
