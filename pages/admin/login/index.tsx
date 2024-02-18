@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import loginImg from "../../../public/svgs/LoginImg.svg";
 import { GetServerSideProps } from "next";
@@ -19,6 +19,7 @@ import { QUERIES } from "../../../constant/Queries";
 import { useQuery } from "react-query";
 import Head from "next/head";
 import { LangSelect } from "@/components/Admin/Langs";
+import { LuEye, LuEyeOff } from "react-icons/lu";
 
 const Login: React.FC = () => {
   const { t } = useTranslation("common");
@@ -49,17 +50,19 @@ const Login: React.FC = () => {
     userID && userID.data && userID.data.user ? userID.data.user.email : null;
 
   const { push } = useRouter();
-
+  const [showPassword, setShowPassword] = useState<boolean>(false);
   const { mutate: signinAdmin } = useMutation({
     mutationFn: signInUser,
     onSuccess: (data) => {
       if (data && data.data && data.data.user) {
         localStorage.setItem("refresh_token", data?.data.user.refresh_token);
         localStorage.setItem("access_token", data?.data.user.access_token);
-        push(ROUTER.ADMIN);
+        setTimeout(() => {
+          push(ROUTER.ADMIN);
+        }, 100);
         setTimeout(() => {
           window.location.reload();
-        }, 5000);
+        }, 6000);
         toast.success("Signin successfully!", { autoClose: 1000 });
       } else {
         toast.error("Please, Enter Correct Email and Password! ", {
@@ -96,10 +99,7 @@ const Login: React.FC = () => {
         {!userEmail ? (
           <>
             <h1 className="ml-9px text-24 pt-[4] sm:pt-57px sm:ml-32px font-mukta font-weight800 sm:text-28 text-logocolor">
-              <p
-                className="text-logocolor font-mukta text-3xl font-extrabold leading-6 tracking-wider
-        "
-              >
+              <p className="text-logocolor font-mukta text-3xl font-extrabold leading-6 tracking-wider">
                 Foody
                 <span className="text-logodotcolor text-4xl font-extrabold leading-6 tracking-wider">
                   .
@@ -115,52 +115,67 @@ const Login: React.FC = () => {
                   <h1 className="sm:mt-58px mt-18px mb-23px font-montserrat text-center text-24 sm:text-35 text-gray1 font-bold sm:ml-40px sm:mr-48px sm:mb-40px tracking-wider">
                     {t("Welcome Admin")}
                   </h1>
-                  <div className="">
-                    <input
-                      id="email"
-                      name="email"
-                      type="email"
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      value={formik.values.email}
-                      placeholder={t("E-mail")}
-                      className="sm:pl-40px pl-19px inline mx-auto h-resinput w-207 text-14 sm:text-18 items-center text-gray1 font-weight400 sm:rounded-4 sm:ml-47px sm:mr-58px sm:w-318 bg-inputBg sm:h-input "
-                    />
-                    {formik.touched.email && formik.errors.email ? (
-                      <div className="text-red-500 dark:text-red-400 text-sm ml-0 md:ml-12 mt-1 md:-mb-6  font-bold tracking-wider">
-                        {formik.errors.email}
+                  <div>
+                    <div className="">
+                      <input
+                        id="email"
+                        name="email"
+                        type="email"
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        value={formik.values.email}
+                        placeholder={t("E-mail")}
+                        className="w-full md:w-9/12 sm:pl-40px pl-19px inline mx-auto h-resinput py-5 md:py-0 rounded-[4px]  text-14 sm:text-18 items-center text-gray1 font-weight400 sm:rounded-4 sm:ml-47px sm:mr-58px sm:w-318 bg-inputBg sm:h-input "
+                      />
+                      {formik.touched.email && formik.errors.email ? (
+                        <div className="text-red-500 dark:text-red-400 text-sm ml-0 md:ml-12 mt-1 md:-mb-6  font-bold tracking-wider">
+                          {formik.errors.email}
+                        </div>
+                      ) : null}
+                    </div>
+                    <div className="my-6 md:my-9">
+                      <div className="relative">
+                        <input
+                          id="password"
+                          name="password"
+                          type={showPassword ? "text" : "password"}
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                          value={formik.values.password}
+                          placeholder={t("Password")}
+                          className="w-full md:w-9/12  sm:pl-40px pl-19px  inline mx-auto h-resinput py-5 md:py-0 rounded-[4px] text-14 sm:text-18 items-center text-gray1 font-weight400 sm:rounded-4 sm:ml-47px sm:mr-58px sm:w-318 bg-inputBg sm:h-input "
+                        />
+                        {showPassword ? (
+                          <LuEyeOff
+                            className="absolute right-[6%] bottom-[10%] md:right-[15%]  text-3xl md:text-4xl text-inputMain cursor-pointer hover:scale-105 transition-all duration-500"
+                            onClick={() => setShowPassword(false)}
+                          />
+                        ) : (
+                          <LuEye
+                            className="absolute right-[6%] bottom-[10%] md:right-[15%]  text-3xl md:text-4xl text-inputMain cursor-pointer hover:scale-105 transition-all duration-500"
+                            onClick={() => setShowPassword(true)}
+                          />
+                        )}
                       </div>
-                    ) : null}
+                      {formik.touched.password && formik.errors.password ? (
+                        <div className="text-red-500 dark:text-red-400 text-sm ml-0 md:ml-12 mt-1 md:-mb-6 font-bold tracking-wider">
+                          {formik.errors.password}
+                        </div>
+                      ) : null}
+                    </div>
+                    <button
+                      type="submit"
+                      className="text-white w-full md:w-9/12 rounded-5 sm:rounded-4 sm:mb-58px sm:ml-47px sm:mr-58px font-medium text-14 sm:text-xl hover:bg-pink00 bg-loginBtn max-h-[45px] min-h-[45px] md:max-h-[50px] md:min-h-[50px] hover:opacity-75 transition-all duration-500 "
+                    >
+                      {formik.isSubmitting ? (
+                        <div className="flex justify-center items-center mx-0 my-auto ">
+                          <FadeLoader color="#fff" height={3} width={15} />
+                        </div>
+                      ) : (
+                        t("Login")
+                      )}
+                    </button>
                   </div>
-                  <div className="my-6 md:my-9">
-                    <input
-                      id="password"
-                      name="password"
-                      type="password"
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      value={formik.values.password}
-                      placeholder={t("Password")}
-                      className="sm:pl-40px pl-19px inline mx-auto h-resinput w-207 text-14 sm:text-18 items-center text-gray1 font-weight400 sm:rounded-4 sm:ml-47px sm:mr-58px sm:w-318 bg-inputBg sm:h-input "
-                    />
-                    {formik.touched.password && formik.errors.password ? (
-                      <div className="text-red-500 dark:text-red-400 text-sm ml-0 md:ml-12 mt-1 md:-mb-6 font-bold tracking-wider">
-                        {formik.errors.password}
-                      </div>
-                    ) : null}
-                  </div>
-                  <button
-                    type="submit"
-                    className="text-white rounded-5 sm:rounded-4 sm:mb-58px sm:ml-47px sm:mr-58px font-medium text-14 sm:text-xl hover:bg-pink00 bg-loginBtn max-h-[50px] min-h-[50px] hover:opacity-75 transition-all duration-500 "
-                  >
-                    {formik.isSubmitting ? (
-                      <div className="flex justify-center items-center mx-0 my-auto ">
-                        <FadeLoader color="#fff" height={5} width={15} />
-                      </div>
-                    ) : (
-                      t("Login")
-                    )}
-                  </button>
                 </form>
                 <div className="flex sm:w-405 sm:bg-white justify-center relative ">
                   <div className="absolute top-[-40px] right-[-10px]  md:right-[10px] md:top-2">

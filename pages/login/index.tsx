@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import Head from "next/head";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
@@ -15,6 +15,7 @@ import { ROUTER } from "../../shared/constant/router";
 import { signInUser } from "@/services";
 import { useFormik } from "formik";
 import { FormValues } from "@/interfaces";
+import { LuEye, LuEyeOff } from "react-icons/lu";
 
 const LoginPage: React.FC = () => {
   const { t } = useTranslation("common");
@@ -29,14 +30,14 @@ const LoginPage: React.FC = () => {
 
     if (!values.password) {
       errors.password = t("Required");
-    } 
-    else if (!isValidPassword(values.password)) {
+    } else if (!isValidPassword(values.password)) {
       errors.password = t("passwordFormik");
     }
 
     return errors;
   };
   const { push } = useRouter();
+  const [showPassword, setShowPassword] = useState<boolean>(false);
 
   const { mutate: signin } = useMutation({
     mutationFn: signInUser,
@@ -64,35 +65,6 @@ const LoginPage: React.FC = () => {
       });
     },
   });
-  // const { mutate: signin } = useMutation({
-  //   mutationFn: signInUser,
-  //   onSuccess: (data) => {
-  //     if (data && data.data && data.data.user) {
-  //       const userEmail = data.data.user.email;
-  //       if (userEmail !== "admin@gmail.com") {
-  //         localStorage.setItem("refresh_token", data?.data.user.refresh_token);
-  //         localStorage.setItem("access_token", data?.data.user.access_token);
-  //         setTimeout(() => {
-  //           push(ROUTER.HOME);
-  //         }, 1500);
-  //         toast.success("Signin successfully!", { autoClose: 1000 });
-  //       } else {
-  //         toast.error("Please, Enter Correct Email and Password!", {
-  //           autoClose: 1000,
-  //         });
-  //       }
-  //     } else {
-  //       toast.error("Please, Enter Correct Email and Password!", {
-  //         autoClose: 1000,
-  //       });
-  //     }
-  //   },
-  //   onError: () => {
-  //     toast.error("Please, Enter Correct Email and Password!", {
-  //       autoClose: 1000,
-  //     });
-  //   },
-  // });
 
   const formik = useFormik({
     initialValues: {
@@ -173,13 +145,24 @@ const LoginPage: React.FC = () => {
                 <input
                   id="password"
                   name="password"
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   value={formik.values.password}
                   placeholder={t("E-mail")}
                   className="pl-3 sm:h-68px rounded-5 bg-clientInput w-full h-14 text-lg font-medium"
                 />
+                {showPassword ? (
+                  <LuEyeOff
+                    className="absolute right-[3%] bottom-[8%] md:bottom-[12%]  text-[42px] text-red-500 dark:text-green-700 cursor-pointer hover:scale-105 transition-all duration-700"
+                    onClick={() => setShowPassword(false)}
+                  />
+                ) : (
+                  <LuEye
+                    className="absolute right-[3%] bottom-[8%] md:bottom-[12%]  text-[42px] text-red-500 dark:text-green-700 cursor-pointer hover:scale-105 transition-all duration-700"
+                    onClick={() => setShowPassword(true)}
+                  />
+                )}
                 {formik.touched.password && formik.errors.password ? (
                   <div className="text-red-500 dark:text-red-400 absolute  pt-3 font-bold">
                     {formik.errors.password}

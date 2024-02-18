@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
 import Image from "next/image";
-import { useTranslation } from "next-i18next";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { useSpring, animated } from "react-spring";
@@ -11,7 +10,7 @@ import fr from "../../../public/svgs/fr.svg";
 type Languages = "fr" | "az" | "en" | string;
 
 export const LangSelect: React.FC = () => {
-  const { t } = useTranslation("common");
+
   const router = useRouter();
   const updatedLocale: Languages = router.locale || "en";
   const [currentLang, setCurrentLang] = useState<Languages>("en");
@@ -58,7 +57,7 @@ export const LangSelect: React.FC = () => {
           setIsDropdownOpen(!isDropdownOpen);
         }}
         alt="lang"
-        className=" scale-100 hover:scale-110 cursor-pointer transition-all duration-500 mx-2 mt-2 md:mx-0 md:mt-0"
+        className="  hover:scale-110 cursor-pointer transition-all duration-500 mx-3 mt-2 md:mx-0 md:mt-0"
         src={
           currentLang === "en"
             ? en
@@ -72,7 +71,7 @@ export const LangSelect: React.FC = () => {
       {isDropdownOpen && (
         <animated.div
           style={dropdownAnimation}
-          className="flex absolute top-[45px] left-[1.5px] md:-left-[5px] z-30 flex-col  w-14  pl-[7px] pt-3 "
+          className="flex absolute top-[45px] left-[3px] md:-left-[8px] z-30 flex-col  w-12 pl-[9px] pt-3 "
         >
           {currentLang === "en" ? (
             <div >
