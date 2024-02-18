@@ -1,5 +1,5 @@
 import Head from "next/head";
-import React from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { toast } from "react-toastify";
@@ -14,6 +14,7 @@ import { isValidEmail, isValidPassword } from "@/constant/ValidRegex";
 import { useFormik } from "formik";
 import { FormValues } from "@/interfaces";
 import { signupUser } from "@/services";
+import { LuEye, LuEyeOff } from "react-icons/lu";
 
 const RegisterPage: React.FC = () => {
   const { t } = useTranslation("common");
@@ -38,14 +39,14 @@ const RegisterPage: React.FC = () => {
 
     if (!values.password) {
       errors.password = t("Required");
-    } 
-    else if (!isValidPassword(values.password)) {
+    } else if (!isValidPassword(values.password)) {
       errors.password = t("passwordFormik");
     }
 
     return errors;
   };
   const { push } = useRouter();
+  const [showPassword, setShowPassword] = useState<boolean>(false);
 
   const { mutate: signup } = useMutation({
     mutationFn: signupUser,
@@ -188,13 +189,24 @@ const RegisterPage: React.FC = () => {
                 <input
                   id="password"
                   name="password"
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   value={formik.values.password}
                   placeholder={t("E-mail")}
                   className="pl-3 sm:h-68px rounded-5 bg-clientInput w-full h-14 text-lg font-medium"
                 />
+                {showPassword ? (
+                  <LuEyeOff
+                    className="absolute right-[3%] bottom-[8%] md:bottom-[12%]  text-[42px] text-red-500 dark:text-green-700 cursor-pointer hover:scale-105 transition-all duration-700"
+                    onClick={() => setShowPassword(false)}
+                  />
+                ) : (
+                  <LuEye
+                    className="absolute right-[3%] bottom-[8%] md:bottom-[12%]  text-[42px] text-red-500 dark:text-green-700 cursor-pointer hover:scale-105 transition-all duration-700"
+                    onClick={() => setShowPassword(true)}
+                  />
+                )}
                 {formik.touched.password && formik.errors.password ? (
                   <div className="text-red-500 dark:text-red-400  font-bold pt-1 absolute">
                     {formik.errors.password}

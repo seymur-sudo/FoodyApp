@@ -137,9 +137,17 @@ const ProfileUser = () => {
               htmlFor="user_img"
               className="flex flex-col items-center justify-center w-full rounded-[14px]  cursor-pointer  "
             >
-              {userD?.data.user.img_url ? (
+              {newImg ? (
                 <Image
-                  src={newImg ?? userD?.data.user.img_url}
+                  src={newImg}
+                  height={150}
+                  width={150}
+                  alt="Uploaded Image"
+                  className="rounded-full w-[146px] h-[146px] object-cover"
+                />
+              ) : userD?.data.user.img_url ? (
+                <Image
+                  src={userD?.data.user.img_url}
                   height={150}
                   width={150}
                   alt="Uploaded Image"
