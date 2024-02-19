@@ -20,11 +20,12 @@ import usePagination from "@/components/Admin/Pagination";
 import PaginationControls from "@/components/Admin/Pagination/PaginationControls";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "next-i18next";
+import { QUERIES } from "../../../constant/Queries";
 
 type SortingValue = "A-Z" | "Z-A" | "Low-to-High" | "High-to-Low";
 
 const Offers: React.FC = () => {
-  const { data, isLoading, isError } = useQuery("offers", getOffer, {
+  const { data } = useQuery(QUERIES.Offers, getOffer, {
     refetchOnWindowFocus: false,
   });
   const { setShow, setLastOffer, setshowDelete, isAdmin } =

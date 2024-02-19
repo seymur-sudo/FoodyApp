@@ -23,9 +23,7 @@ export const Aside: React.FC = () => {
     setTimeout(() => {
       router.push(ROUTER.ADMIN_LOGIN);
     }, 1000);
-    setTimeout(() => {
-      window.location.reload();
-    }, 4000);
+
   };
   return (
     <div className=" flex flex-col  bg-bgc">

@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import Image from "next/image";
 import loginImg from "../../../public/svgs/LoginImg.svg";
 import { GetServerSideProps } from "next";
-import LoadingImg from "../../../public/loadingImg.gif";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "next-i18next";
 import { useMutation } from "react-query";
@@ -14,9 +13,6 @@ import { isValidEmail } from "@/constant/ValidRegex";
 import { signInUser } from "@/services";
 import { useFormik } from "formik";
 import { FormValues } from "@/interfaces";
-import { getUser } from "@/services";
-import { QUERIES } from "../../../constant/Queries";
-import { useQuery } from "react-query";
 import Head from "next/head";
 import { LangSelect } from "@/components/Admin/Langs";
 import { LuEye, LuEyeOff } from "react-icons/lu";
@@ -45,9 +41,6 @@ const Login: React.FC = () => {
 
     return errors;
   };
-  const { data: userID } = useQuery(QUERIES.User, getUser);
-  let userEmail =
-    userID && userID.data && userID.data.user ? userID.data.user.email : null;
 
   const { push } = useRouter();
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -59,10 +52,10 @@ const Login: React.FC = () => {
         localStorage.setItem("access_token", data?.data.user.access_token);
         setTimeout(() => {
           push(ROUTER.ADMIN);
-        }, 100);
+        }, 1000);
         setTimeout(() => {
           window.location.reload();
-        }, 6000);
+        }, 3000);
         toast.success("Signin successfully!", { autoClose: 1000 });
       } else {
         toast.error("Please, Enter Correct Email and Password! ", {
@@ -96,109 +89,99 @@ const Login: React.FC = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="bg-bgc h-screen">
-        {!userEmail ? (
-          <>
-            <h1 className="ml-9px text-24 pt-[4] sm:pt-57px sm:ml-32px font-mukta font-weight800 sm:text-28 text-logocolor">
-              <p className="text-logocolor font-mukta text-3xl font-extrabold leading-6 tracking-wider">
-                Foody
-                <span className="text-logodotcolor text-4xl font-extrabold leading-6 tracking-wider">
-                  .
-                </span>
-              </p>
-            </h1>
-            <div className="flex justify-center mt-75px sm:mt-110px">
-              <div className="flex flex-col-reverse sm:flex-row">
-                <form
-                  className="sm:bg-loginBgc flex flex-col "
-                  onSubmit={formik.handleSubmit}
-                >
-                  <h1 className="sm:mt-58px mt-18px mb-23px font-montserrat text-center text-24 sm:text-35 text-gray1 font-bold sm:ml-40px sm:mr-48px sm:mb-40px tracking-wider">
-                    {t("Welcome Admin")}
-                  </h1>
-                  <div>
-                    <div className="">
+        <>
+          <h1 className="ml-9px text-24 pt-[4] sm:pt-57px sm:ml-32px font-mukta font-weight800 sm:text-28 text-logocolor">
+            <p className="text-logocolor font-mukta text-3xl font-extrabold leading-6 tracking-wider">
+              Foody
+              <span className="text-logodotcolor text-4xl font-extrabold leading-6 tracking-wider">
+                .
+              </span>
+            </p>
+          </h1>
+          <div className="flex justify-center mt-75px sm:mt-110px">
+            <div className="flex flex-col-reverse sm:flex-row">
+              <form
+                className="sm:bg-loginBgc flex flex-col "
+                onSubmit={formik.handleSubmit}
+              >
+                <h1 className="sm:mt-58px mt-18px mb-23px font-montserrat text-center text-24 sm:text-35 text-gray1 font-bold sm:ml-40px sm:mr-48px sm:mb-40px tracking-wider">
+                  {t("Welcome Admin")}
+                </h1>
+                <div>
+                  <div className="">
+                    <input
+                      id="email"
+                      name="email"
+                      type="email"
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      value={formik.values.email}
+                      placeholder={t("E-mail")}
+                      className="w-full md:w-9/12 sm:pl-40px pl-19px inline mx-auto h-resinput py-5 md:py-0 rounded-[4px]  text-14 sm:text-18 items-center text-gray1 font-weight400 sm:rounded-4 sm:ml-47px sm:mr-58px sm:w-318 bg-inputBg sm:h-input "
+                    />
+                    {formik.touched.email && formik.errors.email ? (
+                      <div className="text-red-500 dark:text-red-400 text-sm ml-0 md:ml-12 mt-1 md:-mb-6  font-bold tracking-wider">
+                        {formik.errors.email}
+                      </div>
+                    ) : null}
+                  </div>
+                  <div className="my-6 md:my-9">
+                    <div className="relative">
                       <input
-                        id="email"
-                        name="email"
-                        type="email"
+                        id="password"
+                        name="password"
+                        type={showPassword ? "text" : "password"}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
-                        value={formik.values.email}
-                        placeholder={t("E-mail")}
-                        className="w-full md:w-9/12 sm:pl-40px pl-19px inline mx-auto h-resinput py-5 md:py-0 rounded-[4px]  text-14 sm:text-18 items-center text-gray1 font-weight400 sm:rounded-4 sm:ml-47px sm:mr-58px sm:w-318 bg-inputBg sm:h-input "
+                        value={formik.values.password}
+                        placeholder={t("Password")}
+                        className="w-full md:w-9/12  sm:pl-40px pl-19px  inline mx-auto h-resinput py-5 md:py-0 rounded-[4px] text-14 sm:text-18 items-center text-gray1 font-weight400 sm:rounded-4 sm:ml-47px sm:mr-58px sm:w-318 bg-inputBg sm:h-input "
                       />
-                      {formik.touched.email && formik.errors.email ? (
-                        <div className="text-red-500 dark:text-red-400 text-sm ml-0 md:ml-12 mt-1 md:-mb-6  font-bold tracking-wider">
-                          {formik.errors.email}
-                        </div>
-                      ) : null}
-                    </div>
-                    <div className="my-6 md:my-9">
-                      <div className="relative">
-                        <input
-                          id="password"
-                          name="password"
-                          type={showPassword ? "text" : "password"}
-                          onChange={formik.handleChange}
-                          onBlur={formik.handleBlur}
-                          value={formik.values.password}
-                          placeholder={t("Password")}
-                          className="w-full md:w-9/12  sm:pl-40px pl-19px  inline mx-auto h-resinput py-5 md:py-0 rounded-[4px] text-14 sm:text-18 items-center text-gray1 font-weight400 sm:rounded-4 sm:ml-47px sm:mr-58px sm:w-318 bg-inputBg sm:h-input "
+                      {showPassword ? (
+                        <LuEyeOff
+                          className="absolute right-[6%] bottom-[10%] md:right-[15%]  text-3xl md:text-4xl text-inputMain cursor-pointer hover:scale-105 transition-all duration-500"
+                          onClick={() => setShowPassword(false)}
                         />
-                        {showPassword ? (
-                          <LuEyeOff
-                            className="absolute right-[6%] bottom-[10%] md:right-[15%]  text-3xl md:text-4xl text-inputMain cursor-pointer hover:scale-105 transition-all duration-500"
-                            onClick={() => setShowPassword(false)}
-                          />
-                        ) : (
-                          <LuEye
-                            className="absolute right-[6%] bottom-[10%] md:right-[15%]  text-3xl md:text-4xl text-inputMain cursor-pointer hover:scale-105 transition-all duration-500"
-                            onClick={() => setShowPassword(true)}
-                          />
-                        )}
-                      </div>
-                      {formik.touched.password && formik.errors.password ? (
-                        <div className="text-red-500 dark:text-red-400 text-sm ml-0 md:ml-12 mt-1 md:-mb-6 font-bold tracking-wider">
-                          {formik.errors.password}
-                        </div>
-                      ) : null}
-                    </div>
-                    <button
-                      type="submit"
-                      className="text-white w-full md:w-9/12 rounded-5 sm:rounded-4 sm:mb-58px sm:ml-47px sm:mr-58px font-medium text-14 sm:text-xl hover:bg-pink00 bg-loginBtn max-h-[45px] min-h-[45px] md:max-h-[50px] md:min-h-[50px] hover:opacity-75 transition-all duration-500 "
-                    >
-                      {formik.isSubmitting ? (
-                        <div className="flex justify-center items-center mx-0 my-auto ">
-                          <FadeLoader color="#fff" height={3} width={15} />
-                        </div>
                       ) : (
-                        t("Login")
+                        <LuEye
+                          className="absolute right-[6%] bottom-[10%] md:right-[15%]  text-3xl md:text-4xl text-inputMain cursor-pointer hover:scale-105 transition-all duration-500"
+                          onClick={() => setShowPassword(true)}
+                        />
                       )}
-                    </button>
+                    </div>
+                    {formik.touched.password && formik.errors.password ? (
+                      <div className="text-red-500 dark:text-red-400 text-sm ml-0 md:ml-12 mt-1 md:-mb-6 font-bold tracking-wider">
+                        {formik.errors.password}
+                      </div>
+                    ) : null}
                   </div>
-                </form>
-                <div className="flex sm:w-405 sm:bg-white justify-center relative ">
-                  <div className="absolute top-[-40px] right-[-10px]  md:right-[10px] md:top-2">
-                    <LangSelect />
-                  </div>
-                  <Image
-                    src={loginImg}
-                    className="w-174 sm:w-346  sm:mt-55 sm:ml-30 sm:mb-52 sm:mr-30"
-                    alt="login img"
-                  />
+                  <button
+                    type="submit"
+                    className="text-white w-full md:w-9/12 rounded-5 sm:rounded-4 sm:mb-58px sm:ml-47px sm:mr-58px font-medium text-14 sm:text-xl hover:bg-pink00 bg-loginBtn max-h-[45px] min-h-[45px] md:max-h-[50px] md:min-h-[50px] hover:opacity-75 transition-all duration-500 "
+                  >
+                    {formik.isSubmitting ? (
+                      <div className="flex justify-center items-center mx-0 my-auto ">
+                        <FadeLoader color="#fff" height={3} width={15} />
+                      </div>
+                    ) : (
+                      t("Login")
+                    )}
+                  </button>
                 </div>
+              </form>
+              <div className="flex sm:w-405 sm:bg-white justify-center relative ">
+                <div className="absolute top-[-40px] right-[-10px]  md:right-[10px] md:top-2">
+                  <LangSelect />
+                </div>
+                <Image
+                  src={loginImg}
+                  className="w-174 sm:w-346  sm:mt-55 sm:ml-30 sm:mb-52 sm:mr-30"
+                  alt="login img"
+                />
               </div>
             </div>
-          </>
-        ) : (
-          <Image
-            alt="LoadingImg"
-            height={1000}
-            width={1000}
-            className="h-screen w-screen"
-            src={LoadingImg}
-          />
-        )}
+          </div>
+        </>
       </div>
     </>
   );
