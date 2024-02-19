@@ -55,7 +55,7 @@ export const SidebarContextProvider: React.FC<ChildrenNode> = ({
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
   useEffect(() => {
     setIsAdmin(userEmail === "coder@gmail.com");
-  }, [userID]);
+  }, [userID, userEmail]);
 
   const basketProducts = basket?.data.result.data;
   const basketProductsItems = basket?.data.result.data.items;
