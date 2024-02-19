@@ -44,7 +44,7 @@ const Products: React.FC = () => {
     setDeletedItem(product);
   };
 
-  const { data, isLoading, isError } = useQuery(QUERIES.Products, getProduct);
+  const { data } = useQuery(QUERIES.Products, getProduct);
   const productsData = data?.data.result.data;
 
   useEffect(() => {
@@ -54,13 +54,7 @@ const Products: React.FC = () => {
     AOS.refresh();
   }, [data]);
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
 
-  if (isError) {
-    return <div>Error loading products</div>;
-  }
   const handleShowMore = () => {
     setShowCount((prevCount) => prevCount + 4);
   };

@@ -58,13 +58,7 @@ const Offers: React.FC = () => {
     setLastOffer(offer);
   };
 
-  // if (isLoading) {
-  //   return <div>Loading...</div>;
-  // }
-
-  // if (isError) {
-  //   return <div>Error loading products</div>;
-  // }
+ 
 
   return (
     <>

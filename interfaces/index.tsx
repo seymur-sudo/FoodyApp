@@ -74,6 +74,7 @@ export interface SidebarContextProps {
   basketProducts: BasketPostDataType | null;
   basketProductsItems: BasketPostDataType[] | undefined;
   isAdmin: boolean;
+  setIsAdmin: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export interface ChartData {

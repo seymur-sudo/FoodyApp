@@ -38,7 +38,7 @@ const Category: React.FC = () => {
   const resetSorting = () => {
     setSortingValue("A-Z");
   };
-  const { data, isLoading, isError } = useQuery(
+  const { data } = useQuery(
     QUERIES.Categories,
     getCategory
   );
@@ -67,13 +67,7 @@ const Category: React.FC = () => {
     setDeletedCategory(category);
   };
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
 
-  if (isError) {
-    return <div>Error loading products</div>;
-  }
 
   return (
     <>

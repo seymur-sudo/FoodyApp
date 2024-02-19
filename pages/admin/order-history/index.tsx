@@ -66,13 +66,7 @@ const OrderHistory: React.FC = () => {
     sortedProducts.sort((a, b) => (b.amount || 0) - (a.amount || 0));
   }
 
-  // if (isLoading) {
-  //   return <div>Loading...</div>;
-  // }
 
-  // if (isError) {
-  //   return <div>Error loading products</div>;
-  // }
 
   return (
     <>

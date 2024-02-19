@@ -19,11 +19,28 @@ import { SidebarContextProps } from "@/interfaces";
 import { useSidebarContext } from "@/contexts/SidebarContext";
 import Image from "next/image";
 import LoadingImg from "../../public/loadingImg.gif";
+import React, { useEffect } from "react";
+import { getUser } from "@/services";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const AdminDashboard: NextPage = () => {
-  const { isAdmin } = useSidebarContext() as SidebarContextProps;
+  const { isAdmin, setIsAdmin } = useSidebarContext() as SidebarContextProps;
+  useEffect(() => {
+    const checkAdminStatus = async () => {
+      try {
+        const response = await getUser();
+        const userEmail = response?.data.user.email;
+        const isAdmin = userEmail === "coder@gmail.com";
+        setIsAdmin(isAdmin);
+      } catch (error) {
+        console.error("Error checking admin status:", error);
+        setIsAdmin(false);
+      }
+    };
+
+    checkAdminStatus();
+  }, [setIsAdmin]);
 
   const { t } = useTranslation("common");
   return (
@@ -42,8 +59,9 @@ const AdminDashboard: NextPage = () => {
                   <h1 className="text-gray1 text-xl font-medium capitalize   m-4">
                     {t("Orders")}
                   </h1>
-                  <div className="flex justify-center  pb-3" ><Doughnut data={data} /></div>
-                  
+                  <div className="flex justify-center  pb-3">
+                    <Doughnut data={data} />
+                  </div>
                 </div>
 
                 <div className="w-full    md:w-7/12 mb-[6%] md:mb-[3%] p-3  md:p-5   flex flex-col rounded-[14px] bg-bgg">
