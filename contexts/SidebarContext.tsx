@@ -247,6 +247,7 @@ export const SidebarContextProvider: React.FC<ChildrenNode> = ({
     deletedBasket,
     setDeletedBasket,
     isAdmin,
+    setIsAdmin,
   };
 
   const Component = SidebarContext.Provider;

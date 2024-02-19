@@ -181,6 +181,8 @@
   "Welcome Admin": "Bienvenue",
   "Required": "Requis",
   "Min": "Min",
+  "Online":"Enligne",
+  "FoodyChat":"FoodyChatte",
   "Invalid email address": "Adresse e-mail invalide",
   "passwordFormik": "Doit contenir au moins une lettre ou un chiffre. Longueur entre 5 et 10",
   "This is not Admin email": "Ce nest pas un e-mail dadministrateur",

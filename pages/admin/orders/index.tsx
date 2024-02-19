@@ -39,8 +39,6 @@ const Orders: React.FC = () => {
   const { t } = useTranslation("common");
   const {
     data: orders,
-    isLoading,
-    isError,
   } = useQuery(QUERIES.Order, getOrders);
   const [sortingValue, setSortingValue] = useState<SortingValue>("A-Z");
   const resetSorting = () => {
@@ -77,13 +75,7 @@ const Orders: React.FC = () => {
     sortedProducts.sort((a, b) => (b.amount || 0) - (a.amount || 0));
   }
 
-  // if (isLoading) {
-  //   return <div>Loading...</div>;
-  // }
 
-  // if (isError) {
-  //   return <div>Error loading products</div>;
-  // }
 
   return (
     <>

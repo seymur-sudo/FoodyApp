@@ -52,11 +52,8 @@ const Login: React.FC = () => {
         localStorage.setItem("access_token", data?.data.user.access_token);
         setTimeout(() => {
           push(ROUTER.ADMIN);
-        }, 1000);
-        setTimeout(() => {
-          window.location.reload();
         }, 3000);
-        toast.success("Signin successfully!", { autoClose: 1000 });
+        toast.success("Welcome Admin!", { autoClose: 2000 });
       } else {
         toast.error("Please, Enter Correct Email and Password! ", {
           autoClose: 1000,
