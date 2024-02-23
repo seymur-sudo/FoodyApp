@@ -30,7 +30,6 @@ const SearchFilter = () => {
     const filteredRestaurants = (restaurants || []).filter(
       (restaurant: RestaurantPostDataType) =>
         restaurant.name?.toLowerCase().includes(term.toLowerCase()) ||
-        // restaurant.category_id?.toLowerCase().includes(term.toLowerCase()) ||
         restaurant.cuisine?.toLowerCase().includes(term.toLowerCase())
     );
 
@@ -84,7 +83,7 @@ const SearchFilter = () => {
 
                 <div className="w-5/12 cursor-pointer">
                   <p className="text-black dark:text-sky-400 font-semibold text-xl">
-                    {restaurant?.name?.slice(0,20)}...
+                    {restaurant?.name?.slice(0, 20)}...
                   </p>
                   <p className="text-gray-600 dark:text-cyan-400 font-medium text-lg">
                     {restaurant?.cuisine}

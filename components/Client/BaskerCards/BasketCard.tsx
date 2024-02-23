@@ -71,7 +71,7 @@ const ProductCard: React.FC<ProductCardType> = ({ product }) => {
             <span className="capitalize mr-2 hidden md:block text-[#828282] dark:text-cyan-300 text-[14px] font-semibold">
               from
             </span>
-            <span className="capitalize  md:mr-0 w-8/12  text-[#4F4F4F] dark:text-cyan-400 md:text-[18px] font-semibold">
+            <span className="capitalize  md:mr-0 w-10/12 md:w-8/12  text-[#4F4F4F] dark:text-cyan-400 md:text-[18px] font-semibold">
               $ {product.price}
             </span>
           </p>

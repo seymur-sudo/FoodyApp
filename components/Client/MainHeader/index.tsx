@@ -32,7 +32,7 @@ const MainHeader: React.FC = () => {
   const { toggleTheme } = useThemeContext() as ThemeContextProps;
   const { t } = useTranslation("common");
   const router = useRouter();
-  const [isLogin, setIslogin] = useState<boolean>(false);
+  // const [isLogin, setIslogin] = useState<boolean>(false);
   const { data: userID } = useQuery(QUERIES.User, getUser);
   const { data: basket } = useQuery(QUERIES.Basket, getBasket);
   const basketProducts = basket?.data.result.data;
@@ -47,13 +47,13 @@ const MainHeader: React.FC = () => {
     }, 4000);
   };
   useEffect(() => {
-    const acc_token = localStorage.getItem("access_token");
+    // const acc_token = localStorage.getItem("access_token");
 
-    if (!acc_token) {
-      setIslogin(false);
-    } else {
-      setIslogin(true);
-    }
+    // if (!acc_token) {
+    //   setIslogin(false);
+    // } else {
+    //   setIslogin(true);
+    // }
     if (userID?.data.user.img_url) {
       setImageURL(userID?.data.user.img_url);
     } else if (newImg) {
@@ -67,7 +67,7 @@ const MainHeader: React.FC = () => {
     <div className="sm:h-[120px] h-[52px] sm:mt-[30px] sm:mx-[30px] flex items-center rounded-t-5 justify-between flex-row bg-[#F3F4F6]  dark:bg-gray-900 font-body tracking-wide">
       <div className="flex items-center">
         <LuMenu
-          size={"30px"}
+          size={30}
           onClick={() => setNavbarOpen(!isNavbarOpen)}
           className="text-black sm:hidden block ml-4 mr-3 cursor-pointer dark:text-white"
         />
@@ -176,7 +176,7 @@ const MainHeader: React.FC = () => {
               <Dropdown className="">
                 <DropdownTrigger>
                   <Image
-                    alt=""
+                    alt="imageURL"
                     width={100}
                     height={100}
                     src={imageURL ? imageURL : profileImg}

@@ -53,7 +53,7 @@ const ClientNavbar: React.FC = () => {
       <div className="h-full z-50 duration-500 w-fit dark:bg-[#272727] bg-white font-poppins">
         <div className="flex pt-4 mb-8 flex-row">
           <MdClose
-            size={"30px"}
+            size={30}
             onClick={closeNavbar}
             className=" text-black dark:text-white cursor-pointer ml-4 mt-4"
           />

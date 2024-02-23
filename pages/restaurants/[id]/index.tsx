@@ -148,11 +148,11 @@ const ResDetail = () => {
                   </p>
                 </div>
                 <div className="flex items-center w-full py-2">
-                  <button className="  bg-white text-[#D63626] hover:opacity-75 transition-all duration-500 flex flex-col items-start justify-center  h-12  px-2 text-sm font-medium rounded-[4px] border-2 border-[#D63626] dark:border-cyan-300">
+                  <button className="  bg-white text-[#D63626] dark:text-blue-900 hover:opacity-75 transition-all duration-500 flex flex-col items-start justify-center  h-12  px-2 text-sm font-medium rounded-[4px] border-2 border-[#D63626] dark:border-cyan-300">
                     <span>$ {singleRestaurant?.delivery_price}</span>
                     <span>{t("Delivery")}</span>
                   </button>
-                  <button className="  ml-[5%] bg-[#D63626] dark:bg-cyan-300 text-[#fff] hover:opacity-75 transition-all duration-500 flex  items-center capitalize h-12 px-2 text-sm font-medium rounded-[4px] border-2 border-[#D63626] dark:border-cyan-300">
+                  <button className="  ml-[5%] bg-[#D63626] dark:bg-cyan-300 text-[#fff] dark:text-blue-900 hover:opacity-75 transition-all duration-500 flex  items-center capitalize h-12 px-2 text-sm font-medium rounded-[4px] border-2 border-[#D63626] dark:border-cyan-300">
                     <span>{t("Go Back")}</span>
                   </button>
                 </div>
@@ -181,7 +181,7 @@ const ResDetail = () => {
                     </option>
                   </select>
                   <button
-                    className="ml-4 px-4 py-[6px] w-2/12  md:w-2/12 rounded-md cursor-pointer bg-red-600 dark:bg-sky-500 text-gray-100 hover:opacity-75 transition-all duration-500"
+                    className="ml-4 px-4 py-[6px] w-2/12  md:w-2/12 rounded-md cursor-pointer bg-red-600 dark:bg-blue-600 text-gray-100 hover:opacity-75 transition-all duration-500"
                     onClick={resetSorting}
                   >
                     {t("Reset")}
