@@ -238,7 +238,7 @@ const ResDetail = () => {
                     top: "25vh",
                     zIndex: 50,
                   }}
-                  className="bg-white dark:bg-gray-800 rounded-t-[20px] flex flex-col w-[88%]   max-h-[45vh] overflow-y-auto items-center justify-start md:hidden asideScroll"
+                  className="bg-white dark:bg-gray-800 rounded-[4px] flex flex-col w-[88%]   max-h-[45vh] overflow-y-auto items-center justify-start md:hidden asideScroll"
                 >
                   <div className="mt-4" onClick={closeUserModal}>
                     <IoIosCloseCircleOutline

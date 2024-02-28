@@ -88,14 +88,12 @@ const UserOrders = () => {
     let totalVat: number = 0;
     page.drawText("Foody Delivery ©", {
       x: 55,
-      y: pageHeight - 40, // Sayfanın üst kısmında daha büyük bir yazı başlığı için y koordinatını ayarlayın
+      y: pageHeight - 40,
       size: 18,
-      font: await pdfDoc.embedFont("Helvetica-Bold"), // Kalın yazı tipi
-      color: rgb(0, 0, 0), // Siyah renk
+      font: await pdfDoc.embedFont("Helvetica-Bold"),
+      color: rgb(0, 0, 0),
     });
-    // Veri dizisindeki her bir öğe için işlem yap
     data.map(async (item: orderItem) => {
-      // Diğer verileri yazdır
       page.drawText(`Name: ${item.name}`, {
         x: 20,
         y: y,
@@ -256,7 +254,7 @@ const UserOrders = () => {
                 top: "25vh",
                 zIndex: 50,
               }}
-              className="bg-white dark:bg-gray-800 rounded-t-[20px] flex flex-col w-11/12 md:w-6/12 max-h-[45vh] overflow-y-auto items-center justify-start  asideScroll"
+              className="bg-white dark:bg-gray-800 rounded-[4px] flex flex-col w-11/12 md:w-6/12 max-h-[45vh] overflow-y-auto items-center justify-start  asideScroll"
             >
               <div className="my-2" onClick={closeUserModal}>
                 <IoIosCloseCircleOutline
@@ -321,19 +319,6 @@ const UserOrders = () => {
                 </tbody>
               </table>
             </animated.div>
-            <animated.div
-              style={{
-                position: "fixed",
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
-                backgroundColor: "black",
-                zIndex: 40,
-                opacity: 0,
-              }}
-              onClick={closeUserModal}
-            />
           </>
         )}
 
@@ -360,7 +345,7 @@ const UserOrders = () => {
             {t("Your Orders")}
           </h1>
 
-          <div className=" overflow-x-auto shadow-md sm:rounded-lg p-6  min-h-[40vh] ">
+          <div className=" overflow-x-auto shadow-md  p-6  min-h-[40vh] ">
             <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 ">
               <thead className="font-semibold text-gray-700 capitalize bg-white dark:bg-gray-700 dark:text-gray-400">
                 <tr>
