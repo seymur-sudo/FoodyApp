@@ -64,7 +64,7 @@ const AdminDashboard: NextPage = () => {
                   </div>
                 </div>
 
-                <div className="w-full    md:w-7/12 mb-[6%] md:mb-[3%] p-3  md:p-5   flex flex-col rounded-[14px] bg-bgg">
+                <div className="w-full  h-[67vh]   md:w-7/12 mb-[6%] md:mb-[3%] p-3  md:p-5   flex flex-col rounded-[14px] bg-bgg">
                   <h1 className="text-gray1 text-xl font-medium capitalize">
                     {t("Total Salary")}
                   </h1>
@@ -79,7 +79,7 @@ const AdminDashboard: NextPage = () => {
                   <ChartWeek />
                 </div>
 
-                <div className="w-full    md:w-4/12  mb-[6%] md:mb-[3%] p-3  md:p-5 flex flex-col rounded-[14px] bg-bgg ">
+                <div className="w-full  h-[67vh]    md:w-4/12  mb-[6%] md:mb-[3%] p-3  md:p-5 flex flex-col rounded-[14px] bg-bgg ">
                   <h1 className="text-gray1 text-xl font-medium capitalize ">
                     {t("Users Rate")}
                   </h1>

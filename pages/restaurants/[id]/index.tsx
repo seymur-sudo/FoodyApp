@@ -152,8 +152,10 @@ const ResDetail = () => {
                     <span>$ {singleRestaurant?.delivery_price}</span>
                     <span>{t("Delivery")}</span>
                   </button>
-                  <button className="  ml-[5%] bg-[#D63626] dark:bg-cyan-300 text-[#fff] dark:text-blue-900 hover:opacity-75 transition-all duration-500 flex  items-center capitalize h-12 px-2 text-sm font-medium rounded-[4px] border-2 border-[#D63626] dark:border-cyan-300">
-                    <span>{t("Go Back")}</span>
+                  <button  onClick={() => router.push(ROUTER.RESTAURANTS)} className="ml-[5%] bg-[#D63626] dark:bg-cyan-300 text-[#fff] dark:text-blue-900 hover:opacity-75 transition-all duration-500 flex  items-center capitalize h-12 px-2 text-sm font-medium rounded-[4px] border-2 border-[#D63626] dark:border-cyan-300">
+                    <span >
+                      {t("Go Back")}
+                    </span>
                   </button>
                 </div>
               </div>

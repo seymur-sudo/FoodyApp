@@ -124,7 +124,8 @@ const Home: NextPage = () => {
               >
                 {t("Register")}
               </button>
-              <button className="font-medium text-[25px] px-[43px] py-[12px] w-3/6 md:w-full  mb-5  mx-auto text-[#828282] border-[2px] border-solid rounded-[30px] border-[#828282] cursor-pointer  transition-all duration-500">
+                
+              <button onClick={() => push(ROUTER.USER_CHECKOUT)} className="font-medium text-[25px] px-[43px] py-[12px] w-3/6 md:w-full  mb-5  mx-auto text-[#828282] border-[2px] border-solid rounded-[30px] border-[#828282] cursor-pointer  transition-all duration-500">
                 {t("Order now")}
               </button>
             </div>
@@ -270,7 +271,6 @@ const Home: NextPage = () => {
           >
             <Image className="" alt="" src={card1} />
             <p className="text-[30px] sm:px-6 dark:text-white py-2 text-[#4F4F4F] font-bold">
-           
               {t("Fast Home Delivery")}
             </p>
             <p className="text-[18px] mx-5 mb-15 text-[#4F4F4F] font-normal">
