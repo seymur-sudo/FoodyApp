@@ -141,7 +141,7 @@ const Restaurants = () => {
                 top: "25vh",
                 zIndex: 50,
               }}
-              className="bg-white dark:bg-gray-800 rounded-t-[20px] flex flex-col w-10/12 max-h-[45vh] overflow-y-auto items-center justify-start md:hidden asideScroll"
+              className="bg-white dark:bg-gray-800 rounded-[4px] flex flex-col w-10/12 max-h-[45vh] overflow-y-auto items-center justify-start md:hidden asideScroll"
             >
               <div className="my-4" onClick={closeUserModal}>
                 <IoIosCloseCircleOutline
@@ -207,7 +207,7 @@ const Restaurants = () => {
                   data-aos-delay={200}
                   key={restaurant.id}
                 >
-                  <div className="capitalize flex flex-col items-center md:items-start  w-full ">
+                  <div className="capitalize flex flex-col items-center md:items-start  w-full mt-[2px]">
                     <Image
                       onClick={() =>
                         push(`${ROUTER.RESTAURANTS}/${restaurant.id}`)
@@ -216,7 +216,7 @@ const Restaurants = () => {
                       alt={`Image for restaurant ${restaurant.name}`}
                       width={500}
                       height={200}
-                      className="hover:scale-105 transition-all duration-500 w-full cursor-pointer  h-[160px] object-cover"
+                      className="hover:scale-105 transition-all duration-500 w-full cursor-pointer  h-[171px] object-cover"
                     />
 
                     <h1 className="text-[#1E1E30] dark:text-gray-200 text-[24px] md:text-[18px] mt-3 mb-2 px-2">

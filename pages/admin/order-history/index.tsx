@@ -91,7 +91,7 @@ const OrderHistory: React.FC = () => {
                         top: "25vh",
                         zIndex: 50,
                       }}
-                      className="bg-white dark:bg-gray-800 rounded-t-[20px] flex flex-col w-11/12 md:w-6/12 max-h-[45vh] overflow-y-auto items-center justify-start  asideScroll"
+                      className="bg-white dark:bg-gray-800 rounded-[4px] flex flex-col w-11/12 md:w-6/12 max-h-[45vh] overflow-y-auto items-center justify-start  asideScroll"
                     >
                       <div className="my-2" onClick={closeUserModal}>
                         <IoIosCloseCircleOutline
@@ -177,7 +177,7 @@ const OrderHistory: React.FC = () => {
                 </button>
               </div>
 
-              <div className=" overflow-x-auto shadow-md sm:rounded-lg">
+              <div className=" overflow-x-auto shadow-md ">
                 <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                   <thead className="text-xs text-gray-700 capitalize bg-gray-50 dark:bg-gray-900 dark:text-gray-400">
                     <tr>
