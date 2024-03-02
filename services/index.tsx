@@ -332,3 +332,6 @@ export const signInUser = (values: FormValues): AxiosPromise<any> => {
     data: values,
   });
 };
+
+export const getProducts = (restaurantId: string | number): AxiosPromise<ApiResponse> =>
+  instanceAxios({ method: "GET", url: `${ENDPOINTS.PRODUCT}/${restaurantId}` });

@@ -83,7 +83,7 @@ const UserOrders = () => {
     const imageLogoBytes = await responseLogo.arrayBuffer();
     const jpegLogoImage = await pdfDoc.embedJpg(imageLogoBytes);
 
-    let y = pageHeight - 80; // Y koordinatı
+    let y = pageHeight - 80; 
     let total: number = 0;
     let totalVat: number = 0;
     page.drawText("Foody Delivery ©", {
@@ -186,6 +186,7 @@ const UserOrders = () => {
     link.download = "OrderBill.pdf";
     link.click();
   };
+  
   const openDeleteModal = (orderData: OrderPostDataType | null) => {
     setshowDelete(true);
     setDeletedOrder(orderData);
