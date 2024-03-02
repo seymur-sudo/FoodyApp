@@ -126,7 +126,7 @@ const UserCheckout = () => {
           setOrderAdded(true);
         }, 2000);
         setTimeout(() => {
-          push(ROUTER.HOME);
+          push(ROUTER.RESTAURANTS);
         }, 4000);
       }
     }, 100);

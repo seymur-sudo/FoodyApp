@@ -69,6 +69,20 @@ const ResDetail = () => {
   const singleRestaurant = restaurantData?.data.result.data;
   const restaurantProducts = products?.data.result.data;
 
+  const singleRestaurants = restaurantData?.data.result.data.products;
+
+  console.log("singleRestaurants",singleRestaurants)
+
+  
+  // console.log("restaurantProducts",restaurantProducts)
+  //   const { data: product } = useQuery([QUERIES.Products, id], () =>
+  //   getProducts(id as string)
+  // );
+  // const productsData = product?.data.result.data;
+  // console.log("product", productsData);
+
+  
+
   const filteredProducts = restaurantProducts?.filter(
     (product) =>
       singleRestaurant?.name &&
@@ -76,6 +90,9 @@ const ResDetail = () => {
         .toLowerCase()
         .includes(singleRestaurant.name.toLowerCase())
   );
+
+
+
 
   const handleSortProducts = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSortingValue(event.target.value as SortingValue);
@@ -152,10 +169,11 @@ const ResDetail = () => {
                     <span>$ {singleRestaurant?.delivery_price}</span>
                     <span>{t("Delivery")}</span>
                   </button>
-                  <button  onClick={() => router.push(ROUTER.RESTAURANTS)} className="ml-[5%] bg-[#D63626] dark:bg-cyan-300 text-[#fff] dark:text-blue-900 hover:opacity-75 transition-all duration-500 flex  items-center capitalize h-12 px-2 text-sm font-medium rounded-[4px] border-2 border-[#D63626] dark:border-cyan-300">
-                    <span >
-                      {t("Go Back")}
-                    </span>
+                  <button
+                    onClick={() => router.push(ROUTER.RESTAURANTS)}
+                    className="ml-[5%] bg-[#D63626] dark:bg-cyan-300 text-[#fff] dark:text-blue-900 hover:opacity-75 transition-all duration-500 flex  items-center capitalize h-12 px-2 text-sm font-medium rounded-[4px] border-2 border-[#D63626] dark:border-cyan-300"
+                  >
+                    <span>{t("Go Back")}</span>
                   </button>
                 </div>
               </div>
@@ -238,7 +256,7 @@ const ResDetail = () => {
                     top: "25vh",
                     zIndex: 50,
                   }}
-                  className="bg-white dark:bg-gray-800 rounded-[4px] flex flex-col w-[88%]   max-h-[45vh] overflow-y-auto items-center justify-start md:hidden asideScroll"
+                  className="bg-white dark:bg-gray-800 rounded-t-[20px] flex flex-col w-[88%]   max-h-[45vh] overflow-y-auto items-center justify-start md:hidden asideScroll"
                 >
                   <div className="mt-4" onClick={closeUserModal}>
                     <IoIosCloseCircleOutline
