@@ -13,7 +13,7 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import MainHeader from "@/components/Client/MainHeader";
 import Image from "next/image";
 import { useTranslation } from "next-i18next";
-import { useRouter } from "next/router";
+import { Router, useRouter } from "next/router";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { getOffer, getUser } from "@/services/index";
@@ -32,6 +32,7 @@ import { chatUser } from "@/interfaces";
 import { db } from "@/server/configs/firebase";
 import { ref, set } from "firebase/database";
 import LoadingImg from "../public/loadingImg.gif";
+
 
 const Home: NextPage = () => {
   const { showUserModal, openUserModal, closeUserModal, modalSpring } =
@@ -131,7 +132,7 @@ const Home: NextPage = () => {
             </div>
           </div>
           <div className=" pt-5 sm:mr-18">
-            <div className="sm:w-[500px] relative mb sm:mb-48 ml-5 z-0 sm:h-[475px] rounded-[80px] bg-transparent sm:bg-black">
+            <div className="sm:w-[500px] relative mb sm:mb-48 ml-24 md:ml-5 z-0 sm:h-[475px] rounded-[80px] bg-transparent sm:bg-black">
               <Image
                 className="absolute sm:w-[657px] w-[271px] h-[231px] sm:h-[559px] scale-125 mt-5 z-0"
                 src={HomeImg}
@@ -433,7 +434,7 @@ const Home: NextPage = () => {
                 {t("Discover Restaurants")} <br className="hidden sm:block" />
                 {t("Near From you")}
               </p>
-              <button className="bg-[#FB9300] sm:mb-18 mb-[30px] sm:mt-11 mt-5 px-11 py-2 rounded-[30px] text-white  text-[18px] sm:text-[22px] cursor-pointer hover:opacity-75 transition-all duration-500 ">
+              <button onClick={() => push(ROUTER.RESTAURANTS)} className="bg-[#FB9300] sm:mb-18 mb-[30px] sm:mt-11 mt-5 px-11 py-2 rounded-[30px] text-white  text-[18px] sm:text-[22px] cursor-pointer hover:opacity-75 transition-all duration-500 ">
                 {t("Explore now")}
               </button>
             </div>
