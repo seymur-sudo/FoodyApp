@@ -224,9 +224,9 @@ const OrderHistory: React.FC = () => {
                               </p>
                             </td>
 
-                            <td className="p-4 pl-6 text-[12px]">
+                            <td className="p-4 pl-5 md:pl-10 text-[12px]">
                               <p className="flex justify-start items-center">
-                                {history.customer_id}
+                                {history.customer_id.slice(0, 5)}
                               </p>
                             </td>
 
